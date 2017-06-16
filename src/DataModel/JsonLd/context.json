@@ -1,0 +1,24 @@
+{
+    "@context": {
+        "@vocab": "http://www.w3.org/ns/hydra/core#",
+        "hydra": "http://www.w3.org/ns/hydra/core#",
+        "operations": "hydra:operation",
+        "supportedClasses": {
+            "@id": "hydra:supportedClass",
+            "@container": "@set"
+        },
+        "entryPoint": "hydra:entrypoint",
+        "supportedOperations": {
+            "@id": "hydra:supportedOperation",
+            "@container": "@set"
+        },
+        "supportedProperties": {
+            "@id": "hydra:supportedProperty",
+            "@container": "@set"
+        },
+        "members": {
+            "@id": "hydra:member",
+            "@container": "@set"
+        }
+    }
+}

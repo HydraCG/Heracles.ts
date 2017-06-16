@@ -1,0 +1,26 @@
+{
+    "@context": {
+        "hydra": "http://www.w3.org/ns/hydra/core#",
+        "schema": "http://schema.org/"
+    },
+    "@graph": {
+        "@id": "some:named.graph",
+        "@graph": [
+            {
+                "@id": "http://temp.uri/api/events",
+                "@type": "hydra:Collection",
+                "hydra:totalItems": 1,
+                "hydra:member": [
+                    { "@id": "http://temp.uri/api/events/1" }
+                ]
+            },
+            {
+                "@id": "http://temp.uri/api/events/1",
+                "schema:eventName": "Event 1",
+                "schema:eventDescription": "Some event 1",
+                "schema:startDate": "2017-04-19",
+                "schema:endDate": "2017-04-19"
+            }
+        ]
+    }
+}

@@ -1,0 +1,10 @@
+[
+    {
+        "@id": "http://temp.uri/api/events",
+        "@type": "Collection",
+        "totalItems": 1,
+        "members": [
+            { "@id": "http://temp.uri/api/events/1" }
+        ]
+    }
+]
