@@ -1,24 +1,24 @@
 import HydraClient from "../../../src/HydraClient";
 import {returnOk} from "../../../testing/ResponseHelper";
-import JsonLdMetadataProvider from "../../../src/DataModel/JsonLd/JsonLdMetadataProvider";
+import JsonLdHypermediaProcessor from "../../../src/DataModel/JsonLd/JsonLdHypermediaProcessor";
 import {run} from "../../../testing/AsyncHelper";
 const inputJsonLd = require("./input.json");
-const metadataJsonLd = require("./metadata.json");
-const dataJsonLd = require("./data.json");
+const hypermediaJsonLd = require("./hypermedia.json");
+const webResourceJsonLd = require("./webResource.json");
 
-describe("Given instance of the JsonLdMetadataProvider class", function() {
+describe("Given instance of the JsonLdHypermediaProcessor class", function() {
     beforeEach(function() {
-        (<any>HydraClient)._metadataProviders.length = 0;
-        HydraClient.registerMetadataProvider(new JsonLdMetadataProvider());
-        this.metadataProvider = HydraClient.instance.getMetadataProvider(returnOk());
+        (<any>HydraClient)._hypermediaProcessors.length = 0;
+        HydraClient.registerHypermediaProcessor(new JsonLdHypermediaProcessor());
+        this.hypermediaProcessor = new HydraClient().getHypermediaProcessor(returnOk());
     });
 
     it("should get itself registered", function() {
-        expect(this.metadataProvider).toEqual(jasmine.any(JsonLdMetadataProvider));
+        expect(this.hypermediaProcessor).toEqual(jasmine.any(JsonLdHypermediaProcessor));
     });
 
     it("should expose supported media types", function() {
-        expect(this.metadataProvider.supportedMediaTypes).toEqual(["application/json+ld"]);
+        expect(this.hypermediaProcessor.supportedMediaTypes).toEqual(["application/json+ld"]);
     });
 
     describe("when parsing", function() {
@@ -26,16 +26,16 @@ describe("Given instance of the JsonLdMetadataProvider class", function() {
             this.response = returnOk(inputJsonLd);
         });
 
-        it("should parse data", run(async function() {
-            let result = await this.metadataProvider.parse(this.response, true);
+        it("should process data", run(async function() {
+            let result = await this.hypermediaProcessor.process(this.response, true);
 
-            expect(result).toEqual(dataJsonLd);
+            expect(result).toEqual(webResourceJsonLd);
         }));
 
-        it("should separate metadata", run(async function() {
-            let result = await this.metadataProvider.parse(this.response, true);
+        it("should separate hypermedia", run(async function() {
+            let result = await this.hypermediaProcessor.process(this.response, true);
 
-            expect(result.metadata).toEqual(metadataJsonLd);
+            expect(result.hypermedia).toEqual(hypermediaJsonLd);
         }));
     });
 });

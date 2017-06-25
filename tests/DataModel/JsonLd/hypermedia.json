@@ -1,0 +1,10 @@
+[
+    {
+        "iri": "http://temp.uri/api/events",
+        "isA": "Collection",
+        "totalItems": 1,
+        "members": [
+            { "iri": "http://temp.uri/api/events/1" }
+        ]
+    }
+]

@@ -1,5 +1,7 @@
 {
     "@context": {
+        "iri": "@id",
+        "isA": "@type",
         "@vocab": "http://www.w3.org/ns/hydra/core#",
         "hydra": "http://www.w3.org/ns/hydra/core#",
         "operations": "hydra:operation",

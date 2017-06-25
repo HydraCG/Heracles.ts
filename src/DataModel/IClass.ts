@@ -1,5 +1,9 @@
 import {IResource} from "./IResource";
+import {IHypermedia} from "./IHypermedia";
 
-export interface IClass extends IResource
+/**
+ * @interface Represents a Hydra class
+ */
+export interface IClass extends IResource, IHypermedia
 {
 }

@@ -1,30 +1,32 @@
 import {IApiDocumentation} from "./DataModel/IApiDocumentation";
-import {IData} from "./DataModel/IData";
+import {IWebResource} from "./DataModel/IWebResource";
 import {IClass} from "./DataModel/IClass";
 import {IOperation} from "./DataModel/IOperation";
 import HydraClient from "./HydraClient";
 
 export default class ApiDocumentation implements IApiDocumentation
 {
+    public title?: string;
+
+    public description?: string;
+
     public supportedClasses: Array<IClass>;
+
     public supportedOperations: Array<IOperation>;
-    public client: HydraClient;
+
     public entryPoint: string;
 
-    public async getEntryPoint(): Promise<IData>
+    public client: HydraClient;
+
+    public ApiDocumentation()
     {
-        let response = await window.fetch(this.entryPoint);
-        if (response.status !== 200)
-        {
-            throw new Error(HydraClient.invalidResponse + response.status);
-        }
+        this.supportedClasses = new Array<IClass>();
+        this.supportedOperations = new Array<IOperation>();
+        this.entryPoint = "";
+    }
 
-        let metadataProvider = this.client.getMetadataProvider(response);
-        if (!metadataProvider)
-        {
-            throw new Error(HydraClient.responseFormatNotSupported);
-        }
-
-        return await metadataProvider.parse(response, true);
+    public async getEntryPoint(): Promise<IWebResource>
+    {
+        return await this.client.getResource(this.entryPoint);
     }
 }
