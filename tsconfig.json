@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "target": "es2017",
+        "lib": ["es2017", "DOM"],
+        "types": ["node", "jasmine", "sinon"],
+        "sourceMap": true
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
