@@ -4,10 +4,10 @@
   "scripts": {
     "live-test": "node node_modules/karma/bin/karma start",
     "unit-test": "node node_modules/karma/bin/karma start --single-run",
-    "docs-html": "node node_modules/typedoc/bin/typedoc --out doc --excludeExternals --tsconfig tsconfig.docs.json src",
-    "docs-md": "node node_modules/typedoc/bin/typedoc --out doc --theme markdown --excludeExternals --tsconfig tsconfig.docs.json src",
+    "test": "node node_modules/npm-run-all/bin/npm-run-all/index.js --parallel serve live-test",
     "serve": "ts-node integration-tests/server/server.ts",
-    "test": "node node_modules/npm-run-all/bin/npm-run-all/index.js --parallel serve live-test"
+    "docs-html": "node node_modules/typedoc/bin/typedoc --out doc --excludeExternals --tsconfig tsconfig.docs.json src",
+    "docs-md": "node node_modules/typedoc/bin/typedoc --out doc --theme markdown --excludeExternals --tsconfig tsconfig.docs.json src"
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
