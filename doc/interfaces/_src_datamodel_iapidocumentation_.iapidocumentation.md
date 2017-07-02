@@ -30,7 +30,7 @@
 | ------ | ------------------- 
 | client | [HydraClient](../classes/_src_hydraclient_.hydraclient.md)
 | description | string
-| entryPoint | string
+| entryPoint | string⎮object
 | supportedClasses | Array<[IClass](_src_datamodel_iclass_.iclass.md)>
 | title | string
 ## Methods
@@ -42,7 +42,7 @@
 
 
 
-*Defined in [src/DataModel/IApiDocumentation.ts:34](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/DataModel/IApiDocumentation.ts#L34)*
+*Defined in [src/DataModel/IApiDocumentation.ts:34](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/DataModel/IApiDocumentation.ts#L34)*
 
 Retrieves an API's entry point resource.
 

@@ -18,6 +18,7 @@
 ### Methods
 
 * [process](_src_datamodel_jsonld_jsonldhypermediaprocessor_.jsonldhypermediaprocessor.md#process)
+* [generateBlankNodeId](_src_datamodel_jsonld_jsonldhypermediaprocessor_.jsonldhypermediaprocessor.md#generateblanknodeid)
 * [initialize](_src_datamodel_jsonld_jsonldhypermediaprocessor_.jsonldhypermediaprocessor.md#initialize)
 * [processArray](_src_datamodel_jsonld_jsonldhypermediaprocessor_.jsonldhypermediaprocessor.md#processarray)
 * [processHypermedia](_src_datamodel_jsonld_jsonldhypermediaprocessor_.jsonldhypermediaprocessor.md#processhypermedia)
@@ -34,7 +35,7 @@
 
 getsupportedMediaTypes(): Array<string>
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:18](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L18)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:18](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L18)*
 
 
 
@@ -56,7 +57,7 @@ ___
 
 *Implementation of [IHypermediaProcessor](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md).[process](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md#process)*
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:23](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L23)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:23](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L23)*
 
 **Parameters:**
 
@@ -77,6 +78,26 @@ ___
 
 ___
 
+<a id="generateblanknodeid"></a>
+
+### «Static»«Private» generateBlankNodeId
+
+► **generateBlankNodeId**(): string
+
+
+
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:42](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L42)*
+
+
+
+**Returns:** string
+
+
+
+
+
+___
+
 <a id="initialize"></a>
 
 ### «Static» initialize
@@ -85,7 +106,7 @@ ___
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:13](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L13)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:13](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L13)*
 
 
 
@@ -105,7 +126,7 @@ ___
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:57](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L57)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:62](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L62)*
 
 **Parameters:**
 
@@ -135,7 +156,7 @@ ___
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:42](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L42)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:47](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L47)*
 
 **Parameters:**
 
@@ -165,7 +186,7 @@ ___
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:81](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L81)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:87](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L87)*
 
 **Parameters:**
 

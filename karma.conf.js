@@ -5,10 +5,12 @@ module.exports = function(config) {
         files: [
             { pattern: "src/**/*.ts", included: true },
             { pattern: "testing/**/*.ts", included: true },
-            { pattern: "tests/**/*.spec.ts", included: true }
+            { pattern: "tests/**/*.spec.ts", included: true },
+            { pattern: "integration-tests/**/*.spec.ts", included: true }
         ],
         exclude: [
-            "jsonld-request"
+            "jsonld-request",
+            "server"
         ],
         preprocessors: {
             "**/*.ts": ["karma-typescript"]

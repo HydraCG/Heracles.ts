@@ -14,7 +14,7 @@ export default class ApiDocumentation implements IApiDocumentation
 
     public supportedOperations: Array<IOperation>;
 
-    public entryPoint: string;
+    public entryPoint: string | { iri: string };
 
     public client: HydraClient;
 

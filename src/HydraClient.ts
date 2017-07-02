@@ -3,7 +3,8 @@ import {IHypermediaProcessor} from "./DataModel/IHypermediaProcessor";
 import {IApiDocumentation} from "./DataModel/IApiDocumentation";
 import {IWebResource} from "./DataModel/IWebResource";
 import ApiDocumentation from "./ApiDocumentation";
-require('isomorphic-fetch');
+const jsonld = require("jsonld");
+require("isomorphic-fetch");
 
 /**
  * @class HydraClient Heracles is a generic client for Hydra-powered Web APIs.
@@ -42,7 +43,7 @@ export default class HydraClient
     public getHypermediaProcessor(response: Response): IHypermediaProcessor
     {
         return HydraClient._hypermediaProcessors.find(provider =>
-            !!provider.supportedMediaTypes.find(mediaType => mediaType === response.headers.get("Content-Type")));
+            !!provider.supportedMediaTypes.find(mediaType => response.headers.get("Content-Type").indexOf(mediaType) === 0));
     }
 
     /**
@@ -75,16 +76,9 @@ export default class HydraClient
 
     /**
      * Obtains a representation of a resource.
-     * @param url Url of the resource to be obtained.
+     * @param urlOrResource {string | { iri: string }} Url or a {@link IResource} carrying an Iri of the resource to be obtained.
      * @returns {Promise<IWebResource>}
      */
-    public async getResource(url: string): Promise<IWebResource>;
-    /**
-     * Obtains a representation of a resource.
-     * @param url Url of the resource to be obtained.
-     * @returns {Promise<IWebResource>}
-     */
-    public async getResource(resource: { iri: string }): Promise<IWebResource>;
     public async getResource(urlOrResource: string | { iri: string }): Promise<IWebResource>
     {
         let url = HydraClient.getUrl(urlOrResource);
@@ -123,7 +117,7 @@ export default class HydraClient
             throw new Error(HydraClient.apiDocumentationNotProvided)
         }
 
-        return result[1];
+        return (!result[1].match(/^[a-z][a-z0-9+\-.]*:/) ? jsonld.prependBase(url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0], result[1]) : result[1]);
     }
 
     private static getUrl(urlOrResource: string | { iri: string }): string

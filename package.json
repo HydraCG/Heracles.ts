@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "scripts": {
     "live-test": "node node_modules/karma/bin/karma start",
-    "test": "node node_modules/karma/bin/karma start --single-run",
+    "unit-test": "node node_modules/karma/bin/karma start --single-run",
     "docs-html": "node node_modules/typedoc/bin/typedoc --out doc --excludeExternals --tsconfig tsconfig.docs.json src",
-    "docs-md": "node node_modules/typedoc/bin/typedoc --out doc --theme markdown --excludeExternals --tsconfig tsconfig.docs.json src"
+    "docs-md": "node node_modules/typedoc/bin/typedoc --out doc --theme markdown --excludeExternals --tsconfig tsconfig.docs.json src",
+    "serve": "ts-node integration-tests/server/server.ts",
+    "test": "node node_modules/npm-run-all/bin/npm-run-all/index.js --parallel serve live-test"
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
@@ -13,9 +15,11 @@
     "typescript": "^2.3.3"
   },
   "devDependencies": {
+    "@types/express": "^4.0.36",
     "@types/jasmine": "^2.5.47",
     "@types/node": "^7.0.21",
     "@types/sinon": "^2.2.2",
+    "express": "^4.15.3",
     "jasmine": "^2.6.0",
     "jasmine-sinon": "^0.4.0",
     "karma": "^1.7.0",
@@ -25,7 +29,9 @@
     "karma-sinon": "^1.0.5",
     "karma-source-map-support": "^1.2.0",
     "karma-typescript": "^3.0.2",
+    "npm-run-all": "^4.0.2",
     "sinon": "^2.2.0",
+    "ts-node": "^3.1.0",
     "typedoc": "^0.7.1",
     "typedoc-plugin-markdown": "0.0.18"
   }

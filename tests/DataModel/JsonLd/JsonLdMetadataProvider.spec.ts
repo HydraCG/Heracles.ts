@@ -8,7 +8,8 @@ const webResourceJsonLd = require("./webResource.json");
 
 describe("Given instance of the JsonLdHypermediaProcessor class", function() {
     beforeEach(function() {
-        (<any>HydraClient)._hypermediaProcessors.length = 0;
+        this.hypermediaProcessors = (<any>HydraClient)._hypermediaProcessors;
+        (<any>HydraClient)._hypermediaProcessors = [];
         HydraClient.registerHypermediaProcessor(new JsonLdHypermediaProcessor());
         this.hypermediaProcessor = new HydraClient().getHypermediaProcessor(returnOk());
     });
@@ -18,12 +19,12 @@ describe("Given instance of the JsonLdHypermediaProcessor class", function() {
     });
 
     it("should expose supported media types", function() {
-        expect(this.hypermediaProcessor.supportedMediaTypes).toEqual(["application/json+ld"]);
+        expect(this.hypermediaProcessor.supportedMediaTypes).toEqual(["application/ld+json"]);
     });
 
     describe("when parsing", function() {
         beforeEach(function() {
-            this.response = returnOk(inputJsonLd);
+            this.response = returnOk("http://temp.uri/", inputJsonLd);
         });
 
         it("should process data", run(async function() {
@@ -37,5 +38,9 @@ describe("Given instance of the JsonLdHypermediaProcessor class", function() {
 
             expect(result.hypermedia).toEqual(hypermediaJsonLd);
         }));
+    });
+
+    afterEach(function() {
+        (<any>HydraClient)._hypermediaProcessors = this.hypermediaProcessors;
     });
 });

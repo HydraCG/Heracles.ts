@@ -39,7 +39,7 @@
 
 **_hypermediaProcessors**:  *[IHypermediaProcessor](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md)[]*  =  new Array<IHypermediaProcessor>()
 
-*Defined in [src/HydraClient.ts:14](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L14)*
+*Defined in [src/HydraClient.ts:15](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L15)*
 
 
 
@@ -52,7 +52,7 @@ ___
 
 **apiDocumentationNotProvided**:  *string*  = "API documentation not provided."
 
-*Defined in [src/HydraClient.ts:17](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L17)*
+*Defined in [src/HydraClient.ts:18](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L18)*
 
 
 
@@ -65,7 +65,7 @@ ___
 
 **invalidResponse**:  *string*  = "Remote server responded with a status of "
 
-*Defined in [src/HydraClient.ts:20](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L20)*
+*Defined in [src/HydraClient.ts:21](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L21)*
 
 
 
@@ -78,7 +78,7 @@ ___
 
 **noEntryPointDefined**:  *string*  = "API documentation has no entry point defined."
 
-*Defined in [src/HydraClient.ts:18](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L18)*
+*Defined in [src/HydraClient.ts:19](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L19)*
 
 
 
@@ -91,7 +91,7 @@ ___
 
 **noHypermediaProcessor**:  *string*  = "No hypermedia processor instance was provided for registration."
 
-*Defined in [src/HydraClient.ts:19](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L19)*
+*Defined in [src/HydraClient.ts:20](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L20)*
 
 
 
@@ -104,7 +104,7 @@ ___
 
 **noUrlProvided**:  *string*  = "There was no Url provided."
 
-*Defined in [src/HydraClient.ts:16](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L16)*
+*Defined in [src/HydraClient.ts:17](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L17)*
 
 
 
@@ -117,7 +117,7 @@ ___
 
 **responseFormatNotSupported**:  *string*  = "Response format is not supported."
 
-*Defined in [src/HydraClient.ts:21](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L21)*
+*Defined in [src/HydraClient.ts:22](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L22)*
 
 
 
@@ -136,7 +136,7 @@ ___
 
 
 
-*Defined in [src/HydraClient.ts:53](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L53)*
+*Defined in [src/HydraClient.ts:54](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L54)*
 
 Obtains an API documentation.
 
@@ -157,7 +157,7 @@ Obtains an API documentation.
 
 
 
-*Defined in [src/HydraClient.ts:59](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L59)*
+*Defined in [src/HydraClient.ts:60](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L60)*
 
 Obtains an API documentation.
 
@@ -190,7 +190,7 @@ ___
 
 
 
-*Defined in [src/HydraClient.ts:106](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L106)*
+*Defined in [src/HydraClient.ts:100](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L100)*
 
 **Parameters:**
 
@@ -218,7 +218,7 @@ ___
 
 
 
-*Defined in [src/HydraClient.ts:42](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L42)*
+*Defined in [src/HydraClient.ts:43](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L43)*
 
 Gets a hypermedia provider suitable for a given response.
 
@@ -247,13 +247,11 @@ ___
 
 ###  getResource
 
-► **getResource**(url: *string*): Promise<[IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)>
-
-► **getResource**(resource: *object*): Promise<[IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)>
+► **getResource**(urlOrResource: *string⎮object*): Promise<[IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)>
 
 
 
-*Defined in [src/HydraClient.ts:81](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L81)*
+*Defined in [src/HydraClient.ts:82](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L82)*
 
 Obtains a representation of a resource.
 
@@ -262,28 +260,7 @@ Obtains a representation of a resource.
 
 | Name  | Type                | Default | Description  |
 | ------ | ------------------- | ------------ | ------------ |
-| url  | string | - | Url of the resource to be obtained. |
-
-
-
-
-
-**Returns:** Promise<[IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)>
-
-
-
-
-
-*Defined in [src/HydraClient.ts:87](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L87)*
-
-Obtains a representation of a resource.
-
-
-**Parameters:**
-
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| resource  | object | - | - |
+| urlOrResource  | string⎮object | - | Url or a {@link IResource} carrying an Iri of the resource to be obtained. |
 
 
 
@@ -307,7 +284,7 @@ ___
 
 
 
-*Defined in [src/HydraClient.ts:140](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L140)*
+*Defined in [src/HydraClient.ts:134](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L134)*
 
 **Parameters:**
 
@@ -335,7 +312,7 @@ ___
 
 
 
-*Defined in [src/HydraClient.ts:129](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L129)*
+*Defined in [src/HydraClient.ts:123](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L123)*
 
 **Parameters:**
 
@@ -363,7 +340,7 @@ ___
 
 
 
-*Defined in [src/HydraClient.ts:27](https://github.com/alien-mcl/Heracles.ts/blob/80e3949/src/HydraClient.ts#L27)*
+*Defined in [src/HydraClient.ts:28](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L28)*
 
 Registers a hypermedia processor.
 

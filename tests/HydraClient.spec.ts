@@ -9,11 +9,12 @@ describe("Given an instance of the HydraClient class", function() {
     beforeEach(function() {
         this.expectedUrl = "http://temp.uri/";
         this.hypermediaProcessor = {
-            supportedMediaTypes: ["application/json+ld"],
+            supportedMediaTypes: ["application/ld+json"],
             process: sinon.stub()
         };
         this.client = new HydraClient();
-        (<any>HydraClient)._hypermediaProcessors.length = 0;
+        this.hypermediaProcessors = (<any>HydraClient)._hypermediaProcessors;
+        (<any>HydraClient)._hypermediaProcessors = [];
         HydraClient.registerHypermediaProcessor(this.hypermediaProcessor);
         this.fetch = sinon.stub(window, "fetch");
     });
@@ -58,7 +59,7 @@ describe("Given an instance of the HydraClient class", function() {
 
         describe("which is not provided within the LINK header", function() {
             beforeEach(function() {
-                this.urlResponse = returnOk({}, { "Link": `<${this.expectedUrl}api/documentation>; rel="next"` });
+                this.urlResponse = returnOk(this.expectedUrl, {}, { "Link": `<${this.expectedUrl}api/documentation>; rel="next"` });
                 this.fetch.withArgs(this.expectedUrl).returns(Promise.resolve(this.urlResponse));
             });
 
@@ -70,7 +71,7 @@ describe("Given an instance of the HydraClient class", function() {
 
         describe("from a valid site", function() {
             beforeEach(function() {
-                this.urlResponse = returnOk({}, { "Link": `<${this.expectedUrl}api/documentation>; rel="${hydra.apiDocumentation}"` });
+                this.urlResponse = returnOk(this.expectedUrl, {}, { "Link": `<${this.expectedUrl}api/documentation>; rel="${hydra.apiDocumentation}"` });
                 this.fetch.withArgs(this.expectedUrl).returns(Promise.resolve(this.urlResponse));
             });
 
@@ -88,8 +89,9 @@ describe("Given an instance of the HydraClient class", function() {
 
             describe("and that documentation is provided in an unsupported format", function() {
                 beforeEach(function() {
-                    this.apiDocumentationResponse = returnOk({}, { "Content-Type": "text/turtle" });
-                    this.fetch.withArgs(`${this.expectedUrl}api/documentation`).returns(this.apiDocumentationResponse);
+                    let apiDocumentationUrl = `${this.expectedUrl}api/documentation`;
+                    this.apiDocumentationResponse = returnOk(apiDocumentationUrl, {}, { "Content-Type": "text/turtle" });
+                    this.fetch.withArgs(apiDocumentationUrl).returns(this.apiDocumentationResponse);
                 });
 
                 it("should throw", run(async function() {
@@ -113,10 +115,11 @@ describe("Given an instance of the HydraClient class", function() {
 
             describe("which is provided correctly", function() {
                 beforeEach(function() {
+                    let apiDocumentationUrl = `${this.expectedUrl}api/documentation`;
                     this.apiDocumentation = { entryPoint: `${this.expectedUrl}api` };
                     this.data = [this.apiDocumentation];
-                    this.apiDocumentationResponse = returnOk(this.data);
-                    this.fetch.withArgs(`${this.expectedUrl}api/documentation`).returns(this.apiDocumentationResponse);
+                    this.apiDocumentationResponse = returnOk(apiDocumentationUrl, this.data);
+                    this.fetch.withArgs(apiDocumentationUrl).returns(this.apiDocumentationResponse);
                     this.hypermediaProcessor.process.returns(Promise.resolve({ hypermedia: this.data }));
                 });
 
@@ -173,7 +176,7 @@ describe("Given an instance of the HydraClient class", function() {
 
         describe("and that resource was provided in an unsupported format", function() {
             beforeEach(function() {
-                this.resourceResponse = returnOk({}, { "Content-Type": "text/turtle" });
+                this.resourceResponse = returnOk(this.resourceUrl, {}, { "Content-Type": "text/turtle" });
                 this.fetch.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
             });
 
@@ -206,6 +209,7 @@ describe("Given an instance of the HydraClient class", function() {
     });
 
     afterEach(function() {
+        (<any>HydraClient)._hypermediaProcessors = this.hypermediaProcessors;
         this.fetch.restore();
     });
 });

@@ -25,7 +25,7 @@ export interface IApiDocumentation extends IHypermedia
     /**
      * @readonly Gets the Url of the entry point of the API.
      */
-    readonly entryPoint: string;
+    readonly entryPoint: string | { iri: string };
 
     /**
      * Retrieves an API's entry point resource.

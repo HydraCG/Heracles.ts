@@ -1,0 +1,32 @@
+{
+    "@context": "/api/context.jsonld",
+    "@id": "/api?documentation",
+    "entrypoint": "/api",
+    "supportedClass": [
+        {
+            "@id": "schema:Event",
+            "supportedProperty": [
+                {
+                    "property": {
+                        "@id": "eventName"
+                    }
+                },
+                {
+                    "property": {
+                        "@id": "eventDescription"
+                    }
+                },
+                {
+                    "property": {
+                        "@id": "startDate"
+                    }
+                },
+                {
+                    "property": {
+                        "@id": "endDate"
+                    }
+                }
+            ]
+        }
+    ]
+}
