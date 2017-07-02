@@ -27,7 +27,7 @@
 
 
 
-*Defined in [src/DataModel/IHypermediaProcessor.ts:19](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/DataModel/IHypermediaProcessor.ts#L19)*
+*Defined in [src/DataModel/IHypermediaProcessor.ts:19](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/IHypermediaProcessor.ts#L19)*
 
 Parses a given raw response.
 
@@ -48,7 +48,7 @@ Parses a given raw response.
 
 
 
-*Defined in [src/DataModel/IHypermediaProcessor.ts:27](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/DataModel/IHypermediaProcessor.ts#L27)*
+*Defined in [src/DataModel/IHypermediaProcessor.ts:27](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/IHypermediaProcessor.ts#L27)*
 
 Parses a given raw response.
 

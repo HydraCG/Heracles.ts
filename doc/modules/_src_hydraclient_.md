@@ -24,7 +24,7 @@
 
 **jsonld**:  *any*  =  require("jsonld")
 
-*Defined in [src/HydraClient.ts:6](https://github.com/alien-mcl/Heracles.ts/blob/05f75bc/src/HydraClient.ts#L6)*
+*Defined in [src/HydraClient.ts:6](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L6)*
 
 
 
