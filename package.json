@@ -27,6 +27,6 @@
     "karma-typescript": "^3.0.2",
     "sinon": "^2.2.0",
     "typedoc": "^0.7.1",
-    "typedoc-plugin-markdown": "0.0.18"
+    "typedoc-plugin-markdown": "~1"
   }
 }
