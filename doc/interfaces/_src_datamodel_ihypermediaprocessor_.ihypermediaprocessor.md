@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["src/DataModel/IHypermediaProcessor"](../modules/_src_datamodel_ihypermediaprocessor_.md) > [IHypermediaProcessor](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md)
+[hydraclient.js](../README.md) > ["src/DataModel/IHypermediaProcessor"](../modules/_src_datamodel_ihypermediaprocessor_.md) > [IHypermediaProcessor](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md)
 
 
 
@@ -15,56 +15,64 @@
 
 | Name  | Type                
 | ------ | ------------------- 
-| supportedMediaTypes | Array<string>
+| supportedMediaTypes | `Array`<`string`>
+
+
 ## Methods
 <a id="process"></a>
 
 ###  process
 
-► **process**(response: *Response*): Promise<[IWebResource](_src_datamodel_iwebresource_.iwebresource.md)>
+► **process**(response: *`Response`*): `Promise`<[IWebResource](_src_datamodel_iwebresource_.iwebresource.md)>
 
-► **process**(response: *Response*, removeFromPayload: *boolean*): Promise<[IWebResource](_src_datamodel_iwebresource_.iwebresource.md)>
+► **process**(response: *`Response`*, removeFromPayload: *`boolean`*): `Promise`<[IWebResource](_src_datamodel_iwebresource_.iwebresource.md)>
 
 
 
-*Defined in [src/DataModel/IHypermediaProcessor.ts:19](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/IHypermediaProcessor.ts#L19)*
+
+*Defined in [src/DataModel/IHypermediaProcessor.ts:19](https://github.com//HydraCG/Heracles.ts/blob/master/src/DataModel/IHypermediaProcessor.ts#L19)*
+
+
 
 Parses a given raw response.
 
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| response  | Response | - | Raw fetch response holding data to be parsed. |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| response | `Response` | Raw fetch response holding data to be parsed. |
 
 
 
 
 
-**Returns:** Promise<[IWebResource](_src_datamodel_iwebresource_.iwebresource.md)>
+**Returns:** `Promise`<[IWebResource](_src_datamodel_iwebresource_.iwebresource.md)>
 
 
 
 
 
-*Defined in [src/DataModel/IHypermediaProcessor.ts:27](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/IHypermediaProcessor.ts#L27)*
+
+*Defined in [src/DataModel/IHypermediaProcessor.ts:27](https://github.com//HydraCG/Heracles.ts/blob/master/src/DataModel/IHypermediaProcessor.ts#L27)*
+
+
 
 Parses a given raw response.
 
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| response  | Response | - | Raw fetch response holding data to be parsed. |
-| removeFromPayload  | boolean | - | Instructs whether to remove the hypermedia from the response&#x27;s body or not. |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| response | `Response` | Raw fetch response holding data to be parsed. |
+| removeFromPayload | `boolean` | Instructs whether to remove the hypermedia from the response&#x27;s body or not. |
 
 
 
 
 
-**Returns:** Promise<[IWebResource](_src_datamodel_iwebresource_.iwebresource.md)>
+**Returns:** `Promise`<[IWebResource](_src_datamodel_iwebresource_.iwebresource.md)>
 
 
 
@@ -73,6 +81,5 @@ Parses a given raw response.
 
 
 ___
-
 
 

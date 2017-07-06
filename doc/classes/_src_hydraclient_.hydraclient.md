@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["src/HydraClient"](../modules/_src_hydraclient_.md) > [HydraClient](../classes/_src_hydraclient_.hydraclient.md)
+[hydraclient.js](../README.md) > ["src/HydraClient"](../modules/_src_hydraclient_.md) > [HydraClient](../classes/_src_hydraclient_.hydraclient.md)
 
 
 
@@ -32,14 +32,16 @@
 
 
 
+---
 ## Properties
 <a id="_hypermediaprocessors"></a>
 
 ### «Static»«Private» _hypermediaProcessors
 
-**_hypermediaProcessors**:  *[IHypermediaProcessor](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md)[]*  =  new Array<IHypermediaProcessor>()
+**●  _hypermediaProcessors**:  *[IHypermediaProcessor](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md)[]*  =  new Array<IHypermediaProcessor>()
 
-*Defined in [src/HydraClient.ts:15](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L15)*
+*Defined in [src/HydraClient.ts:16](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L16)*
+
 
 
 
@@ -50,9 +52,10 @@ ___
 
 ### «Static» apiDocumentationNotProvided
 
-**apiDocumentationNotProvided**:  *string*  = "API documentation not provided."
+**●  apiDocumentationNotProvided**:  *`string`*  = "API documentation not provided."
 
-*Defined in [src/HydraClient.ts:18](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L18)*
+*Defined in [src/HydraClient.ts:19](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L19)*
+
 
 
 
@@ -63,9 +66,10 @@ ___
 
 ### «Static» invalidResponse
 
-**invalidResponse**:  *string*  = "Remote server responded with a status of "
+**●  invalidResponse**:  *`string`*  = "Remote server responded with a status of "
 
-*Defined in [src/HydraClient.ts:21](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L21)*
+*Defined in [src/HydraClient.ts:22](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L22)*
+
 
 
 
@@ -76,9 +80,10 @@ ___
 
 ### «Static» noEntryPointDefined
 
-**noEntryPointDefined**:  *string*  = "API documentation has no entry point defined."
+**●  noEntryPointDefined**:  *`string`*  = "API documentation has no entry point defined."
 
-*Defined in [src/HydraClient.ts:19](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L19)*
+*Defined in [src/HydraClient.ts:20](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L20)*
+
 
 
 
@@ -89,9 +94,10 @@ ___
 
 ### «Static» noHypermediaProcessor
 
-**noHypermediaProcessor**:  *string*  = "No hypermedia processor instance was provided for registration."
+**●  noHypermediaProcessor**:  *`string`*  = "No hypermedia processor instance was provided for registration."
 
-*Defined in [src/HydraClient.ts:20](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L20)*
+*Defined in [src/HydraClient.ts:21](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L21)*
+
 
 
 
@@ -102,9 +108,10 @@ ___
 
 ### «Static» noUrlProvided
 
-**noUrlProvided**:  *string*  = "There was no Url provided."
+**●  noUrlProvided**:  *`string`*  = "There was no Url provided."
 
-*Defined in [src/HydraClient.ts:17](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L17)*
+*Defined in [src/HydraClient.ts:18](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L18)*
+
 
 
 
@@ -115,9 +122,10 @@ ___
 
 ### «Static» responseFormatNotSupported
 
-**responseFormatNotSupported**:  *string*  = "Response format is not supported."
+**●  responseFormatNotSupported**:  *`string`*  = "Response format is not supported."
 
-*Defined in [src/HydraClient.ts:22](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L22)*
+*Defined in [src/HydraClient.ts:23](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L23)*
+
 
 
 
@@ -130,49 +138,29 @@ ___
 
 ###  getApiDocumentation
 
-► **getApiDocumentation**(url: *string*): Promise<[IApiDocumentation](../interfaces/_src_datamodel_iapidocumentation_.iapidocumentation.md)>
-
-► **getApiDocumentation**(resource: *object*): Promise<[IApiDocumentation](../interfaces/_src_datamodel_iapidocumentation_.iapidocumentation.md)>
+► **getApiDocumentation**(urlOrResource: *`string`⎮[IResource](../interfaces/_src_datamodel_iresource_.iresource.md)*): `Promise`<[IApiDocumentation](../interfaces/_src_datamodel_iapidocumentation_.iapidocumentation.md)>
 
 
 
-*Defined in [src/HydraClient.ts:54](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L54)*
+
+*Defined in [src/HydraClient.ts:55](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L55)*
+
+
 
 Obtains an API documentation.
 
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| url  | string | - | URL from which to obtain an API documentation. |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| urlOrResource | `string`⎮[IResource](../interfaces/_src_datamodel_iresource_.iresource.md) | Url or object with an iri property from which to obtain an API documentation. |
 
 
 
 
 
-**Returns:** Promise<[IApiDocumentation](../interfaces/_src_datamodel_iapidocumentation_.iapidocumentation.md)>
-
-
-
-
-
-*Defined in [src/HydraClient.ts:60](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L60)*
-
-Obtains an API documentation.
-
-
-**Parameters:**
-
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| resource  | object | - | - |
-
-
-
-
-
-**Returns:** Promise<[IApiDocumentation](../interfaces/_src_datamodel_iapidocumentation_.iapidocumentation.md)>
+**Returns:** `Promise`<[IApiDocumentation](../interfaces/_src_datamodel_iapidocumentation_.iapidocumentation.md)>
 
 
 
@@ -186,23 +174,26 @@ ___
 
 ### «Private» getApiDocumentationUrl
 
-► **getApiDocumentationUrl**(url: *string*): Promise<string>
+► **getApiDocumentationUrl**(url: *`string`*): `Promise`<`string`>
 
 
 
-*Defined in [src/HydraClient.ts:100](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L100)*
+
+*Defined in [src/HydraClient.ts:94](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L94)*
+
+
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| url  | string | - | - |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| url | `string` | - |
 
 
 
 
 
-**Returns:** Promise<string>
+**Returns:** `Promise`<`string`>
 
 
 
@@ -214,20 +205,23 @@ ___
 
 ###  getHypermediaProcessor
 
-► **getHypermediaProcessor**(response: *Response*): [IHypermediaProcessor](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md)
+► **getHypermediaProcessor**(response: *`Response`*): [IHypermediaProcessor](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md)
 
 
 
-*Defined in [src/HydraClient.ts:43](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L43)*
+
+*Defined in [src/HydraClient.ts:44](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L44)*
+
+
 
 Gets a hypermedia provider suitable for a given response.
 
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| response  | Response | - | Raw response to find hypermedia processor for. |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| response | `Response` | Raw response to find hypermedia processor for. |
 
 
 
@@ -247,26 +241,29 @@ ___
 
 ###  getResource
 
-► **getResource**(urlOrResource: *string⎮object*): Promise<[IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)>
+► **getResource**(urlOrResource: *`string`⎮[IResource](../interfaces/_src_datamodel_iresource_.iresource.md)*): `Promise`<[IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)>
 
 
 
-*Defined in [src/HydraClient.ts:82](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L82)*
+
+*Defined in [src/HydraClient.ts:76](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L76)*
+
+
 
 Obtains a representation of a resource.
 
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| urlOrResource  | string⎮object | - | Url or a {@link IResource} carrying an Iri of the resource to be obtained. |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| urlOrResource | `string`⎮[IResource](../interfaces/_src_datamodel_iresource_.iresource.md) | Url or a {@link IHydraResource} carrying an Iri of the resource to be obtained. |
 
 
 
 
 
-**Returns:** Promise<[IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)>
+**Returns:** `Promise`<[IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)>
 
 
 
@@ -280,23 +277,26 @@ ___
 
 ### «Static»«Private» convertToPropertyDescriptorMap
 
-► **convertToPropertyDescriptorMap**(instance: *any*): PropertyDescriptorMap
+► **convertToPropertyDescriptorMap**(instance: *`any`*): `PropertyDescriptorMap`
 
 
 
-*Defined in [src/HydraClient.ts:134](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L134)*
+
+*Defined in [src/HydraClient.ts:128](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L128)*
+
+
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| instance  | any | - | - |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| instance | `any` | - |
 
 
 
 
 
-**Returns:** PropertyDescriptorMap
+**Returns:** `PropertyDescriptorMap`
 
 
 
@@ -308,23 +308,26 @@ ___
 
 ### «Static»«Private» getUrl
 
-► **getUrl**(urlOrResource: *string⎮object*): string
+► **getUrl**(urlOrResource: *`string`⎮[IResource](../interfaces/_src_datamodel_iresource_.iresource.md)*): `string`
 
 
 
-*Defined in [src/HydraClient.ts:123](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L123)*
+
+*Defined in [src/HydraClient.ts:117](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L117)*
+
+
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| urlOrResource  | string⎮object | - | - |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| urlOrResource | `string`⎮[IResource](../interfaces/_src_datamodel_iresource_.iresource.md) | - |
 
 
 
 
 
-**Returns:** string
+**Returns:** `string`
 
 
 
@@ -336,26 +339,29 @@ ___
 
 ### «Static» registerHypermediaProcessor
 
-► **registerHypermediaProcessor**(hypermediaProcessor: *[IHypermediaProcessor](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md)*): void
+► **registerHypermediaProcessor**(hypermediaProcessor: *[IHypermediaProcessor](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md)*): `void`
 
 
 
-*Defined in [src/HydraClient.ts:28](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L28)*
+
+*Defined in [src/HydraClient.ts:29](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L29)*
+
+
 
 Registers a hypermedia processor.
 
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| hypermediaProcessor  | [IHypermediaProcessor](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md) | - | Hypermedia processor to be registered. |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| hypermediaProcessor | [IHypermediaProcessor](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md) | Hypermedia processor to be registered. |
 
 
 
 
 
-**Returns:** void
+**Returns:** `void`
 
 
 

@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["src/DataModel/JsonLd/JsonLdHypermediaProcessor"](../modules/_src_datamodel_jsonld_jsonldhypermediaprocessor_.md) > [JsonLdHypermediaProcessor](../classes/_src_datamodel_jsonld_jsonldhypermediaprocessor_.jsonldhypermediaprocessor.md)
+[hydraclient.js](../README.md) > ["src/DataModel/JsonLd/JsonLdHypermediaProcessor"](../modules/_src_datamodel_jsonld_jsonldhypermediaprocessor_.md) > [JsonLdHypermediaProcessor](../classes/_src_datamodel_jsonld_jsonldhypermediaprocessor_.jsonldhypermediaprocessor.md)
 
 
 
@@ -26,6 +26,7 @@
 
 
 
+---
 
 ## Accessors
 <a id="supportedmediatypes"></a>
@@ -33,13 +34,16 @@
 ###  supportedMediaTypes
 
 
-getsupportedMediaTypes(): Array<string>
-
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:18](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L18)*
+getsupportedMediaTypes(): `Array`<`string`>
 
 
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:18](https://github.com//HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L18)*
 
-**Returns:** Array<string>
+
+
+
+
+**Returns:** `Array`<`string`>
 
 
 
@@ -51,26 +55,29 @@ ___
 
 ###  process
 
-► **process**(response: *Response*, removeFromPayload?: *boolean*): Promise<[IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)>
+► **process**(response: *`Response`*, removeFromPayload?: *`boolean`*): `Promise`<[IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)>
+
 
 
 
 *Implementation of [IHypermediaProcessor](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md).[process](../interfaces/_src_datamodel_ihypermediaprocessor_.ihypermediaprocessor.md#process)*
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:23](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L23)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:23](https://github.com//HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L23)*
+
+
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| response  | Response | - | - |
-| removeFromPayload  | boolean | false | - |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| response | `Response` | - |
+| removeFromPayload | `boolean` | Default value = false.- |
 
 
 
 
 
-**Returns:** Promise<[IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)>
+**Returns:** `Promise`<[IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)>
 
 
 
@@ -82,15 +89,18 @@ ___
 
 ### «Static»«Private» generateBlankNodeId
 
-► **generateBlankNodeId**(): string
+► **generateBlankNodeId**(): `string`
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:42](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L42)*
+
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:42](https://github.com//HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L42)*
 
 
 
-**Returns:** string
+
+
+**Returns:** `string`
 
 
 
@@ -102,15 +112,18 @@ ___
 
 ### «Static» initialize
 
-► **initialize**(): void
+► **initialize**(): `void`
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:13](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L13)*
+
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:13](https://github.com//HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L13)*
 
 
 
-**Returns:** void
+
+
+**Returns:** `void`
 
 
 
@@ -122,25 +135,28 @@ ___
 
 ### «Static»«Private» processArray
 
-► **processArray**(payload: *any*, result: *Array<any>object*, removeFromPayload?: *boolean*): any[]object
+► **processArray**(payload: *`any`*, result: *`Array`<`any`>object*, removeFromPayload?: *`boolean`*): `any`[]object
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:62](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L62)*
+
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:62](https://github.com//HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L62)*
+
+
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| payload  | any | - | - |
-| result  | Array<any>object | - | - |
-| removeFromPayload  | boolean | false | - |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| payload | `any` | - |
+| result | `Array`<`any`>object | - |
+| removeFromPayload | `boolean` | Default value = false.- |
 
 
 
 
 
-**Returns:** any[]object
+**Returns:** `any`[]object
 
 
 
@@ -152,25 +168,28 @@ ___
 
 ### «Static»«Private» processHypermedia
 
-► **processHypermedia**(payload: *any*, result: *Array<any>object*, removeFromPayload?: *boolean*): any
+► **processHypermedia**(payload: *`any`*, result: *`Array`<`any`>object*, removeFromPayload?: *`boolean`*): `any`
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:47](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L47)*
+
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:47](https://github.com//HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L47)*
+
+
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| payload  | any | - | - |
-| result  | Array<any>object | - | - |
-| removeFromPayload  | boolean | false | - |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| payload | `any` | - |
+| result | `Array`<`any`>object | - |
+| removeFromPayload | `boolean` | Default value = false.- |
 
 
 
 
 
-**Returns:** any
+**Returns:** `any`
 
 
 
@@ -182,25 +201,28 @@ ___
 
 ### «Static»«Private» processResource
 
-► **processResource**(resource: *any*, result: *Array<any>object*, removeFromPayload: *boolean*): any
+► **processResource**(resource: *`any`*, result: *`Array`<`any`>object*, removeFromPayload: *`boolean`*): `any`
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:87](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L87)*
+
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:87](https://github.com//HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L87)*
+
+
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| resource  | any | - | - |
-| result  | Array<any>object | - | - |
-| removeFromPayload  | boolean | - | - |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| resource | `any` | - |
+| result | `Array`<`any`>object | - |
+| removeFromPayload | `boolean` | - |
 
 
 
 
 
-**Returns:** any
+**Returns:** `any`
 
 
 

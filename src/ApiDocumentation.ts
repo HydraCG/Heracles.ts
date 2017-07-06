@@ -3,6 +3,7 @@ import {IWebResource} from "./DataModel/IWebResource";
 import {IClass} from "./DataModel/IClass";
 import {IOperation} from "./DataModel/IOperation";
 import HydraClient from "./HydraClient";
+import {IResource} from "./DataModel/IResource";
 
 export default class ApiDocumentation implements IApiDocumentation
 {
@@ -14,7 +15,7 @@ export default class ApiDocumentation implements IApiDocumentation
 
     public supportedOperations: Array<IOperation>;
 
-    public entryPoint: string | { iri: string };
+    public entryPoint: string | IResource;
 
     public client: HydraClient;
 

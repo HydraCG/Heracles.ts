@@ -7,14 +7,9 @@ function textFileLoader(module, filename)
     module.exports = fs.readFileSync(filename, "utf8");
 }
 
-function jsonFileLoader(module, filename)
-{
-    module.exports = JSON.parse(fs.readFileSync(filename, "utf8"));
-}
-
 require.extensions[".headers"] = textFileLoader;
 require.extensions[".txt"] = textFileLoader;
-require.extensions[".jsonld"] = jsonFileLoader;
+require.extensions[".jsonld"] = textFileLoader;
 const server = express();
 server.disable("etag");
 
@@ -22,7 +17,7 @@ server.get("/*", (request, response) =>
     {
         let path = (request.path === "/" ? "/root" : request.path);
         let body = loadBody(path);
-        if ((sendHeaders(path, response, !!body)) || (body))
+        if ((setHeaders(path, response, !!body)) || (body))
         {
             response.status(200).send(body);
         }
@@ -32,9 +27,9 @@ server.get("/*", (request, response) =>
         }
     });
 
-function sendHeaders(path: string, response: express.Response, isBodyLoaded: boolean): boolean
+function setHeaders(path: string, response: express.Response, isJsonLd: boolean): boolean
 {
-    response.header("Content-Type", (isBodyLoaded ? "application/ld+json" : "text/plain"));
+    response.header("Content-Type", (isJsonLd ? "application/ld+json" : "text/plain"));
     response.header("Access-Control-Allow-Origin", "*");
     response.header("Access-Control-Allow-Methods", "GET");
     response.header("Access-Control-Expose-Headers", "Link, Content-Type");

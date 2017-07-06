@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["src/DataModel/IWebResource"](../modules/_src_datamodel_iwebresource_.md) > [IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)
+[hydraclient.js](../README.md) > ["src/DataModel/IWebResource"](../modules/_src_datamodel_iwebresource_.md) > [IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)
 
 
 
@@ -9,7 +9,7 @@
 ## Hierarchy
 
 
- Object
+ `Object`
 
 **↳ IWebResource**
 
@@ -24,15 +24,18 @@
 
 | Name  | Type                
 | ------ | ------------------- 
-| Object | ObjectConstructor
-| constructor | Function
-| hypermedia | Array<[IHypermedia](_src_datamodel_ihypermedia_.ihypermedia.md)>
+| Object | `ObjectConstructor`
+| constructor | `Function`
+| hypermedia | `Array`<[IHypermedia](_src_datamodel_ihypermedia_.ihypermedia.md)>
+
+
 ## Methods
 <a id="hasownproperty"></a>
 
 ###  hasOwnProperty
 
-► **hasOwnProperty**(v: *string*): boolean
+► **hasOwnProperty**(v: *`string`*): `boolean`
+
 
 
 
@@ -40,22 +43,24 @@
 
 *Overrides Object.hasOwnProperty*
 
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:115*
+*Defined in [node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:115](https://github.com//HydraCG/Heracles.ts/blob/master/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts#L115)*
+
+
 
 Determines whether an object has a property with the specified name.
 
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| v  | string | - | A property name. |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| v | `string` | A property name. |
 
 
 
 
 
-**Returns:** boolean
+**Returns:** `boolean`
 
 
 
@@ -67,28 +72,31 @@ ___
 
 ###  isPrototypeOf
 
-► **isPrototypeOf**(v: *Object*): boolean
+► **isPrototypeOf**(v: *`Object`*): `boolean`
+
 
 
 
 *Inherited from Object.isPrototypeOf*
 
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:121*
+*Defined in [node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:121](https://github.com//HydraCG/Heracles.ts/blob/master/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts#L121)*
+
+
 
 Determines whether an object exists in another object's prototype chain.
 
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| v  | Object | - | Another object whose prototype chain is to be checked. |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| v | `Object` | Another object whose prototype chain is to be checked. |
 
 
 
 
 
-**Returns:** boolean
+**Returns:** `boolean`
 
 
 
@@ -100,7 +108,8 @@ ___
 
 ###  propertyIsEnumerable
 
-► **propertyIsEnumerable**(v: *string*): boolean
+► **propertyIsEnumerable**(v: *`string`*): `boolean`
+
 
 
 
@@ -108,22 +117,24 @@ ___
 
 *Overrides Object.propertyIsEnumerable*
 
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:127*
+*Defined in [node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:127](https://github.com//HydraCG/Heracles.ts/blob/master/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts#L127)*
+
+
 
 Determines whether a specified property is enumerable.
 
 
 **Parameters:**
 
-| Name  | Type                | Default | Description  |
-| ------ | ------------------- | ------------ | ------------ |
-| v  | string | - | A property name. |
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| v | `string` | A property name. |
 
 
 
 
 
-**Returns:** boolean
+**Returns:** `boolean`
 
 
 
@@ -135,20 +146,23 @@ ___
 
 ###  toLocaleString
 
-► **toLocaleString**(): string
+► **toLocaleString**(): `string`
+
 
 
 
 *Inherited from Object.toLocaleString*
 
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:106*
+*Defined in [node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:106](https://github.com//HydraCG/Heracles.ts/blob/master/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts#L106)*
+
+
 
 Returns a date converted to a string using the current locale.
 
 
 
 
-**Returns:** string
+**Returns:** `string`
 
 
 
@@ -160,20 +174,23 @@ ___
 
 ###  toString
 
-► **toString**(): string
+► **toString**(): `string`
+
 
 
 
 *Inherited from Object.toString*
 
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:103*
+*Defined in [node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:103](https://github.com//HydraCG/Heracles.ts/blob/master/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts#L103)*
+
+
 
 Returns a string representation of an object.
 
 
 
 
-**Returns:** string
+**Returns:** `string`
 
 
 
@@ -185,26 +202,28 @@ ___
 
 ###  valueOf
 
-► **valueOf**(): Object
+► **valueOf**(): `Object`
+
 
 
 
 *Inherited from Object.valueOf*
 
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:109*
+*Defined in [node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:109](https://github.com//HydraCG/Heracles.ts/blob/master/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts#L109)*
+
+
 
 Returns the primitive value of the specified object.
 
 
 
 
-**Returns:** Object
+**Returns:** `Object`
 
 
 
 
 
 ___
-
 
 

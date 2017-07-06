@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["src/HydraClient"](../modules/_src_hydraclient_.md)
+[hydraclient.js](../README.md) > ["src/HydraClient"](../modules/_src_hydraclient_.md)
 
 
 
@@ -17,14 +17,16 @@
 
 
 
+---
 ## Variables
 <a id="jsonld"></a>
 
 ###  jsonld
 
-**jsonld**:  *any*  =  require("jsonld")
+**●  jsonld**:  *`any`*  =  require("jsonld")
 
-*Defined in [src/HydraClient.ts:6](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/HydraClient.ts#L6)*
+*Defined in [src/HydraClient.ts:7](https://github.com//HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L7)*
+
 
 
 

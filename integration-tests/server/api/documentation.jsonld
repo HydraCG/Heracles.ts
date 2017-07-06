@@ -1,6 +1,6 @@
 {
     "@context": "/api/context.jsonld",
-    "@id": "/api?documentation",
+    "@id": "/api/documentation",
     "entrypoint": "/api",
     "supportedClass": [
         {

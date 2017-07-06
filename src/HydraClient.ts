@@ -3,6 +3,7 @@ import {IHypermediaProcessor} from "./DataModel/IHypermediaProcessor";
 import {IApiDocumentation} from "./DataModel/IApiDocumentation";
 import {IWebResource} from "./DataModel/IWebResource";
 import ApiDocumentation from "./ApiDocumentation";
+import {IResource} from "./DataModel/IResource";
 const jsonld = require("jsonld");
 require("isomorphic-fetch");
 
@@ -48,17 +49,10 @@ export default class HydraClient
 
     /**
      * Obtains an API documentation.
-     * @param url URL from which to obtain an API documentation.
+     * @param urlOrResource {string | IResource} Url or object with an iri property from which to obtain an API documentation.
      * @returns {Promise<ApiDocumentation>}
      */
-    public async getApiDocumentation(url: string): Promise<IApiDocumentation>;
-    /**
-     * Obtains an API documentation.
-     * @param resources {{ iri: string }} Resource with an iri property from which to obtain an API documentation.
-     * @returns {Promise<ApiDocumentation>}
-     */
-    public async getApiDocumentation(resource: { iri: string }): Promise<IApiDocumentation>;
-    public async getApiDocumentation(urlOrResource: string | { iri: string }): Promise<IApiDocumentation>
+    public async getApiDocumentation(urlOrResource: string | IResource): Promise<IApiDocumentation>
     {
         let url = HydraClient.getUrl(urlOrResource);
         let apiDocumentationUrl = await this.getApiDocumentationUrl(url);
@@ -76,10 +70,10 @@ export default class HydraClient
 
     /**
      * Obtains a representation of a resource.
-     * @param urlOrResource {string | { iri: string }} Url or a {@link IResource} carrying an Iri of the resource to be obtained.
+     * @param urlOrResource {string | IResource} Url or a {@link IHydraResource} carrying an Iri of the resource to be obtained.
      * @returns {Promise<IWebResource>}
      */
-    public async getResource(urlOrResource: string | { iri: string }): Promise<IWebResource>
+    public async getResource(urlOrResource: string | IResource): Promise<IWebResource>
     {
         let url = HydraClient.getUrl(urlOrResource);
         let response = await fetch(url);
@@ -120,7 +114,7 @@ export default class HydraClient
         return (!result[1].match(/^[a-z][a-z0-9+\-.]*:/) ? jsonld.prependBase(url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0], result[1]) : result[1]);
     }
 
-    private static getUrl(urlOrResource: string | { iri: string }): string
+    private static getUrl(urlOrResource: string | IResource): string
     {
         let url = (typeof(urlOrResource) === "object" ? urlOrResource.iri : urlOrResource);
         if (!!!url)

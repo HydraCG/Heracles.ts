@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["src/DataModel/IApiDocumentation"](../modules/_src_datamodel_iapidocumentation_.md) > [IApiDocumentation](../interfaces/_src_datamodel_iapidocumentation_.iapidocumentation.md)
+[hydraclient.js](../README.md) > ["src/DataModel/IApiDocumentation"](../modules/_src_datamodel_iapidocumentation_.md) > [IApiDocumentation](../interfaces/_src_datamodel_iapidocumentation_.iapidocumentation.md)
 
 
 
@@ -29,27 +29,32 @@
 | Name  | Type                
 | ------ | ------------------- 
 | client | [HydraClient](../classes/_src_hydraclient_.hydraclient.md)
-| description | string
-| entryPoint | string⎮object
-| supportedClasses | Array<[IClass](_src_datamodel_iclass_.iclass.md)>
-| title | string
+| description | `string`
+| entryPoint | `string`⎮[IResource](_src_datamodel_iresource_.iresource.md)
+| supportedClasses | `Array`<[IClass](_src_datamodel_iclass_.iclass.md)>
+| title | `string`
+
+
 ## Methods
 <a id="getentrypoint"></a>
 
 ###  getEntryPoint
 
-► **getEntryPoint**(): Promise<[IWebResource](_src_datamodel_iwebresource_.iwebresource.md)>
+► **getEntryPoint**(): `Promise`<[IWebResource](_src_datamodel_iwebresource_.iwebresource.md)>
 
 
 
-*Defined in [src/DataModel/IApiDocumentation.ts:34](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/IApiDocumentation.ts#L34)*
+
+*Defined in [src/DataModel/IApiDocumentation.ts:35](https://github.com//HydraCG/Heracles.ts/blob/master/src/DataModel/IApiDocumentation.ts#L35)*
+
+
 
 Retrieves an API's entry point resource.
 
 
 
 
-**Returns:** Promise<[IWebResource](_src_datamodel_iwebresource_.iwebresource.md)>
+**Returns:** `Promise`<[IWebResource](_src_datamodel_iwebresource_.iwebresource.md)>
 Promise<IWebResource>
 
 
@@ -58,6 +63,5 @@ Promise<IWebResource>
 
 
 ___
-
 
 

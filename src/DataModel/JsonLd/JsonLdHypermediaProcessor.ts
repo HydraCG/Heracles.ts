@@ -23,7 +23,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
     public async process(response: Response, removeFromPayload: boolean = false): Promise<IWebResource>
     {
         let payload = await response.json();
-        let flattened = await jsonLd.flatten(payload, null, { base: response.url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0] });
+        let flattened = await jsonLd.flatten(payload, null, { base: response.url });
         let hypermedia = JsonLdHypermediaProcessor.processHypermedia(flattened, new Array<any>(), removeFromPayload);
         let result = await jsonLd.frame(hypermedia, context, { embed: "@link" });
         result = result["@graph"];

@@ -7,7 +7,7 @@ describe("Having a Hydra client", function() {
         this.client = new HydraClient();
     });
 
-    describe("while browsing a website", function() {
+    describe("while browsing the test website", function() {
         beforeEach(run(async function() {
             this.apiDocumentation = await this.client.getApiDocumentation(this.url);
         }));
@@ -17,17 +17,17 @@ describe("Having a Hydra client", function() {
                 this.entryPoint = await this.apiDocumentation.getEntryPoint();
             }));
 
-            it("should obtain two hypermedia", function() {
+            it("should obtain two hypermedia controls", function() {
                 expect(this.entryPoint.hypermedia.length).toBe(2);
             });
 
             it("should obtain a schema:CreateAction operation", function() {
-                expect(this.entryPoint.hypermedia[0].isA).toBe("Operation");
+                expect(this.entryPoint.hypermedia.find(item => item.isA === "Operation")).not.toBeNull();
             });
 
             it("should obtain a collection of events", function() {
-                expect(this.entryPoint.hypermedia[1].iri).toMatch("\/api\/events$");
-                expect(this.entryPoint.hypermedia[1].isA).toContain("Collection");
+                expect(this.entryPoint.hypermedia.find(item => item.iri.match("\/api\/events$") && item.isA === "Colletion"))
+                    .not.toBeNull();
             });
         });
 

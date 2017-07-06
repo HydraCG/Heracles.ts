@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["src/namespaces"](../modules/_src_namespaces_.md)
+[hydraclient.js](../README.md) > ["src/namespaces"](../modules/_src_namespaces_.md)
 
 
 
@@ -12,14 +12,16 @@
 
 
 
+---
 ## Variables
 <a id="hydra"></a>
 
 ###  hydra
 
-**hydra**:  *any*  =  new String("http://www.w3.org/ns/hydra/core#")
+**●  hydra**:  *`any`*  =  new String("http://www.w3.org/ns/hydra/core#")
 
-*Defined in [src/namespaces.ts:1](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/namespaces.ts#L1)*
+*Defined in [src/namespaces.ts:1](https://github.com//HydraCG/Heracles.ts/blob/master/src/namespaces.ts#L1)*
+
 
 
 

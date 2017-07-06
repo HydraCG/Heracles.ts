@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["index"](../modules/_index_.md)
+[hydraclient.js](../README.md) > ["index"](../modules/_index_.md)
 
 
 
@@ -7,3 +7,4 @@
 ## Index
 
 
+---

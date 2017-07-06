@@ -3,8 +3,6 @@ import {returnOk} from "../../../testing/ResponseHelper";
 import JsonLdHypermediaProcessor from "../../../src/DataModel/JsonLd/JsonLdHypermediaProcessor";
 import {run} from "../../../testing/AsyncHelper";
 const inputJsonLd = require("./input.json");
-const hypermediaJsonLd = require("./hypermedia.json");
-const webResourceJsonLd = require("./webResource.json");
 
 describe("Given instance of the JsonLdHypermediaProcessor class", function() {
     beforeEach(function() {
@@ -30,13 +28,35 @@ describe("Given instance of the JsonLdHypermediaProcessor class", function() {
         it("should process data", run(async function() {
             let result = await this.hypermediaProcessor.process(this.response, true);
 
-            expect(result).toEqual(webResourceJsonLd);
+            expect(result).toEqual([
+                {
+                    "@id": "some:named.graph",
+                    "@graph": [
+                        {
+                            "@id": "http://temp.uri/api/events/1",
+                            "http://schema.org/eventName": [{ "@value": "Event 1" }],
+                            "http://schema.org/eventDescription": [{ "@value": "Some event 1" }],
+                            "http://schema.org/startDate": [{ "@value": "2017-04-19" }],
+                            "http://schema.org/endDate": [{ "@value": "2017-04-19" }]
+                        }
+                    ]
+                }
+            ]);
         }));
 
         it("should separate hypermedia", run(async function() {
             let result = await this.hypermediaProcessor.process(this.response, true);
 
-            expect(result.hypermedia).toEqual(hypermediaJsonLd);
+            expect(result.hypermedia).toEqual([
+                {
+                    "iri": "http://temp.uri/api/events",
+                    "isA": "Collection",
+                    "totalItems": 1,
+                    "members": [
+                        { "iri": "http://temp.uri/api/events/1" }
+                    ]
+                }
+            ]);
         }));
     });
 

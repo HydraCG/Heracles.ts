@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["src/DataModel/IOperation"](../modules/_src_datamodel_ioperation_.md) > [IOperation](../interfaces/_src_datamodel_ioperation_.ioperation.md)
+[hydraclient.js](../README.md) > ["src/DataModel/IOperation"](../modules/_src_datamodel_ioperation_.md) > [IOperation](../interfaces/_src_datamodel_ioperation_.ioperation.md)
 
 
 
@@ -9,7 +9,7 @@
 ## Hierarchy
 
 
- [IResource](_src_datamodel_iresource_.iresource.md)
+↳  [IHydraResource](_src_datamodel_ihydraresource_.ihydraresource.md)
 
 **↳ IOperation**
 
@@ -24,7 +24,8 @@
 
 | Name  | Type                
 | ------ | ------------------- 
-| iri | string
-| isA | Array<string>
-| operations | Array<[IOperation](_src_datamodel_ioperation_.ioperation.md)>
+| iri | `string`
+| isA | `Array`<`string`>
+| operations | `Array`<[IOperation](_src_datamodel_ioperation_.ioperation.md)>
+
 

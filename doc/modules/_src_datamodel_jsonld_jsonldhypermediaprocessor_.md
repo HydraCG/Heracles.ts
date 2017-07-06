@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["src/DataModel/JsonLd/JsonLdHypermediaProcessor"](../modules/_src_datamodel_jsonld_jsonldhypermediaprocessor_.md)
+[hydraclient.js](../README.md) > ["src/DataModel/JsonLd/JsonLdHypermediaProcessor"](../modules/_src_datamodel_jsonld_jsonldhypermediaprocessor_.md)
 
 
 
@@ -18,14 +18,16 @@
 
 
 
+---
 ## Variables
 <a id="context"></a>
 
 ###  context
 
-**context**:  *any*  =  require("./context.json")
+**●  context**:  *`any`*  =  require("./context.json")
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:6](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L6)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:6](https://github.com//HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L6)*
+
 
 
 
@@ -36,9 +38,10 @@ ___
 
 ###  jsonLd
 
-**jsonLd**:  *any*  =  require("jsonld").promises
+**●  jsonLd**:  *`any`*  =  require("jsonld").promises
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:5](https://github.com/alien-mcl/Heracles.ts/blob/63ad02f/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L5)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:5](https://github.com//HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L5)*
+
 
 
 
