@@ -29,7 +29,7 @@ export default class HydraClient
      * @param removeHypermediaFromPayload {bool = true} Value indicating whether to remove hypermedia controls from the
      *      resource's payload or leave it as is. Default is true.
      */
-    public HydraClient(removeHypermediaFromPayload = false)
+    public constructor(removeHypermediaFromPayload = false)
     {
         this._removeHypermediaFromPayload = removeHypermediaFromPayload;
     }

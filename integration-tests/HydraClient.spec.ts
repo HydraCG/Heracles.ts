@@ -4,7 +4,7 @@ import {run} from "../testing/AsyncHelper";
 describe("Having a Hydra client", function() {
     beforeEach(function() {
         this.url = "http://localhost:3000/";
-        this.client = new HydraClient();
+        this.client = new HydraClient(true);
     });
 
     describe("while browsing the test website", function() {

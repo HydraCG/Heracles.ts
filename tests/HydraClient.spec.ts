@@ -12,7 +12,7 @@ describe("Given an instance of the HydraClient class", function() {
             supportedMediaTypes: ["application/ld+json"],
             process: sinon.stub()
         };
-        this.client = new HydraClient();
+        this.client = new HydraClient(true);
         this.hypermediaProcessors = (<any>HydraClient)._hypermediaProcessors;
         (<any>HydraClient)._hypermediaProcessors = [];
         HydraClient.registerHypermediaProcessor(this.hypermediaProcessor);
@@ -153,7 +153,7 @@ describe("Given an instance of the HydraClient class", function() {
 
     describe("when fetching a resource", function() {
         beforeEach(function() {
-            this.resourceUrl = 'http://temp.uri/resource';
+            this.resourceUrl = "http://temp.uri/resource2";
         });
 
         describe("and no valid url was provided", function() {
@@ -191,7 +191,8 @@ describe("Given an instance of the HydraClient class", function() {
                 this.resource = { hypermedia: {} };
                 this.resourceResponse = returnOk(this.resource);
                 this.fetch.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
-                this.hypermediaProcessor.process.withArgs(this.resourceResponse, true).returns(Promise.resolve(this.resource));
+                this.hypermediaProcessor.process.withArgs(this.resourceResponse, true)
+                    .returns(Promise.resolve(this.resource));
             });
 
             it("should process the response", run(async function() {

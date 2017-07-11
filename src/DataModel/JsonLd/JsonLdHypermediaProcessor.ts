@@ -36,7 +36,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
         return flattened;
     }
 
-    private static removeReferencesFrom(result: any): any
+    private static removeReferencesFrom(result: Array<any>): any
     {
         for (let index = result.length - 1; index >= 0; index--)
         {
