@@ -6,8 +6,8 @@
     "unit-test": "node node_modules/karma/bin/karma start --single-run",
     "test": "node node_modules/npm-run-all/bin/npm-run-all/index.js --parallel serve live-test",
     "serve": "ts-node integration-tests/server/server.ts",
-    "docs-html": "node node_modules/typedoc/bin/typedoc --out doc --excludeExternals --tsconfig tsconfig.docs.json --sourcefile-url-prefix \"https:\/\/github.com\/\/HydraCG\/Heracles.ts\/blob\/master\/\" src",
-    "docs-md": "node node_modules/typedoc/bin/typedoc --out doc --theme markdown --excludeExternals --tsconfig tsconfig.docs.json --sourcefile-url-prefix \"https:\/\/github.com\/\/HydraCG\/Heracles.ts\/blob\/master\/\" src"
+    "docs-html": "node node_modules/typedoc/bin/typedoc --out doc --excludeExternals --tsconfig tsconfig.docs.json --sourcefile-url-prefix \"https:\/\/github.com\/HydraCG\/Heracles.ts\/blob\/master\/\" src",
+    "docs-md": "node node_modules/typedoc/bin/typedoc --out doc --theme markdown --excludeExternals --tsconfig tsconfig.docs.json --sourcefile-url-prefix \"https:\/\/github.com\/HydraCG\/Heracles.ts\/blob\/master\/\" src"
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",

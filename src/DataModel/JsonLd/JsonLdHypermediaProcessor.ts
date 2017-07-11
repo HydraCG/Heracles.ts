@@ -27,6 +27,17 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
         let hypermedia = JsonLdHypermediaProcessor.processHypermedia(flattened, new Array<any>(), removeFromPayload);
         let result = await jsonLd.frame(hypermedia, context, { embed: "@link" });
         result = result["@graph"];
+        if (removeFromPayload)
+        {
+            result = JsonLdHypermediaProcessor.removeReferencesFrom(result);
+        }
+
+        Object.defineProperty(flattened, "hypermedia", { value: result, enumerable: false });
+        return flattened;
+    }
+
+    private static removeReferencesFrom(result: any): any
+    {
         for (let index = result.length - 1; index >= 0; index--)
         {
             if ((Object.keys(result[index]).length == 1) && (result[index].iri))
@@ -35,8 +46,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
             }
         }
 
-        Object.defineProperty(flattened, "hypermedia", { value: result, enumerable: false });
-        return flattened;
+        return result;
     }
 
     private static generateBlankNodeId(): string
@@ -64,19 +74,18 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
         let toBeRemoved = new Array<any>();
         for (let resource of payload)
         {
-            if (resource["@type"] && !resource["@type"].find(item => item == hydra.EntryPoint) &&
-                resource["@type"].every(item => item.indexOf(hydra.namespace) === 0))
-            {
-                Object.defineProperty(result, resource["@id"] || JsonLdHypermediaProcessor.generateBlankNodeId(), { enumerable: false, value: resource });
-                result.push(resource);
-                if (removeFromPayload)
-                {
-                    toBeRemoved.push(resource);
-                }
-            }
-            else
+            if (!resource["@type"] || !!resource["@type"].find(item => item == hydra.EntryPoint) ||
+                !resource["@type"].every(item => item.indexOf(hydra.namespace) === 0))
             {
                 JsonLdHypermediaProcessor.processHypermedia(resource, result, removeFromPayload);
+                continue;
+            }
+
+            Object.defineProperty(result, resource["@id"] || JsonLdHypermediaProcessor.generateBlankNodeId(), { enumerable: false, value: resource });
+            result.push(resource);
+            if (removeFromPayload)
+            {
+                toBeRemoved.push(resource);
             }
         }
 

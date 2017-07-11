@@ -14,6 +14,7 @@ require("isomorphic-fetch");
 export default class HydraClient
 {
     private static _hypermediaProcessors = new Array<IHypermediaProcessor>();
+    private _removeHypermediaFromPayload;
 
     public static noUrlProvided = "There was no Url provided.";
     public static apiDocumentationNotProvided = "API documentation not provided.";
@@ -21,6 +22,17 @@ export default class HydraClient
     public static noHypermediaProcessor = "No hypermedia processor instance was provided for registration.";
     public static invalidResponse = "Remote server responded with a status of ";
     public static responseFormatNotSupported = "Response format is not supported.";
+
+    /**
+     * Initializes a new instance of the {@link HydraClient} class.
+     * @constructor
+     * @param removeHypermediaFromPayload {bool = true} Value indicating whether to remove hypermedia controls from the
+     *      resource's payload or leave it as is. Default is true.
+     */
+    public HydraClient(removeHypermediaFromPayload = false)
+    {
+        this._removeHypermediaFromPayload = removeHypermediaFromPayload;
+    }
 
     /**
      * Registers a hypermedia processor.
@@ -70,7 +82,7 @@ export default class HydraClient
 
     /**
      * Obtains a representation of a resource.
-     * @param urlOrResource {string | IResource} Url or a {@link IHydraResource} carrying an Iri of the resource to be obtained.
+     * @param urlOrResource {string | IResource} Url or a {@link IResource} carrying an Iri of the resource to be obtained.
      * @returns {Promise<IWebResource>}
      */
     public async getResource(urlOrResource: string | IResource): Promise<IWebResource>
@@ -88,7 +100,7 @@ export default class HydraClient
             throw new Error(HydraClient.responseFormatNotSupported);
         }
 
-        return await hypermediaProcessor.process(response, true);
+        return await hypermediaProcessor.process(response, this._removeHypermediaFromPayload);
     }
 
     private async getApiDocumentationUrl(url: string): Promise<string>
