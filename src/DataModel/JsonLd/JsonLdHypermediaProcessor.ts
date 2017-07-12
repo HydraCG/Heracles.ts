@@ -23,17 +23,23 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
     public async process(response: Response, removeFromPayload: boolean = false): Promise<IWebResource>
     {
         let payload = await response.json();
-        let flattened = await jsonLd.flatten(payload, null, { base: response.url });
-        let hypermedia = JsonLdHypermediaProcessor.processHypermedia(flattened, new Array<any>(), removeFromPayload);
-        let result = await jsonLd.frame(hypermedia, context, { embed: "@link" });
-        result = result["@graph"];
-        if (removeFromPayload)
+        let hypermedia: any = null;
+        let result: any = payload;
+        if (!removeFromPayload)
         {
-            result = JsonLdHypermediaProcessor.removeReferencesFrom(result);
+            hypermedia = await jsonLd.frame(payload, context, { embed: "@link" });
+            hypermedia = hypermedia["@graph"];
+        }
+        else
+        {
+            result = await jsonLd.flatten(payload, null, { base: response.url });
+            hypermedia = JsonLdHypermediaProcessor.processHypermedia(result, new Array<any>(), true);
+            hypermedia = await jsonLd.frame(hypermedia, context, { embed: "@link" });
+            hypermedia = JsonLdHypermediaProcessor.removeReferencesFrom(hypermedia["@graph"]);
         }
 
-        Object.defineProperty(flattened, "hypermedia", { value: result, enumerable: false });
-        return flattened;
+        Object.defineProperty(result, "hypermedia", { value: hypermedia, enumerable: false });
+        return result;
     }
 
     private static removeReferencesFrom(result: Array<any>): any
