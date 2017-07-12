@@ -1,11 +1,23 @@
 module.exports = function(config) {
     config.set({
         basePath: "",
-        frameworks: ["jasmine", "sinon", "jasmine-sinon", "source-map-support", "karma-typescript"],
+        plugins: [
+            "karma-*",
+            require("./integration-tests/server/server")
+        ],
+        frameworks: [
+            "jasmine",
+            "sinon",
+            "jasmine-sinon",
+            "source-map-support",
+            "karma-typescript",
+            "hydra-testserver"
+        ],
         files: [
             { pattern: "src/**/*.ts", included: true },
             { pattern: "testing/**/*.ts", included: true },
-            { pattern: "tests/**/*.spec.ts", included: true }
+            { pattern: "tests/**/*.spec.ts", included: true },
+            { pattern: "integration-tests/**/*.spec.ts", included: true }
         ],
         exclude: [
             "jsonld-request"
