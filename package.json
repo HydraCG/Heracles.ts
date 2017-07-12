@@ -2,12 +2,13 @@
   "name": "hydraclient.js",
   "version": "0.0.1",
   "scripts": {
-    "live-test": "node node_modules/karma/bin/karma start",
-    "test": "node node_modules/karma/bin/karma start --single-run",
-    "full-test": "node node_modules/npm-run-all/bin/npm-run-all/index.js --parallel serve live-test",
+    "test-watch": "node node_modules/karma/bin/karma start",
+    "test-once": "node node_modules/karma/bin/karma start --single-run",
+    "test": "node node_modules/concurrently/src/main.js -k -s first \"npm run serve\" \"npm run test-once\"",
+    "live-test": "node node_modules/concurrently/src/main.js \"npm run serve\" \"npm run test-watch\"",
     "serve": "ts-node integration-tests/server/server.ts",
-    "docs-html": "node node_modules/typedoc/bin/typedoc --out doc --excludeExternals --tsconfig tsconfig.docs.json --sourcefile-url-prefix \"https:\/\/github.com\/HydraCG\/Heracles.ts\/blob\/master\/\" src",
-    "docs-md": "node node_modules/typedoc/bin/typedoc --out doc --theme markdown --excludeExternals --tsconfig tsconfig.docs.json --sourcefile-url-prefix \"https:\/\/github.com\/HydraCG\/Heracles.ts\/blob\/master\/\" src"
+    "docs-html": "node node_modules/typedoc/bin/typedoc --out doc --excludeExternals --tsconfig tsconfig.docs.json --sourcefile-url-prefix \"https://github.com/HydraCG/Heracles.ts/blob/master/\" src",
+    "docs-md": "node node_modules/typedoc/bin/typedoc --out doc --theme markdown --excludeExternals --tsconfig tsconfig.docs.json --sourcefile-url-prefix \"https://github.com/HydraCG/Heracles.ts/blob/master/\" src"
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
@@ -19,6 +20,7 @@
     "@types/jasmine": "^2.5.47",
     "@types/node": "^7.0.21",
     "@types/sinon": "^2.2.2",
+    "concurrently": "^3.5.0",
     "express": "^4.15.3",
     "jasmine": "^2.6.0",
     "jasmine-sinon": "^0.4.0",
@@ -29,7 +31,6 @@
     "karma-sinon": "^1.0.5",
     "karma-source-map-support": "^1.2.0",
     "karma-typescript": "^3.0.2",
-    "npm-run-all": "^4.0.2",
     "sinon": "^2.2.0",
     "ts-node": "^3.1.0",
     "typedoc": "^0.7.1",

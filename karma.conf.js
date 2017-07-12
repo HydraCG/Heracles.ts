@@ -8,7 +8,7 @@ module.exports = function(config) {
             { pattern: "tests/**/*.spec.ts", included: true },
             { pattern: "integration-tests/**/*.spec.ts", included: true }
         ],
-        exclude: (process.env.TRAVIS ? ["jsonld-request", "server", "integration-tests"] : ["jsonld-request", "server"]),
+        exclude: ["jsonld-request", "server"],
         preprocessors: {
             "**/*.ts": ["karma-typescript"]
         },
