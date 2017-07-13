@@ -5,6 +5,7 @@
     "test": "node node_modules/karma/bin/karma start --single-run",
     "test-watch": "node node_modules/karma/bin/karma start",
     "serve": "ts-node integration-tests/server/server.ts",
+    "tslint": "node_modules/.bin/tslint -c tslint.json -p tsconfig.json --type-check 'src/**/*.ts'",
     "docs-html": "node node_modules/typedoc/bin/typedoc --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs-html src",
     "docs-md": "node node_modules/typedoc/bin/typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src"
   },
@@ -30,6 +31,7 @@
     "karma-typescript": "^3.0.2",
     "sinon": "^2.2.0",
     "ts-node": "^3.1.0",
+    "tslint": "^5.5.0",
     "typedoc": "^0.7.1",
     "typedoc-plugin-markdown": "~1"
   }
