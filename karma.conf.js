@@ -20,7 +20,8 @@ module.exports = function(config) {
             { pattern: "integration-tests/**/*.spec.ts", included: true }
         ],
         exclude: [
-            "jsonld-request"
+            "jsonld-request",
+            "server"
         ],
         preprocessors: {
             "**/*.ts": ["karma-typescript"]

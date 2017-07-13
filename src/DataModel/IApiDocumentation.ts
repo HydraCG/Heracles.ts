@@ -1,6 +1,7 @@
 import {IWebResource} from "./IWebResource";
 import {IClass} from "./IClass";
 import {IHypermedia} from "./IHypermedia";
+import {IResource} from "./IResource";
 
 /**
  * @interface Represents an abstract API documentation.
@@ -25,7 +26,7 @@ export interface IApiDocumentation extends IHypermedia
     /**
      * @readonly Gets the Url of the entry point of the API.
      */
-    readonly entryPoint: string;
+    readonly entryPoint: string | IResource;
 
     /**
      * Retrieves an API's entry point resource.
