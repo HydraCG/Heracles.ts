@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["src/DataModel/IHypermedia"](../modules/_src_datamodel_ihypermedia_.md) > [IHypermedia](../interfaces/_src_datamodel_ihypermedia_.ihypermedia.md)
+[hydraclient.js](../README.md) > ["src/DataModel/IHypermedia"](../modules/_src_datamodel_ihypermedia_.md) > [IHypermedia](../interfaces/_src_datamodel_ihypermedia_.ihypermedia.md)
 
 
 
@@ -30,4 +30,5 @@
 | Name  | Type                
 | ------ | ------------------- 
 | client | [HydraClient](../classes/_src_hydraclient_.hydraclient.md)
+
 

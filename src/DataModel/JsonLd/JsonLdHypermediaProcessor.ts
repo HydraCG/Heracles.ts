@@ -7,7 +7,7 @@ const context = require("./context.json");
 
 export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
 {
-    private static _mediaTypes = ["application/json+ld"];
+    private static _mediaTypes = ["application/ld+json"];
     private static _id = 0;
 
     static initialize()
@@ -23,11 +23,28 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
     public async process(response: Response, removeFromPayload: boolean = false): Promise<IWebResource>
     {
         let payload = await response.json();
-        let flattened = await jsonLd.flatten(payload);
-        let hypermedia = JsonLdHypermediaProcessor.processHypermedia(flattened, new Array<any>(), removeFromPayload);
-        let result = await jsonLd.frame(hypermedia, context, { embed: "@link" });
-        result = result["@graph"];
-        for (let index = result.length - 1; index >=0; index--)
+        let hypermedia: any = null;
+        let result: any = payload;
+        if (!removeFromPayload)
+        {
+            hypermedia = await jsonLd.frame(payload, context, { embed: "@link" });
+            hypermedia = hypermedia["@graph"];
+        }
+        else
+        {
+            result = await jsonLd.flatten(payload, null, { base: response.url });
+            hypermedia = JsonLdHypermediaProcessor.processHypermedia(result, new Array<any>(), true);
+            hypermedia = await jsonLd.frame(hypermedia, context, { embed: "@link" });
+            hypermedia = JsonLdHypermediaProcessor.removeReferencesFrom(hypermedia["@graph"]);
+        }
+
+        Object.defineProperty(result, "hypermedia", { value: hypermedia, enumerable: false });
+        return result;
+    }
+
+    private static removeReferencesFrom(result: Array<any>): any
+    {
+        for (let index = result.length - 1; index >= 0; index--)
         {
             if ((Object.keys(result[index]).length == 1) && (result[index].iri))
             {
@@ -35,8 +52,12 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
             }
         }
 
-        Object.defineProperty(flattened, "hypermedia", { value: result, enumerable: false });
-        return flattened;
+        return result;
+    }
+
+    private static generateBlankNodeId(): string
+    {
+        return "_:bnode" + (++JsonLdHypermediaProcessor._id);
     }
 
     private static processHypermedia(payload: any, result: Array<any> & { [key: string]: any }, removeFromPayload: boolean = false): any
@@ -59,18 +80,18 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
         let toBeRemoved = new Array<any>();
         for (let resource of payload)
         {
-            if (resource["@type"] && resource["@type"].every(item => item.indexOf(hydra.namespace) === 0))
-            {
-                Object.defineProperty(result, resource["@id"] || "_:bnode" + (++JsonLdHypermediaProcessor._id), { enumerable: false, value: resource });
-                result.push(resource);
-                if (removeFromPayload)
-                {
-                    toBeRemoved.push(resource);
-                }
-            }
-            else
+            if (!resource["@type"] || !!resource["@type"].find(item => item == hydra.EntryPoint) ||
+                !resource["@type"].every(item => item.indexOf(hydra.namespace) === 0))
             {
                 JsonLdHypermediaProcessor.processHypermedia(resource, result, removeFromPayload);
+                continue;
+            }
+
+            Object.defineProperty(result, resource["@id"] || JsonLdHypermediaProcessor.generateBlankNodeId(), { enumerable: false, value: resource });
+            result.push(resource);
+            if (removeFromPayload)
+            {
+                toBeRemoved.push(resource);
             }
         }
 
@@ -89,7 +110,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
         if (!targetResource)
         {
             targetResource = {};
-            Object.defineProperty(result, "_:bnode" + (++JsonLdHypermediaProcessor._id), { enumerable: false, value: targetResource });
+            Object.defineProperty(result, JsonLdHypermediaProcessor.generateBlankNodeId(), { enumerable: false, value: targetResource });
             result.push(targetResource);
         }
 

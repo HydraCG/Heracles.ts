@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["src/ApiDocumentation"](../modules/_src_apidocumentation_.md)
+[hydraclient.js](../README.md) > ["src/ApiDocumentation"](../modules/_src_apidocumentation_.md)
 
 
 
@@ -12,3 +12,4 @@
 
 
 
+---

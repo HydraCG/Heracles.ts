@@ -1,0 +1,78 @@
+{
+    "@context": {
+        "hydra": "http://www.w3.org/ns/hydra/core#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "xsd": "http://www.w3.org/2001/XMLSchema#",
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "schema": "http://schema.org/",
+        "examplevocab": "http://example.com/vocab#",
+        "entrypoint": {
+            "@id": "hydra:entrypoint",
+            "@type": "@id"
+        },
+        "title": {
+            "@id": "hydra:title",
+            "@type": "xsd:string"
+        },
+        "operation": {
+            "@id": "hydra:operation",
+            "@type": "@id"
+        },
+        "method": {
+            "@id": "hydra:method",
+            "@type": "xsd:string"
+        },
+        "returns": {
+            "@id": "hydra:returns",
+            "@type": "@vocab"
+        },
+        "expects": {
+            "@id": "hydra:expects",
+            "@type": "@vocab"
+        },
+        "supportedClass": {
+            "@id": "hydra:supportedClass",
+            "@type": "@vocab"
+        },
+        "supportedProperty": {
+            "@id": "hydra:supportedProperty",
+            "@type": "@vocab"
+        },
+        "property": {
+            "@id": "hydra:property",
+            "@type": "@vocab"
+        },
+        "member": {
+            "@id": "hydra:member",
+            "@type": "@id"
+        },
+        "totalItems": {
+            "@id": "hydra:totalItems",
+            "@type": "xsd:int"
+        },
+        "search": {
+            "@id": "hydra:search"
+        },
+        "Event": {
+            "@id": "schema:Event",
+            "@type": "@id"
+        },
+        "eventName": {
+            "@id": "schema:name",
+            "@type": "xsd:string"
+        },
+        "eventDescription": {
+            "@id": "schema:description",
+            "@type": "xsd:string"
+        },
+        "startDate": {
+            "@id": "schema:startDate",
+            "@type": "xsd:dateTime"
+        },
+        "endDate": {
+            "@id": "schema:endDate",
+            "@type": "xsd:dateTime"
+        }
+    }
+}

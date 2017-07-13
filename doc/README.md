@@ -4,16 +4,15 @@
 Reference implementation of a Hydra client in TypeScript.
 
 
-#  hydraclient.js
 
 ## Index
 
 ### External modules
 
-* ["index"](modules/_index_.md)
 * ["src/ApiDocumentation"](modules/_src_apidocumentation_.md)
 * ["src/DataModel/IApiDocumentation"](modules/_src_datamodel_iapidocumentation_.md)
 * ["src/DataModel/IClass"](modules/_src_datamodel_iclass_.md)
+* ["src/DataModel/IHydraResource"](modules/_src_datamodel_ihydraresource_.md)
 * ["src/DataModel/IHypermedia"](modules/_src_datamodel_ihypermedia_.md)
 * ["src/DataModel/IHypermediaProcessor"](modules/_src_datamodel_ihypermediaprocessor_.md)
 * ["src/DataModel/IOperation"](modules/_src_datamodel_ioperation_.md)
@@ -25,3 +24,4 @@ Reference implementation of a Hydra client in TypeScript.
 
 
 
+---

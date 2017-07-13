@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["src/DataModel/IHypermediaProcessor"](../modules/_src_datamodel_ihypermediaprocessor_.md)
+[hydraclient.js](../README.md) > ["src/DataModel/IHypermediaProcessor"](../modules/_src_datamodel_ihypermediaprocessor_.md)
 
 
 
@@ -12,3 +12,4 @@
 
 
 
+---

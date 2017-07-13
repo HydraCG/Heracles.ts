@@ -1,4 +1,4 @@
-[hydraclient.js](../index.md) > ["src/DataModel/IOperation"](../modules/_src_datamodel_ioperation_.md)
+[hydraclient.js](../README.md) > ["src/DataModel/IOperation"](../modules/_src_datamodel_ioperation_.md)
 
 
 
@@ -12,3 +12,4 @@
 
 
 
+---

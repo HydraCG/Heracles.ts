@@ -7,13 +7,14 @@ import ApiDocumentation from "../src/ApiDocumentation";
 
 describe("Given an instance of the HydraClient class", function() {
     beforeEach(function() {
-        this.expectedUrl = "http://temp.uri/";
+        this.baseUrl = "http://temp.uri/";
         this.hypermediaProcessor = {
-            supportedMediaTypes: ["application/json+ld"],
+            supportedMediaTypes: ["application/ld+json"],
             process: sinon.stub()
         };
-        this.client = new HydraClient();
-        (<any>HydraClient)._hypermediaProcessors.length = 0;
+        this.client = new HydraClient(true);
+        this.hypermediaProcessors = (<any>HydraClient)._hypermediaProcessors;
+        (<any>HydraClient)._hypermediaProcessors = [];
         HydraClient.registerHypermediaProcessor(this.hypermediaProcessor);
         this.fetch = sinon.stub(window, "fetch");
     });
@@ -36,64 +37,65 @@ describe("Given an instance of the HydraClient class", function() {
 
         describe("of which site's main document is not found", function() {
             beforeEach(function() {
-                this.fetch.withArgs(this.expectedUrl).returns(Promise.resolve(returnNotFound()));
+                this.fetch.withArgs(this.baseUrl).returns(Promise.resolve(returnNotFound()));
             });
 
             it("should throw", run(async function() {
-                try { await this.client.getApiDocumentation(this.expectedUrl); }
+                try { await this.client.getApiDocumentation(this.baseUrl); }
                 catch (e) { expect(e.message).toBe(HydraClient.invalidResponse + "404"); }
             }));
         });
 
         describe("which has no LINK header returned", function() {
             beforeEach(function() {
-                this.fetch.withArgs(this.expectedUrl).returns(Promise.resolve(returnOk()));
+                this.fetch.withArgs(this.baseUrl).returns(Promise.resolve(returnOk()));
             });
 
             it("should throw", run(async function() {
-                try { await this.client.getApiDocumentation(this.expectedUrl); }
+                try { await this.client.getApiDocumentation(this.baseUrl); }
                 catch (e) { expect(e.message).toBe(HydraClient.apiDocumentationNotProvided); }
             }));
         });
 
         describe("which is not provided within the LINK header", function() {
             beforeEach(function() {
-                this.urlResponse = returnOk({}, { "Link": `<${this.expectedUrl}api/documentation>; rel="next"` });
-                this.fetch.withArgs(this.expectedUrl).returns(Promise.resolve(this.urlResponse));
+                this.urlResponse = returnOk(this.baseUrl, {}, { "Link": `<${this.baseUrl}api/documentation>; rel="next"` });
+                this.fetch.withArgs(this.baseUrl).returns(Promise.resolve(this.urlResponse));
             });
 
             it("should throw", run(async function() {
-                try { this.client.getApiDocumentation(this.expectedUrl); }
+                try { this.client.getApiDocumentation(this.baseUrl); }
                 catch (e) { expect(e.message).toBe(HydraClient.apiDocumentationNotProvided); }
             }));
         });
 
         describe("from a valid site", function() {
             beforeEach(function() {
-                this.urlResponse = returnOk({}, { "Link": `<${this.expectedUrl}api/documentation>; rel="${hydra.apiDocumentation}"` });
-                this.fetch.withArgs(this.expectedUrl).returns(Promise.resolve(this.urlResponse));
+                this.urlResponse = returnOk(this.baseUrl, {}, { "Link": `<${this.baseUrl}api/documentation>; rel="${hydra.apiDocumentation}"` });
+                this.fetch.withArgs(this.baseUrl).returns(Promise.resolve(this.urlResponse));
             });
 
             describe("and that documentation is not found", function() {
                 beforeEach(function() {
                     this.apiDocumentationResponse = returnNotFound();
-                    this.fetch.withArgs(`${this.expectedUrl}api/documentation`).returns(this.apiDocumentationResponse);
+                    this.fetch.withArgs(`${this.baseUrl}api/documentation`).returns(this.apiDocumentationResponse);
                 });
 
                 it("should throw", run(async function() {
-                    try { this.client.getApiDocumentation({ iri: this.expectedUrl }); }
+                    try { this.client.getApiDocumentation({ iri: this.baseUrl }); }
                     catch (e) { expect(e.message).toBe(HydraClient.invalidResponse); }
                 }));
             });
 
             describe("and that documentation is provided in an unsupported format", function() {
                 beforeEach(function() {
-                    this.apiDocumentationResponse = returnOk({}, { "Content-Type": "text/turtle" });
-                    this.fetch.withArgs(`${this.expectedUrl}api/documentation`).returns(this.apiDocumentationResponse);
+                    let apiDocumentationUrl = `${this.baseUrl}api/documentation`;
+                    this.apiDocumentationResponse = returnOk(apiDocumentationUrl, {}, { "Content-Type": "text/turtle" });
+                    this.fetch.withArgs(apiDocumentationUrl).returns(this.apiDocumentationResponse);
                 });
 
                 it("should throw", run(async function() {
-                    try { this.client.getApiDocumentation({ iri: this.expectedUrl }); }
+                    try { this.client.getApiDocumentation({ iri: this.baseUrl }); }
                     catch (e) { expect(e.message).toBe(HydraClient.responseFormatNotSupported); }
                 }));
             });
@@ -101,45 +103,46 @@ describe("Given an instance of the HydraClient class", function() {
             describe("and that documentation has no entry point provided", function() {
                 beforeEach(function() {
                     this.apiDocumentationResponse = returnOk();
-                    this.fetch.withArgs(`${this.expectedUrl}api/documentation`).returns(this.apiDocumentationResponse);
+                    this.fetch.withArgs(`${this.baseUrl}api/documentation`).returns(this.apiDocumentationResponse);
                     this.hypermediaProcessor.process.returns({});
                 });
 
                 it("should throw", run(async function() {
-                    try { this.client.getApiDocumentation({ iri: this.expectedUrl }); }
+                    try { this.client.getApiDocumentation({ iri: this.baseUrl }); }
                     catch (e) { expect(e.message).toBe(HydraClient.noEntryPointDefined); }
                 }));
             });
 
             describe("which is provided correctly", function() {
                 beforeEach(function() {
-                    this.apiDocumentation = { entryPoint: `${this.expectedUrl}api` };
+                    let apiDocumentationUrl = `${this.baseUrl}api/documentation`;
+                    this.apiDocumentation = { entryPoint: `${this.baseUrl}api` };
                     this.data = [this.apiDocumentation];
-                    this.apiDocumentationResponse = returnOk(this.data);
-                    this.fetch.withArgs(`${this.expectedUrl}api/documentation`).returns(this.apiDocumentationResponse);
+                    this.apiDocumentationResponse = returnOk(apiDocumentationUrl, this.data);
+                    this.fetch.withArgs(apiDocumentationUrl).returns(this.apiDocumentationResponse);
                     this.hypermediaProcessor.process.returns(Promise.resolve({ hypermedia: this.data }));
                 });
 
                 it("should call the given site url", run(async function() {
-                    await this.client.getApiDocumentation(this.expectedUrl);
+                    await this.client.getApiDocumentation(this.baseUrl);
 
-                    expect(this.fetch).toHaveBeenCalledWith(this.expectedUrl);
+                    expect(this.fetch).toHaveBeenCalledWith(this.baseUrl);
                 }));
 
                 it("should fetch the API documentation", run(async function() {
-                    await this.client.getApiDocumentation(this.expectedUrl);
+                    await this.client.getApiDocumentation(this.baseUrl);
 
-                    expect(this.fetch).toHaveBeenCalledWith(`${this.expectedUrl}api/documentation`);
+                    expect(this.fetch).toHaveBeenCalledWith(`${this.baseUrl}api/documentation`);
                 }));
 
                 it("should process API documentation with a hypermedia processor", run(async function() {
-                    await this.client.getApiDocumentation(this.expectedUrl);
+                    await this.client.getApiDocumentation(this.baseUrl);
 
                     (<any>expect(this.hypermediaProcessor.process)).toHaveBeenCalledWith(this.apiDocumentationResponse);
                 }));
 
                 it("should return a correct ApiDocumentation instance", run(async function() {
-                    let result = await this.client.getApiDocumentation(this.expectedUrl);
+                    let result = await this.client.getApiDocumentation(this.baseUrl);
 
                     expect(result).toEqual(jasmine.any(ApiDocumentation));
                     expect(result.client).toBe(this.client);
@@ -150,7 +153,7 @@ describe("Given an instance of the HydraClient class", function() {
 
     describe("when fetching a resource", function() {
         beforeEach(function() {
-            this.resourceUrl = 'http://temp.uri/resource';
+            this.resourceUrl = "http://temp.uri/resource2";
         });
 
         describe("and no valid url was provided", function() {
@@ -173,7 +176,7 @@ describe("Given an instance of the HydraClient class", function() {
 
         describe("and that resource was provided in an unsupported format", function() {
             beforeEach(function() {
-                this.resourceResponse = returnOk({}, { "Content-Type": "text/turtle" });
+                this.resourceResponse = returnOk(this.resourceUrl, {}, { "Content-Type": "text/turtle" });
                 this.fetch.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
             });
 
@@ -188,7 +191,8 @@ describe("Given an instance of the HydraClient class", function() {
                 this.resource = { hypermedia: {} };
                 this.resourceResponse = returnOk(this.resource);
                 this.fetch.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
-                this.hypermediaProcessor.process.withArgs(this.resourceResponse, true).returns(Promise.resolve(this.resource));
+                this.hypermediaProcessor.process.withArgs(this.resourceResponse, true)
+                    .returns(Promise.resolve(this.resource));
             });
 
             it("should process the response", run(async function() {
@@ -206,6 +210,7 @@ describe("Given an instance of the HydraClient class", function() {
     });
 
     afterEach(function() {
+        (<any>HydraClient)._hypermediaProcessors = this.hypermediaProcessors;
         this.fetch.restore();
     });
 });
