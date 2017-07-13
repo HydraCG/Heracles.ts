@@ -1,4 +1,4 @@
-[hydraclient.js](../README.md) > ["src/DataModel/IWebResource"](../modules/_src_datamodel_iwebresource_.md) > [IWebResource](../interfaces/_src_datamodel_iwebresource_.iwebresource.md)
+[hydraclient.js](../README.md) > [IWebResource](../interfaces/iwebresource.md)
 
 
 
@@ -26,7 +26,7 @@
 | ------ | ------------------- 
 | Object | `ObjectConstructor`
 | constructor | `Function`
-| hypermedia | `Array`<[IHypermedia](_src_datamodel_ihypermedia_.ihypermedia.md)>
+| hypermedia | `Array`<[IHypermedia](ihypermedia.md)>
 
 
 ## Methods
@@ -43,7 +43,7 @@
 
 *Overrides Object.hasOwnProperty*
 
-*Defined in [node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:115](https://github.com//HydraCG/Heracles.ts/blob/master/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts#L115)*
+*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:115*
 
 
 
@@ -79,7 +79,7 @@ ___
 
 *Inherited from Object.isPrototypeOf*
 
-*Defined in [node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:121](https://github.com//HydraCG/Heracles.ts/blob/master/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts#L121)*
+*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:121*
 
 
 
@@ -117,7 +117,7 @@ ___
 
 *Overrides Object.propertyIsEnumerable*
 
-*Defined in [node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:127](https://github.com//HydraCG/Heracles.ts/blob/master/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts#L127)*
+*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:127*
 
 
 
@@ -153,7 +153,7 @@ ___
 
 *Inherited from Object.toLocaleString*
 
-*Defined in [node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:106](https://github.com//HydraCG/Heracles.ts/blob/master/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts#L106)*
+*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:106*
 
 
 
@@ -181,7 +181,7 @@ ___
 
 *Inherited from Object.toString*
 
-*Defined in [node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:103](https://github.com//HydraCG/Heracles.ts/blob/master/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts#L103)*
+*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:103*
 
 
 
@@ -209,7 +209,7 @@ ___
 
 *Inherited from Object.valueOf*
 
-*Defined in [node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:109](https://github.com//HydraCG/Heracles.ts/blob/master/node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts#L109)*
+*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:109*
 
 
 

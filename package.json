@@ -7,8 +7,8 @@
     "test": "node node_modules/concurrently/src/main.js -k -s first \"npm run serve\" \"npm run test-once\"",
     "live-test": "node node_modules/concurrently/src/main.js \"npm run serve\" \"npm run test-watch\"",
     "serve": "ts-node integration-tests/server/server.ts",
-    "docs-html": "node node_modules/typedoc/bin/typedoc --out docs --excludeExternals --tsconfig tsconfig.docs.json --sourcefile-url-prefix \"https://github.com/HydraCG/Heracles.ts/blob/master/\" src",
-    "docs-md": "node node_modules/typedoc/bin/typedoc --out docs --theme markdown --excludeExternals --tsconfig tsconfig.docs.json --sourcefile-url-prefix \"https://github.com/HydraCG/Heracles.ts/blob/master/\" src"
+    "docs-html": "node node_modules/typedoc/bin/typedoc --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs-html src",
+    "docs-md": "node node_modules/typedoc/bin/typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src"
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",

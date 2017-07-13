@@ -7,21 +7,90 @@ Reference implementation of a Hydra client in TypeScript.
 
 ## Index
 
-### External modules
+### Classes
 
-* ["src/ApiDocumentation"](modules/_src_apidocumentation_.md)
-* ["src/DataModel/IApiDocumentation"](modules/_src_datamodel_iapidocumentation_.md)
-* ["src/DataModel/IClass"](modules/_src_datamodel_iclass_.md)
-* ["src/DataModel/IHydraResource"](modules/_src_datamodel_ihydraresource_.md)
-* ["src/DataModel/IHypermedia"](modules/_src_datamodel_ihypermedia_.md)
-* ["src/DataModel/IHypermediaProcessor"](modules/_src_datamodel_ihypermediaprocessor_.md)
-* ["src/DataModel/IOperation"](modules/_src_datamodel_ioperation_.md)
-* ["src/DataModel/IResource"](modules/_src_datamodel_iresource_.md)
-* ["src/DataModel/IWebResource"](modules/_src_datamodel_iwebresource_.md)
-* ["src/DataModel/JsonLd/JsonLdHypermediaProcessor"](modules/_src_datamodel_jsonld_jsonldhypermediaprocessor_.md)
-* ["src/HydraClient"](modules/_src_hydraclient_.md)
-* ["src/namespaces"](modules/_src_namespaces_.md)
+* [ApiDocumentation](classes/apidocumentation.md)
+* [HydraClient](classes/hydraclient.md)
+* [JsonLdHypermediaProcessor](classes/jsonldhypermediaprocessor.md)
+
+
+### Interfaces
+
+* [IApiDocumentation](interfaces/iapidocumentation.md)
+* [IClass](interfaces/iclass.md)
+* [IHydraResource](interfaces/ihydraresource.md)
+* [IHypermedia](interfaces/ihypermedia.md)
+* [IHypermediaProcessor](interfaces/ihypermediaprocessor.md)
+* [IOperation](interfaces/ioperation.md)
+* [IResource](interfaces/iresource.md)
+* [IWebResource](interfaces/iwebresource.md)
+
+
+### Variables
+
+* [context](#context)
+* [hydra](#hydra)
+* [jsonLd](#jsonld)
+* [jsonld](#jsonld)
 
 
 
 ---
+# Variables
+<a id="context"></a>
+
+###  context
+
+**●  context**:  *`any`*  =  require("./context.json")
+
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:6](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L6)*
+
+
+
+
+
+___
+
+<a id="hydra"></a>
+
+###  hydra
+
+**●  hydra**:  *`any`*  =  new String("http://www.w3.org/ns/hydra/core#")
+
+*Defined in [src/namespaces.ts:1](https://github.com/HydraCG/Heracles.ts/blob/master/src/namespaces.ts#L1)*
+
+
+
+
+
+___
+
+<a id="jsonld"></a>
+
+###  jsonLd
+
+**●  jsonLd**:  *`any`*  =  require("jsonld").promises
+
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:5](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L5)*
+
+
+
+
+
+___
+
+<a id="jsonld"></a>
+
+###  jsonld
+
+**●  jsonld**:  *`any`*  =  require("jsonld")
+
+*Defined in [src/HydraClient.ts:7](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L7)*
+
+
+
+
+
+___
+
+
