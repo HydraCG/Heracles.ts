@@ -1,0 +1,8 @@
+{
+    "@context": "/api/context.jsonld",
+    "@id": "/api/events",
+    "@type": "hydra:Collection",
+    "member": [
+        { "@id": "/api/events/1" }
+    ]
+}

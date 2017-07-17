@@ -28,7 +28,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
         if (!removeFromPayload)
         {
             hypermedia = await jsonLd.frame(payload, context, { embed: "@link" });
-            hypermedia = hypermedia["@graph"];
+            hypermedia = JsonLdHypermediaProcessor.fixType(hypermedia["@graph"]);
         }
         else
         {
@@ -49,6 +49,10 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
             if ((Object.keys(result[index]).length == 1) && (result[index].iri))
             {
                 result.splice(index, 1);
+            }
+            else
+            {
+                JsonLdHypermediaProcessor.fixTypeOf(result[index]);
             }
         }
 
@@ -127,6 +131,36 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
         }
 
         return result;
+    }
+
+    private static fixType(result: Array<any> & { [key: string]: any })
+    {
+        for (let resource of result)
+        {
+            JsonLdHypermediaProcessor.fixTypeOf(resource);
+            if (!resource.isA)
+            {
+                resource.isA = [];
+            }
+            else if (!(resource.isA instanceof Array))
+            {
+                resource.isA = [resource.isA];
+            }
+        }
+
+        return result;
+    }
+
+    private static fixTypeOf(resource: any)
+    {
+        if (!resource.isA)
+        {
+            resource.isA = [];
+        }
+        else if (!(resource.isA instanceof Array))
+        {
+            resource.isA = [resource.isA];
+        }
     }
 }
 

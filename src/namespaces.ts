@@ -3,3 +3,5 @@ hydra.namespace = hydra.toString();
 hydra.apiDocumentation = hydra + "apiDocumentation";
 hydra.ApiDocumentation = hydra + "ApiDocumentation";
 hydra.EntryPoint = hydra + "EntryPoint";
+hydra.Collection = hydra + "Collection";
+hydra.Resource = hydra + "Resource";

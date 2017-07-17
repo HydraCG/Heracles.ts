@@ -21,6 +21,8 @@
         "members": {
             "@id": "hydra:member",
             "@container": "@set"
-        }
+        },
+        "http://www.w3.org/ns/hydra/core#Collection": "http://www.w3.org/ns/hydra/core#Collection",
+        "http://www.w3.org/ns/hydra/core#Resource": "http://www.w3.org/ns/hydra/core#Resource"
     }
 }
