@@ -1,26 +1,25 @@
-export function returnOk(url: string = "", body = {}, headers: any = {})
-{
-    return returnResponse(url, body, headers);
+export function returnOk(url: string = '', body = {}, headers: any = {}) {
+  return returnResponse(url, body, headers);
 }
 
-export function returnNotFound(url: string = "", body = {}, headers: any = {})
-{
-    return returnResponse(url, body, headers, 404);
+export function returnNotFound(url: string = '', body = {}, headers: any = {}) {
+  return returnResponse(url, body, headers, 404);
 }
 
-function returnResponse(url: string, body, headers: any = {}, status: number = 200)
-{
-    if (!headers["Content-Type"])
-    {
-        headers["Content-Type"] = "application/ld+json";
-    }
+function returnResponse(
+  url: string,
+  body,
+  headers: any = {},
+  status: number = 200
+) {
+  if (!headers['Content-Type']) {
+    headers['Content-Type'] = 'application/ld+json';
+  }
 
-    let result = new Response(
-        JSON.stringify(body),
-        {
-            status: status,
-            headers: headers
-        });
-    Object.defineProperty(result, "url", { value: url });
-    return result;
+  let result = new Response(JSON.stringify(body), {
+    status: status,
+    headers: headers
+  });
+  Object.defineProperty(result, 'url', { value: url });
+  return result;
 }
