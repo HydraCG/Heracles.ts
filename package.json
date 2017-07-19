@@ -6,7 +6,9 @@
     "test-watch": "node node_modules/karma/bin/karma start",
     "serve": "ts-node integration-tests/server/server.ts",
     "docs-html": "node node_modules/typedoc/bin/typedoc --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs-html src",
-    "docs-md": "node node_modules/typedoc/bin/typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src"
+    "docs-md": "node node_modules/typedoc/bin/typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src",
+    "prettier": "node_modules/.bin/prettier --single-quote -l \"{src,testing,tests,integration-tests}/**/*.ts\"",
+    "prettier-fix": "node_modules/.bin/prettier --single-quote --write \"{src,testing,tests,integration-tests}/**/*.ts\""
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
@@ -28,6 +30,7 @@
     "karma-sinon": "^1.0.5",
     "karma-source-map-support": "^1.2.0",
     "karma-typescript": "^3.0.2",
+    "prettier": "^1.5.3",
     "sinon": "^2.2.0",
     "ts-node": "^3.1.0",
     "typedoc": "^0.7.1",
