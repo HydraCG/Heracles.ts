@@ -3,6 +3,9 @@
     "@id": "/api/events",
     "@type": "hydra:Collection",
     "member": [
-        { "@id": "/api/events/1" }
+        {
+            "@id": "/api/events/1",
+            "@type": "schema:Event"
+        }
     ]
 }

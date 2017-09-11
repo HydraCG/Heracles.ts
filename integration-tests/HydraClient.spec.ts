@@ -33,13 +33,12 @@ describe("Having a Hydra client", function() {
 
             describe("and then obtaining events as in use case 3.obtaining-events", function() {
                 beforeEach(run(async function () {
-                    this.events = await this.client.getResource(this.entryPoint.hypermedia
-                        .find(link => ~link.isA.indexOf(hydra.Collection)).iri);
-                    this.members = this.events.hypermedia.find(link => ~link.isA.indexOf(hydra.Collection)).members;
+                    this.events = await this.client.getResource(this.url + "api/events");
+                    this.members = this.events.hypermedia.members;
                 }));
 
                 it("should obtain a collection of events", function () {
-                    expect(this.members).toEqual([{ iri: this.url + "api/events/1" }]);
+                    expect(this.members.filter(member => member.isA.indexOf("http://schema.org/Event") !== -1).length).toBe(1);
                 });
             });
         });

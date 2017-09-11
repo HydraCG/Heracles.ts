@@ -12,10 +12,13 @@ describe("Given an instance of the HydraClient class", function() {
             supportedMediaTypes: ["application/ld+json"],
             process: sinon.stub()
         };
+        this.resourceEnrichmentProvider = { enrichHypermedia: sinon.stub() };
         this.client = new HydraClient(true);
-        this.hypermediaProcessors = (<any>HydraClient)._hypermediaProcessors;
+        this.currentHypermediaProcessors = (<any>HydraClient)._hypermediaProcessors;
+        this.currentResourceEnrichmentProvider = (<any>HydraClient)._resourceEnrichmentProvider;
         (<any>HydraClient)._hypermediaProcessors = [];
         HydraClient.registerHypermediaProcessor(this.hypermediaProcessor);
+        HydraClient.registerResourceEnrichmentProvider(this.resourceEnrichmentProvider);
         this.fetch = sinon.stub(window, "fetch");
     });
 
@@ -25,6 +28,10 @@ describe("Given an instance of the HydraClient class", function() {
 
     it("should register a hypermedia processor", function() {
         expect(this.client.getHypermediaProcessor(returnOk())).toBe(this.hypermediaProcessor);
+    });
+
+    it("should register a resource enrichment provider", function() {
+        expect((<any>HydraClient)._resourceEnrichmentProvider).toBe(this.resourceEnrichmentProvider);
     });
 
     describe("when obtaining an API documentation", function() {
@@ -117,6 +124,7 @@ describe("Given an instance of the HydraClient class", function() {
                 beforeEach(function() {
                     let apiDocumentationUrl = `${this.baseUrl}api/documentation`;
                     this.apiDocumentation = { entryPoint: `${this.baseUrl}api` };
+                    this.resourceEnrichmentProvider.enrichHypermedia.callsFake(resource => resource);
                     this.data = [this.apiDocumentation];
                     this.apiDocumentationResponse = returnOk(apiDocumentationUrl, this.data);
                     this.fetch.withArgs(apiDocumentationUrl).returns(this.apiDocumentationResponse);
@@ -187,30 +195,33 @@ describe("Given an instance of the HydraClient class", function() {
         });
 
         describe("and that resource was provided correctly", function() {
-            beforeEach(function() {
+            beforeEach(run(async function() {
                 this.resource = { hypermedia: {} };
+                this.resourceEnrichmentProvider.enrichHypermedia.callsFake(resource => resource);
                 this.resourceResponse = returnOk(this.resource);
                 this.fetch.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
                 this.hypermediaProcessor.process.withArgs(this.resourceResponse, true)
                     .returns(Promise.resolve(this.resource));
-            });
+                this.result = await this.client.getResource(this.resourceUrl);
+            }));
 
             it("should process the response", run(async function() {
-                await this.client.getResource(this.resourceUrl);
-
                 expect(this.hypermediaProcessor.process).toHaveBeenCalledWith(this.resourceResponse, true);
             }));
 
-            it("should return a correct result", run(async function() {
-                let result = await this.client.getResource(this.resourceUrl);
+            it("should enrich hypermedia", function() {
+                expect(this.resourceEnrichmentProvider.enrichHypermedia).toHaveBeenCalledWith(this.resource);
+            });
 
-                expect(result).toBe(this.resource);
+            it("should return a correct result", run(async function() {
+                expect(this.result).toBe(this.resource);
             }));
         });
     });
 
     afterEach(function() {
-        (<any>HydraClient)._hypermediaProcessors = this.hypermediaProcessors;
+        (<any>HydraClient)._hypermediaProcessors = this.currentHypermediaProcessors;
+        (<any>HydraClient)._resourceEnrichmentProvider = this.currentResourceEnrichmentProvider;
         this.fetch.restore();
     });
 });

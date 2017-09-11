@@ -2,8 +2,9 @@ import {hydra} from "./namespaces";
 import {IHypermediaProcessor} from "./DataModel/IHypermediaProcessor";
 import {IApiDocumentation} from "./DataModel/IApiDocumentation";
 import {IWebResource} from "./DataModel/IWebResource";
-import ApiDocumentation from "./ApiDocumentation";
 import {IResource} from "./DataModel/IResource";
+import ApiDocumentation from "./ApiDocumentation";
+import ResourceEnrichmentProvider from "./ResourceEnrichmentProvider";
 const jsonld = require("jsonld");
 require("isomorphic-fetch");
 
@@ -14,6 +15,8 @@ require("isomorphic-fetch");
 export default class HydraClient
 {
     private static _hypermediaProcessors = new Array<IHypermediaProcessor>();
+    private static _resourceEnrichmentProvider: { enrichHypermedia(resource: IWebResource): IWebResource } =
+        new ResourceEnrichmentProvider();
     private _removeHypermediaFromPayload;
 
     public static noUrlProvided = "There was no Url provided.";
@@ -32,6 +35,19 @@ export default class HydraClient
     public constructor(removeHypermediaFromPayload = false)
     {
         this._removeHypermediaFromPayload = removeHypermediaFromPayload;
+    }
+
+    /**
+     * Registers a custom resource enrichment provider.
+     * @param resourceEnrichmentProvider Component to be registered.
+     */
+    public static registerResourceEnrichmentProvider(
+        resourceEnrichmentProvider: { enrichHypermedia(resource: IWebResource): IWebResource })
+    {
+        if (resourceEnrichmentProvider)
+        {
+            HydraClient._resourceEnrichmentProvider = resourceEnrichmentProvider;
+        }
     }
 
     /**
@@ -100,7 +116,8 @@ export default class HydraClient
             throw new Error(HydraClient.responseFormatNotSupported);
         }
 
-        return await hypermediaProcessor.process(response, this._removeHypermediaFromPayload);
+        let result = await hypermediaProcessor.process(response, this._removeHypermediaFromPayload);
+        return HydraClient._resourceEnrichmentProvider.enrichHypermedia(result);
     }
 
     private async getApiDocumentationUrl(url: string): Promise<string>
