@@ -38,7 +38,7 @@ describe("Having a Hydra client", function() {
                 }));
 
                 it("should obtain a collection of events", function () {
-                    expect(this.members.filter(member => member.isA.indexOf("http://schema.org/Event") !== -1).length).toBe(1);
+                    expect(this.members.filter(member => member.isA.indexOf("http://schema.org/Event") !== -1).length).toBe(3);
                 });
             });
         });
