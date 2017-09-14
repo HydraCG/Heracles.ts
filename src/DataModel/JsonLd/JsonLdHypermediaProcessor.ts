@@ -144,14 +144,6 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
         for (let resource of result)
         {
             JsonLdHypermediaProcessor.fixTypeOf(resource);
-            if (!resource.isA)
-            {
-                resource.isA = [];
-            }
-            else if (!(resource.isA instanceof Array))
-            {
-                resource.isA = [resource.isA];
-            }
         }
 
         return result;
