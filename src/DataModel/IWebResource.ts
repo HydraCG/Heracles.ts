@@ -1,4 +1,4 @@
-import {IHypermedia} from "./IHypermedia";
+import {IHypermediaContainer} from "./IHypermediaContainer";
 
 /**
  * @interface Describes an abstract web resource.
@@ -8,5 +8,5 @@ export interface IWebResource extends Object
     /**
      * @readonly Gets a collection of hypermedia controls.
      */
-    readonly hypermedia: Array<IHypermedia>;
+    readonly hypermedia: IHypermediaContainer;
 }

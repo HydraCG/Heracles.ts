@@ -1,5 +1,6 @@
 import HydraClient from "../src/HydraClient";
 import {run} from "../testing/AsyncHelper";
+import {hydra} from "../src/namespaces";
 
 describe("Having a Hydra client", function() {
     beforeEach(function() {
@@ -28,6 +29,17 @@ describe("Having a Hydra client", function() {
             it("should obtain a collection of events", function() {
                 expect(this.entryPoint.hypermedia.find(item => item.iri.match("\/api\/events$") && item.isA === "Colletion"))
                     .not.toBeNull();
+            });
+
+            describe("and then obtaining events as in use case 3.obtaining-events", function() {
+                beforeEach(run(async function () {
+                    this.events = await this.client.getResource(this.url + "api/events");
+                    this.members = this.events.hypermedia.members;
+                }));
+
+                it("should obtain a collection of events", function () {
+                    expect(this.members.filter(member => member.isA.indexOf("http://schema.org/Event") !== -1).length).toBe(3);
+                });
             });
         });
 

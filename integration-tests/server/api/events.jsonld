@@ -1,0 +1,19 @@
+{
+    "@context": "/api/context.jsonld",
+    "@id": "/api/events",
+    "@type": "hydra:Collection",
+    "member": [
+        {
+            "@id": "/api/events/1",
+            "@type": "schema:Event"
+        },
+        {
+            "@id": "/api/events/2",
+            "@type": "schema:Event"
+        },
+        {
+            "@id": "/api/events/3",
+            "@type": "schema:Event"
+        }
+    ]
+}

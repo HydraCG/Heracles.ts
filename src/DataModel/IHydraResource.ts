@@ -1,9 +1,10 @@
 import {IOperation} from "./IOperation";
 import {IResource} from "./IResource";
+import {IHypermedia} from "./IHypermedia";
 /**
  * @interface Describes an abstract Hydra resource.
  */
-export interface IHydraResource extends IResource
+export interface IHydraResource extends IResource, IHypermedia
 {
     /**
      * @readonly Gets classes a given resource is of.

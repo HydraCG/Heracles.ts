@@ -28,7 +28,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
         if (!removeFromPayload)
         {
             hypermedia = await jsonLd.frame(payload, context, { embed: "@link" });
-            hypermedia = hypermedia["@graph"];
+            hypermedia = JsonLdHypermediaProcessor.fixType(hypermedia["@graph"]);
         }
         else
         {
@@ -46,9 +46,15 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
     {
         for (let index = result.length - 1; index >= 0; index--)
         {
-            if ((Object.keys(result[index]).length == 1) && (result[index].iri))
+            let keys = ["iri", "isA"].concat(Object.keys(result[index]));
+            keys = keys.filter((key, index) => keys.indexOf(key) === index);
+            if (keys.length == 2)
             {
                 result.splice(index, 1);
+            }
+            else
+            {
+                JsonLdHypermediaProcessor.fixTypeOf(result[index]);
             }
         }
 
@@ -102,15 +108,19 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
     private static processResource(resource: any, result: Array<any> & { [key: string]: any }, removeFromPayload: boolean): any
     {
         let targetResource;
-        if ((resource["@id"]) && (targetResource = result[resource["@id"]]))
+        if (resource["@id"])
         {
-            targetResource["@id"] = resource["@id"];
+            targetResource = result[resource["@id"]];
         }
 
         if (!targetResource)
         {
-            targetResource = {};
-            Object.defineProperty(result, JsonLdHypermediaProcessor.generateBlankNodeId(), { enumerable: false, value: targetResource });
+            targetResource =
+                {
+                    "@id": resource["@id"] || JsonLdHypermediaProcessor.generateBlankNodeId(),
+                    "@type": resource["@type"] || new Array<string>()
+                };
+            Object.defineProperty(result, targetResource["@id"], { enumerable: false, value: targetResource });
             result.push(targetResource);
         }
 
@@ -127,6 +137,28 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor
         }
 
         return result;
+    }
+
+    private static fixType(result: Array<any> & { [key: string]: any })
+    {
+        for (let resource of result)
+        {
+            JsonLdHypermediaProcessor.fixTypeOf(resource);
+        }
+
+        return result;
+    }
+
+    private static fixTypeOf(resource: any)
+    {
+        if (!resource.isA)
+        {
+            resource.isA = [];
+        }
+        else if (!(resource.isA instanceof Array))
+        {
+            resource.isA = [resource.isA];
+        }
     }
 }
 
