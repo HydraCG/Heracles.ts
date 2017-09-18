@@ -2,27 +2,24 @@
     "@context": {
         "iri": "@id",
         "isA": "@type",
-        "@vocab": "http://www.w3.org/ns/hydra/core#",
-        "hydra": "http://www.w3.org/ns/hydra/core#",
-        "operations": "hydra:operation",
+        "operations": "http://www.w3.org/ns/hydra/core#operation",
         "supportedClasses": {
-            "@id": "hydra:supportedClass",
+            "@id": "http://www.w3.org/ns/hydra/core#supportedClass",
             "@container": "@set"
         },
-        "entryPoint": "hydra:entrypoint",
+        "entryPoint": "http://www.w3.org/ns/hydra/core#entrypoint",
         "supportedOperations": {
-            "@id": "hydra:supportedOperation",
+            "@id": "http://www.w3.org/ns/hydra/core#supportedOperation",
             "@container": "@set"
         },
         "supportedProperties": {
-            "@id": "hydra:supportedProperty",
+            "@id": "http://www.w3.org/ns/hydra/core#supportedProperty",
             "@container": "@set"
         },
         "members": {
-            "@id": "hydra:member",
+            "@id": "http://www.w3.org/ns/hydra/core#member",
             "@container": "@set"
         },
-        "http://www.w3.org/ns/hydra/core#Collection": "http://www.w3.org/ns/hydra/core#Collection",
-        "http://www.w3.org/ns/hydra/core#Resource": "http://www.w3.org/ns/hydra/core#Resource"
+        "totalItems": "http://www.w3.org/ns/hydra/core#totalItems"
     }
 }
