@@ -1,25 +1,28 @@
 {
-    "@context": {
+    "@context": [{
         "iri": "@id",
         "isA": "@type",
-        "operations": "http://www.w3.org/ns/hydra/core#operation",
+        "hydra": "http://www.w3.org/ns/hydra/core#",
+        "operations": "hydra:operation",
         "supportedClasses": {
-            "@id": "http://www.w3.org/ns/hydra/core#supportedClass",
+            "@id": "hydra:supportedClass",
             "@container": "@set"
         },
-        "entryPoint": "http://www.w3.org/ns/hydra/core#entrypoint",
+        "entryPoint": "hydra:entrypoint",
         "supportedOperations": {
-            "@id": "http://www.w3.org/ns/hydra/core#supportedOperation",
+            "@id": "hydra:supportedOperation",
             "@container": "@set"
         },
         "supportedProperties": {
-            "@id": "http://www.w3.org/ns/hydra/core#supportedProperty",
+            "@id": "hydra:supportedProperty",
             "@container": "@set"
         },
         "members": {
-            "@id": "http://www.w3.org/ns/hydra/core#member",
+            "@id": "hydra:member",
             "@container": "@set"
         },
-        "totalItems": "http://www.w3.org/ns/hydra/core#totalItems"
-    }
+        "totalItems": "hydra:totalItems"
+    },{
+      "hydra": null
+    }]
 }
