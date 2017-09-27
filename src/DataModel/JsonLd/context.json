@@ -1,8 +1,7 @@
 {
-    "@context": {
+    "@context": [{
         "iri": "@id",
         "isA": "@type",
-        "@vocab": "http://www.w3.org/ns/hydra/core#",
         "hydra": "http://www.w3.org/ns/hydra/core#",
         "operations": "hydra:operation",
         "supportedClasses": {
@@ -22,7 +21,8 @@
             "@id": "hydra:member",
             "@container": "@set"
         },
-        "http://www.w3.org/ns/hydra/core#Collection": "http://www.w3.org/ns/hydra/core#Collection",
-        "http://www.w3.org/ns/hydra/core#Resource": "http://www.w3.org/ns/hydra/core#Resource"
-    }
+        "totalItems": "hydra:totalItems"
+    },{
+      "hydra": null
+    }]
 }
