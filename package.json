@@ -7,10 +7,8 @@
     "serve": "ts-node integration-tests/server/server.ts",
     "tslint": "tslint -c tslint.json -p tsconfig.json --type-check",
     "tslint-fix": "tslint -c tslint.json -p tsconfig.json --type-check -p tsconfig.json --fix",
-    "prettier": "prettier \"{src,testing,tests,integration-tests}/**/*.ts\"",
-    "prettier-fix": "prettier --write \"{src,testing,tests,integration-tests}/**/*.ts\"",
-    "lint-code": "npm run tslint && npm run prettier",
-    "format-code": "npm run prettier-fix && npm run tslint-fix",
+    "prettier": "prettier --write \"{src,testing,tests,integration-tests}/**/*.ts\"",
+    "format-code": "npm run prettier && npm run tslint-fix",
     "docs-html": "typedoc --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs-html src",
     "docs-md": "typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src"
   },
