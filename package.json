@@ -2,13 +2,17 @@
   "name": "hydraclient.js",
   "version": "0.0.1",
   "scripts": {
-    "test": "node node_modules/karma/bin/karma start --single-run",
-    "test-watch": "node node_modules/karma/bin/karma start",
+    "test": "karma start --single-run",
+    "test-watch": "karma start",
     "serve": "ts-node integration-tests/server/server.ts",
-    "tslint": "node_modules/.bin/tslint -c tslint.json -p tsconfig.json --type-check",
-    "tslint-fix": "node_modules/.bin/tslint -c tslint.json -p tsconfig.json --type-check -p tsconfig.json --fix",
-    "docs-html": "node node_modules/typedoc/bin/typedoc --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs-html src",
-    "docs-md": "node node_modules/typedoc/bin/typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src"
+    "tslint": "tslint -c tslint.json -p tsconfig.json --type-check",
+    "tslint-fix": "tslint -c tslint.json -p tsconfig.json --type-check -p tsconfig.json --fix",
+    "prettier": "prettier \"{src,testing,tests,integration-tests}/**/*.ts\"",
+    "prettier-fix": "prettier --write \"{src,testing,tests,integration-tests}/**/*.ts\"",
+    "lint-code": "npm run tslint && npm run prettier",
+    "format-code": "npm run prettier-fix && npm run tslint-fix",
+    "docs-html": "typedoc --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs-html src",
+    "docs-md": "typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src"
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
@@ -30,6 +34,7 @@
     "karma-sinon": "^1.0.5",
     "karma-source-map-support": "^1.2.0",
     "karma-typescript": "^3.0.2",
+    "prettier": "^1.7.3",
     "sinon": "^2.2.0",
     "ts-node": "^3.1.0",
     "tslint": "^5.5.0",
