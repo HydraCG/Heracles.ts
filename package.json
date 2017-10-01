@@ -33,6 +33,7 @@
     "sinon": "^2.2.0",
     "ts-node": "^3.1.0",
     "tslint": "^5.5.0",
+    "tslint-eslint-rules": "^4.1.1",
     "tslint-language-service": "^0.9.6",
     "typedoc": "^0.7.1",
     "typedoc-plugin-markdown": "~1"

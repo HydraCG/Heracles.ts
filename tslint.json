@@ -1,9 +1,21 @@
 {
-    "defaultSeverity": "error",
-    "extends": [
-        "tslint:recommended"
-    ],
-    "jsRules": {},
-    "rules": {},
-    "rulesDirectory": []
+  "extends": [
+    "tslint:recommended",
+    "tslint-eslint-rules"
+  ],
+  "rules": {
+    "max-line-length": {
+      "options": [120]
+    },
+    "quotemark": [true, "double"],
+    "ter-indent": [true, 2],
+    "no-extra-semi": true,
+    "semicolon": [true, "always"],
+    "trailing-comma": false
+  },
+  "jsRules": {
+    "max-line-length": {
+        "options": [120]
+    }
+}
 }
