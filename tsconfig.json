@@ -3,8 +3,21 @@
         "moduleResolution": "node",
         "module": "commonjs",
         "target": "es2017",
-        "lib": ["es2017", "DOM"],
-        "types": ["node", "jasmine", "sinon", "express"],
+        "lib": [
+            "es2017",
+            "dom"
+        ],
+        "types": [
+            "node",
+            "jasmine",
+            "sinon",
+            "express"
+        ],
+        "plugins": [
+            {
+                "name": "tslint-language-service"
+            }
+        ],
         "sourceMap": true
     },
     "exclude": [
