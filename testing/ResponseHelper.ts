@@ -18,7 +18,7 @@ function returnResponse(
 
   const result = new Response(JSON.stringify(body), {
     headers,
-    status,
+    status
   });
   Object.defineProperty(result, "url", { value: url });
   return result;

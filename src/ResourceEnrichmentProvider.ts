@@ -26,7 +26,7 @@ export default class ResourceEnrichmentProvider {
     if (!resource.hypermedia) {
       Object.defineProperty(resource, "hypermedia", {
         enumerable: false,
-        value: new Array<IHypermedia>(),
+        value: new Array<IHypermedia>()
       });
     }
 
@@ -54,7 +54,7 @@ export default class ResourceEnrichmentProvider {
 
       Object.defineProperty(resource.hypermedia, propertyName, {
         enumerable: false,
-        value,
+        value
       });
     }
 

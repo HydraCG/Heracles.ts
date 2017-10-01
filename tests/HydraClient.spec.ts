@@ -10,12 +10,13 @@ describe("Given an instance of the HydraClient class", () => {
     this.baseUrl = "http://temp.uri/";
     this.hypermediaProcessor = {
       process: sinon.stub(),
-      supportedMediaTypes: ["application/ld+json"],
+      supportedMediaTypes: ["application/ld+json"]
     };
     this.resourceEnrichmentProvider = { enrichHypermedia: sinon.stub() };
     this.client = new HydraClient(true);
     this.currentHypermediaProcessors = HydraClient.hypermediaProcessors;
-    this.currentResourceEnrichmentProvider = HydraClient.resourceEnrichmentProvider;
+    this.currentResourceEnrichmentProvider =
+      HydraClient.resourceEnrichmentProvider;
     HydraClient.hypermediaProcessors = [];
     HydraClient.registerHypermediaProcessor(this.hypermediaProcessor);
     HydraClient.registerResourceEnrichmentProvider(

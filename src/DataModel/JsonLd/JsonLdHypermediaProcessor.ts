@@ -42,7 +42,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
 
     Object.defineProperty(result, "hypermedia", {
       enumerable: false,
-      value: hypermedia,
+      value: hypermedia
     });
     return result;
   }

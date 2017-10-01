@@ -19,6 +19,6 @@ export interface IHypermediaProcessor {
    */
   process(
     response: Response,
-    removeFromPayload?: boolean,
+    removeFromPayload?: boolean
   ): Promise<IWebResource>;
 }
