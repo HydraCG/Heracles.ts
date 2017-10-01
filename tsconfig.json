@@ -13,6 +13,9 @@
             "sinon",
             "express"
         ],
+        "typeRoots": [
+            "./typings"
+        ],
         "plugins": [
             {
                 "name": "tslint-language-service"
