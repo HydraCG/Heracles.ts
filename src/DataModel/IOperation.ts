@@ -1,8 +1,7 @@
-import {IHydraResource} from "./IHydraResource";
+import { IHydraResource } from "./IHydraResource";
 
 /**
  * @interface Describes an abstract Hydra operation.
  */
-export interface IOperation extends IHydraResource
-{
-}
+// tslint:disable-next-line:no-empty-interface
+export interface IOperation extends IHydraResource {}

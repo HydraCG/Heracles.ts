@@ -1,33 +1,30 @@
-import {IApiDocumentation} from "./DataModel/IApiDocumentation";
-import {IWebResource} from "./DataModel/IWebResource";
-import {IClass} from "./DataModel/IClass";
-import {IOperation} from "./DataModel/IOperation";
+import { IApiDocumentation } from "./DataModel/IApiDocumentation";
+import { IClass } from "./DataModel/IClass";
+import { IOperation } from "./DataModel/IOperation";
+import { IResource } from "./DataModel/IResource";
+import { IWebResource } from "./DataModel/IWebResource";
 import HydraClient from "./HydraClient";
-import {IResource} from "./DataModel/IResource";
 
-export default class ApiDocumentation implements IApiDocumentation
-{
-    public title?: string;
+export default class ApiDocumentation implements IApiDocumentation {
+  public title?: string;
 
-    public description?: string;
+  public description?: string;
 
-    public supportedClasses: Array<IClass>;
+  public supportedClasses: IClass[];
 
-    public supportedOperations: Array<IOperation>;
+  public supportedOperations: IOperation[];
 
-    public entryPoint: string | IResource;
+  public entryPoint: string | IResource;
 
-    public client: HydraClient;
+  public client: HydraClient;
 
-    public ApiDocumentation()
-    {
-        this.supportedClasses = new Array<IClass>();
-        this.supportedOperations = new Array<IOperation>();
-        this.entryPoint = "";
-    }
+  public ApiDocumentation() {
+    this.supportedClasses = new Array<IClass>();
+    this.supportedOperations = new Array<IOperation>();
+    this.entryPoint = "";
+  }
 
-    public async getEntryPoint(): Promise<IWebResource>
-    {
-        return await this.client.getResource(this.entryPoint);
-    }
+  public async getEntryPoint(): Promise<IWebResource> {
+    return await this.client.getResource(this.entryPoint);
+  }
 }
