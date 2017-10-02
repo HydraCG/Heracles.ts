@@ -1,9 +1,9 @@
 /**
- * @interface Describes an abstract RDF resource.
+ * Describes an abstract RDF resource.
  */
 export interface IResource {
   /**
-   * @readonly Gets an Iri of a resource.
+   * Gets an Iri of a resource.
    */
   readonly iri: string;
 }

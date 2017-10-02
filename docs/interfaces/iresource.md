@@ -4,7 +4,8 @@
 
 # Interface: IResource
 
-**interface**: Describes an abstract RDF resource.
+
+Describes an abstract RDF resource.
 
 ## Hierarchy
 

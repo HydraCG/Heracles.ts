@@ -5,7 +5,8 @@ import { IWebResource } from "./DataModel/IWebResource";
 import { hydra } from "./namespaces";
 
 /**
- * @class @name ResourceEnrichmentProvider
+ * ResourceEnrichmentProvider
+ *
  * Provides IWebResource enrichment routines.
  */
 export default class ResourceEnrichmentProvider {
@@ -15,8 +16,8 @@ export default class ResourceEnrichmentProvider {
 
   /**
    * Enriches a given resource with IHypermediaContainer specific properties.
+   *
    * @param resource Resource to be enriched.
-   * @returns {IWebResource}
    */
   public enrichHypermedia(resource: IWebResource): IWebResource {
     if (!resource) {

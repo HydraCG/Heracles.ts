@@ -4,11 +4,17 @@
 
 # Interface: IHypermedia
 
-**interface**: Represents an abstract hypermedia control consumable within the Hydra client.
+
+Represents an abstract hypermedia control consumable within the Hydra client.
 
 ## Hierarchy
 
 **IHypermedia**
+
+↳  [IHydraResource](ihydraresource.md)
+
+
+
 
 ↳  [IClass](iclass.md)
 

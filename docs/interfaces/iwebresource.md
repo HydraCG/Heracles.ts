@@ -4,7 +4,8 @@
 
 # Interface: IWebResource
 
-**interface**: Describes an abstract web resource.
+
+Describes an abstract web resource.
 
 ## Hierarchy
 
@@ -26,7 +27,7 @@
 | ------ | ------------------- 
 | Object | `ObjectConstructor`
 | constructor | `Function`
-| hypermedia | `Array`<[IHypermedia](ihypermedia.md)>
+| hypermedia | [IHypermediaContainer](ihypermediacontainer.md)
 
 
 ## Methods

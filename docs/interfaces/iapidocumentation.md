@@ -4,7 +4,8 @@
 
 # Interface: IApiDocumentation
 
-**interface**: Represents an abstract API documentation.
+
+Represents an abstract API documentation.
 
 ## Hierarchy
 
@@ -31,7 +32,7 @@
 | client | [HydraClient](../classes/hydraclient.md)
 | description | `string`
 | entryPoint | `string`⎮[IResource](iresource.md)
-| supportedClasses | `Array`<[IClass](iclass.md)>
+| supportedClasses | [IClass](iclass.md)[]
 | title | `string`
 
 
@@ -45,7 +46,7 @@
 
 
 
-*Defined in [src/DataModel/IApiDocumentation.ts:35](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/IApiDocumentation.ts#L35)*
+*Defined in [src/DataModel/IApiDocumentation.ts:33](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/IApiDocumentation.ts#L33)*
 
 
 
@@ -55,8 +56,6 @@ Retrieves an API's entry point resource.
 
 
 **Returns:** `Promise`<[IWebResource](iwebresource.md)>
-Promise<IWebResource>
-
 
 
 

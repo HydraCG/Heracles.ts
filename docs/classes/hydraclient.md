@@ -4,8 +4,10 @@
 
 # Class: HydraClient
 
-**class**: HydraClient Heracles is a generic client for Hydra-powered Web APIs.
-                   To learn more about Hydra please refer to {@link https://www.hydra-cg.com/spec/latest/core/}
+
+HydraClient, also known as Heracles.ts, is a generic client for Hydra-powered Web APIs.
+
+To learn more about Hydra please refer to [https://www.hydra-cg.com/spec/latest/core/](https://www.hydra-cg.com/spec/latest/core/)
 
 ## Index
 
@@ -16,13 +18,14 @@
 
 ### Properties
 
-* [_removeHypermediaFromPayload](hydraclient.md#_removehypermediafrompayload)
-* [_hypermediaProcessors](hydraclient.md#_hypermediaprocessors)
+* [removeHypermediaFromPayload](hydraclient.md#removehypermediafrompayload)
 * [apiDocumentationNotProvided](hydraclient.md#apidocumentationnotprovided)
+* [hypermediaProcessors](hydraclient.md#hypermediaprocessors)
 * [invalidResponse](hydraclient.md#invalidresponse)
 * [noEntryPointDefined](hydraclient.md#noentrypointdefined)
 * [noHypermediaProcessor](hydraclient.md#nohypermediaprocessor)
 * [noUrlProvided](hydraclient.md#nourlprovided)
+* [resourceEnrichmentProvider](hydraclient.md#resourceenrichmentprovider)
 * [responseFormatNotSupported](hydraclient.md#responseformatnotsupported)
 
 
@@ -35,6 +38,7 @@
 * [convertToPropertyDescriptorMap](hydraclient.md#converttopropertydescriptormap)
 * [getUrl](hydraclient.md#geturl)
 * [registerHypermediaProcessor](hydraclient.md#registerhypermediaprocessor)
+* [registerResourceEnrichmentProvider](hydraclient.md#registerresourceenrichmentprovider)
 
 
 
@@ -47,18 +51,18 @@
 
 
 
-*Defined in [src/HydraClient.ts:24](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L24)*
+*Defined in [src/HydraClient.ts:29](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L29)*
 
 
 
 Initializes a new instance of the [HydraClient](hydraclient.md) class.
-**constructor**: 
+
 
 **Parameters:**
 
 | Param  | Type                | Description  |
 | ------ | ------------------- | ------------ |
-| removeHypermediaFromPayload | `boolean` | Default value = false.Value indicating whether to remove hypermedia controls from the     resource&#x27;s payload or leave it as is. Default is true. |
+| removeHypermediaFromPayload | `boolean` | Default value = false.Value indicating whether to remove hypermedia controls from the                                   resource&#x27;s payload or leave it as is. Default is true. |
 
 
 
@@ -70,27 +74,13 @@ Initializes a new instance of the [HydraClient](hydraclient.md) class.
 
 
 ## Properties
-<a id="_removehypermediafrompayload"></a>
+<a id="removehypermediafrompayload"></a>
 
-### «Private» _removeHypermediaFromPayload
+###  removeHypermediaFromPayload
 
-**●  _removeHypermediaFromPayload**:  *`any`* 
+**●  removeHypermediaFromPayload**:  *`any`* 
 
-*Defined in [src/HydraClient.ts:17](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L17)*
-
-
-
-
-
-___
-
-<a id="_hypermediaprocessors"></a>
-
-### «Static»«Private» _hypermediaProcessors
-
-**●  _hypermediaProcessors**:  *[IHypermediaProcessor](../interfaces/ihypermediaprocessor.md)[]*  =  new Array<IHypermediaProcessor>()
-
-*Defined in [src/HydraClient.ts:16](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L16)*
+*Defined in [src/HydraClient.ts:29](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L29)*
 
 
 
@@ -104,7 +94,21 @@ ___
 
 **●  apiDocumentationNotProvided**:  *`string`*  = "API documentation not provided."
 
-*Defined in [src/HydraClient.ts:20](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L20)*
+*Defined in [src/HydraClient.ts:18](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L18)*
+
+
+
+
+
+___
+
+<a id="hypermediaprocessors"></a>
+
+### «Static» hypermediaProcessors
+
+**●  hypermediaProcessors**:  *[IHypermediaProcessor](../interfaces/ihypermediaprocessor.md)[]*  =  new Array<IHypermediaProcessor>()
+
+*Defined in [src/HydraClient.ts:25](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L25)*
 
 
 
@@ -118,7 +122,7 @@ ___
 
 **●  invalidResponse**:  *`string`*  = "Remote server responded with a status of "
 
-*Defined in [src/HydraClient.ts:23](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L23)*
+*Defined in [src/HydraClient.ts:21](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L21)*
 
 
 
@@ -132,7 +136,7 @@ ___
 
 **●  noEntryPointDefined**:  *`string`*  = "API documentation has no entry point defined."
 
-*Defined in [src/HydraClient.ts:21](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L21)*
+*Defined in [src/HydraClient.ts:19](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L19)*
 
 
 
@@ -146,7 +150,7 @@ ___
 
 **●  noHypermediaProcessor**:  *`string`*  = "No hypermedia processor instance was provided for registration."
 
-*Defined in [src/HydraClient.ts:22](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L22)*
+*Defined in [src/HydraClient.ts:20](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L20)*
 
 
 
@@ -160,7 +164,48 @@ ___
 
 **●  noUrlProvided**:  *`string`*  = "There was no Url provided."
 
-*Defined in [src/HydraClient.ts:19](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L19)*
+*Defined in [src/HydraClient.ts:17](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L17)*
+
+
+
+
+
+___
+
+<a id="resourceenrichmentprovider"></a>
+
+### «Static» resourceEnrichmentProvider
+
+**●  resourceEnrichmentProvider**:  *object*  =  new ResourceEnrichmentProvider()
+
+*Defined in [src/HydraClient.ts:26](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L26)*
+
+
+#### Type declaration
+
+
+enrichHypermedia: function
+► **enrichHypermedia**(resource: *[IWebResource](../interfaces/iwebresource.md)*): [IWebResource](../interfaces/iwebresource.md)
+
+
+
+
+*Defined in [src/HydraClient.ts:27](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L27)*
+
+
+
+**Parameters:**
+
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| resource | [IWebResource](../interfaces/iwebresource.md) | - |
+
+
+
+
+
+**Returns:** [IWebResource](../interfaces/iwebresource.md)
+
 
 
 
@@ -174,7 +219,7 @@ ___
 
 **●  responseFormatNotSupported**:  *`string`*  = "Response format is not supported."
 
-*Defined in [src/HydraClient.ts:24](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L24)*
+*Defined in [src/HydraClient.ts:22](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L22)*
 
 
 
@@ -193,7 +238,7 @@ ___
 
 
 
-*Defined in [src/HydraClient.ts:67](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L67)*
+*Defined in [src/HydraClient.ts:90](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L90)*
 
 
 
@@ -204,15 +249,13 @@ Obtains an API documentation.
 
 | Param  | Type                | Description  |
 | ------ | ------------------- | ------------ |
-| urlOrResource | `string`⎮[IResource](../interfaces/iresource.md) | Url or object with an iri property from which to obtain an API documentation. |
+| urlOrResource | `string`⎮[IResource](../interfaces/iresource.md) | URL or object with an iri property from which to obtain an API                     documentation. |
 
 
 
 
 
 **Returns:** `Promise`<[IApiDocumentation](../interfaces/iapidocumentation.md)>
-
-
 
 
 
@@ -229,7 +272,7 @@ ___
 
 
 
-*Defined in [src/HydraClient.ts:106](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L106)*
+*Defined in [src/HydraClient.ts:138](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L138)*
 
 
 
@@ -260,7 +303,7 @@ ___
 
 
 
-*Defined in [src/HydraClient.ts:56](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L56)*
+*Defined in [src/HydraClient.ts:74](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L74)*
 
 
 
@@ -283,8 +326,6 @@ Gets a hypermedia provider suitable for a given response.
 
 
 
-
-
 ___
 
 <a id="getresource"></a>
@@ -296,7 +337,7 @@ ___
 
 
 
-*Defined in [src/HydraClient.ts:88](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L88)*
+*Defined in [src/HydraClient.ts:117](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L117)*
 
 
 
@@ -307,15 +348,13 @@ Obtains a representation of a resource.
 
 | Param  | Type                | Description  |
 | ------ | ------------------- | ------------ |
-| urlOrResource | `string`⎮[IResource](../interfaces/iresource.md) | Url or a {@link IResource} carrying an Iri of the resource to be obtained. |
+| urlOrResource | `string`⎮[IResource](../interfaces/iresource.md) | URL or a {@link IResource} carrying an IRI of the resource to be obtained. |
 
 
 
 
 
 **Returns:** `Promise`<[IWebResource](../interfaces/iwebresource.md)>
-
-
 
 
 
@@ -332,7 +371,7 @@ ___
 
 
 
-*Defined in [src/HydraClient.ts:140](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L140)*
+*Defined in [src/HydraClient.ts:172](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L172)*
 
 
 
@@ -363,7 +402,7 @@ ___
 
 
 
-*Defined in [src/HydraClient.ts:129](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L129)*
+*Defined in [src/HydraClient.ts:162](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L162)*
 
 
 
@@ -394,7 +433,7 @@ ___
 
 
 
-*Defined in [src/HydraClient.ts:41](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L41)*
+*Defined in [src/HydraClient.ts:59](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L59)*
 
 
 
@@ -406,6 +445,40 @@ Registers a hypermedia processor.
 | Param  | Type                | Description  |
 | ------ | ------------------- | ------------ |
 | hypermediaProcessor | [IHypermediaProcessor](../interfaces/ihypermediaprocessor.md) | Hypermedia processor to be registered. |
+
+
+
+
+
+**Returns:** `void`
+
+
+
+
+
+___
+
+<a id="registerresourceenrichmentprovider"></a>
+
+### «Static» registerResourceEnrichmentProvider
+
+► **registerResourceEnrichmentProvider**(resourceEnrichmentProvider: *object*): `void`
+
+
+
+
+*Defined in [src/HydraClient.ts:46](https://github.com/HydraCG/Heracles.ts/blob/master/src/HydraClient.ts#L46)*
+
+
+
+Registers a custom resource enrichment provider.
+
+
+**Parameters:**
+
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| resourceEnrichmentProvider | object | Component to be registered. |
 
 
 

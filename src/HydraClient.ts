@@ -9,8 +9,9 @@ import { hydra } from "./namespaces";
 import ResourceEnrichmentProvider from "./ResourceEnrichmentProvider";
 
 /**
- * @class HydraClient Heracles is a generic client for Hydra-powered Web APIs.
- *                    To learn more about Hydra please refer to {@link https://www.hydra-cg.com/spec/latest/core/}
+ * HydraClient, also known as Heracles.ts, is a generic client for Hydra-powered Web APIs.
+ *
+ * To learn more about Hydra please refer to {@link https://www.hydra-cg.com/spec/latest/core/}
  */
 export default class HydraClient {
   public static noUrlProvided = "There was no Url provided.";
@@ -29,9 +30,9 @@ export default class HydraClient {
 
   /**
    * Initializes a new instance of the {@link HydraClient} class.
-   * @constructor
-   * @param removeHypermediaFromPayload {bool = true} Value indicating whether to remove hypermedia controls from the
-   *      resource's payload or leave it as is. Default is true.
+   *
+   * @param removeHypermediaFromPayload Value indicating whether to remove hypermedia controls from the
+   *                                    resource's payload or leave it as is. Default is true.
    */
   public constructor(removeHypermediaFromPayload = false) {
     this.removeHypermediaFromPayload = removeHypermediaFromPayload;
@@ -39,6 +40,7 @@ export default class HydraClient {
 
   /**
    * Registers a custom resource enrichment provider.
+   *
    * @param resourceEnrichmentProvider Component to be registered.
    */
   public static registerResourceEnrichmentProvider(resourceEnrichmentProvider: {
@@ -51,7 +53,8 @@ export default class HydraClient {
 
   /**
    * Registers a hypermedia processor.
-   * @param {IHypermediaProcessor} hypermediaProcessor Hypermedia processor to be registered.
+   *
+   * @param hypermediaProcessor Hypermedia processor to be registered.
    */
   public static registerHypermediaProcessor(
     hypermediaProcessor: IHypermediaProcessor
@@ -65,8 +68,8 @@ export default class HydraClient {
 
   /**
    * Gets a hypermedia provider suitable for a given response.
-   * @param {Response} response Raw response to find hypermedia processor for.
-   * @returns {IHypermediaProcessor}
+   *
+   * @param response Raw response to find hypermedia processor for.
    */
   public getHypermediaProcessor(response: Response): IHypermediaProcessor {
     return HydraClient.hypermediaProcessors.find(
@@ -80,9 +83,9 @@ export default class HydraClient {
 
   /**
    * Obtains an API documentation.
-   * @param urlOrResource {string | IResource} URL or object with an iri property from which to
-   *                                           obtain an API documentation.
-   * @returns {Promise<ApiDocumentation>}
+   *
+   * @param urlOrResource URL or object with an iri property from which to obtain an API
+   *                      documentation.
    */
   public async getApiDocumentation(
     urlOrResource: string | IResource
@@ -108,9 +111,8 @@ export default class HydraClient {
 
   /**
    * Obtains a representation of a resource.
-   * @param urlOrResource {string | IResource} URL or a {@link IResource} carrying an IRI of the
-   *                                           resource to be obtained.
-   * @returns {Promise<IWebResource>}
+   *
+   * @param urlOrResource URL or a {@link IResource} carrying an IRI of the resource to be obtained.
    */
   public async getResource(
     urlOrResource: string | IResource

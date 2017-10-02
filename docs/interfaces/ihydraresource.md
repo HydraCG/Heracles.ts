@@ -4,12 +4,18 @@
 
 # Interface: IHydraResource
 
-**interface**: Describes an abstract Hydra resource.
+
+Describes an abstract Hydra resource.
 
 ## Hierarchy
 
 
  [IResource](iresource.md)
+
+
+
+
+ [IHypermedia](ihypermedia.md)
 
 **↳ IHydraResource**
 
@@ -34,8 +40,9 @@
 
 | Name  | Type                
 | ------ | ------------------- 
+| client | [HydraClient](../classes/hydraclient.md)
 | iri | `string`
-| isA | `Array`<`string`>
-| operations | `Array`<[IOperation](ioperation.md)>
+| isA | `string`[]
+| operations | [IOperation](ioperation.md)[]
 
 

@@ -37,7 +37,7 @@
 
 *Implementation of [IApiDocumentation](../interfaces/iapidocumentation.md).[client](../interfaces/iapidocumentation.md#client)*
 
-*Defined in [src/ApiDocumentation.ts:20](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L20)*
+*Defined in [src/ApiDocumentation.ts:19](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L19)*
 
 
 
@@ -53,7 +53,7 @@ ___
 
 *Implementation of [IApiDocumentation](../interfaces/iapidocumentation.md).[description](../interfaces/iapidocumentation.md#description)*
 
-*Defined in [src/ApiDocumentation.ts:12](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L12)*
+*Defined in [src/ApiDocumentation.ts:11](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L11)*
 
 
 
@@ -69,7 +69,7 @@ ___
 
 *Implementation of [IApiDocumentation](../interfaces/iapidocumentation.md).[entryPoint](../interfaces/iapidocumentation.md#entrypoint)*
 
-*Defined in [src/ApiDocumentation.ts:18](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L18)*
+*Defined in [src/ApiDocumentation.ts:17](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L17)*
 
 
 
@@ -81,11 +81,11 @@ ___
 
 ###  supportedClasses
 
-**●  supportedClasses**:  *`Array`<[IClass](../interfaces/iclass.md)>* 
+**●  supportedClasses**:  *[IClass](../interfaces/iclass.md)[]* 
 
 *Implementation of [IApiDocumentation](../interfaces/iapidocumentation.md).[supportedClasses](../interfaces/iapidocumentation.md#supportedclasses)*
 
-*Defined in [src/ApiDocumentation.ts:14](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L14)*
+*Defined in [src/ApiDocumentation.ts:13](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L13)*
 
 
 
@@ -97,9 +97,9 @@ ___
 
 ###  supportedOperations
 
-**●  supportedOperations**:  *`Array`<[IOperation](../interfaces/ioperation.md)>* 
+**●  supportedOperations**:  *[IOperation](../interfaces/ioperation.md)[]* 
 
-*Defined in [src/ApiDocumentation.ts:16](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L16)*
+*Defined in [src/ApiDocumentation.ts:15](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L15)*
 
 
 
@@ -115,7 +115,7 @@ ___
 
 *Implementation of [IApiDocumentation](../interfaces/iapidocumentation.md).[title](../interfaces/iapidocumentation.md#title)*
 
-*Defined in [src/ApiDocumentation.ts:10](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L10)*
+*Defined in [src/ApiDocumentation.ts:9](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L9)*
 
 
 
@@ -134,7 +134,7 @@ ___
 
 
 
-*Defined in [src/ApiDocumentation.ts:22](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L22)*
+*Defined in [src/ApiDocumentation.ts:21](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L21)*
 
 
 
@@ -159,7 +159,7 @@ ___
 
 *Implementation of [IApiDocumentation](../interfaces/iapidocumentation.md).[getEntryPoint](../interfaces/iapidocumentation.md#getentrypoint)*
 
-*Defined in [src/ApiDocumentation.ts:29](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L29)*
+*Defined in [src/ApiDocumentation.ts:27](https://github.com/HydraCG/Heracles.ts/blob/master/src/ApiDocumentation.ts#L27)*
 
 
 

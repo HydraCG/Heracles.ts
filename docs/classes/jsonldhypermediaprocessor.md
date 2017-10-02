@@ -18,6 +18,8 @@
 ### Methods
 
 * [process](jsonldhypermediaprocessor.md#process)
+* [fixType](jsonldhypermediaprocessor.md#fixtype)
+* [fixTypeOf](jsonldhypermediaprocessor.md#fixtypeof)
 * [generateBlankNodeId](jsonldhypermediaprocessor.md#generateblanknodeid)
 * [initialize](jsonldhypermediaprocessor.md#initialize)
 * [processArray](jsonldhypermediaprocessor.md#processarray)
@@ -35,16 +37,16 @@
 ###  supportedMediaTypes
 
 
-getsupportedMediaTypes(): `Array`<`string`>
+getsupportedMediaTypes(): `string`[]
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:18](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L18)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:16](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L16)*
 
 
 
 
 
-**Returns:** `Array`<`string`>
+**Returns:** `string`[]
 
 
 
@@ -63,7 +65,7 @@ ___
 
 *Implementation of [IHypermediaProcessor](../interfaces/ihypermediaprocessor.md).[process](../interfaces/ihypermediaprocessor.md#process)*
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:23](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L23)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:20](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L20)*
 
 
 
@@ -86,6 +88,68 @@ ___
 
 ___
 
+<a id="fixtype"></a>
+
+### «Static»«Private» fixType
+
+► **fixType**(result: *`any`[]object*): `any`[]object
+
+
+
+
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:168](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L168)*
+
+
+
+**Parameters:**
+
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| result | `any`[]object | - |
+
+
+
+
+
+**Returns:** `any`[]object
+
+
+
+
+
+___
+
+<a id="fixtypeof"></a>
+
+### «Static»«Private» fixTypeOf
+
+► **fixTypeOf**(resource: *`any`*): `void`
+
+
+
+
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:176](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L176)*
+
+
+
+**Parameters:**
+
+| Param  | Type                | Description  |
+| ------ | ------------------- | ------------ |
+| resource | `any` | - |
+
+
+
+
+
+**Returns:** `void`
+
+
+
+
+
+___
+
 <a id="generateblanknodeid"></a>
 
 ### «Static»«Private» generateBlankNodeId
@@ -95,7 +159,7 @@ ___
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:58](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L58)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:64](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L64)*
 
 
 
@@ -118,7 +182,7 @@ ___
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:13](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L13)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:12](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L12)*
 
 
 
@@ -136,12 +200,12 @@ ___
 
 ### «Static»«Private» processArray
 
-► **processArray**(payload: *`any`*, result: *`Array`<`any`>object*, removeFromPayload?: *`boolean`*): `any`[]object
+► **processArray**(payload: *`any`*, result: *`any`[]object*, removeFromPayload?: *`boolean`*): `any`[]object
 
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:78](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L78)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:96](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L96)*
 
 
 
@@ -150,7 +214,7 @@ ___
 | Param  | Type                | Description  |
 | ------ | ------------------- | ------------ |
 | payload | `any` | - |
-| result | `Array`<`any`>object | - |
+| result | `any`[]object | - |
 | removeFromPayload | `boolean` | Default value = false.- |
 
 
@@ -169,12 +233,12 @@ ___
 
 ### «Static»«Private» processHypermedia
 
-► **processHypermedia**(payload: *`any`*, result: *`Array`<`any`>object*, removeFromPayload?: *`boolean`*): `any`
+► **processHypermedia**(payload: *`any`*, result: *`any`[]object*, removeFromPayload?: *`boolean`*): `any`
 
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:63](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L63)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:68](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L68)*
 
 
 
@@ -183,7 +247,7 @@ ___
 | Param  | Type                | Description  |
 | ------ | ------------------- | ------------ |
 | payload | `any` | - |
-| result | `Array`<`any`>object | - |
+| result | `any`[]object | - |
 | removeFromPayload | `boolean` | Default value = false.- |
 
 
@@ -202,12 +266,12 @@ ___
 
 ### «Static»«Private» processResource
 
-► **processResource**(resource: *`any`*, result: *`Array`<`any`>object*, removeFromPayload: *`boolean`*): `any`
+► **processResource**(resource: *`any`*, result: *`any`[]object*, removeFromPayload: *`boolean`*): `any`
 
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:102](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L102)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:131](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L131)*
 
 
 
@@ -216,7 +280,7 @@ ___
 | Param  | Type                | Description  |
 | ------ | ------------------- | ------------ |
 | resource | `any` | - |
-| result | `Array`<`any`>object | - |
+| result | `any`[]object | - |
 | removeFromPayload | `boolean` | - |
 
 
@@ -235,12 +299,12 @@ ___
 
 ### «Static»«Private» removeReferencesFrom
 
-► **removeReferencesFrom**(result: *`Array`<`any`>*): `any`
+► **removeReferencesFrom**(result: *`any`[]*): `any`
 
 
 
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:45](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L45)*
+*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:50](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L50)*
 
 
 
@@ -248,7 +312,7 @@ ___
 
 | Param  | Type                | Description  |
 | ------ | ------------------- | ------------ |
-| result | `Array`<`any`> | - |
+| result | `any`[] | - |
 
 
 

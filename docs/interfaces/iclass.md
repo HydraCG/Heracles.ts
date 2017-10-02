@@ -31,7 +31,7 @@
 | ------ | ------------------- 
 | client | [HydraClient](../classes/hydraclient.md)
 | iri | `string`
-| isA | `Array`<`string`>
-| operations | `Array`<[IOperation](ioperation.md)>
+| isA | `string`[]
+| operations | [IOperation](ioperation.md)[]
 
 
