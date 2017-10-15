@@ -1,11 +1,10 @@
 import HydraClient from "../src/HydraClient";
-import { hydra } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
 
 describe("Having a Hydra client", () => {
   beforeEach(() => {
     this.url = "http://localhost:3000/";
-    this.client = new HydraClient(true);
+    this.client = new HydraClient(false);
   });
 
   describe("while browsing the test website", () => {
@@ -22,8 +21,8 @@ describe("Having a Hydra client", () => {
         })
       );
 
-      it("should obtain two hypermedia controls", () => {
-        expect(this.entryPoint.hypermedia.length).toBe(2);
+      it("should obtain three hypermedia controls", () => {
+        expect(this.entryPoint.hypermedia.length).toBeGreaterThanOrEqual(3);
       });
 
       it("should obtain a schema:CreateAction operation", () => {
@@ -56,6 +55,67 @@ describe("Having a Hydra client", () => {
               (member) => member.isA.indexOf("http://schema.org/Event") !== -1
             ).length
           ).toBe(3);
+        });
+
+        describe("and then adding a new event to that collection as in use case 5.creating-event", () => {
+          beforeEach(
+            run(async () => {
+              try {
+                this.createdEvent = await this.members.add({ "@type": "http://schema.org/Event" });
+              }
+              catch (error) {
+                this.exception = error;
+              }
+            })
+          );
+
+          it("should not throw", run(async () => {
+            expect(this.exception).not.toBeDefined();
+          }));
+
+          it("should add that new event with an operation pointed", run(async () => {
+            expect(this.createdEvent.status).toBe(201);
+          }));
+        });
+      });
+
+      describe("and then obtaining people", () => {
+        beforeEach(
+          run(async () => {
+            this.people = await this.client.getResource(
+              this.url + "api/people"
+            );
+            this.members = this.people.hypermedia.members;
+          })
+        );
+
+        it("should obtain a collection of people", () => {
+          expect(
+            this.members.filter(
+              (member) => member.isA.indexOf("http://schema.org/Person") !== -1
+            ).length
+          ).toBe(1);
+        });
+
+        describe("and then adding a new person to that collection", () => {
+          beforeEach(
+            run(async () => {
+              try {
+                this.createdPerson = await this.members.add({ "@type": "http://schema.org/Person" });
+              }
+              catch (error) {
+                this.exception = error;
+              }
+            })
+          );
+
+          it("should not throw", run(async () => {
+            expect(this.exception).not.toBeDefined();
+          }));
+
+          it("should add that new event with an operation pointed", run(async () => {
+            expect(this.createdPerson.status).toBe(200);
+          }));
         });
       });
     });

@@ -201,7 +201,7 @@ describe("Given an instance of the HydraClient class", () => {
           const apiDocumentationUrl = `${this.baseUrl}api/documentation`;
           this.apiDocumentation = { entryPoint: `${this.baseUrl}api` };
           this.resourceEnrichmentProvider.enrichHypermedia.callsFake(
-            (resource) => resource
+            (client, resource) => resource
           );
           this.data = [this.apiDocumentation];
           this.apiDocumentationResponse = returnOk(
@@ -326,7 +326,7 @@ describe("Given an instance of the HydraClient class", () => {
         run(async function() {
           this.resource = { hypermedia: {} };
           this.resourceEnrichmentProvider.enrichHypermedia.callsFake(
-            (resource) => resource
+            (client, resource) => resource
           );
           this.resourceResponse = returnOk(this.resource);
           this.fetch
@@ -352,7 +352,7 @@ describe("Given an instance of the HydraClient class", () => {
       it("should enrich hypermedia", function() {
         expect(
           this.resourceEnrichmentProvider.enrichHypermedia
-        ).toHaveBeenCalledWith(this.resource);
+        ).toHaveBeenCalledWith(this.client, this.resource);
       });
 
       it(

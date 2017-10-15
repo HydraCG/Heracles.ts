@@ -57,10 +57,12 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 "http://schema.org/eventDescription": "Some event 1",
                 "http://schema.org/eventName": "Event 1",
                 "http://schema.org/startDate": "2017-04-19",
-                "iri": "http://temp.uri/api/events/1",
-                "isA": []
+                iri: "http://temp.uri/api/events/1",
+                isA: [],
+                operations: []
               }
             ],
+            operations: [],
             totalItems: 1
           },
           {
@@ -68,12 +70,9 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
             "http://schema.org/eventDescription": "Some event 1",
             "http://schema.org/eventName": "Event 1",
             "http://schema.org/startDate": "2017-04-19",
-            "iri": "http://temp.uri/api/events/1",
-            "isA": []
-          },
-          {
-            iri: "some:named.graph",
-            isA: []
+            iri: "http://temp.uri/api/events/1",
+            isA: [],
+            operations: []
           }
         ]);
       });
@@ -120,6 +119,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               iri: "http://temp.uri/api/events",
               isA: [hydra.Collection],
               members: [{ iri: "http://temp.uri/api/events/1" }],
+              operations: [],
               totalItems: 1
             }
           ]);

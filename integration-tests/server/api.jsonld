@@ -8,10 +8,30 @@
         "@type": ["hydra:Collection", "hydra:Resource"],
         "operation": [
             {
-                "@type": "hydra:Operation",
+                "@type": ["hydra:Operation", "schema:CreateAction", "schema:AddAction"],
                 "title": "Create new event",
                 "method": "POST",
                 "expects": "schema:Event"
+            }
+        ]
+    },
+    "examplevocab:people": {
+        "@id": "/api/people",
+        "title": "List of people",
+        "@type": ["hydra:Collection", "hydra:Resource"],
+        "operation": [
+            {
+                "@type": ["hydra:Operation", "schema:CreateAction"],
+                "targetUrl": "/api/people/new",
+                "title": "Create new person",
+                "method": "POST",
+                "expects": "schema:Person"
+            },
+            {
+                "@type": ["hydra:Operation", "schema:AddAction"],
+                "title": "Adds a person to the system",
+                "method": "PUT",
+                "expects": "schema:Person"
             }
         ]
     }

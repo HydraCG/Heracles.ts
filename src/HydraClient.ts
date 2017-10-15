@@ -5,6 +5,7 @@ import { IApiDocumentation } from "./DataModel/IApiDocumentation";
 import { IHypermediaProcessor } from "./DataModel/IHypermediaProcessor";
 import { IResource } from "./DataModel/IResource";
 import { IWebResource } from "./DataModel/IWebResource";
+import { IOperation } from "./DataModel/IOperation";
 import { hydra } from "./namespaces";
 import ResourceEnrichmentProvider from "./ResourceEnrichmentProvider";
 
@@ -14,6 +15,10 @@ import ResourceEnrichmentProvider from "./ResourceEnrichmentProvider";
  * To learn more about Hydra please refer to {@link https://www.hydra-cg.com/spec/latest/core/}
  */
 export default class HydraClient {
+  public static invalidArgument = "Argument passed is invalid.";
+  public static operationNotSupported = "The operation specified is not supported.";
+  public static noOperationProvided = "There was no operation provided.";
+  public static noResourceProvided = "There was no resource provided.";
   public static noUrlProvided = "There was no Url provided.";
   public static apiDocumentationNotProvided = "API documentation not provided.";
   public static noEntryPointDefined = "API documentation has no entry point defined.";
@@ -24,9 +29,11 @@ export default class HydraClient {
   // TODO: These shouldn't be public but the tests access them directly
   public static hypermediaProcessors = new Array<IHypermediaProcessor>();
   public static resourceEnrichmentProvider: {
-    enrichHypermedia(resource: IWebResource): IWebResource;
+    enrichHypermedia(client: HydraClient, resource: IWebResource): IWebResource;
   } = new ResourceEnrichmentProvider();
   public removeHypermediaFromPayload;
+
+  private lastHypermediaProcessor: IHypermediaProcessor;
 
   /**
    * Initializes a new instance of the {@link HydraClient} class.
@@ -41,10 +48,11 @@ export default class HydraClient {
   /**
    * Registers a custom resource enrichment provider.
    *
+   * @param client Hydra client that can be used for further operation invocations.
    * @param resourceEnrichmentProvider Component to be registered.
    */
   public static registerResourceEnrichmentProvider(resourceEnrichmentProvider: {
-    enrichHypermedia(resource: IWebResource): IWebResource;
+    enrichHypermedia(client: HydraClient, resource: IWebResource): IWebResource;
   }) {
     if (resourceEnrichmentProvider) {
       HydraClient.resourceEnrichmentProvider = resourceEnrichmentProvider;
@@ -72,7 +80,7 @@ export default class HydraClient {
    * @param response Raw response to find hypermedia processor for.
    */
   public getHypermediaProcessor(response: Response): IHypermediaProcessor {
-    return HydraClient.hypermediaProcessors.find(
+    return this.lastHypermediaProcessor = HydraClient.hypermediaProcessors.find(
       (provider) =>
         !!provider.supportedMediaTypes.find(
           (mediaType) =>
@@ -132,7 +140,28 @@ export default class HydraClient {
       response,
       this.removeHypermediaFromPayload
     );
-    return HydraClient.resourceEnrichmentProvider.enrichHypermedia(result);
+	Object.defineProperty(result, "iri", {
+      value: response.url
+    });
+    return HydraClient.resourceEnrichmentProvider.enrichHypermedia(this, result);
+  }
+
+  /**
+   * Invokes a given operation.
+   *
+   * @param operation Operation descriptor to be invoked.
+   * @param body Optional resource to be used as a body of the operation.
+   * @returns Response of the operation.
+   */
+  public async invoke(
+    operation: IOperation,
+    body?: IWebResource
+  ): Promise<Response> {
+    if (!operation) {
+      throw new Error(HydraClient.noOperationProvided);
+    }
+
+    return await fetch(operation.targetUrl, { method: operation.method, body: body });
   }
 
   private async getApiDocumentationUrl(url: string): Promise<string> {

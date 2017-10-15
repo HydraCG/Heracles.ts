@@ -15,5 +15,12 @@
             "@id": "/api/events/3",
             "@type": "schema:Event"
         }
+    ],
+    "operation": [
+        {
+            "@type": ["hydra:Operation", "schema:CreateAction", "schema:AddAction"],
+            "method": "POST",
+            "expects": "schema:Event"
+        }
     ]
 }

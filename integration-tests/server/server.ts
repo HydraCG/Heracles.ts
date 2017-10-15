@@ -2,6 +2,15 @@ import * as express from "express";
 import * as fs from "fs";
 const serverPort = 3000;
 
+function setCorsHeaders(
+  response: express.Response,
+  allowedMethods: Array<string> = ["GET"]
+) {
+  response.header("Access-Control-Allow-Origin", "*");
+  response.header("Access-Control-Allow-Methods", allowedMethods.join(", "));
+  response.header("Access-Control-Expose-Headers", "Link, Content-Type, Location");
+}
+
 function setHeaders(
   path: string,
   response: express.Response,
@@ -11,10 +20,7 @@ function setHeaders(
     "Content-Type",
     isJsonLd ? "application/ld+json" : "text/plain"
   );
-  response.header("Access-Control-Allow-Origin", "*");
-  response.header("Access-Control-Allow-Methods", "GET");
-  response.header("Access-Control-Expose-Headers", "Link, Content-Type");
-
+  setCorsHeaders(response);
   const file = __dirname + path + ".headers";
   if (!fs.existsSync(file)) {
     return false;
@@ -50,6 +56,10 @@ module.exports = {
       log.info("Starting test server...");
       const server = express();
       server.disable("etag");
+      server.options("/*", (request, response) => {
+        setCorsHeaders(response, ["GET", "PUT", "POST"]);
+        response.status(200).send();
+      });
       server.get("/*", (request, response) => {
         const path = request.path === "/" ? "/root" : request.path;
         const body = loadBody(path);
@@ -58,6 +68,15 @@ module.exports = {
         } else {
           response.status(404).send();
         }
+      });
+      server.post("/*", (request, response) => {
+        setCorsHeaders(response, ["POST"]);
+        response.header("Location", request.path + "/" + Math.random().toString().substr(2));
+        response.status(201).send();
+      });
+      server.put("/*", (request, response) => {
+        setCorsHeaders(response, ["GET", "PUT"]);
+        response.status(200).send();
       });
       server.listen(serverPort, () =>
         log.info("Hydra tests server is listening on port %d...", serverPort)

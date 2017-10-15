@@ -1,0 +1,24 @@
+{
+    "@context": "/api/context.jsonld",
+    "@id": "/api/people",
+    "@type": "hydra:Collection",
+    "member": [
+        {
+            "@id": "/api/people/1",
+            "@type": "schema:Person"
+        }
+    ],
+    "operation": [
+        {
+            "@type": ["hydra:Operation", "schema:CreateAction"],
+            "targetUrl": "/api/people/new",
+            "method": "POST",
+            "expects": "schema:Person"
+        },
+        {
+            "@type": ["hydra:Operation", "schema:AddAction"],
+            "method": "PUT",
+            "expects": "schema:Person"
+        }
+    ]
+}

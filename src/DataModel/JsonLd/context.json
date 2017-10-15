@@ -21,8 +21,15 @@
             "@id": "hydra:member",
             "@container": "@set"
         },
+        "expects": {
+            "@id": "hydra:expects",
+            "@container": "@set"
+        },
+        "method": {
+            "@id": "hydra:method"
+        },
         "totalItems": "hydra:totalItems"
     },{
-      "hydra": null
+        "hydra": null
     }]
 }
