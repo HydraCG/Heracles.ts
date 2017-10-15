@@ -27,14 +27,14 @@ describe("Having a Hydra client", () => {
 
       it("should obtain a schema:CreateAction operation", () => {
         expect(
-          this.entryPoint.hypermedia.find((item) => item.isA === "Operation")
+          this.entryPoint.hypermedia.find(item => item.isA === "Operation")
         ).not.toBeNull();
       });
 
       it("should obtain a collection of events", () => {
         expect(
           this.entryPoint.hypermedia.find(
-            (item) => item.iri.match("/api/events$") && item.isA === "Colletion"
+            item => item.iri.match("/api/events$") && item.isA === "Colletion"
           )
         ).not.toBeNull();
       });
@@ -52,7 +52,7 @@ describe("Having a Hydra client", () => {
         it("should obtain a collection of events", () => {
           expect(
             this.members.filter(
-              (member) => member.isA.indexOf("http://schema.org/Event") !== -1
+              member => member.isA.indexOf("http://schema.org/Event") !== -1
             ).length
           ).toBe(3);
         });
@@ -61,21 +61,28 @@ describe("Having a Hydra client", () => {
           beforeEach(
             run(async () => {
               try {
-                this.createdEvent = await this.members.add({ "@type": "http://schema.org/Event" });
-              }
-              catch (error) {
+                this.createdEvent = await this.members.add({
+                  "@type": "http://schema.org/Event"
+                });
+              } catch (error) {
                 this.exception = error;
               }
             })
           );
 
-          it("should not throw", run(async () => {
-            expect(this.exception).not.toBeDefined();
-          }));
+          it(
+            "should not throw",
+            run(async () => {
+              expect(this.exception).not.toBeDefined();
+            })
+          );
 
-          it("should add that new event with an operation pointed", run(async () => {
-            expect(this.createdEvent.status).toBe(201);
-          }));
+          it(
+            "should add that new event with an operation pointed",
+            run(async () => {
+              expect(this.createdEvent.status).toBe(201);
+            })
+          );
         });
       });
 
@@ -92,7 +99,7 @@ describe("Having a Hydra client", () => {
         it("should obtain a collection of people", () => {
           expect(
             this.members.filter(
-              (member) => member.isA.indexOf("http://schema.org/Person") !== -1
+              member => member.isA.indexOf("http://schema.org/Person") !== -1
             ).length
           ).toBe(1);
         });
@@ -101,21 +108,28 @@ describe("Having a Hydra client", () => {
           beforeEach(
             run(async () => {
               try {
-                this.createdPerson = await this.members.add({ "@type": "http://schema.org/Person" });
-              }
-              catch (error) {
+                this.createdPerson = await this.members.add({
+                  "@type": "http://schema.org/Person"
+                });
+              } catch (error) {
                 this.exception = error;
               }
             })
           );
 
-          it("should not throw", run(async () => {
-            expect(this.exception).not.toBeDefined();
-          }));
+          it(
+            "should not throw",
+            run(async () => {
+              expect(this.exception).not.toBeDefined();
+            })
+          );
 
-          it("should add that new event with an operation pointed", run(async () => {
-            expect(this.createdPerson.status).toBe(200);
-          }));
+          it(
+            "should add that new event with an operation pointed",
+            run(async () => {
+              expect(this.createdPerson.status).toBe(200);
+            })
+          );
         });
       });
     });

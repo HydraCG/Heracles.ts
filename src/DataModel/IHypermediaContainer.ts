@@ -1,7 +1,7 @@
 import { IHypermedia } from "./IHypermedia";
 import { IResource } from "./IResource";
 import { IOperation } from "./IOperation";
-import {ICollection} from "./ICollection";
+import { ICollection } from "./ICollection";
 
 /**
  * Provides an abstraction layer over hypermedia container.

@@ -8,7 +8,10 @@ function setCorsHeaders(
 ) {
   response.header("Access-Control-Allow-Origin", "*");
   response.header("Access-Control-Allow-Methods", allowedMethods.join(", "));
-  response.header("Access-Control-Expose-Headers", "Link, Content-Type, Location");
+  response.header(
+    "Access-Control-Expose-Headers",
+    "Link, Content-Type, Location"
+  );
 }
 
 function setHeaders(
@@ -29,8 +32,8 @@ function setHeaders(
     .readFileSync(file, "utf8")
     .replace("\r", "")
     .split("\n")
-    .filter((header) => header.length > 0)
-    .forEach((header) => {
+    .filter(header => header.length > 0)
+    .forEach(header => {
       const name = header.split(":")[0];
       const value = header.substr(name.length + 1).trim();
       response.header(name, value);
@@ -71,7 +74,14 @@ module.exports = {
       });
       server.post("/*", (request, response) => {
         setCorsHeaders(response, ["POST"]);
-        response.header("Location", request.path + "/" + Math.random().toString().substr(2));
+        response.header(
+          "Location",
+          request.path +
+            "/" +
+            Math.random()
+              .toString()
+              .substr(2)
+        );
         response.status(201).send();
       });
       server.put("/*", (request, response) => {

@@ -18,8 +18,8 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
   }
 
   public async process(
-	response: Response,
-	removeFromPayload: boolean = false
+    response: Response,
+    removeFromPayload: boolean = false
   ): Promise<IWebResource> {
     const payload = await response.json();
     let hypermedia: any = null;
@@ -38,13 +38,13 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     }
 
     hypermedia = JsonLdHypermediaProcessor.traverseGraph(
-	  hypermedia["@graph"],
-	  response.url
-	);
+      hypermedia["@graph"],
+      response.url
+    );
     Object.defineProperty(result, "hypermedia", {
-	  enumerable: false,
-	  value: hypermedia
-	});
+      enumerable: false,
+      value: hypermedia
+    });
     return result;
   }
 
@@ -74,17 +74,15 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
   private static fixProperty(resource: any, propertyName: string) {
     if (!resource[propertyName]) {
       resource[propertyName] = [];
-    }
-    else if (!(resource[propertyName] instanceof Array)) {
+    } else if (!(resource[propertyName] instanceof Array)) {
       resource[propertyName] = [resource[propertyName]];
     }
   }
 
   private static fixOperation(resource: any, resourceUrl: string) {
     if (resource.isA && resource.isA.indexOf(hydra.Operation) !== -1) {
-      resource.targetUrl = (!resource.iri || resource.iri.match(/^_:/)
-        ? resourceUrl
-        : resource.iri);
+      resource.targetUrl =
+        !resource.iri || resource.iri.match(/^_:/) ? resourceUrl : resource.iri;
       if (!resource.method) {
         resource.method = "GET";
       }
@@ -124,41 +122,41 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       payload,
       result,
       removeFromPayload
-	);
+    );
   }
 
   private static processArray(
     payload: any,
-	result: any[] & { [key: string]: any },
-	removeFromPayload: boolean = false
+    result: any[] & { [key: string]: any },
+    removeFromPayload: boolean = false
   ) {
     const toBeRemoved = new Array<any>();
     for (let resource of payload) {
       if (
-        !resource["@type"] || 
-        !!resource["@type"].find((item) => item === hydra.EntryPoint) ||
-        !resource["@type"].every((item) => item.indexOf(hydra.namespace) === 0)
+        !resource["@type"] ||
+        !!resource["@type"].find(item => item === hydra.EntryPoint) ||
+        !resource["@type"].every(item => item.indexOf(hydra.namespace) === 0)
       ) {
         JsonLdHypermediaProcessor.processHypermedia(
           resource,
           result,
           removeFromPayload
-		);
+        );
         continue;
       }
 
       Object.defineProperty(
-	    result,
-	    resource["@id"] || JsonLdHypermediaProcessor.generateBlankNodeId(),
-	    { enumerable: false, value: resource }
-	  );
+        result,
+        resource["@id"] || JsonLdHypermediaProcessor.generateBlankNodeId(),
+        { enumerable: false, value: resource }
+      );
       result.push(resource);
       if (removeFromPayload) {
         toBeRemoved.push(resource);
       }
     }
 
-    toBeRemoved.forEach((item) => payload.splice(payload.indexOf(item), 1));
+    toBeRemoved.forEach(item => payload.splice(payload.indexOf(item), 1));
     return result;
   }
 
@@ -186,7 +184,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     }
 
     for (let property of Object.keys(resource).filter(
-      (prop) => prop.charAt(0) !== "@"
+      prop => prop.charAt(0) !== "@"
     )) {
       if (property.indexOf(hydra.namespace) === 0) {
         targetResource[property] = resource[property];

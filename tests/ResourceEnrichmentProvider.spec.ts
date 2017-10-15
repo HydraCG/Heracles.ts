@@ -1,7 +1,7 @@
 import * as sinon from "sinon";
-import {hydra, schema} from "../src/namespaces";
+import { hydra, schema } from "../src/namespaces";
 import ResourceEnrichmentProvider from "../src/ResourceEnrichmentProvider";
-import {run} from "../testing/AsyncHelper";
+import { run } from "../testing/AsyncHelper";
 import HydraClient from "../src/HydraClient";
 
 describe("Given instance of ResourceEnrichmentProvider class", () => {
@@ -19,14 +19,10 @@ describe("Given instance of ResourceEnrichmentProvider class", () => {
     this.collection = {
       isA: [hydra.Collection],
       members: [{ iri: "test" }],
-      operations: [ this.createAction, this.addAction ]
+      operations: [this.createAction, this.addAction]
     };
     this.resource = {
-      hypermedia: [
-        this.collection,
-        this.createAction,
-        this.addAction
-      ],
+      hypermedia: [this.collection, this.createAction, this.addAction]
     };
   });
 
@@ -45,24 +41,23 @@ describe("Given instance of ResourceEnrichmentProvider class", () => {
       });
 
       it("should enrich members property with an 'add' method", () => {
-        expect(this.result.hypermedia.members.add).toEqual(jasmine.any(Function));
+        expect(this.result.hypermedia.members.add).toEqual(
+          jasmine.any(Function)
+        );
       });
     });
 
     describe("and adding a new collection member", () => {
-      const tryAddMember = async (resource) => {
+      const tryAddMember = async resource => {
         try {
           await this.result.hypermedia.members.add(resource);
-        }
-        catch (error) {
+        } catch (error) {
           this.exception = error;
         }
       };
 
       describe("and no resource to be added is given", () => {
-        beforeEach(
-          run(async () => await tryAddMember(null))
-        );
+        beforeEach(run(async () => await tryAddMember(null)));
 
         it("should throw", () => {
           expect(this.exception).toBe(HydraClient.noResourceProvided);
@@ -73,7 +68,9 @@ describe("Given instance of ResourceEnrichmentProvider class", () => {
         beforeEach(
           run(async () => {
             const collection = { isA: [hydra.Collection], members: [] };
-            this.result = this.provider.enrichHypermedia(this.client, { hypermedia: [ collection ] });
+            this.result = this.provider.enrichHypermedia(this.client, {
+              hypermedia: [collection]
+            });
             await tryAddMember({});
           })
         );
@@ -84,9 +81,7 @@ describe("Given instance of ResourceEnrichmentProvider class", () => {
       });
 
       describe("and resource doesn't meet operation expectations", () => {
-        beforeEach(
-          run(async () => await tryAddMember({}))
-        );
+        beforeEach(run(async () => await tryAddMember({})));
 
         it("should throw", () => {
           expect(this.exception).toBe(HydraClient.invalidArgument);
@@ -97,7 +92,10 @@ describe("Given instance of ResourceEnrichmentProvider class", () => {
         beforeEach(
           run(async () => {
             this.client.invoke = sinon.stub();
-            const createResponse = { status: 201, headers: { get: (name: string) => "/api/people/1" } };
+            const createResponse = {
+              status: 201,
+              headers: { get: (name: string) => "/api/people/1" }
+            };
             this.client.invoke.onFirstCall().returns(createResponse);
             this.client.invoke.onSecondCall().returns({ status: 200 });
             this.resource = { "@type": [schema + "Person"] };
@@ -106,11 +104,17 @@ describe("Given instance of ResourceEnrichmentProvider class", () => {
         );
 
         it("should create a new resource", () => {
-          expect(this.client.invoke).toHaveBeenCalledWith(this.createAction, this.resource);
+          expect(this.client.invoke).toHaveBeenCalledWith(
+            this.createAction,
+            this.resource
+          );
         });
 
         it("should add a new resource to the collection", () => {
-          expect(this.client.invoke).toHaveBeenCalledWith(this.addAction, { iri: "/api/people/1", "@type": [schema + "Person"] });
+          expect(this.client.invoke).toHaveBeenCalledWith(this.addAction, {
+            iri: "/api/people/1",
+            "@type": [schema + "Person"]
+          });
         });
       });
     });

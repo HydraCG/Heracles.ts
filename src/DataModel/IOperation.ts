@@ -1,5 +1,5 @@
 import { IHydraResource } from "./IHydraResource";
-import {IClass} from "./IClass";
+import { IClass } from "./IClass";
 
 /**
  * Describes an abstract Hydra operation.

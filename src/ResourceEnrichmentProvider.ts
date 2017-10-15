@@ -68,15 +68,15 @@ export default class ResourceEnrichmentProvider {
     let value = null;
     const relations = originatingResource.hypermedia.filter(
       (item: any) =>
-      !propertyDefinition.type ||
-      (item.isA && item.isA.find((type) => type === propertyDefinition.type))
+        !propertyDefinition.type ||
+        (item.isA && item.isA.find(type => type === propertyDefinition.type))
     );
     if (relations.length > 0) {
       value = Array.prototype.concat.apply(
         new Array<IResource>(),
         relations
           .map((relation: any) => relation[propertyDefinition.propertyName])
-          .filter((item) => !!item)
+          .filter(item => !!item)
       );
 
       ResourceEnrichmentProvider.createPropertyMembers(
@@ -130,7 +130,7 @@ export default class ResourceEnrichmentProvider {
     }
 
     return !!resourceType.find(
-      (type) => !!operation.expects.find((expected) => expected.iri == type)
+      type => !!operation.expects.find(expected => expected.iri == type)
     );
   }
 
@@ -144,12 +144,18 @@ export default class ResourceEnrichmentProvider {
     }
 
     const operation: any = originatingResource.hypermedia.operations.find(
-      (item: any) => item.isA.indexOf(operationType) !== -1);
+      (item: any) => item.isA.indexOf(operationType) !== -1
+    );
     if (!operation) {
       throw HydraClient.operationNotSupported;
     }
 
-    if (!ResourceEnrichmentProvider.resourceMeetsOperationExpectations(webResource, operation)) {
+    if (
+      !ResourceEnrichmentProvider.resourceMeetsOperationExpectations(
+        webResource,
+        operation
+      )
+    ) {
       throw HydraClient.invalidArgument;
     }
 

@@ -1,5 +1,5 @@
-import {IResource} from "./IResource";
-import {IWebResource} from "./IWebResource";
+import { IResource } from "./IResource";
+import { IWebResource } from "./IWebResource";
 
 export interface ICollection extends Array<IResource> {
   /**

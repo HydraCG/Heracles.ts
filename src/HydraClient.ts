@@ -80,13 +80,13 @@ export default class HydraClient {
    * @param response Raw response to find hypermedia processor for.
    */
   public getHypermediaProcessor(response: Response): IHypermediaProcessor {
-    return this.lastHypermediaProcessor = HydraClient.hypermediaProcessors.find(
-      (provider) =>
+    return (this.lastHypermediaProcessor = HydraClient.hypermediaProcessors.find(
+      provider =>
         !!provider.supportedMediaTypes.find(
-          (mediaType) =>
+          mediaType =>
             response.headers.get("Content-Type").indexOf(mediaType) === 0
         )
-    );
+    ));
   }
 
   /**
@@ -102,7 +102,7 @@ export default class HydraClient {
     const apiDocumentationUrl = await this.getApiDocumentationUrl(url);
     const resource = await this.getResource(apiDocumentationUrl);
     const apiDocumentation = resource.hypermedia.find(
-      (hypermediaControl) => (hypermediaControl as any).entryPoint
+      hypermediaControl => (hypermediaControl as any).entryPoint
     ) as IApiDocumentation;
     if (!apiDocumentation) {
       throw new Error(HydraClient.noEntryPointDefined);
@@ -140,10 +140,13 @@ export default class HydraClient {
       response,
       this.removeHypermediaFromPayload
     );
-	Object.defineProperty(result, "iri", {
+    Object.defineProperty(result, "iri", {
       value: response.url
     });
-    return HydraClient.resourceEnrichmentProvider.enrichHypermedia(this, result);
+    return HydraClient.resourceEnrichmentProvider.enrichHypermedia(
+      this,
+      result
+    );
   }
 
   /**
@@ -161,7 +164,10 @@ export default class HydraClient {
       throw new Error(HydraClient.noOperationProvided);
     }
 
-    return await fetch(operation.targetUrl, { method: operation.method, body: body });
+    return await fetch(operation.targetUrl, {
+      method: operation.method,
+      body: body
+    });
   }
 
   private async getApiDocumentationUrl(url: string): Promise<string> {
