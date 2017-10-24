@@ -1,4 +1,4 @@
-import { promises as jsonLd } from "jsonLd";
+import { promises as jsonLd } from "jsonld";
 import HydraClient from "../../HydraClient";
 import { hydra } from "../../namespaces";
 import { IHypermediaProcessor } from "../IHypermediaProcessor";

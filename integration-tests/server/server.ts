@@ -1,13 +1,16 @@
 import * as express from "express";
 import * as fs from "fs";
+import * as md5 from "js-md5";
+import * as bodyParser from "body-parser";
 const serverPort = 3000;
 
-function setCorsHeaders(
-  response: express.Response,
-  allowedMethods: Array<string> = ["GET"]
-) {
+function setCorsHeaders(response: express.Response) {
   response.header("Access-Control-Allow-Origin", "*");
-  response.header("Access-Control-Allow-Methods", allowedMethods.join(", "));
+  response.header(
+    "Access-Control-Allow-Methods",
+    "HEAD, GET, PUT, DELETE, POST"
+  );
+  response.header("Access-Control-Allow-Headers", "Content-Type");
   response.header(
     "Access-Control-Expose-Headers",
     "Link, Content-Type, Location"
@@ -59,8 +62,13 @@ module.exports = {
       log.info("Starting test server...");
       const server = express();
       server.disable("etag");
+      server.use(
+        bodyParser.json({
+          type: request => request.get("Content-Type") === "application/ld+json"
+        })
+      );
       server.options("/*", (request, response) => {
-        setCorsHeaders(response, ["GET", "PUT", "POST"]);
+        setCorsHeaders(response);
         response.status(200).send();
       });
       server.get("/*", (request, response) => {
@@ -73,19 +81,13 @@ module.exports = {
         }
       });
       server.post("/*", (request, response) => {
-        setCorsHeaders(response, ["POST"]);
-        response.header(
-          "Location",
-          request.path +
-            "/" +
-            Math.random()
-              .toString()
-              .substr(2)
-        );
+        setCorsHeaders(response);
+        const hash = md5(JSON.stringify(request.body));
+        response.header("Location", request.path + "/" + hash);
         response.status(201).send();
       });
       server.put("/*", (request, response) => {
-        setCorsHeaders(response, ["GET", "PUT"]);
+        setCorsHeaders(response);
         response.status(200).send();
       });
       server.listen(serverPort, () =>

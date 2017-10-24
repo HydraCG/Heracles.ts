@@ -166,7 +166,8 @@ export default class HydraClient {
 
     return await fetch(operation.targetUrl, {
       method: operation.method,
-      body: body
+      headers: { "Content-Type": "application/ld+json" },
+      body: JSON.stringify(body)
     });
   }
 

@@ -1,5 +1,7 @@
 import HydraClient from "../src/HydraClient";
 import { run } from "../testing/AsyncHelper";
+import { hydra } from "../src/namespaces";
+import * as md5 from "js-md5";
 
 describe("Having a Hydra client", () => {
   beforeEach(() => {
@@ -26,17 +28,21 @@ describe("Having a Hydra client", () => {
       });
 
       it("should obtain a schema:CreateAction operation", () => {
-        expect(
-          this.entryPoint.hypermedia.find(item => item.isA === "Operation")
-        ).not.toBeNull();
+        const operation = this.entryPoint.hypermedia.find(
+          item => item.isA.indexOf(hydra.Operation) !== -1
+        );
+        expect(operation).toBeDefined();
+        expect(operation).not.toBeNull();
       });
 
       it("should obtain a collection of events", () => {
-        expect(
-          this.entryPoint.hypermedia.find(
-            item => item.iri.match("/api/events$") && item.isA === "Colletion"
-          )
-        ).not.toBeNull();
+        const collection = this.entryPoint.hypermedia.find(
+          item =>
+            item.iri.match("/api/events$") &&
+            item.isA.indexOf(hydra.Collection) !== -1
+        );
+        expect(collection).toBeDefined();
+        expect(collection).not.toBeNull();
       });
 
       describe("and then obtaining events as in use case 3.obtaining-events", () => {
@@ -61,9 +67,10 @@ describe("Having a Hydra client", () => {
           beforeEach(
             run(async () => {
               try {
-                this.createdEvent = await this.members.add({
+                this.body = {
                   "@type": "http://schema.org/Event"
-                });
+                };
+                this.createdEvent = await this.members.add(this.body);
               } catch (error) {
                 this.exception = error;
               }
@@ -81,6 +88,15 @@ describe("Having a Hydra client", () => {
             "should add that new event with an operation pointed",
             run(async () => {
               expect(this.createdEvent.status).toBe(201);
+            })
+          );
+
+          it(
+            "should provide a resource's URL",
+            run(async () => {
+              expect(this.createdEvent.headers.get("Location")).toMatch(
+                ".*/api/events/" + md5(JSON.stringify(this.body))
+              );
             })
           );
         });
