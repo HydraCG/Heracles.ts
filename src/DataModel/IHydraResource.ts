@@ -1,17 +1,15 @@
-import { IHypermedia } from "./IHypermedia";
-import { IOperation } from "./IOperation";
-import { IResource } from "./IResource";
+import { IOperationsCollection } from "./Collections/IOperationsCollection";
+import { ITypedResource } from "./ITypedResource";
+
 /**
  * Describes an abstract Hydra resource.
+ * @interface
  */
-export interface IHydraResource extends IResource, IHypermedia {
-  /**
-   * Gets classes a given resource is of.
-   */
-  readonly isA: string[];
-
+export interface IHydraResource extends ITypedResource {
   /**
    * Gets operations that can be performed on that resource.
+   * @readonly
+   * @returns {IOperationsCollection}
    */
-  readonly operations: IOperation[];
+  readonly operations: IOperationsCollection;
 }

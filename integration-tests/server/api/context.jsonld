@@ -43,13 +43,33 @@
             "@id": "hydra:property",
             "@type": "@vocab"
         },
+        "required": {
+            "@id": "hydra:required",
+            "@type": "xsd:boolean"
+        },
         "member": {
             "@id": "hydra:member",
+            "@type": "@id"
+        },
+        "memberTemplate": {
+            "@id": "hydra:memberTemplate",
             "@type": "@id"
         },
         "totalItems": {
             "@id": "hydra:totalItems",
             "@type": "xsd:int"
+        },
+        "template": {
+            "@id": "hydra:template",
+            "@type": "xsd:string"
+        },
+        "mapping": {
+            "@id": "hydra:mapping",
+            "@type": "@id"
+        },
+        "variable": {
+            "@id": "hydra:variable",
+            "@type": "@id"
         },
         "search": {
             "@id": "hydra:search"

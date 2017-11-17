@@ -1,31 +1,18 @@
+import * as bodyParser from "body-parser";
 import * as express from "express";
 import * as fs from "fs";
 import * as md5 from "js-md5";
-import * as bodyParser from "body-parser";
 const serverPort = 3000;
 
 function setCorsHeaders(response: express.Response) {
   response.header("Access-Control-Allow-Origin", "*");
-  response.header(
-    "Access-Control-Allow-Methods",
-    "HEAD, GET, PUT, DELETE, POST"
-  );
+  response.header("Access-Control-Allow-Methods", "HEAD, GET, PUT, DELETE, POST");
   response.header("Access-Control-Allow-Headers", "Content-Type");
-  response.header(
-    "Access-Control-Expose-Headers",
-    "Link, Content-Type, Location"
-  );
+  response.header("Access-Control-Expose-Headers", "Link, Content-Type, Location");
 }
 
-function setHeaders(
-  path: string,
-  response: express.Response,
-  isJsonLd: boolean
-): boolean {
-  response.header(
-    "Content-Type",
-    isJsonLd ? "application/ld+json" : "text/plain"
-  );
+function setHeaders(path: string, response: express.Response, isJsonLd: boolean): boolean {
+  response.header("Content-Type", isJsonLd ? "application/ld+json" : "text/plain");
   setCorsHeaders(response);
   const file = __dirname + path + ".headers";
   if (!fs.existsSync(file)) {
@@ -88,11 +75,9 @@ module.exports = {
       });
       server.put("/*", (request, response) => {
         setCorsHeaders(response);
-        response.status(200).send();
+        response.status(201).send();
       });
-      server.listen(serverPort, () =>
-        log.info("Hydra tests server is listening on port %d...", serverPort)
-      );
+      server.listen(serverPort, () => log.info("Hydra tests server is listening on port %d...", serverPort));
     }
   ]
 };

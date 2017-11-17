@@ -1,17 +1,44 @@
-// tslint:disable-next-line:no-construct
-export let hydra: any = new String("http://www.w3.org/ns/hydra/core#");
-hydra.namespace = hydra.toString();
-hydra.apiDocumentation = hydra + "apiDocumentation";
-hydra.member = hydra + "member";
-hydra.operation = hydra + "operation";
-hydra.expects = hydra + "expects";
-hydra.ApiDocumentation = hydra + "ApiDocumentation";
-hydra.EntryPoint = hydra + "EntryPoint";
-hydra.Collection = hydra + "Collection";
-hydra.Operation = hydra + "Operation";
-hydra.Resource = hydra + "Resource";
+/* tslint:disable:object-literal-sort-keys */
+const hydraNamespace = "http://www.w3.org/ns/hydra/core#";
+export let hydra = {
+  namespace: hydraNamespace,
 
-export let schema: any = new String("http://schema.org/");
-schema.namespace = schema.toString();
-schema.AddAction = schema + "AddAction";
-schema.CreateAction = schema + "CreateAction";
+  entrypoint: hydraNamespace + "entrypoint",
+  description: hydraNamespace + "description",
+  title: hydraNamespace + "title",
+  apiDocumentation: hydraNamespace + "apiDocumentation",
+  supportedClass: hydraNamespace + "supportedClass",
+  ApiDocumentation: hydraNamespace + "ApiDocumentation",
+  EntryPoint: hydraNamespace + "EntryPoint",
+
+  mapping: hydraNamespace + "mapping",
+  template: hydraNamespace + "template",
+  BasicRepresentation: hydraNamespace + "BasicRepresentation",
+  IriTemplate: hydraNamespace + "IriTemplate",
+
+  member: hydraNamespace + "member",
+  memberTemplate: hydraNamespace + "memberTemplate",
+  totalItems: hydraNamespace + "totalItems",
+  variableRepresentation: hydraNamespace + "variableRepresentation",
+  Collection: hydraNamespace + "Collection",
+
+  supportedOperation: hydraNamespace + "supportedOperation",
+  supportedProperty: hydraNamespace + "supportedProperty",
+  Class: hydraNamespace + "Class",
+
+  method: hydraNamespace + "method",
+  expects: hydraNamespace + "expects",
+  returns: hydraNamespace + "returns",
+  Operation: hydraNamespace + "Operation",
+
+  operation: hydraNamespace + "operation",
+  Resource: hydraNamespace + "Resource"
+};
+
+const schemaNamespace = "http://schema.org/";
+export let schema = {
+  namespace: schemaNamespace,
+
+  AddAction: schemaNamespace + "AddAction",
+  CreateAction: schemaNamespace + "CreateAction"
+};

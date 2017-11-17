@@ -8,17 +8,24 @@
             "@type": "schema:Person"
         }
     ],
-    "operation": [
-        {
-            "@type": ["hydra:Operation", "schema:CreateAction"],
-            "targetUrl": "/api/people/new",
-            "method": "POST",
-            "expects": "schema:Person"
-        },
-        {
-            "@type": ["hydra:Operation", "schema:AddAction"],
-            "method": "PUT",
-            "expects": "schema:Person"
-        }
-    ]
+    "memberTemplate": {
+        "@type": ["hydra:IriTemplate"],
+        "template": "/api/people/{name}",
+        "variableRepresentation": "hydra:BasicRepresentation",
+        "mapping": [
+            {
+                "@type": ["hydra:IriTemplateMapping"],
+                "variable": "name",
+                "property": "schema:name",
+                "required": true
+            }
+        ],
+        "operation": [
+            {
+                "@type": ["hydra:Operation", "schema:CreateAction", "schema:AddAction"],
+                "method": "PUT",
+                "expects": "schema:Person"
+            }
+        ]
+    }
 }

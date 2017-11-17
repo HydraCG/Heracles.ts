@@ -15,7 +15,9 @@
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "jsonld": "^0.4.12",
-    "typescript": "^2.3.3"
+    "typescript": "^2.3.3",
+    "uri-templates": "^0.2.0",
+    "urijs": "^1.19.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.16.5",
@@ -24,6 +26,7 @@
     "@types/js-md5": "^0.4.2",
     "@types/node": "^7.0.21",
     "@types/sinon": "^2.2.2",
+    "@types/uri-templates": "^0.1.28",
     "body-parser": "^1.18.2",
     "express": "^4.15.3",
     "jasmine": "^2.6.0",

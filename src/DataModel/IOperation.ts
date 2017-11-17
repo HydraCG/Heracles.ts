@@ -1,22 +1,37 @@
-import { IHydraResource } from "./IHydraResource";
+import { ITypedResourceFilteredCollection } from "./Collections/ITypedResourceFilteredCollection";
 import { IClass } from "./IClass";
+import { IHydraResource } from "./IHydraResource";
 
 /**
  * Describes an abstract Hydra operation.
+ * @interface
  */
 export interface IOperation extends IHydraResource {
   /**
-   * Gets a target URL to be called.
+   * Gets a base URL that can be used to resolve target in case it is relative.
+   * @readonly
+   * @returns {string}
    */
-  readonly targetUrl: string;
+  readonly baseUrl: string;
+
+  /**
+   * Gets a target URL to be called.
+   * @readonly
+   * @returns {string}
+   */
+  readonly target: string;
 
   /**
    * Gets a method to be used for the call.
+   * @readonly
+   * @returns {string}
    */
   readonly method: string;
 
   /**
-   * Gets the expectec class, if any.
+   * Gets the expected classes.
+   * @readonly
+   * @returns {ITypedResourceFilteredCollection<IClass>}
    */
-  readonly expects?: IClass[];
+  readonly expects: ITypedResourceFilteredCollection<IClass>;
 }

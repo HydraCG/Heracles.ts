@@ -1,12 +1,31 @@
-import { IResource } from "./IResource";
-import { IWebResource } from "./IWebResource";
+import { ITypedResourceFilteredCollection } from "./Collections/ITypedResourceFilteredCollection";
+import { IHydraResource } from "./IHydraResource";
+import { IIriTemplate } from "./IIriTemplate";
+import { ITypedResource } from "./ITypedResource";
 
-export interface ICollection extends Array<IResource> {
+/**
+ * Describes an abstract Hydra collection.
+ * @interface
+ */
+export interface ICollection extends IHydraResource {
   /**
-   * Adds a given web resource to the collection.
-   *
-   * @param webResource Web resource to be added to the collection.
-   * @returns Response of the operation designated for adding a resource.
+   * Gets the collection's member resources.
+   * @readonly
+   * @returns {ITypedResourceFilteredCollection<ITypedResource>}
    */
-  add(webResource: IWebResource): Promise<Response>;
+  readonly members: ITypedResourceFilteredCollection<ITypedResource>;
+
+  /**
+   * Gets the total items in the collection.
+   * @readonly
+   * @returns {number}
+   */
+  readonly totalItems: number;
+
+  /**
+   * Gets the optional member template.
+   * @readonly
+   * @returns {IIriTemplate}
+   */
+  readonly memberTemplate?: IIriTemplate;
 }

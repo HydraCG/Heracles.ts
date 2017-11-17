@@ -1,5 +1,6 @@
 import * as sinon from "sinon";
-import ApiDocumentation from "../src/ApiDocumentation";
+import ApiDocumentation from "../src/DataModel/ApiDocumentation";
+import { IApiDocumentation } from "../src/DataModel/IApiDocumentation";
 import HydraClient from "../src/HydraClient";
 import { hydra } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
@@ -12,16 +13,10 @@ describe("Given an instance of the HydraClient class", () => {
       process: sinon.stub(),
       supportedMediaTypes: ["application/ld+json"]
     };
-    this.resourceEnrichmentProvider = { enrichHypermedia: sinon.stub() };
-    this.client = new HydraClient(true);
+    this.client = new HydraClient();
     this.currentHypermediaProcessors = HydraClient.hypermediaProcessors;
-    this.currentResourceEnrichmentProvider =
-      HydraClient.resourceEnrichmentProvider;
     HydraClient.hypermediaProcessors = [];
     HydraClient.registerHypermediaProcessor(this.hypermediaProcessor);
-    HydraClient.registerResourceEnrichmentProvider(
-      this.resourceEnrichmentProvider
-    );
     this.fetch = sinon.stub(window, "fetch");
   });
 
@@ -30,15 +25,7 @@ describe("Given an instance of the HydraClient class", () => {
   });
 
   it("should register a hypermedia processor", function() {
-    expect(this.client.getHypermediaProcessor(returnOk())).toBe(
-      this.hypermediaProcessor
-    );
-  });
-
-  it("should register a resource enrichment provider", function() {
-    expect(HydraClient.resourceEnrichmentProvider).toBe(
-      this.resourceEnrichmentProvider
-    );
+    expect(this.client.getHypermediaProcessor(returnOk())).toBe(this.hypermediaProcessor);
   });
 
   describe("when obtaining an API documentation", () => {
@@ -57,9 +44,7 @@ describe("Given an instance of the HydraClient class", () => {
 
     describe("of which site's main document is not found", () => {
       beforeEach(function() {
-        this.fetch
-          .withArgs(this.baseUrl)
-          .returns(Promise.resolve(returnNotFound()));
+        this.fetch.withArgs(this.baseUrl).returns(Promise.resolve(returnNotFound()));
       });
 
       it(
@@ -93,14 +78,8 @@ describe("Given an instance of the HydraClient class", () => {
 
     describe("which is not provided within the LINK header", () => {
       beforeEach(function() {
-        this.urlResponse = returnOk(
-          this.baseUrl,
-          {},
-          { Link: `<${this.baseUrl}api/documentation>; rel="next"` }
-        );
-        this.fetch
-          .withArgs(this.baseUrl)
-          .returns(Promise.resolve(this.urlResponse));
+        this.urlResponse = returnOk(this.baseUrl, {}, { Link: `<${this.baseUrl}api/documentation>; rel="next"` });
+        this.fetch.withArgs(this.baseUrl).returns(Promise.resolve(this.urlResponse));
       });
 
       it(
@@ -121,21 +100,16 @@ describe("Given an instance of the HydraClient class", () => {
           this.baseUrl,
           {},
           {
-            Link: `<${this
-              .baseUrl}api/documentation>; rel="${hydra.apiDocumentation}"`
+            Link: `<${this.baseUrl}api/documentation>; rel="${hydra.apiDocumentation}"`
           }
         );
-        this.fetch
-          .withArgs(this.baseUrl)
-          .returns(Promise.resolve(this.urlResponse));
+        this.fetch.withArgs(this.baseUrl).returns(Promise.resolve(this.urlResponse));
       });
 
       describe("and that documentation is not found", () => {
         beforeEach(function() {
           this.apiDocumentationResponse = returnNotFound();
-          this.fetch
-            .withArgs(`${this.baseUrl}api/documentation`)
-            .returns(this.apiDocumentationResponse);
+          this.fetch.withArgs(`${this.baseUrl}api/documentation`).returns(this.apiDocumentationResponse);
         });
 
         it(
@@ -153,14 +127,8 @@ describe("Given an instance of the HydraClient class", () => {
       describe("and that documentation is provided in an unsupported format", () => {
         beforeEach(function() {
           const apiDocumentationUrl = `${this.baseUrl}api/documentation`;
-          this.apiDocumentationResponse = returnOk(
-            apiDocumentationUrl,
-            {},
-            { "Content-Type": "text/turtle" }
-          );
-          this.fetch
-            .withArgs(apiDocumentationUrl)
-            .returns(this.apiDocumentationResponse);
+          this.apiDocumentationResponse = returnOk(apiDocumentationUrl, {}, { "Content-Type": "text/turtle" });
+          this.fetch.withArgs(apiDocumentationUrl).returns(this.apiDocumentationResponse);
         });
 
         it(
@@ -178,9 +146,7 @@ describe("Given an instance of the HydraClient class", () => {
       describe("and that documentation has no entry point provided", () => {
         beforeEach(function() {
           this.apiDocumentationResponse = returnOk();
-          this.fetch
-            .withArgs(`${this.baseUrl}api/documentation`)
-            .returns(this.apiDocumentationResponse);
+          this.fetch.withArgs(`${this.baseUrl}api/documentation`).returns(this.apiDocumentationResponse);
           this.hypermediaProcessor.process.returns({});
         });
 
@@ -199,21 +165,15 @@ describe("Given an instance of the HydraClient class", () => {
       describe("which is provided correctly", () => {
         beforeEach(function() {
           const apiDocumentationUrl = `${this.baseUrl}api/documentation`;
-          this.apiDocumentation = { entryPoint: `${this.baseUrl}api` };
-          this.resourceEnrichmentProvider.enrichHypermedia.callsFake(
-            (client, resource) => resource
+          this.apiDocumentation = new ApiDocumentation(
+            ({ entryPoint: `${this.baseUrl}api` } as any) as IApiDocumentation,
+            this.client
           );
           this.data = [this.apiDocumentation];
-          this.apiDocumentationResponse = returnOk(
-            apiDocumentationUrl,
-            this.data
-          );
-          this.fetch
-            .withArgs(apiDocumentationUrl)
-            .returns(this.apiDocumentationResponse);
-          this.hypermediaProcessor.process.returns(
-            Promise.resolve({ hypermedia: this.data })
-          );
+          (this.data as any).ofType = sinon.stub().returns({ first: sinon.stub().returns(this.apiDocumentation) });
+          this.apiDocumentationResponse = returnOk(apiDocumentationUrl, this.data);
+          this.fetch.withArgs(apiDocumentationUrl).returns(this.apiDocumentationResponse);
+          this.hypermediaProcessor.process.returns(Promise.resolve({ hypermedia: this.data }));
         });
 
         it(
@@ -230,9 +190,7 @@ describe("Given an instance of the HydraClient class", () => {
           run(async function() {
             await this.client.getApiDocumentation(this.baseUrl);
 
-            expect(this.fetch).toHaveBeenCalledWith(
-              `${this.baseUrl}api/documentation`
-            );
+            expect(this.fetch).toHaveBeenCalledWith(`${this.baseUrl}api/documentation`);
           })
         );
 
@@ -241,9 +199,7 @@ describe("Given an instance of the HydraClient class", () => {
           run(async function() {
             await this.client.getApiDocumentation(this.baseUrl);
 
-            (expect(
-              this.hypermediaProcessor.process
-            ) as any).toHaveBeenCalledWith(this.apiDocumentationResponse);
+            (expect(this.hypermediaProcessor.process) as any).toHaveBeenCalledWith(this.apiDocumentationResponse);
           })
         );
 
@@ -280,9 +236,7 @@ describe("Given an instance of the HydraClient class", () => {
 
     describe("and that resource was not found", () => {
       beforeEach(function() {
-        this.fetch
-          .withArgs(this.resourceUrl)
-          .returns(Promise.resolve(returnNotFound()));
+        this.fetch.withArgs(this.resourceUrl).returns(Promise.resolve(returnNotFound()));
       });
 
       it(
@@ -299,14 +253,8 @@ describe("Given an instance of the HydraClient class", () => {
 
     describe("and that resource was provided in an unsupported format", () => {
       beforeEach(function() {
-        this.resourceResponse = returnOk(
-          this.resourceUrl,
-          {},
-          { "Content-Type": "text/turtle" }
-        );
-        this.fetch
-          .withArgs(this.resourceUrl)
-          .returns(Promise.resolve(this.resourceResponse));
+        this.resourceResponse = returnOk(this.resourceUrl, {}, { "Content-Type": "text/turtle" });
+        this.fetch.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
       });
 
       it(
@@ -325,16 +273,9 @@ describe("Given an instance of the HydraClient class", () => {
       beforeEach(
         run(async function() {
           this.resource = { hypermedia: {} };
-          this.resourceEnrichmentProvider.enrichHypermedia.callsFake(
-            (client, resource) => resource
-          );
           this.resourceResponse = returnOk(this.resource);
-          this.fetch
-            .withArgs(this.resourceUrl)
-            .returns(Promise.resolve(this.resourceResponse));
-          this.hypermediaProcessor.process
-            .withArgs(this.resourceResponse, true)
-            .returns(Promise.resolve(this.resource));
+          this.fetch.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
+          this.hypermediaProcessor.process.withArgs(this.resourceResponse).returns(Promise.resolve(this.resource));
           this.result = await this.client.getResource(this.resourceUrl);
         })
       );
@@ -342,18 +283,9 @@ describe("Given an instance of the HydraClient class", () => {
       it(
         "should process the response",
         run(async function() {
-          expect(this.hypermediaProcessor.process).toHaveBeenCalledWith(
-            this.resourceResponse,
-            true
-          );
+          expect(this.hypermediaProcessor.process).toHaveBeenCalledWith(this.resourceResponse);
         })
       );
-
-      it("should enrich hypermedia", function() {
-        expect(
-          this.resourceEnrichmentProvider.enrichHypermedia
-        ).toHaveBeenCalledWith(this.client, this.resource);
-      });
 
       it(
         "should return a correct result",
@@ -366,7 +298,6 @@ describe("Given an instance of the HydraClient class", () => {
 
   afterEach(function() {
     HydraClient.hypermediaProcessors = this.currentHypermediaProcessors;
-    HydraClient.resourceEnrichmentProvider = this.currentResourceEnrichmentProvider;
     this.fetch.restore();
   });
 });

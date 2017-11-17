@@ -1,13 +1,11 @@
 import "isomorphic-fetch";
 import * as jsonld from "jsonld";
-import ApiDocumentation from "./ApiDocumentation";
-import { IApiDocumentation } from "./DataModel/IApiDocumentation";
-import { IHypermediaProcessor } from "./DataModel/IHypermediaProcessor";
+import ApiDocumentation from "./DataModel/ApiDocumentation";
+import { IOperation } from "./DataModel/IOperation";
 import { IResource } from "./DataModel/IResource";
 import { IWebResource } from "./DataModel/IWebResource";
-import { IOperation } from "./DataModel/IOperation";
+import { IHypermediaProcessor } from "./IHypermediaProcessor";
 import { hydra } from "./namespaces";
-import ResourceEnrichmentProvider from "./ResourceEnrichmentProvider";
 
 /**
  * HydraClient, also known as Heracles.ts, is a generic client for Hydra-powered Web APIs.
@@ -15,10 +13,7 @@ import ResourceEnrichmentProvider from "./ResourceEnrichmentProvider";
  * To learn more about Hydra please refer to {@link https://www.hydra-cg.com/spec/latest/core/}
  */
 export default class HydraClient {
-  public static invalidArgument = "Argument passed is invalid.";
-  public static operationNotSupported = "The operation specified is not supported.";
   public static noOperationProvided = "There was no operation provided.";
-  public static noResourceProvided = "There was no resource provided.";
   public static noUrlProvided = "There was no Url provided.";
   public static apiDocumentationNotProvided = "API documentation not provided.";
   public static noEntryPointDefined = "API documentation has no entry point defined.";
@@ -28,45 +23,13 @@ export default class HydraClient {
 
   // TODO: These shouldn't be public but the tests access them directly
   public static hypermediaProcessors = new Array<IHypermediaProcessor>();
-  public static resourceEnrichmentProvider: {
-    enrichHypermedia(client: HydraClient, resource: IWebResource): IWebResource;
-  } = new ResourceEnrichmentProvider();
-  public removeHypermediaFromPayload;
-
-  private lastHypermediaProcessor: IHypermediaProcessor;
-
-  /**
-   * Initializes a new instance of the {@link HydraClient} class.
-   *
-   * @param removeHypermediaFromPayload Value indicating whether to remove hypermedia controls from the
-   *                                    resource's payload or leave it as is. Default is true.
-   */
-  public constructor(removeHypermediaFromPayload = false) {
-    this.removeHypermediaFromPayload = removeHypermediaFromPayload;
-  }
-
-  /**
-   * Registers a custom resource enrichment provider.
-   *
-   * @param client Hydra client that can be used for further operation invocations.
-   * @param resourceEnrichmentProvider Component to be registered.
-   */
-  public static registerResourceEnrichmentProvider(resourceEnrichmentProvider: {
-    enrichHypermedia(client: HydraClient, resource: IWebResource): IWebResource;
-  }) {
-    if (resourceEnrichmentProvider) {
-      HydraClient.resourceEnrichmentProvider = resourceEnrichmentProvider;
-    }
-  }
 
   /**
    * Registers a hypermedia processor.
    *
    * @param hypermediaProcessor Hypermedia processor to be registered.
    */
-  public static registerHypermediaProcessor(
-    hypermediaProcessor: IHypermediaProcessor
-  ) {
+  public static registerHypermediaProcessor(hypermediaProcessor: IHypermediaProcessor) {
     if (!hypermediaProcessor) {
       throw new Error(HydraClient.noHypermediaProcessor);
     }
@@ -80,13 +43,15 @@ export default class HydraClient {
    * @param response Raw response to find hypermedia processor for.
    */
   public getHypermediaProcessor(response: Response): IHypermediaProcessor {
-    return (this.lastHypermediaProcessor = HydraClient.hypermediaProcessors.find(
-      provider =>
-        !!provider.supportedMediaTypes.find(
-          mediaType =>
-            response.headers.get("Content-Type").indexOf(mediaType) === 0
-        )
-    ));
+    for (const hypermediaProcessor of HydraClient.hypermediaProcessors) {
+      for (const supportedMediaType of hypermediaProcessor.supportedMediaTypes) {
+        if (response.headers.get("Content-Type").indexOf(supportedMediaType) === 0) {
+          return hypermediaProcessor;
+        }
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -94,27 +59,18 @@ export default class HydraClient {
    *
    * @param urlOrResource URL or object with an iri property from which to obtain an API
    *                      documentation.
+   * @returns {ApiDocumentation}
    */
-  public async getApiDocumentation(
-    urlOrResource: string | IResource
-  ): Promise<IApiDocumentation> {
+  public async getApiDocumentation(urlOrResource: string | IResource): Promise<ApiDocumentation> {
     const url = HydraClient.getUrl(urlOrResource);
     const apiDocumentationUrl = await this.getApiDocumentationUrl(url);
     const resource = await this.getResource(apiDocumentationUrl);
-    const apiDocumentation = resource.hypermedia.find(
-      hypermediaControl => (hypermediaControl as any).entryPoint
-    ) as IApiDocumentation;
+    const apiDocumentation = resource.hypermedia.ofType(hydra.ApiDocumentation).first() as ApiDocumentation;
     if (!apiDocumentation) {
       throw new Error(HydraClient.noEntryPointDefined);
     }
 
-    apiDocumentation.client = this;
-    return Promise.resolve(
-      Object.create(
-        ApiDocumentation.prototype,
-        HydraClient.convertToPropertyDescriptorMap(apiDocumentation)
-      )
-    );
+    return apiDocumentation;
   }
 
   /**
@@ -122,9 +78,7 @@ export default class HydraClient {
    *
    * @param urlOrResource URL or a {@link IResource} carrying an IRI of the resource to be obtained.
    */
-  public async getResource(
-    urlOrResource: string | IResource
-  ): Promise<IWebResource> {
+  public async getResource(urlOrResource: string | IResource): Promise<IWebResource> {
     const url = HydraClient.getUrl(urlOrResource);
     const response = await fetch(url);
     if (response.status !== 200) {
@@ -136,17 +90,11 @@ export default class HydraClient {
       throw new Error(HydraClient.responseFormatNotSupported);
     }
 
-    const result = await hypermediaProcessor.process(
-      response,
-      this.removeHypermediaFromPayload
-    );
+    const result = await hypermediaProcessor.process(response, this);
     Object.defineProperty(result, "iri", {
       value: response.url
     });
-    return HydraClient.resourceEnrichmentProvider.enrichHypermedia(
-      this,
-      result
-    );
+    return result;
   }
 
   /**
@@ -156,18 +104,15 @@ export default class HydraClient {
    * @param body Optional resource to be used as a body of the operation.
    * @returns Response of the operation.
    */
-  public async invoke(
-    operation: IOperation,
-    body?: IWebResource
-  ): Promise<Response> {
+  public async invoke(operation: IOperation, body?: IWebResource): Promise<Response> {
     if (!operation) {
       throw new Error(HydraClient.noOperationProvided);
     }
 
-    return await fetch(operation.targetUrl, {
-      method: operation.method,
+    return await fetch(operation.target, {
+      body: JSON.stringify(body),
       headers: { "Content-Type": "application/ld+json" },
-      body: JSON.stringify(body)
+      method: operation.method
     });
   }
 
@@ -188,37 +133,16 @@ export default class HydraClient {
     }
 
     return !result[1].match(/^[a-z][a-z0-9+\-.]*:/)
-      ? jsonld.prependBase(
-          url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0],
-          result[1]
-        )
+      ? jsonld.prependBase(url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0], result[1])
       : result[1];
   }
 
   private static getUrl(urlOrResource: string | IResource): string {
-    const url =
-      typeof urlOrResource === "object" ? urlOrResource.iri : urlOrResource;
+    const url = typeof urlOrResource === "object" ? urlOrResource.iri : urlOrResource;
     if (!!!url) {
       throw new Error(HydraClient.noUrlProvided);
     }
 
     return url;
-  }
-
-  private static convertToPropertyDescriptorMap(
-    instance: any
-  ): PropertyDescriptorMap {
-    const properties = {};
-    for (const property of Object.keys(instance)) {
-      const isFunction = typeof (instance[property] === "function");
-      properties[property] = {
-        configurable: false,
-        enumerable: !isFunction,
-        value: instance[property],
-        writable: !isFunction
-      };
-    }
-
-    return properties;
   }
 }
