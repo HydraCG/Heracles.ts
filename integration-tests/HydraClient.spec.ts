@@ -79,7 +79,7 @@ describe("Having a Hydra client", () => {
           );
 
           it(
-            "should add that new event with an operation pointed",
+            "should return with a 201 Created",
             run(async () => {
               expect(this.createdEvent.status).toBe(201);
             })
@@ -131,7 +131,7 @@ describe("Having a Hydra client", () => {
             expect(this.exception).not.toBeDefined();
           });
 
-          it("should add that new event with an operation pointed", () => {
+          it("should return with a 201 Created", () => {
             expect(this.createdPerson.status).toBe(201);
           });
         });
