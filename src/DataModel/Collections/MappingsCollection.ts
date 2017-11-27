@@ -1,6 +1,6 @@
 import { IIriTemplateMapping } from "../IIriTemplateMapping";
 import { IMappingsCollection } from "./IMappingsCollection";
-import TypedResourceFilteredCollection from "./TypedResourceFilteredCollection";
+import TypedResourceFilteredCollection from "./TypedResourceFilterableCollection";
 
 /**
  * Provides a collection of {@link IIriTemplateMapping} that can be filtered with relevant criteria.

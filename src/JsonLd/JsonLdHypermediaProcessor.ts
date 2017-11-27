@@ -11,7 +11,7 @@ import HydraClient from "../HydraClient";
 import { IHypermediaProcessor } from "../IHypermediaProcessor";
 import { hydra } from "../namespaces";
 import { mappings } from "./mappings";
-import ProcessingContext from "./ProcessingContext";
+import ProcessingContext from "./ProcessingState";
 
 /**
  * Provides a JSON-LD based implementation of the {@link IHypermediaProcessor} interface.

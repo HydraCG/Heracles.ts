@@ -1,16 +1,17 @@
-import { IFilteredCollection } from "./IFilteredCollection";
+import { IFilterableCollection } from "./IFilterableCollection";
 
 /**
  * Provides a base functionality of a collection that filters itself with given predicates.
  * @abstract
  * @class
  */
-export default abstract class FilteredCollection<T> implements IFilteredCollection<T> {
+export default abstract class FilterableCollection<T> implements IFilterableCollection<T> {
   private readonly items: Iterable<T>;
   private filters: { [predicate: string]: any } = {};
 
   /**
-   * Initializes a new instance of the {@link FilteredCollection<T>} class with initial collections of items to filter.
+   * Initializes a new instance of the {@link FilterableCollection<T>} class
+   * with initial collections of items to filter.
    * @param items {Iterable<T>} Initial collection of items to filter.
    */
   protected constructor(items: Iterable<T>) {
@@ -42,7 +43,7 @@ export default abstract class FilteredCollection<T> implements IFilteredCollecti
     return null;
   }
 
-  public where(matchEvaluator: (item: T) => boolean): IFilteredCollection<T> {
+  public where(matchEvaluator: (item: T) => boolean): IFilterableCollection<T> {
     const predicate = Object.keys(this.filters)
       .filter(key => key.charAt(0) === "_")
       .map(key => parseInt(key.substr(1), 10))
@@ -59,30 +60,30 @@ export default abstract class FilteredCollection<T> implements IFilteredCollecti
    * @abstract
    * Creates a new instance of the collection.
    * @param items {Iterable<T>} Initial collection of items to filter.
-   * @returns {FilteredCollection<T>}
+   * @returns {FilterableCollection<T>}
    */
-  protected abstract createInstance(items: Iterable<T>): FilteredCollection<T>;
+  protected abstract createInstance(items: Iterable<T>): FilterableCollection<T>;
 
   /**
-   * Creates a new instance of the {@link FilteredCollection} with filter made narrower with given predicate.
+   * Creates a new instance of the {@link FilterableCollection} with filter made narrower with given predicate.
    * @param predicate {string} Predicate of the filter.
    * @param matchEvaluator {Function} Match evaluator of the predicate to filter.
-   * @returns {FilteredCollection<T>}
+   * @returns {FilterableCollection<T>}
    */
   protected narrowFiltersWith<TValue>(
     predicate: string,
     matchEvaluator: (item: TValue) => boolean
-  ): FilteredCollection<T>;
+  ): FilterableCollection<T>;
 
   /**
-   * Creates a new instance of the {@link FilteredCollection} with filter made narrower with given predicate.
+   * Creates a new instance of the {@link FilterableCollection} with filter made narrower with given predicate.
    * @param predicate {string} Predicate of the filter.
    * @param value {string | RegExp} Either value or regular expression to match the value of the predicate to filter.
-   * @returns {FilteredCollection<T>}
+   * @returns {FilterableCollection<T>}
    */
-  protected narrowFiltersWith(predicate: string, value: string | RegExp): FilteredCollection<T>;
+  protected narrowFiltersWith(predicate: string, value: string | RegExp): FilterableCollection<T>;
 
-  protected narrowFiltersWith(predicate: string, value: any): FilteredCollection<T> {
+  protected narrowFiltersWith(predicate: string, value: any): FilterableCollection<T> {
     const result = this.createInstance(this.items);
     for (const filter of Object.keys(this.filters)) {
       result.filters[filter] = this.filters[filter];

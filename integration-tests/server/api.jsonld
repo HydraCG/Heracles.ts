@@ -19,20 +19,25 @@
         "@id": "/api/people",
         "title": "List of people",
         "@type": ["hydra:Collection", "hydra:Resource"],
-        "operation": [
-            {
-                "@type": ["hydra:Operation", "schema:CreateAction"],
-                "targetUrl": "/api/people/new",
-                "title": "Create new person",
-                "method": "POST",
-                "expects": "schema:Person"
-            },
-            {
-                "@type": ["hydra:Operation", "schema:AddAction"],
-                "title": "Adds a person to the system",
-                "method": "PUT",
-                "expects": "schema:Person"
-            }
-        ]
+        "memberTemplate": {
+            "@type": "hydra:IriTemplate",
+            "template": "/api/people/{name}",
+            "variableRepresentation": "hydra:BasicRepresentation",
+            "mapping": [
+                {
+                    "@type": "hydra:IriTemplateMapping",
+                    "variable": "name",
+                    "property": "schema:name",
+                    "required": true
+                }
+            ],
+            "operation": [
+                {
+                    "@type": ["hydra:Operation", "schema:UpdateAction", "schema:AddAction"],
+                    "method": "PUT",
+                    "expects": "schema:Person"
+                }
+            ]
+        }
     }
 }

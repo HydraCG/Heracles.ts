@@ -1,7 +1,7 @@
 import HydraClient from "../HydraClient";
-import { ITypedResourceFilteredCollection } from "./Collections/ITypedResourceFilteredCollection";
+import { ITypedResourceFilterableCollection } from "./Collections/ITypedResourceFilterableCollection";
 import { ITypesCollection } from "./Collections/ITypesCollection";
-import TypedResourceFilteredCollection from "./Collections/TypedResourceFilteredCollection";
+import TypedResourceFilteredCollection from "./Collections/TypedResourceFilterableCollection";
 import { IApiDocumentation } from "./IApiDocumentation";
 import { IClass } from "./IClass";
 import { IWebResource } from "./IWebResource";
@@ -19,7 +19,7 @@ export default class ApiDocumentation implements IApiDocumentation {
 
   public readonly description?: string;
 
-  public readonly supportedClasses: ITypedResourceFilteredCollection<IClass>;
+  public readonly supportedClasses: ITypedResourceFilterableCollection<IClass>;
 
   public readonly entryPoint: string;
 

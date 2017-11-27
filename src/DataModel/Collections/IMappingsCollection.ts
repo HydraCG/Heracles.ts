@@ -1,12 +1,12 @@
 import { IIriTemplateMapping } from "../IIriTemplateMapping";
-import { ITypedResourceFilteredCollection } from "./ITypedResourceFilteredCollection";
+import { ITypedResourceFilterableCollection } from "./ITypedResourceFilterableCollection";
 
 /**
  * Provides an abstract description of the collection of {@link IIriTemplateMapping}
  * that can be filtered with relevant criteria.
  * @interface
  */
-export interface IMappingsCollection extends ITypedResourceFilteredCollection<IIriTemplateMapping> {
+export interface IMappingsCollection extends ITypedResourceFilterableCollection<IIriTemplateMapping> {
   /**
    * Obtains a collection of mappings for a given variable name.
    * @param variableName {string} Variable name.

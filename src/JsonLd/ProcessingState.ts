@@ -5,7 +5,7 @@ import { ITypedResource } from "../DataModel/ITypedResource";
  * Maintains a JSON-LD processing context.
  * @class
  */
-export default class ProcessingContext {
+export default class ProcessingState {
   /**
    * Gets the currently processed object.
    * @readonly
@@ -43,7 +43,7 @@ export default class ProcessingContext {
 
   /**
    * Gets the processed object's resource.
-   * This is provided once the {@link ProcessingContext.createResource(boolean) is called.
+   * This is provided once the {@link ProcessingState.createResource(boolean) is called.
    * @type {ITypedResource = null}
    */
   public currentResource: ITypedResource = null;
@@ -52,21 +52,21 @@ export default class ProcessingContext {
   private readonly forbiddenHypermedia: string[];
 
   /**
-   * Initializes a new instance of the {@link ProcessingContext} class.
+   * Initializes a new instance of the {@link ProcessingState} class.
    * @param graphToProcess {Array<object>} Actual graph to process.
    * @param baseUrl {string} Base URL.
    */
   public constructor(graphToProcess: object[], baseUrl: string);
 
   /**
-   * Initializes a new instance of the {@link ProcessingContext} class.
+   * Initializes a new instance of the {@link ProcessingState} class.
    * @param objectToProcess {object} Actual object to process.
    * @param ownerIri {string} Object to process owning resource's IRI.
-   * @param parentContext {ProcessingContext} Parent context to obtain more details from.
+   * @param parentContext {ProcessingState} Parent context to obtain more details from.
    */
-  public constructor(objectToProcess: object, ownerIri: string, parentContext: ProcessingContext);
+  public constructor(objectToProcess: object, ownerIri: string, parentContext: ProcessingState);
 
-  public constructor(objectToProcess: object | object[], ownerIri: string, parentContext: ProcessingContext = null) {
+  public constructor(objectToProcess: object | object[], ownerIri: string, parentContext: ProcessingState = null) {
     if (arguments.length === 2) {
       this.resourceMap = {};
       this.hypermedia = [];
@@ -92,21 +92,21 @@ export default class ProcessingContext {
   /**
    * Creates a child processing context.
    * @param objectToProcess {object} Nested object to be processed.
-   * @returns {ProcessingContext}
+   * @returns {ProcessingState}
    */
-  public copyFor(objectToProcess: object): ProcessingContext {
+  public copyFor(objectToProcess: object): ProcessingState {
     let ownerIri = this.ownerIri;
     if (this.currentResource !== null) {
       ownerIri = this.currentResource.iri;
     }
 
-    return new ProcessingContext(objectToProcess, ownerIri, this);
+    return new ProcessingState(objectToProcess, ownerIri, this);
   }
 
   /**
    * Creates a resource representation of the object being processed.
    * @param addToHypermedia {boolean = true} Value indicating whether to add this resource to the
-   *                                         {@link ProcessingContext.hypermedia} collection.
+   *                                         {@link ProcessingState.hypermedia} collection.
    * @returns {ITypedResource}
    */
   public createResource(addToHypermedia: boolean = true): ITypedResource {

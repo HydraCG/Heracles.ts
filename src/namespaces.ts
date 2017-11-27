@@ -34,11 +34,3 @@ export let hydra = {
   operation: hydraNamespace + "operation",
   Resource: hydraNamespace + "Resource"
 };
-
-const schemaNamespace = "http://schema.org/";
-export let schema = {
-  namespace: schemaNamespace,
-
-  AddAction: schemaNamespace + "AddAction",
-  CreateAction: schemaNamespace + "CreateAction"
-};

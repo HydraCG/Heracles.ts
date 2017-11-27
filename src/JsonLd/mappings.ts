@@ -1,11 +1,11 @@
 import MappingsCollection from "../DataModel/Collections/MappingsCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
-import TypedResourceFilteredCollection from "../DataModel/Collections/TypedResourceFilteredCollection";
+import TypedResourceFilteredCollection from "../DataModel/Collections/TypedResourceFilterableCollection";
 import { IClass } from "../DataModel/IClass";
 import { ICollection } from "../DataModel/ICollection";
 import TemplatedOperation from "../DataModel/TemplatedOperation";
 import { hydra } from "../namespaces";
-import ProcessingContext from "./ProcessingContext";
+import ProcessingContext from "./ProcessingState";
 
 type Literal = string | boolean | number;
 type MappingsProcessor = (items: any[], context: ProcessingContext) => any;

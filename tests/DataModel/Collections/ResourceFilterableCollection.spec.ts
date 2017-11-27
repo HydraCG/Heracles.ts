@@ -1,6 +1,6 @@
-import ResourceFilteredCollection from "../../../src/DataModel/Collections/ResourceFilteredCollection";
+import ResourceFilteredCollection from "../../../src/DataModel/Collections/ResourceFilterableCollection";
 
-describe("Given instance of the ResourceFilteredCollection", () => {
+describe("Given instance of the ResourceFilterableCollection", () => {
   beforeEach(() => {
     this.resource1 = { iri: "_:blank" };
     this.resource2 = { iri: "http://temp.uri/vocav#term" };

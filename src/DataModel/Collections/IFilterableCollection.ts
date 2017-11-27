@@ -2,7 +2,7 @@
  * Provides an abstract description of a collection that can be filtered.
  * @interface
  */
-export interface IFilteredCollection<T> extends Iterable<T> {
+export interface IFilterableCollection<T> extends Iterable<T> {
   /**
    * Gets the number of items in this collection.
    * @readonly
@@ -25,7 +25,7 @@ export interface IFilteredCollection<T> extends Iterable<T> {
   /**
    * Filters the collection with a generic match evaluator.
    * @param matchEvaluator {Function} Match evaluation delegate.
-   * @returns {IFilteredCollection<T>}
+   * @returns {IFilterableCollection<T>}
    */
-  where(matchEvaluator: (item: T) => boolean): IFilteredCollection<T>;
+  where(matchEvaluator: (item: T) => boolean): IFilterableCollection<T>;
 }

@@ -27,9 +27,9 @@ describe("Having a Hydra client", () => {
         expect(this.entryPoint.hypermedia.length).toBe(3);
       });
 
-      it("should obtain a schema:CreateAction operations", () => {
+      it("should obtain a schema:AddAction operations", () => {
         const operations = this.entryPoint.hypermedia.where(hypermedia =>
-          hypermedia.operations.ofType("http://schema.org/CreateAction").any()
+          hypermedia.operations.ofType("http://schema.org/AddAction").any()
         );
         expect(operations.length).toBe(2);
       });
@@ -115,7 +115,7 @@ describe("Having a Hydra client", () => {
                   "@type": "http://schema.org/Person"
                 };
                 const operation = this.people.hypermedia.operations
-                  .ofType("http://schema.org/CreateAction")
+                  .ofType("http://schema.org/UpdateAction")
                   .expecting("http://schema.org/Person")
                   .withTemplate()
                   .first()

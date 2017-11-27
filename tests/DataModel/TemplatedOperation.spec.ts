@@ -1,6 +1,7 @@
-import TypedResourceFilteredCollection from "../../src/DataModel/Collections/TypedResourceFilteredCollection";
+import TypedResourceFilteredCollection from "../../src/DataModel/Collections/TypedResourceFilterableCollection";
 import { IClass } from "../../src/DataModel/IClass";
 import TemplatedOperation from "../../src/DataModel/TemplatedOperation";
+import { hydra } from "../../src/namespaces";
 
 describe("Given instance of the TemplatedOperation", () => {
   beforeEach(() => {
@@ -10,6 +11,7 @@ describe("Given instance of the TemplatedOperation", () => {
     this.originalOperation = {
       baseUrl: "http://temp.uri/",
       expects: new TypedResourceFilteredCollection<IClass>([]),
+      is: ["http://schema.org/AddAction", hydra.Operation],
       method: "GET",
       target: "test-url"
     };
@@ -27,6 +29,10 @@ describe("Given instance of the TemplatedOperation", () => {
 
     it("should pass a correct method", () => {
       expect(this.result.method).toBe(this.originalOperation.method);
+    });
+
+    it("should copy original operation's types", () => {
+      expect(this.result.is).toEqual(["http://schema.org/AddAction", hydra.Operation]);
     });
   });
 });

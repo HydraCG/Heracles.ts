@@ -1,6 +1,6 @@
 import { IOperationsCollection } from "./Collections/IOperationsCollection";
-import { ITypedResourceFilteredCollection } from "./Collections/ITypedResourceFilteredCollection";
-import TypedResourceFilteredCollection from "./Collections/TypedResourceFilteredCollection";
+import { ITypedResourceFilterableCollection } from "./Collections/ITypedResourceFilterableCollection";
+import TypedResourceFilteredCollection from "./Collections/TypedResourceFilterableCollection";
 import { IHypermediaContainer } from "./IHypermediaContainer";
 import { ITypedResource } from "./ITypedResource";
 
@@ -10,7 +10,7 @@ import { ITypedResource } from "./ITypedResource";
  */
 export default class HypermediaContainer extends TypedResourceFilteredCollection<ITypedResource>
   implements IHypermediaContainer {
-  public readonly members?: ITypedResourceFilteredCollection<ITypedResource>;
+  public readonly members?: ITypedResourceFilterableCollection<ITypedResource>;
 
   public readonly operations: IOperationsCollection;
 
@@ -23,7 +23,7 @@ export default class HypermediaContainer extends TypedResourceFilteredCollection
   public constructor(
     items: Iterable<ITypedResource>,
     operations: IOperationsCollection,
-    members?: ITypedResourceFilteredCollection<ITypedResource>
+    members?: ITypedResourceFilterableCollection<ITypedResource>
   ) {
     super(items);
     this.operations = operations;

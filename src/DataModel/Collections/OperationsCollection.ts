@@ -2,7 +2,7 @@ import { hydra } from "../../namespaces";
 import { IClass } from "../IClass";
 import { IOperation } from "../IOperation";
 import { IOperationsCollection } from "./IOperationsCollection";
-import TypedResourceFilteredCollection from "./TypedResourceFilteredCollection";
+import TypedResourceFilteredCollection from "./TypedResourceFilterableCollection";
 
 /**
  * Provides a collection of {@link IOperation} that can be filtered with relevant criteria.

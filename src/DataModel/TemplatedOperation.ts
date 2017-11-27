@@ -1,7 +1,7 @@
 import * as URITemplate from "uri-templates";
 import { hydra } from "../namespaces";
 import { IOperationsCollection } from "./Collections/IOperationsCollection";
-import { ITypedResourceFilteredCollection } from "./Collections/ITypedResourceFilteredCollection";
+import { ITypedResourceFilterableCollection } from "./Collections/ITypedResourceFilterableCollection";
 import { ITypesCollection } from "./Collections/ITypesCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
 import TypesCollection from "./Collections/TypesCollection";
@@ -27,7 +27,7 @@ export default class TemplatedOperation implements ITemplatedOperation {
 
   public readonly method: string;
 
-  public readonly expects: ITypedResourceFilteredCollection<IClass>;
+  public readonly expects: ITypedResourceFilterableCollection<IClass>;
 
   public readonly operations: IOperationsCollection;
 
@@ -37,11 +37,12 @@ export default class TemplatedOperation implements ITemplatedOperation {
    * @param template {IIriTemplate} IRI template to take template from.
    */
   public constructor(operationResource: IOperation, template: IIriTemplate) {
+    const types = [...operationResource.is].concat([hydra.Operation, hydra.IriTemplate]);
     this.baseUrl = operationResource.baseUrl;
     this.iri = `_:b${Math.random()
       .toString()
       .substr(2)}`;
-    this.is = new TypesCollection([hydra.Operation, hydra.IriTemplate]);
+    this.is = new TypesCollection(types.filter((type, index) => types.indexOf(type) === index));
     this.method = operationResource.method;
     this.expects = operationResource.expects;
     this.target = null;
@@ -61,7 +62,7 @@ export default class TemplatedOperation implements ITemplatedOperation {
         Math.random()
           .toString()
           .substr(2),
-      is: new TypesCollection([hydra.Operation]),
+      is: new TypesCollection([...this.is].filter(type => type !== hydra.IriTemplate)),
       method: this.method,
       operations: this.operations,
       target: target.match(/^[a-zA-Z][a-zA-Z0-9_]*:/) ? target : new URL(target, this.baseUrl).toString()
