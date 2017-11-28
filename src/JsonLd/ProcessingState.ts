@@ -118,7 +118,7 @@ export default class ProcessingState {
     if (!result) {
       result = {
         iri: this.processedObject["@id"],
-        is: new TypesCollection(this.processedObject["@type"] || new Array<string>())
+        type: new TypesCollection(this.processedObject["@type"] || new Array<string>())
       };
       this.resourceMap[result.iri] = result;
     }

@@ -1,11 +1,11 @@
-import { IFilterableCollection } from "./IFilterableCollection";
+import FilterableCollectionIterator from "./FilterableCollectionIterator";
 
 /**
  * Provides a base functionality of a collection that filters itself with given predicates.
  * @abstract
  * @class
  */
-export default abstract class FilterableCollection<T> implements IFilterableCollection<T> {
+export default abstract class FilterableCollection<T> {
   private readonly items: Iterable<T>;
   private filters: { [predicate: string]: any } = {};
 
@@ -18,6 +18,11 @@ export default abstract class FilterableCollection<T> implements IFilterableColl
     this.items = items || new Array<T>();
   }
 
+  /**
+   * Gets the number of items in this collection.
+   * @readonly
+   * @returns {number}
+   */
   public get length(): number {
     let result = 0;
     for (const item of this) {
@@ -27,6 +32,10 @@ export default abstract class FilterableCollection<T> implements IFilterableColl
     return result;
   }
 
+  /**
+   * Checks whether this collection has any items fitlered.
+   * @returns {boolean}
+   */
   public any(): boolean {
     for (const item of this) {
       return true;
@@ -35,6 +44,10 @@ export default abstract class FilterableCollection<T> implements IFilterableColl
     return false;
   }
 
+  /**
+   * Gets the first item of the collection or null if there are no items matching the criteria.
+   * @returns {T}
+   */
   public first(): T {
     for (const item of this) {
       return item;
@@ -43,7 +56,12 @@ export default abstract class FilterableCollection<T> implements IFilterableColl
     return null;
   }
 
-  public where(matchEvaluator: (item: T) => boolean): IFilterableCollection<T> {
+  /**
+   * Filters the collection with a generic match evaluator.
+   * @param matchEvaluator {Function} Match evaluation delegate.
+   * @returns {IFilterableCollection<T>}
+   */
+  public where(matchEvaluator: (item: T) => boolean): FilterableCollection<T> {
     const predicate = Object.keys(this.filters)
       .filter(key => key.charAt(0) === "_")
       .map(key => parseInt(key.substr(1), 10))
@@ -53,7 +71,7 @@ export default abstract class FilterableCollection<T> implements IFilterableColl
   }
 
   public [Symbol.iterator](): Iterator<T> {
-    return new FilteredCollectionIterator<T>(this.items, this.filters);
+    return new FilterableCollectionIterator<T>(this.items, this.filters);
   }
 
   /**
@@ -96,86 +114,5 @@ export default abstract class FilterableCollection<T> implements IFilterableColl
     }
 
     return result;
-  }
-}
-
-/* tslint:disable:max-classes-per-file */
-class FilteredCollectionIterator<T> implements Iterator<T> {
-  private readonly items: Iterator<T>;
-  private readonly filters: { [predicate: string]: any };
-
-  public constructor(items: Iterable<T>, filters: { [predicate: string]: any }) {
-    this.items = items[Symbol.iterator]();
-    this.filters = filters;
-  }
-
-  public next(): IteratorResult<T> {
-    const nextMatching = this.getNextMatchingItemFrom(this.items);
-    if (nextMatching === null) {
-      return { value: null, done: true };
-    }
-
-    return { value: nextMatching, done: false };
-  }
-
-  private static isInArray(expectedValue: any, itemValue: any, predicate: any): boolean {
-    const currentPredicateValue = itemValue[predicate];
-    if (
-      !!currentPredicateValue &&
-      currentPredicateValue[Symbol.iterator] &&
-      typeof currentPredicateValue !== "string"
-    ) {
-      for (const item of currentPredicateValue) {
-        if (item === expectedValue || (typeof expectedValue === "function" && expectedValue(item))) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-
-  private static matchesRegex(expectedValue: any, itemValue: any, predicate: any): boolean {
-    const currentPredicateValue = itemValue[predicate];
-    return !!currentPredicateValue && expectedValue instanceof RegExp && expectedValue.test(currentPredicateValue);
-  }
-
-  private static equals(expectedValue: any, itemValue: any, predicate: any): boolean {
-    const currentPredicateValue = itemValue[predicate];
-    return (
-      (typeof expectedValue === "function" && expectedValue(itemValue)) ||
-      (!!currentPredicateValue &&
-        !(currentPredicateValue instanceof Array) &&
-        !(expectedValue instanceof RegExp) &&
-        (currentPredicateValue === (expectedValue as any) || expectedValue(currentPredicateValue)))
-    );
-  }
-
-  private getNextMatchingItemFrom(iterator: Iterator<T>): T {
-    let item: IteratorResult<T> = iterator.next();
-    while (!item.done) {
-      let isMatch = true;
-      for (const predicate of Object.keys(this.filters).filter(
-        filter => !!item.value[filter] || filter.charAt(0) === "_"
-      )) {
-        const expectedValue = this.filters[predicate];
-        if (
-          !FilteredCollectionIterator.equals(expectedValue, item.value, predicate) &&
-          !FilteredCollectionIterator.isInArray(expectedValue, item.value, predicate) &&
-          !FilteredCollectionIterator.matchesRegex(expectedValue, item.value, predicate)
-        ) {
-          isMatch = false;
-          break;
-        }
-      }
-
-      if (isMatch) {
-        return item.value;
-      }
-
-      item = iterator.next();
-    }
-
-    return null;
   }
 }

@@ -1,7 +1,6 @@
 import HydraClient from "../HydraClient";
-import { ITypedResourceFilterableCollection } from "./Collections/ITypedResourceFilterableCollection";
-import { ITypesCollection } from "./Collections/ITypesCollection";
-import TypedResourceFilteredCollection from "./Collections/TypedResourceFilterableCollection";
+import TypedResourceFilterableCollection from "./Collections/TypedResourceFilterableCollection";
+import TypesCollection from "./Collections/TypesCollection";
 import { IApiDocumentation } from "./IApiDocumentation";
 import { IClass } from "./IClass";
 import { IWebResource } from "./IWebResource";
@@ -13,13 +12,13 @@ import { IWebResource } from "./IWebResource";
 export default class ApiDocumentation implements IApiDocumentation {
   public readonly iri: string;
 
-  public readonly is: ITypesCollection;
+  public readonly type: TypesCollection;
 
   public readonly title?: string;
 
   public readonly description?: string;
 
-  public readonly supportedClasses: ITypedResourceFilterableCollection<IClass>;
+  public readonly supportedClasses: TypedResourceFilterableCollection<IClass>;
 
   public readonly entryPoint: string;
 
@@ -32,13 +31,13 @@ export default class ApiDocumentation implements IApiDocumentation {
    */
   public constructor(apiDocumentation: IApiDocumentation, client: HydraClient) {
     this.iri = apiDocumentation.iri;
-    this.is = apiDocumentation.is;
+    this.type = apiDocumentation.type;
     this.title = apiDocumentation.title || null;
     this.description = apiDocumentation.description || null;
     this.supportedClasses =
-      apiDocumentation.supportedClasses instanceof TypedResourceFilteredCollection
+      apiDocumentation.supportedClasses instanceof TypedResourceFilterableCollection
         ? apiDocumentation.supportedClasses
-        : new TypedResourceFilteredCollection<IClass>(apiDocumentation.supportedClasses || new Array<IClass>());
+        : new TypedResourceFilterableCollection<IClass>(apiDocumentation.supportedClasses || new Array<IClass>());
     this.entryPoint = apiDocumentation.entryPoint || "";
     this.client = client;
   }

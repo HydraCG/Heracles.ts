@@ -1,4 +1,4 @@
-import { ITypesCollection } from "./Collections/ITypesCollection";
+import TypesCollection from "./Collections/TypesCollection";
 import { IResource } from "./IResource";
 
 /**
@@ -9,7 +9,7 @@ export interface ITypedResource extends IResource {
   /**
    * Gets classes a given resource is of.
    * @readonly
-   * @returns {ITypesCollection}
+   * @returns {TypesCollection}
    */
-  readonly is: ITypesCollection;
+  readonly type: TypesCollection;
 }

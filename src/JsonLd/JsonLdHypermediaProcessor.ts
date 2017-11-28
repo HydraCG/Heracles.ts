@@ -38,13 +38,13 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       context.hypermedia.push(
         (context.resourceMap[response.url] = {
           iri: response.url,
-          is: new TypesCollection([]),
-          operations: new OperationsCollection([])
+          operations: new OperationsCollection([]),
+          type: new TypesCollection([])
         } as IHydraResource)
       );
     }
 
-    const apiDocumentation = context.hypermedia.find(item => item.is.a(hydra.ApiDocumentation));
+    const apiDocumentation = context.hypermedia.find(item => item.type.contains(hydra.ApiDocumentation));
     if (apiDocumentation) {
       context.hypermedia[context.hypermedia.indexOf(apiDocumentation)] = new ApiDocumentation(
         (apiDocumentation as any) as IApiDocumentation,
@@ -112,7 +112,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
           !!context.processedObject["@type"].find(type => type.indexOf(hydra.namespace) !== -1)));
     const targetResource = context.createResource(addToHypermedia);
     const validPredicates = Object.keys(mappings).filter(
-      iri => !mappings[iri].type || targetResource.is.a(mappings[iri].type)
+      iri => !mappings[iri].type || targetResource.type.contains(mappings[iri].type)
     );
     for (const predicate of validPredicates) {
       JsonLdHypermediaProcessor.setupProperty(targetResource, context, predicate);

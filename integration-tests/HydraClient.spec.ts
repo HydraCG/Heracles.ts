@@ -36,7 +36,7 @@ describe("Having a Hydra client", () => {
 
       it("should obtain a collection of events", () => {
         const collection = this.entryPoint.hypermedia
-          .where(item => item.iri.match("/api/events$") && item.is.a(hydra.Collection))
+          .where(item => item.iri.match("/api/events$") && item.type.contains(hydra.Collection))
           .first();
         expect(collection).toBeDefined();
         expect(collection).not.toBeNull();

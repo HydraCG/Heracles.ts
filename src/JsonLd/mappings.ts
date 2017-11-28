@@ -111,7 +111,7 @@ mappings[hydra.memberTemplate] = {
 mappings[hydra.operation] = {
   default: (operations, context) => {
     if (
-      context.currentResource.is.a(hydra.Collection) &&
+      context.currentResource.type.contains(hydra.Collection) &&
       !!(context.currentResource as ICollection).memberTemplate &&
       (context.currentResource as ICollection).memberTemplate.operations.length > 0
     ) {

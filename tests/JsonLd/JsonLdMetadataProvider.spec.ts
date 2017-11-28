@@ -39,21 +39,21 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       expect(this.result.hypermedia).toBeLike([
         {
           iri: "http://temp.uri/api/events",
-          is: [hydra.Collection],
           members: [
             {
               iri: "http://temp.uri/api/events/1",
-              is: [],
-              operations: []
+              operations: [],
+              type: []
             }
           ],
           operations: [],
-          totalItems: 1
+          totalItems: 1,
+          type: [hydra.Collection]
         },
         {
           iri: "http://temp.uri/",
-          is: [],
-          operations: []
+          operations: [],
+          type: []
         }
       ]);
     });

@@ -1,15 +1,13 @@
 import { hydra } from "../../namespaces";
 import { IClass } from "../IClass";
 import { IOperation } from "../IOperation";
-import { IOperationsCollection } from "./IOperationsCollection";
-import TypedResourceFilteredCollection from "./TypedResourceFilterableCollection";
+import TypedResourceFilterableCollection from "./TypedResourceFilterableCollection";
 
 /**
  * Provides a collection of {@link IOperation} that can be filtered with relevant criteria.
  * @class
  */
-export default class OperationsCollection extends TypedResourceFilteredCollection<IOperation>
-  implements IOperationsCollection {
+export default class OperationsCollection extends TypedResourceFilterableCollection<IOperation> {
   /**
    * Initializes a new instance of the {@link OperationsCollection}
    * class with initial collections of operations to filter.
@@ -19,11 +17,20 @@ export default class OperationsCollection extends TypedResourceFilteredCollectio
     super(operations);
   }
 
-  public expecting(iri: string): IOperationsCollection {
+  /**
+   * Obtains a collection of operations expecting a given type.
+   * @param iri {string} Expected type.
+   * @returns {OperationsCollection}
+   */
+  public expecting(iri: string): OperationsCollection {
     return this.narrowFiltersWith<IClass>("expects", value => value.iri === iri) as OperationsCollection;
   }
 
-  public withTemplate(): IOperationsCollection {
+  /**
+   * Obtains a collection of operations being an Hydra IriTemplate.
+   * @returns {OperationsCollection}
+   */
+  public withTemplate(): OperationsCollection {
     return this.ofType(hydra.IriTemplate) as OperationsCollection;
   }
 

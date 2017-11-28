@@ -1,4 +1,4 @@
-import { IOperationsCollection } from "./Collections/IOperationsCollection";
+import OperationsCollection from "./Collections/OperationsCollection";
 import { ITypedResource } from "./ITypedResource";
 
 /**
@@ -9,7 +9,7 @@ export interface IHydraResource extends ITypedResource {
   /**
    * Gets operations that can be performed on that resource.
    * @readonly
-   * @returns {IOperationsCollection}
+   * @returns {OperationsCollection}
    */
-  readonly operations: IOperationsCollection;
+  readonly operations: OperationsCollection;
 }

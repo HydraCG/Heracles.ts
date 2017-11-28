@@ -1,9 +1,7 @@
 import * as URITemplate from "uri-templates";
 import { hydra } from "../namespaces";
-import { IOperationsCollection } from "./Collections/IOperationsCollection";
-import { ITypedResourceFilterableCollection } from "./Collections/ITypedResourceFilterableCollection";
-import { ITypesCollection } from "./Collections/ITypesCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
+import TypedResourceFilterableCollection from "./Collections/TypedResourceFilterableCollection";
 import TypesCollection from "./Collections/TypesCollection";
 import { IClass } from "./IClass";
 import { IIriTemplate } from "./IIriTemplate";
@@ -15,21 +13,23 @@ import { ITemplatedOperation } from "./ITemplatedOperation";
  * @class
  */
 export default class TemplatedOperation implements ITemplatedOperation {
+  private static id = 0;
+
   private readonly template: string;
 
   public readonly baseUrl: string;
 
   public readonly iri: string;
 
-  public readonly is: ITypesCollection;
+  public readonly type: TypesCollection;
 
   public readonly target: string;
 
   public readonly method: string;
 
-  public readonly expects: ITypedResourceFilterableCollection<IClass>;
+  public readonly expects: TypedResourceFilterableCollection<IClass>;
 
-  public readonly operations: IOperationsCollection;
+  public readonly operations: OperationsCollection;
 
   /**
    * Initializes a new instance of the {@link TemplatedOperation} class.
@@ -37,12 +37,12 @@ export default class TemplatedOperation implements ITemplatedOperation {
    * @param template {IIriTemplate} IRI template to take template from.
    */
   public constructor(operationResource: IOperation, template: IIriTemplate) {
-    const types = [...operationResource.is].concat([hydra.Operation, hydra.IriTemplate]);
+    const types = [...operationResource.type].concat([hydra.Operation, hydra.IriTemplate]);
     this.baseUrl = operationResource.baseUrl;
     this.iri = `_:b${Math.random()
       .toString()
       .substr(2)}`;
-    this.is = new TypesCollection(types.filter((type, index) => types.indexOf(type) === index));
+    this.type = new TypesCollection(types.filter((type, index) => types.indexOf(type) === index));
     this.method = operationResource.method;
     this.expects = operationResource.expects;
     this.target = null;
@@ -57,15 +57,11 @@ export default class TemplatedOperation implements ITemplatedOperation {
     return {
       baseUrl: this.baseUrl,
       expects: this.expects,
-      iri:
-        "_:b" +
-        Math.random()
-          .toString()
-          .substr(2),
-      is: new TypesCollection([...this.is].filter(type => type !== hydra.IriTemplate)),
+      iri: "_:bnode" + ++TemplatedOperation.id,
       method: this.method,
       operations: this.operations,
-      target: target.match(/^[a-zA-Z][a-zA-Z0-9_]*:/) ? target : new URL(target, this.baseUrl).toString()
+      target: target.match(/^[a-zA-Z][a-zA-Z0-9_]*:/) ? target : new URL(target, this.baseUrl).toString(),
+      type: new TypesCollection([...this.type].filter(type => type !== hydra.IriTemplate))
     };
   }
 }

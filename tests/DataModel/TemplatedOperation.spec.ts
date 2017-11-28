@@ -11,9 +11,9 @@ describe("Given instance of the TemplatedOperation", () => {
     this.originalOperation = {
       baseUrl: "http://temp.uri/",
       expects: new TypedResourceFilteredCollection<IClass>([]),
-      is: ["http://schema.org/AddAction", hydra.Operation],
       method: "GET",
-      target: "test-url"
+      target: "test-url",
+      type: ["http://schema.org/AddAction", hydra.Operation]
     };
     this.operation = new TemplatedOperation(this.originalOperation, this.template);
   });
@@ -32,7 +32,7 @@ describe("Given instance of the TemplatedOperation", () => {
     });
 
     it("should copy original operation's types", () => {
-      expect(this.result.is).toEqual(["http://schema.org/AddAction", hydra.Operation]);
+      expect(this.result.type).toEqual(["http://schema.org/AddAction", hydra.Operation]);
     });
   });
 });

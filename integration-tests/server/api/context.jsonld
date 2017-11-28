@@ -43,10 +43,7 @@
             "@id": "hydra:property",
             "@type": "@vocab"
         },
-        "required": {
-            "@id": "hydra:required",
-            "@type": "xsd:boolean"
-        },
+        "required": "hydra:required",
         "member": {
             "@id": "hydra:member",
             "@type": "@id"
@@ -55,10 +52,7 @@
             "@id": "hydra:memberTemplate",
             "@type": "@id"
         },
-        "totalItems": {
-            "@id": "hydra:totalItems",
-            "@type": "xsd:int"
-        },
+        "totalItems": "hydra:totalItems",
         "template": {
             "@id": "hydra:template",
             "@type": "xsd:string"

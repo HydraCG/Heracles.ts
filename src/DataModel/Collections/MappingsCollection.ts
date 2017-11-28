@@ -1,13 +1,11 @@
 import { IIriTemplateMapping } from "../IIriTemplateMapping";
-import { IMappingsCollection } from "./IMappingsCollection";
-import TypedResourceFilteredCollection from "./TypedResourceFilterableCollection";
+import TypedResourceFilterableCollection from "./TypedResourceFilterableCollection";
 
 /**
  * Provides a collection of {@link IIriTemplateMapping} that can be filtered with relevant criteria.
  * @class
  */
-export default class MappingsCollection extends TypedResourceFilteredCollection<IIriTemplateMapping>
-  implements IMappingsCollection {
+export default class MappingsCollection extends TypedResourceFilterableCollection<IIriTemplateMapping> {
   /**
    * Initializes a new instance of the {@link MappingsCollection}
    * class with initial collections of mappings to filter.
@@ -17,7 +15,12 @@ export default class MappingsCollection extends TypedResourceFilteredCollection<
     super(mappings);
   }
 
-  public ofVariableName(variableName: string): IMappingsCollection {
+  /**
+   * Obtains a collection of mappings for a given variable name.
+   * @param variableName {string} Variable name.
+   * @returns {IMappingsCollection}
+   */
+  public ofVariableName(variableName: string): MappingsCollection {
     return (this.narrowFiltersWith<IIriTemplateMapping>(
       "variable",
       value => value.variable === variableName

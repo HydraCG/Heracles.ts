@@ -5,20 +5,20 @@ describe("Given instance of the TypesCollection", () => {
     this.type1 = "type1";
     this.type2 = "type2";
     this.allTypes = [this.type1, this.type2];
-    this.is = new TypesCollection(this.allTypes);
+    this.type = new TypesCollection(this.allTypes);
   });
 
   it("should provide all types", () => {
-    expect([...this.is]).toEqual(this.allTypes);
+    expect([...this.type]).toEqual(this.allTypes);
   });
 
   describe("when checking whether a collection has a given type", () => {
     it("should confirm an existing type", () => {
-      expect(this.is.a(this.type1)).toBeTruthy();
+      expect(this.type.contains(this.type1)).toBeTruthy();
     });
 
     it("should not confirm an existing type", () => {
-      expect(this.is.a("whatever type")).toBeFalsy();
+      expect(this.type.contains("whatever type")).toBeFalsy();
     });
   });
 });

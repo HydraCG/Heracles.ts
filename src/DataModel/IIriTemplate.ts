@@ -1,4 +1,4 @@
-import { IMappingsCollection } from "./Collections/IMappingsCollection";
+import MappingsCollection from "./Collections/MappingsCollection";
 import { IHydraResource } from "./IHydraResource";
 import { IResource } from "./IResource";
 
@@ -26,5 +26,5 @@ export interface IIriTemplate extends IHydraResource {
    * @readonly
    * @returns {IMappingsCollection}
    */
-  readonly mappings: IMappingsCollection;
+  readonly mappings: MappingsCollection;
 }

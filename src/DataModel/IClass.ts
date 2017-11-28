@@ -1,4 +1,4 @@
-import { IOperationsCollection } from "./Collections/IOperationsCollection";
+import OperationsCollection from "./Collections/OperationsCollection";
 import { ITypedResource } from "./ITypedResource";
 
 /**
@@ -9,7 +9,7 @@ export interface IClass extends ITypedResource {
   /**
    * Gets the class' supported operations.
    * @readonly
-   * @returns {IOperationsCollection}
+   * @returns {OperationsCollection}
    */
-  readonly supportedOperations: IOperationsCollection;
+  readonly supportedOperations: OperationsCollection;
 }

@@ -1,4 +1,4 @@
-import { ITypedResourceFilterableCollection } from "./Collections/ITypedResourceFilterableCollection";
+import TypedResourceFilterableCollection from "./Collections/TypedResourceFilterableCollection";
 import { IClass } from "./IClass";
 import { ITypedResource } from "./ITypedResource";
 import { IWebResource } from "./IWebResource";
@@ -25,9 +25,9 @@ export interface IApiDocumentation extends ITypedResource {
   /**
    * Gets the supported classes by this API.
    * @readonly
-   * @returns {ITypedResourceFilterableCollection<IClass>}
+   * @returns {TypedResourceFilterableCollection<IClass>}
    */
-  readonly supportedClasses: ITypedResourceFilterableCollection<IClass>;
+  readonly supportedClasses: TypedResourceFilterableCollection<IClass>;
 
   /**
    * Gets the Url of the entry point of the API.
