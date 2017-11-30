@@ -39,9 +39,7 @@ export default class TemplatedOperation implements ITemplatedOperation {
   public constructor(operationResource: IOperation, template: IIriTemplate) {
     const types = [...operationResource.type].concat([hydra.Operation, hydra.IriTemplate]);
     this.baseUrl = operationResource.baseUrl;
-    this.iri = `_:b${Math.random()
-      .toString()
-      .substr(2)}`;
+    this.iri = `_:bnode${++TemplatedOperation.id}`;
     this.type = new TypesCollection(types.filter((type, index) => types.indexOf(type) === index));
     this.method = operationResource.method;
     this.expects = operationResource.expects;
@@ -57,7 +55,7 @@ export default class TemplatedOperation implements ITemplatedOperation {
     return {
       baseUrl: this.baseUrl,
       expects: this.expects,
-      iri: "_:bnode" + ++TemplatedOperation.id,
+      iri: `_:bnode${++TemplatedOperation.id}`,
       method: this.method,
       operations: this.operations,
       target: target.match(/^[a-zA-Z][a-zA-Z0-9_]*:/) ? target : new URL(target, this.baseUrl).toString(),

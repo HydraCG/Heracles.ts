@@ -48,10 +48,7 @@
             "@id": "hydra:member",
             "@type": "@id"
         },
-        "memberTemplate": {
-            "@id": "hydra:memberTemplate",
-            "@type": "@id"
-        },
+        "memberTemplate": "hydra:memberTemplate",
         "totalItems": "hydra:totalItems",
         "template": {
             "@id": "hydra:template",
