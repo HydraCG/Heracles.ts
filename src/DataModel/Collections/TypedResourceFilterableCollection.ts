@@ -1,11 +1,13 @@
 import { ITypedResource } from "../ITypedResource";
-import ResourceFilteredCollection from "./ResourceFilterableCollection";
+import ResourceFilterableCollection from "./ResourceFilterableCollection";
 
 /**
  * Provides a collection of {@link ITypedResource} that can be filtered with relevant criteria.
  * @class
  */
-export default class TypedResourceFilterableCollection<T extends ITypedResource> extends ResourceFilteredCollection<T> {
+export default class TypedResourceFilterableCollection<T extends ITypedResource> extends ResourceFilterableCollection<
+  T
+> {
   /**
    * Initializes a new instance of the {@link TypedResourceFilterableCollection<T>}
    * class with initial collections of resources to filter.
