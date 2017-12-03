@@ -1,3 +1,5 @@
+import TypesCollection from "./Collections/TypesCollection";
+
 /**
  * Describes an abstract RDF resource.
  * @interface
@@ -9,4 +11,11 @@ export interface IResource {
    * @returns {string}
    */
   readonly iri: string;
+
+  /**
+   * Gets classes a given resource is of.
+   * @readonly
+   * @returns {TypesCollection}
+   */
+  readonly type: TypesCollection;
 }

@@ -1,7 +1,7 @@
-import TypedResourceFilterableCollection from "./Collections/TypedResourceFilterableCollection";
+import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import { IHydraResource } from "./IHydraResource";
 import { IIriTemplate } from "./IIriTemplate";
-import { ITypedResource } from "./ITypedResource";
+import { IResource } from "./IResource";
 
 /**
  * Describes an abstract Hydra collection.
@@ -11,9 +11,9 @@ export interface ICollection extends IHydraResource {
   /**
    * Gets the collection's member resources.
    * @readonly
-   * @returns {TypedResourceFilterableCollection<ITypedResource>}
+   * @returns {ResourceFilterableCollection<IResource>}
    */
-  readonly members: TypedResourceFilterableCollection<ITypedResource>;
+  readonly members: ResourceFilterableCollection<IResource>;
 
   /**
    * Gets the total items in the collection.

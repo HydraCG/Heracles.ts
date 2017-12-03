@@ -1,11 +1,11 @@
 import OperationsCollection from "./Collections/OperationsCollection";
-import { ITypedResource } from "./ITypedResource";
+import { IResource } from "./IResource";
 
 /**
  * Describes an abstract Hydra resource.
  * @interface
  */
-export interface IHydraResource extends ITypedResource {
+export interface IHydraResource extends IResource {
   /**
    * Gets operations that can be performed on that resource.
    * @readonly

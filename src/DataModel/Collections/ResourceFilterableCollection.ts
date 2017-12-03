@@ -16,6 +16,15 @@ export default class ResourceFilterableCollection<T extends IResource> extends F
   }
 
   /**
+   * Obtains a collection of resources of a given type;
+   * @param iri {string} Type of the resources.
+   * @returns {ResourceFilterableCollection<T>}
+   */
+  public ofType(iri: string): ResourceFilterableCollection<T> {
+    return this.narrowFiltersWith("type", iri) as ResourceFilterableCollection<T>;
+  }
+
+  /**
    * Obtains a collection of resources being non blank nodes;
    * @returns {IResourceFilterableCollection<T>}
    */

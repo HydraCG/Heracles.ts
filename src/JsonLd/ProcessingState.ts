@@ -1,5 +1,5 @@
 import TypesCollection from "../DataModel/Collections/TypesCollection";
-import { ITypedResource } from "../DataModel/ITypedResource";
+import { IResource } from "../DataModel/IResource";
 
 /**
  * Maintains a JSON-LD processing context.
@@ -16,16 +16,16 @@ export default class ProcessingState {
   /**
    * Gets the hypermedia resources map.
    * @readonly
-   * @returns {{ [name: string]: ITypedResource }}
+   * @returns {{ [name: string]: IResource }}
    */
-  public readonly resourceMap: { [name: string]: ITypedResource };
+  public readonly resourceMap: { [name: string]: IResource };
 
   /**
    * Gets all hypermedia discovered.
    * @readonly
-   * @returns {Array<ITypedResource>}
+   * @returns {Array<IResource>}
    */
-  public readonly hypermedia: ITypedResource[];
+  public readonly hypermedia: IResource[];
 
   /**
    * Gets the processed object's owning resource's IRI.
@@ -44,9 +44,9 @@ export default class ProcessingState {
   /**
    * Gets the processed object's resource.
    * This is provided once the {@link ProcessingState.createResource(boolean) is called.
-   * @type {ITypedResource = null}
+   * @type {IResource = null}
    */
-  public currentResource: ITypedResource = null;
+  public currentResource: IResource = null;
 
   private readonly payload: object[];
   private readonly forbiddenHypermedia: string[];
@@ -107,10 +107,10 @@ export default class ProcessingState {
    * Creates a resource representation of the object being processed.
    * @param addToHypermedia {boolean = true} Value indicating whether to add this resource to the
    *                                         {@link ProcessingState.hypermedia} collection.
-   * @returns {ITypedResource}
+   * @returns {IResource}
    */
-  public createResource(addToHypermedia: boolean = true): ITypedResource {
-    let result: ITypedResource;
+  public createResource(addToHypermedia: boolean = true): IResource {
+    let result: IResource;
     if (this.processedObject["@id"]) {
       result = this.resourceMap[this.processedObject["@id"]];
     }
@@ -127,7 +127,7 @@ export default class ProcessingState {
     return (this.currentResource = result);
   }
 
-  private adjustHypermedia(result: ITypedResource, addToHypermedia: boolean): void {
+  private adjustHypermedia(result: IResource, addToHypermedia: boolean): void {
     if (
       addToHypermedia &&
       this.forbiddenHypermedia.indexOf(result.iri) === -1 &&

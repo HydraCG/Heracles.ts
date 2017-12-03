@@ -1,5 +1,5 @@
 import HydraClient from "../HydraClient";
-import TypedResourceFilterableCollection from "./Collections/TypedResourceFilterableCollection";
+import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import TypesCollection from "./Collections/TypesCollection";
 import { IApiDocumentation } from "./IApiDocumentation";
 import { IClass } from "./IClass";
@@ -18,7 +18,7 @@ export default class ApiDocumentation implements IApiDocumentation {
 
   public readonly description?: string;
 
-  public readonly supportedClasses: TypedResourceFilterableCollection<IClass>;
+  public readonly supportedClasses: ResourceFilterableCollection<IClass>;
 
   public readonly entryPoint: string;
 
@@ -35,9 +35,9 @@ export default class ApiDocumentation implements IApiDocumentation {
     this.title = apiDocumentation.title || null;
     this.description = apiDocumentation.description || null;
     this.supportedClasses =
-      apiDocumentation.supportedClasses instanceof TypedResourceFilterableCollection
+      apiDocumentation.supportedClasses instanceof ResourceFilterableCollection
         ? apiDocumentation.supportedClasses
-        : new TypedResourceFilterableCollection<IClass>(apiDocumentation.supportedClasses || new Array<IClass>());
+        : new ResourceFilterableCollection<IClass>(apiDocumentation.supportedClasses || new Array<IClass>());
     this.entryPoint = apiDocumentation.entryPoint || "";
     this.client = client;
   }

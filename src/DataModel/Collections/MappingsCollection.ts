@@ -1,11 +1,11 @@
 import { IIriTemplateMapping } from "../IIriTemplateMapping";
-import TypedResourceFilterableCollection from "./TypedResourceFilterableCollection";
+import ResourceFilterableCollection from "./ResourceFilterableCollection";
 
 /**
  * Provides a collection of {@link IIriTemplateMapping} that can be filtered with relevant criteria.
  * @class
  */
-export default class MappingsCollection extends TypedResourceFilterableCollection<IIriTemplateMapping> {
+export default class MappingsCollection extends ResourceFilterableCollection<IIriTemplateMapping> {
   /**
    * Initializes a new instance of the {@link MappingsCollection}
    * class with initial collections of mappings to filter.

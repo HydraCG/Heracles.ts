@@ -1,4 +1,4 @@
-import TypedResourceFilterableCollection from "./Collections/TypedResourceFilterableCollection";
+import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import { IClass } from "./IClass";
 import { IHydraResource } from "./IHydraResource";
 
@@ -33,5 +33,5 @@ export interface IOperation extends IHydraResource {
    * @readonly
    * @returns {TypedResourceFilterableCollection<IClass>}
    */
-  readonly expects: TypedResourceFilterableCollection<IClass>;
+  readonly expects: ResourceFilterableCollection<IClass>;
 }

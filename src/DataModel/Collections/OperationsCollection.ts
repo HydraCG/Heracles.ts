@@ -1,13 +1,13 @@
 import { hydra } from "../../namespaces";
 import { IClass } from "../IClass";
 import { IOperation } from "../IOperation";
-import TypedResourceFilterableCollection from "./TypedResourceFilterableCollection";
+import ResourceFilterableCollection from "./ResourceFilterableCollection";
 
 /**
  * Provides a collection of {@link IOperation} that can be filtered with relevant criteria.
  * @class
  */
-export default class OperationsCollection extends TypedResourceFilterableCollection<IOperation> {
+export default class OperationsCollection extends ResourceFilterableCollection<IOperation> {
   /**
    * Initializes a new instance of the {@link OperationsCollection}
    * class with initial collections of operations to filter.

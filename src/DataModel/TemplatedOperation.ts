@@ -1,7 +1,7 @@
 import * as URITemplate from "uri-templates";
 import { hydra } from "../namespaces";
 import OperationsCollection from "./Collections/OperationsCollection";
-import TypedResourceFilterableCollection from "./Collections/TypedResourceFilterableCollection";
+import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import TypesCollection from "./Collections/TypesCollection";
 import { IClass } from "./IClass";
 import { IIriTemplate } from "./IIriTemplate";
@@ -27,7 +27,7 @@ export default class TemplatedOperation implements ITemplatedOperation {
 
   public readonly method: string;
 
-  public readonly expects: TypedResourceFilterableCollection<IClass>;
+  public readonly expects: ResourceFilterableCollection<IClass>;
 
   public readonly operations: OperationsCollection;
 

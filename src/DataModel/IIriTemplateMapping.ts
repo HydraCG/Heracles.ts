@@ -1,11 +1,10 @@
 import { IResource } from "./IResource";
-import { ITypedResource } from "./ITypedResource";
 
 /**
  * Describes an abstract Hydra IRI template mapping
  * @interface
  */
-export interface IIriTemplateMapping extends ITypedResource {
+export interface IIriTemplateMapping extends IResource {
   /**
    * Gets a variable name being mapped.
    * @readonly

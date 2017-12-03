@@ -1,4 +1,4 @@
-import TypedResourceFilteredCollection from "../../src/DataModel/Collections/TypedResourceFilterableCollection";
+import ResourceFilterableCollection from "../../src/DataModel/Collections/ResourceFilterableCollection";
 import { IClass } from "../../src/DataModel/IClass";
 import TemplatedOperation from "../../src/DataModel/TemplatedOperation";
 import { hydra } from "../../src/namespaces";
@@ -10,7 +10,7 @@ describe("Given instance of the TemplatedOperation", () => {
     };
     this.originalOperation = {
       baseUrl: "http://temp.uri/",
-      expects: new TypedResourceFilteredCollection<IClass>([]),
+      expects: new ResourceFilterableCollection<IClass>([]),
       method: "GET",
       target: "test-url",
       type: ["http://schema.org/AddAction", hydra.Operation]

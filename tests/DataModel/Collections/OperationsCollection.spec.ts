@@ -2,10 +2,10 @@ import OperationsCollection from "../../../src/DataModel/Collections/OperationsC
 
 describe("Given instance of the OperationsCollection", () => {
   beforeEach(() => {
-    this.operation1 = { is: ["OperationType1"], expects: [{ iri: "ExpectedType1" }] };
-    this.operation2 = { is: ["OperationType1"], expects: [{ iri: "ExpectedType2" }] };
-    this.operation3 = { is: ["OperationType2"], expects: [{ iri: "ExpectedType2" }] };
-    this.operation4 = { is: ["OperationType3"], expects: [{ iri: "ExpectedType3" }] };
+    this.operation1 = { type: ["OperationType1"], expects: [{ iri: "ExpectedType1" }] };
+    this.operation2 = { type: ["OperationType1"], expects: [{ iri: "ExpectedType2" }] };
+    this.operation3 = { type: ["OperationType2"], expects: [{ iri: "ExpectedType2" }] };
+    this.operation4 = { type: ["OperationType3"], expects: [{ iri: "ExpectedType3" }] };
     this.allOperations = [this.operation1, this.operation2, this.operation3, this.operation4];
     this.operations = new OperationsCollection(this.allOperations);
   });

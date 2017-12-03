@@ -1,6 +1,6 @@
 import MappingsCollection from "../DataModel/Collections/MappingsCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
-import TypedResourceFilterableCollection from "../DataModel/Collections/TypedResourceFilterableCollection";
+import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import { IClass } from "../DataModel/IClass";
 import { ICollection } from "../DataModel/ICollection";
 import TemplatedOperation from "../DataModel/TemplatedOperation";
@@ -63,7 +63,7 @@ mappings[hydra.title] = {
   type: hydra.ApiDocumentation as string
 };
 mappings[hydra.supportedClass] = {
-  default: (supportedClasses, context) => new TypedResourceFilterableCollection<IClass>(supportedClasses),
+  default: (supportedClasses, context) => new ResourceFilterableCollection<IClass>(supportedClasses),
   propertyName: "supportedClasses",
   required: true,
   type: hydra.ApiDocumentation as string
@@ -99,7 +99,7 @@ mappings[hydra.totalItems] = {
   type: hydra.Collection as string
 };
 mappings[hydra.member] = {
-  default: (members, context) => new TypedResourceFilterableCollection(members),
+  default: (members, context) => new ResourceFilterableCollection(members),
   propertyName: "members",
   type: hydra.Collection as string
 };
@@ -133,12 +133,12 @@ mappings[hydra.supportedOperation] = {
   type: hydra.Class as string
 };
 mappings[hydra.supportedProperty] = {
-  default: (properties, context) => new TypedResourceFilterableCollection(properties),
+  default: (properties, context) => new ResourceFilterableCollection(properties),
   propertyName: "supportedProperties",
   type: hydra.Class as string
 };
 mappings[hydra.expects] = {
-  default: (expected, context) => new TypedResourceFilterableCollection(expected),
+  default: (expected, context) => new ResourceFilterableCollection(expected),
   propertyName: "expects",
   type: hydra.Operation as string
 };

@@ -1,13 +1,13 @@
-import TypedResourceFilterableCollection from "./Collections/TypedResourceFilterableCollection";
+import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import { IClass } from "./IClass";
-import { ITypedResource } from "./ITypedResource";
+import { IResource } from "./IResource";
 import { IWebResource } from "./IWebResource";
 
 /**
  * Represents an abstract API documentation.
  * @interface
  */
-export interface IApiDocumentation extends ITypedResource {
+export interface IApiDocumentation extends IResource {
   /**
    * Gets a title of this API documentation.
    * @readonly
@@ -27,7 +27,7 @@ export interface IApiDocumentation extends ITypedResource {
    * @readonly
    * @returns {TypedResourceFilterableCollection<IClass>}
    */
-  readonly supportedClasses: TypedResourceFilterableCollection<IClass>;
+  readonly supportedClasses: ResourceFilterableCollection<IClass>;
 
   /**
    * Gets the Url of the entry point of the API.
