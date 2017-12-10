@@ -1,7 +1,7 @@
 {
     "@context": "/api/context.jsonld",
     "@id": "/api/events",
-    "@type": "hydra:Collection",
+    "@type": ["hydra:Collection", "hydra:Resource"],
     "member": [
         {
             "@id": "/api/events/1",
@@ -14,6 +14,13 @@
         {
             "@id": "/api/events/3",
             "@type": "schema:Event"
+        }
+    ],
+    "operation": [
+        {
+            "@type": ["hydra:Operation", "schema:CreateAction", "schema:AddAction"],
+            "method": "POST",
+            "expects": "schema:Event"
         }
     ]
 }

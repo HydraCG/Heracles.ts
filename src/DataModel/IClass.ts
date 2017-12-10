@@ -1,7 +1,15 @@
-import { IHydraResource } from "./IHydraResource";
-import { IHypermedia } from "./IHypermedia";
+import OperationsCollection from "./Collections/OperationsCollection";
+import { IResource } from "./IResource";
 
 /**
- * @interface Represents a Hydra class
+ * Represents a Hydra class
+ * @interface
  */
-export interface IClass extends IHydraResource, IHypermedia {}
+export interface IClass extends IResource {
+  /**
+   * Gets the class' supported operations.
+   * @readonly
+   * @returns {OperationsCollection}
+   */
+  readonly supportedOperations: OperationsCollection;
+}

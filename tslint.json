@@ -12,6 +12,7 @@
     "no-extra-semi": true,
     "semicolon": [true, "always"],
     "trailing-comma": false,
+    "arrow-parens": false,
     "member-ordering": [
       true,
       {

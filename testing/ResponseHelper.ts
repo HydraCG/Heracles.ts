@@ -6,12 +6,7 @@ export function returnNotFound(url: string = "", body = {}, headers: any = {}) {
   return returnResponse(url, body, headers, 404);
 }
 
-function returnResponse(
-  url: string,
-  body,
-  headers: any = {},
-  status: number = 200
-) {
+function returnResponse(url: string, body, headers: any = {}, status: number = 200) {
   if (!headers["Content-Type"]) {
     headers["Content-Type"] = "application/ld+json";
   }

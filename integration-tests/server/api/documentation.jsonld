@@ -1,6 +1,7 @@
 {
     "@context": "/api/context.jsonld",
     "@id": "/api/documentation",
+    "@type": "hydra:ApiDocumentation",
     "entrypoint": "/api",
     "supportedClass": [
         {

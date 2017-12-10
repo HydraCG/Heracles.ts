@@ -1,12 +1,19 @@
-import { IHypermedia } from "./IHypermedia";
+import OperationsCollection from "./Collections/OperationsCollection";
+import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import { IResource } from "./IResource";
+
 /**
  * Provides an abstraction layer over hypermedia container.
  */
-export interface IHypermediaContainer extends Array<IHypermedia> {
+export interface IHypermediaContainer extends ResourceFilterableCollection<IResource> {
   /**
-   * Gets a collection members. This may be null if the resource owning this container is
-   * not a hydra:Collection.
+   * Gets a collection members.
+   * This may be null if the resource owning this container is not a hydra:Collection.
    */
-  readonly members: IResource[];
+  readonly members?: ResourceFilterableCollection<IResource>;
+
+  /**
+   * Gets possible operations.
+   */
+  readonly operations: OperationsCollection;
 }
