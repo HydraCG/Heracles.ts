@@ -28,6 +28,16 @@
                     }
                 }
             ]
+        },
+        {
+            "@id": "schema:Person",
+            "supportedProperty": [
+                {
+                    "property": {
+                        "@id": "name"
+                    }
+                }
+            ]
         }
     ]
 }

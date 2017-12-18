@@ -48,7 +48,12 @@ export default class ProcessingState {
    */
   public currentResource: IResource = null;
 
-  private readonly payload: object[];
+  /**
+   * Gets the original payload.
+   * @type {object[]}
+   */
+  public readonly payload: object[];
+
   private readonly forbiddenHypermedia: string[];
 
   /**

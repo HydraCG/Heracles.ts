@@ -1,10 +1,14 @@
+import LinksCollection from "../DataModel/Collections/LinksCollection";
 import MappingsCollection from "../DataModel/Collections/MappingsCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
 import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
-import { IClass } from "../DataModel/IClass";
-import { ICollection } from "../DataModel/ICollection";
+import TypesCollection from "../DataModel/Collections/TypesCollection";
+import {IClass} from "../DataModel/IClass";
+import {ICollection} from "../DataModel/ICollection";
+import {ILink} from "../DataModel/ILink";
+import TemplatedLink from "../DataModel/TemplatedLink";
 import TemplatedOperation from "../DataModel/TemplatedOperation";
-import { hydra } from "../namespaces";
+import {hydra} from "../namespaces";
 import ProcessingContext from "./ProcessingState";
 
 type Literal = string | boolean | number;
@@ -25,9 +29,9 @@ interface IPropertyMapping {
   /**
    * Gets the type of the resource that this property is valid for.
    * @readonly
-   * @returns {string}
+   * @returns {string[]}
    */
-  type?: string;
+  type?: string[];
 
   /**
    * Gets a value indicating whether the property is required and needs to be created anyway.
@@ -52,61 +56,61 @@ interface IPropertyMapping {
 export const mappings: { [property: string]: IPropertyMapping } = {};
 mappings[hydra.supportedClass] = {
   propertyName: "supportedClasses",
-  type: hydra.EntryPoint as string
+  type: [hydra.EntryPoint as string]
 };
 mappings[hydra.description] = {
   propertyName: "description",
-  type: hydra.ApiDocumentation as string
+  type: [hydra.ApiDocumentation as string]
 };
 mappings[hydra.title] = {
   propertyName: "title",
-  type: hydra.ApiDocumentation as string
+  type: [hydra.ApiDocumentation as string]
 };
 mappings[hydra.supportedClass] = {
   default: (supportedClasses, context) => new ResourceFilterableCollection<IClass>(supportedClasses),
   propertyName: "supportedClasses",
   required: true,
-  type: hydra.ApiDocumentation as string
+  type: [hydra.ApiDocumentation as string]
 };
 mappings[hydra.entrypoint] = {
   default: (entryPoints, context) => (entryPoints.length > 0 ? entryPoints[0].iri : ""),
   propertyName: "entryPoint",
   required: true,
-  type: hydra.ApiDocumentation as string
+  type: [hydra.ApiDocumentation as string]
 };
 mappings[hydra.template] = {
   default: "",
   propertyName: "template",
   required: true,
-  type: hydra.IriTemplate as string
+  type: [hydra.IriTemplate as string]
 };
 mappings[hydra.variableRepresentation] = {
   default: (representations, context) => ({ iri: hydra.BasicRepresentation }),
   propertyName: "variableRepresentation",
   required: true,
-  type: hydra.IriTemplate as string
+  type: [hydra.IriTemplate as string]
 };
 mappings[hydra.mapping] = {
   default: (iriTemplateMappings, context) => new MappingsCollection(iriTemplateMappings),
   propertyName: "mappings",
   required: true,
-  type: hydra.IriTemplate as string
+  type: [hydra.IriTemplate as string]
 };
 mappings[hydra.totalItems] = {
   default: 0,
   propertyName: "totalItems",
   required: true,
-  type: hydra.Collection as string
+  type: [hydra.Collection as string]
 };
 mappings[hydra.member] = {
   default: (members, context) => new ResourceFilterableCollection(members),
   propertyName: "members",
-  type: hydra.Collection as string
+  type: [hydra.Collection as string]
 };
 mappings[hydra.memberTemplate] = {
   default: (memberTemplates, context) => memberTemplates[0] || null,
   propertyName: "memberTemplate",
-  type: hydra.Collection as string
+  type: [hydra.Collection as string]
 };
 mappings[hydra.operation] = {
   default: (operations, context) => {
@@ -130,29 +134,67 @@ mappings[hydra.operation] = {
 mappings[hydra.supportedOperation] = {
   default: (operations, context) => new OperationsCollection(operations),
   propertyName: "supportedOperations",
-  type: hydra.Class as string
+  type: [hydra.Class as string]
 };
 mappings[hydra.supportedProperty] = {
   default: (properties, context) => new ResourceFilterableCollection(properties),
   propertyName: "supportedProperties",
-  type: hydra.Class as string
+  type: [hydra.Class as string]
 };
 mappings[hydra.expects] = {
   default: (expected, context) => new ResourceFilterableCollection(expected),
   propertyName: "expects",
-  type: hydra.Operation as string
+  type: [hydra.Operation as string]
 };
 mappings[hydra.method] = {
   default: "GET",
   propertyName: "method",
   required: true,
-  type: hydra.Operation as string
+  type: [hydra.Operation as string]
+};
+mappings.link = {
+  default: (_, context) => {
+    const links = new Array<ILink>();
+    const originalResource = context.payload.find(entry => entry["@id"] === context.currentResource.iri) || {};
+    for (const predicate of Object.keys(originalResource)) {
+      let linkType = predicate === hydra.search ? hydra.TemplatedLink : null;
+      const predicateDefinition = context.payload.find(entry => entry["@id"] === predicate);
+      if (!!predicateDefinition && predicateDefinition["@type"]) {
+        linkType = predicateDefinition["@type"].find(type => type === hydra.Link || type === hydra.TemplatedLink)
+          || null;
+      }
+
+      if (!!linkType) {
+        for (let target of originalResource[predicate]) {
+          let link = {
+            baseUrl: context.baseUrl,
+            iri: predicate,
+            links: new LinksCollection([]),
+            operations: new OperationsCollection([]),
+            target: target["@id"],
+            type: new TypesCollection(
+              linkType === hydra.TemplatedLink ? [hydra.Link, hydra.TemplatedLink] : [hydra.Link])
+          };
+          if (linkType === hydra.TemplatedLink) {
+            target = context.resourceMap[target["@id"]];
+            link = new TemplatedLink(link, target);
+          }
+
+          links.push(link);
+        }
+      }
+    }
+
+    return new LinksCollection(links);
+  },
+  propertyName: "links",
+  required: true
 };
 mappings.baseUrl = {
   default: (value, context) => context.baseUrl,
   propertyName: "baseUrl",
   required: true,
-  type: hydra.Operation as string
+  type: [hydra.Link as string, hydra.TemplatedLink as string, hydra.Operation as string]
 };
 mappings.target = {
   default: (value, context) =>
@@ -161,5 +203,5 @@ mappings.target = {
       : new URL(context.ownerIri, context.baseUrl).toString(),
   propertyName: "target",
   required: true,
-  type: hydra.Operation as string
+  type: [hydra.Link as string, hydra.TemplatedLink as string, hydra.Operation as string]
 };

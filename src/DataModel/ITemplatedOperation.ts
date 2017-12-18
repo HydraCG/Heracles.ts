@@ -1,7 +1,7 @@
 import { IOperation } from "./IOperation";
 
 /**
- * Provides a {@link IOperation} that can have an URI template.
+ * Provides an {@link IOperation} that can has an URI template.
  * @interface
  */
 export interface ITemplatedOperation extends IOperation {

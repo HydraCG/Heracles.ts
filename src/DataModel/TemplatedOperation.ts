@@ -1,5 +1,6 @@
 import * as URITemplate from "uri-templates";
 import { hydra } from "../namespaces";
+import LinksCollection from "./Collections/LinksCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import TypesCollection from "./Collections/TypesCollection";
@@ -31,6 +32,8 @@ export default class TemplatedOperation implements ITemplatedOperation {
 
   public readonly operations: OperationsCollection;
 
+  public readonly links: LinksCollection;
+
   /**
    * Initializes a new instance of the {@link TemplatedOperation} class.
    * @param operationResource {IOperation} Original operation to create templated one from.
@@ -43,6 +46,7 @@ export default class TemplatedOperation implements ITemplatedOperation {
     this.type = new TypesCollection(types.filter((type, index) => types.indexOf(type) === index));
     this.method = operationResource.method;
     this.expects = operationResource.expects;
+    this.links = operationResource.links;
     this.target = null;
     this.template = template.template;
     this.operations = new OperationsCollection([]);
@@ -55,7 +59,8 @@ export default class TemplatedOperation implements ITemplatedOperation {
     return {
       baseUrl: this.baseUrl,
       expects: this.expects,
-      iri: `_:bnode${++TemplatedOperation.id}`,
+      iri: `_:operation${++TemplatedOperation.id}`,
+      links: this.links,
       method: this.method,
       operations: this.operations,
       target: target.match(/^[a-zA-Z][a-zA-Z0-9_]*:/) ? target : new URL(target, this.baseUrl).toString(),

@@ -13,6 +13,11 @@ export interface IHypermediaContainer extends ResourceFilterableCollection<IReso
   readonly members?: ResourceFilterableCollection<IResource>;
 
   /**
+   * Gets a collection of links.
+   */
+  readonly links: ResourceFilterableCollection<IResource>;
+
+  /**
    * Gets possible operations.
    */
   readonly operations: OperationsCollection;
