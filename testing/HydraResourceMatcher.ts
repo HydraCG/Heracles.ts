@@ -24,9 +24,14 @@ export default class HydraResourceMatcher {
     result: jasmine.CustomMatcherResult,
     visited: object[]
   ): void {
-    if ((actual && !expected) || (!actual && expected)) {
+    if ((!!actual && !expected) || (!actual && !!expected)) {
       result.pass = false;
       result.message = `Expected ${actual} to be ${expected} at ${path}.`;
+      return;
+    }
+
+    if (!!actual === !!expected) {
+      result.pass = true;
       return;
     }
 

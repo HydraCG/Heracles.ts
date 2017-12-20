@@ -54,7 +54,7 @@ export default class FilterableCollectionIterator<T> implements Iterator<T> {
       (!!currentPredicateValue &&
         !(currentPredicateValue instanceof Array) &&
         !(expectedValue instanceof RegExp) &&
-        (currentPredicateValue === expectedValue as any))
+        currentPredicateValue === (expectedValue as any))
     );
   }
 

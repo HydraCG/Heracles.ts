@@ -1,14 +1,10 @@
-import LinksCollection from "../DataModel/Collections/LinksCollection";
 import MappingsCollection from "../DataModel/Collections/MappingsCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
 import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
-import TypesCollection from "../DataModel/Collections/TypesCollection";
-import {IClass} from "../DataModel/IClass";
-import {ICollection} from "../DataModel/ICollection";
-import {ILink} from "../DataModel/ILink";
-import TemplatedLink from "../DataModel/TemplatedLink";
-import TemplatedOperation from "../DataModel/TemplatedOperation";
-import {hydra} from "../namespaces";
+import { IClass } from "../DataModel/IClass";
+import { hydra } from "../namespaces";
+import { linksExtractor } from "./linksExtractor";
+import { operationsExtractor } from "./operationsExtractor";
 import ProcessingContext from "./ProcessingState";
 
 type Literal = string | boolean | number;
@@ -113,21 +109,7 @@ mappings[hydra.memberTemplate] = {
   type: [hydra.Collection as string]
 };
 mappings[hydra.operation] = {
-  default: (operations, context) => {
-    if (
-      context.currentResource.type.contains(hydra.Collection) &&
-      !!(context.currentResource as ICollection).memberTemplate &&
-      (context.currentResource as ICollection).memberTemplate.operations.length > 0
-    ) {
-      operations = [...operations].concat(
-        [...(context.currentResource as ICollection).memberTemplate.operations].map(
-          operation => new TemplatedOperation(operation, (context.currentResource as ICollection).memberTemplate)
-        )
-      );
-    }
-
-    return new OperationsCollection(operations);
-  },
+  default: operationsExtractor,
   propertyName: "operations",
   required: true
 };
@@ -153,40 +135,7 @@ mappings[hydra.method] = {
   type: [hydra.Operation as string]
 };
 mappings.link = {
-  default: (_, context) => {
-    const links = new Array<ILink>();
-    const originalResource = context.payload.find(entry => entry["@id"] === context.currentResource.iri) || {};
-    for (const predicate of Object.keys(originalResource)) {
-      let linkType = predicate === hydra.search ? hydra.TemplatedLink : null;
-      const predicateDefinition = context.payload.find(entry => entry["@id"] === predicate);
-      if (!!predicateDefinition && predicateDefinition["@type"]) {
-        linkType = predicateDefinition["@type"].find(type => type === hydra.Link || type === hydra.TemplatedLink)
-          || null;
-      }
-
-      if (!!linkType) {
-        for (let target of originalResource[predicate]) {
-          let link = {
-            baseUrl: context.baseUrl,
-            iri: predicate,
-            links: new LinksCollection([]),
-            operations: new OperationsCollection([]),
-            target: target["@id"],
-            type: new TypesCollection(
-              linkType === hydra.TemplatedLink ? [hydra.Link, hydra.TemplatedLink] : [hydra.Link])
-          };
-          if (linkType === hydra.TemplatedLink) {
-            target = context.resourceMap[target["@id"]];
-            link = new TemplatedLink(link, target);
-          }
-
-          links.push(link);
-        }
-      }
-    }
-
-    return new LinksCollection(links);
-  },
+  default: linksExtractor,
   propertyName: "links",
   required: true
 };

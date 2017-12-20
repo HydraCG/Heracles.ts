@@ -39,7 +39,25 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       expect(this.result.hypermedia).toBeLike([
         {
           iri: "http://temp.uri/api/events",
-          links: [],
+          links: [
+            {
+              baseUrl: "http://temp.uri/",
+              iri: "http://temp.uri/vocab/closed-events",
+              links: [],
+              operations: [],
+              target: "http://temp.uri/api/events/closed",
+              type: [hydra.Link]
+            },
+            {
+              baseUrl: "http://temp.uri/",
+              iri: "http://www.w3.org/ns/hydra/core#search",
+              links: [],
+              operations: [],
+              target: null,
+              template: "http://temp.uri/api/events{?searchPhrase}",
+              type: [hydra.Link]
+            }
+          ],
           members: [
             {
               iri: "http://temp.uri/api/events/1",

@@ -1,5 +1,5 @@
-import {ILink} from "./ILink";
-import {IResource} from "./IResource";
+import { ILink } from "./ILink";
+import { IResource } from "./IResource";
 
 /**
  * Provides a link that can has an URI template.

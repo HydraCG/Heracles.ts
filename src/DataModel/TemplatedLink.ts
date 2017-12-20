@@ -35,7 +35,7 @@ export default class TemplatedLink implements ITemplatedLink {
    */
   public constructor(linkResource: ILink, template: IIriTemplate) {
     let types = [...linkResource.type].concat([hydra.Link, hydra.TemplatedLink]);
-    types =  types.filter((type, index) => types.indexOf(type) === index);
+    types = types.filter((type, index) => types.indexOf(type) === index);
     this.baseUrl = linkResource.baseUrl;
     this.iri = linkResource.iri;
     this.target = null;

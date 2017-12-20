@@ -1,7 +1,12 @@
 {
     "@context": {
         "hydra": "http://www.w3.org/ns/hydra/core#",
-        "schema": "http://schema.org/"
+        "schema": "http://schema.org/",
+        "api": "http://temp.uri/vocab/",
+        "api:closed-events": {
+            "@id": "api:closed-events",
+            "@type": "@id"
+        }
     },
     "@graph": {
         "@id": "some:named.graph",
@@ -9,6 +14,19 @@
             {
                 "@id": "http://temp.uri/api/events",
                 "@type": "hydra:Collection",
+                "api:closed-events": "http://temp.uri/api/events/closed",
+                "hydra:search": {
+                    "@type": "hydra:IriTemplate",
+                    "hydra:template": "http://temp.uri/api/events{?searchPhrase}",
+                    "hydra:mapping": {
+                        "hydra:variable": "searchPhrase",
+                        "hydra:property": "hydra:freetextQuery",
+                        "hydra:variableRepresentation": "hydra:BasicVariableRepresentation",
+                        "hydra:required": false
+                    }
+                },
+                "hydra:first": "http://temp.uri/api/events?page=1",
+                "hydra:last": "http://temp.uri/api/events?page=9",
                 "hydra:totalItems": 1,
                 "hydra:member": [
                     { "@id": "http://temp.uri/api/events/1" }
@@ -20,6 +38,10 @@
                 "schema:eventDescription": "Some event 1",
                 "schema:startDate": "2017-04-19",
                 "schema:endDate": "2017-04-19"
+            },
+            {
+                "@id": "api:closed-events",
+                "@type": "hydra:Link"
             }
         ]
     }

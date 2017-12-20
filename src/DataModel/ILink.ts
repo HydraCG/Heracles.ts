@@ -1,4 +1,4 @@
-import {IHydraResource} from "./IHydraResource";
+import { IHydraResource } from "./IHydraResource";
 
 /**
  * Provides a link that can has an URI template.
