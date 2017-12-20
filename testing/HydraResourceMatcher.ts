@@ -30,7 +30,7 @@ export default class HydraResourceMatcher {
       return;
     }
 
-    if (!!actual === !!expected) {
+    if ((actual === null && expected === null) || (actual === undefined && expected === undefined)) {
       result.pass = true;
       return;
     }
@@ -67,6 +67,12 @@ export default class HydraResourceMatcher {
     if (!actual[Symbol.iterator] && expected[Symbol.iterator]) {
       result.pass = false;
       result.message = `Expected ${actual} to have an iterator as ${expected} at ${path}.`;
+      return;
+    }
+
+    if (actual instanceof Array && expected instanceof Array && actual.length !== expected.length) {
+      result.pass = false;
+      result.message = `Expected ${path} to have length of ${expected.length}, but ${actual.length} was present.`;
       return;
     }
 

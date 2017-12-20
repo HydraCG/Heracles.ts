@@ -34,7 +34,12 @@ export let hydra = {
   operation: hydraNamespace + "operation",
   Resource: hydraNamespace + "Resource",
 
+  first: hydraNamespace + "first",
+  next: hydraNamespace + "next",
+  previous: hydraNamespace + "previous",
+  last: hydraNamespace + "last",
   search: hydraNamespace + "search",
+  view: hydraNamespace + "view",
   TemplatedLink: hydraNamespace + "TemplatedLink",
   Link: hydraNamespace + "Link"
 };

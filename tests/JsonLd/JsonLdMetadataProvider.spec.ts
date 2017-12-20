@@ -50,12 +50,28 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
             },
             {
               baseUrl: "http://temp.uri/",
+              iri: "http://www.w3.org/ns/hydra/core#first",
+              links: [],
+              operations: [],
+              target: "http://temp.uri/api/events?page=1",
+              type: [hydra.Link]
+            },
+            {
+              baseUrl: "http://temp.uri/",
+              iri: "http://www.w3.org/ns/hydra/core#last",
+              links: [],
+              operations: [],
+              target: "http://temp.uri/api/events?page=9",
+              type: [hydra.Link]
+            },
+            {
+              baseUrl: "http://temp.uri/",
               iri: "http://www.w3.org/ns/hydra/core#search",
               links: [],
               operations: [],
               target: null,
               template: "http://temp.uri/api/events{?searchPhrase}",
-              type: [hydra.Link]
+              type: [hydra.Link, hydra.TemplatedLink]
             }
           ],
           members: [
