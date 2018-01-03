@@ -10,17 +10,14 @@
     "prettier": "prettier --write \"{src,testing,tests,integration-tests}/**/*.ts\"",
     "format-code": "npm run prettier && npm run tslint-fix",
     "docs-html": "typedoc --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs-html src",
-    "docs-md": "typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src",
-    "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "docs-md": "typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src"
   },
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "jsonld": "^0.4.12",
     "typescript": "^2.3.3",
     "uri-templates": "^0.2.0",
-    "urijs": "^1.19.0",
-    "snyk": "^1.64.0"
+    "urijs": "^1.19.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.16.5",
@@ -50,6 +47,5 @@
     "tslint-language-service": "^0.9.6",
     "typedoc": "^0.7.2",
     "typedoc-plugin-markdown": "~1"
-  },
-  "snyk": true
+  }
 }
