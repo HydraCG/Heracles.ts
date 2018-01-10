@@ -111,7 +111,7 @@ export default class HydraClient {
       throw new Error(HydraClient.noOperationProvided);
     }
 
-    return await fetch(operation.target, {
+    return await fetch(operation.target.iri, {
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/ld+json" },
       method: operation.method
@@ -140,7 +140,11 @@ export default class HydraClient {
   }
 
   private static getUrl(urlOrResource: string | IResource | ILink): string {
-    const url = typeof urlOrResource === "object" ? (urlOrResource as any).target || urlOrResource.iri : urlOrResource;
+    let url: any = urlOrResource;
+    if (typeof url === "object") {
+      url = !!url.target ? url.target.iri : url.iri;
+    }
+
     if (!!!url) {
       throw new Error(HydraClient.noUrlProvided);
     }

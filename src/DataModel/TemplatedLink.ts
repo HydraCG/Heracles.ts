@@ -5,6 +5,7 @@ import OperationsCollection from "./Collections/OperationsCollection";
 import TypesCollection from "./Collections/TypesCollection";
 import { IIriTemplate } from "./IIriTemplate";
 import { ILink } from "./ILink";
+import { IResource } from "./IResource";
 import { ITemplatedLink } from "./ITemplatedLink";
 
 /**
@@ -20,7 +21,7 @@ export default class TemplatedLink implements ITemplatedLink {
 
   public readonly iri: string;
 
-  public readonly target: string;
+  public readonly target: IResource;
 
   public readonly type: TypesCollection;
 
@@ -34,8 +35,7 @@ export default class TemplatedLink implements ITemplatedLink {
    * @param template {IIriTemplate} IRI template to take template from.
    */
   public constructor(linkResource: ILink, template: IIriTemplate) {
-    let types = [...linkResource.type].concat([hydra.Link, hydra.TemplatedLink]);
-    types = types.filter((type, index) => types.indexOf(type) === index);
+    const types = [...linkResource.type].filter(type => type !== hydra.Link).concat([hydra.TemplatedLink]);
     this.baseUrl = linkResource.baseUrl;
     this.iri = linkResource.iri;
     this.target = null;
@@ -46,16 +46,17 @@ export default class TemplatedLink implements ITemplatedLink {
   }
 
   public expandTarget(templateVariables: { [name: string]: string }): ILink {
-    const target = URITemplate(this.template)
+    const targetUri = URITemplate(this.template)
       .fillFromObject(templateVariables)
       .toString();
+    const target = targetUri.match(/^[a-zA-Z][a-zA-Z0-9_]*:/) ? targetUri : new URL(targetUri, this.baseUrl).toString();
     return {
       baseUrl: this.baseUrl,
       iri: `_:blankLink${++TemplatedLink.id}`,
       links: this.links,
       operations: this.operations,
-      target: target.match(/^[a-zA-Z][a-zA-Z0-9_]*:/) ? target : new URL(target, this.baseUrl).toString(),
-      type: new TypesCollection([...this.type].filter(type => type !== hydra.TemplatedLink))
+      target: { iri: target, type: new TypesCollection([]) },
+      type: new TypesCollection([...this.type].filter(type => type !== hydra.TemplatedLink).concat([hydra.Link]))
     };
   }
 }

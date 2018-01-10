@@ -35,6 +35,12 @@ export default class HydraResourceMatcher {
       return;
     }
 
+    if ((actual === null && expected === undefined) || (actual === undefined && expected === null)) {
+      result.pass = false;
+      result.message = `Expected ${actual} to be ${expected} at ${path}.`;
+      return;
+    }
+
     if (actual[Symbol.iterator] && typeof actual !== "string") {
       return this.compareIterable(actual, expected, path, result, visited);
     }

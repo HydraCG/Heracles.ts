@@ -1,7 +1,8 @@
 import { IHydraResource } from "./IHydraResource";
+import { IResource } from "./IResource";
 
 /**
- * Provides a link that can has an URI template.
+ * Describes a link to another resource.
  * @interface
  */
 
@@ -16,7 +17,7 @@ export interface ILink extends IHydraResource {
   /**
    * Gets a target URL to be called.
    * @readonly
-   * @returns {string}
+   * @returns {IResource}
    */
-  readonly target: string;
+  readonly target: IResource;
 }

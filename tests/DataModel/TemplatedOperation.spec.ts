@@ -12,7 +12,7 @@ describe("Given instance of the TemplatedOperation", () => {
       baseUrl: "http://temp.uri/",
       expects: new ResourceFilterableCollection<IClass>([]),
       method: "GET",
-      target: "test-url",
+      target: { iri: "test-url" },
       type: ["http://schema.org/AddAction", hydra.Operation]
     };
     this.operation = new TemplatedOperation(this.originalOperation, this.template);
@@ -24,7 +24,7 @@ describe("Given instance of the TemplatedOperation", () => {
     });
 
     it("should provide an expanded URL", () => {
-      expect(this.result.target).toBe("http://temp.uri/some-uri?with-variable=test-value");
+      expect(this.result.target).toEqual({ iri: "http://temp.uri/some-uri?with-variable=test-value", type: [] });
     });
 
     it("should pass a correct method", () => {

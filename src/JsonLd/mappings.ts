@@ -1,14 +1,15 @@
 import MappingsCollection from "../DataModel/Collections/MappingsCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
 import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
+import TypesCollection from "../DataModel/Collections/TypesCollection";
 import { IClass } from "../DataModel/IClass";
 import { hydra } from "../namespaces";
 import { linksExtractor } from "./linksExtractor";
-import { operationsExtractor } from "./operationsExtractor";
-import ProcessingContext from "./ProcessingState";
+import { memberTemplateOperationsExtractor } from "./memberTemplateOperationsExtractor";
+import ProcessingState from "./ProcessingState";
 
 type Literal = string | boolean | number;
-type MappingsProcessor = (items: any[], context: ProcessingContext) => any;
+type MappingsProcessor = (items: any[], processingState: ProcessingState) => any;
 
 /**
  * Describes a simple RDF mappings used in Heracles' data model.
@@ -63,13 +64,13 @@ mappings[hydra.title] = {
   type: [hydra.ApiDocumentation as string]
 };
 mappings[hydra.supportedClass] = {
-  default: (supportedClasses, context) => new ResourceFilterableCollection<IClass>(supportedClasses),
+  default: (supportedClasses, processingState) => new ResourceFilterableCollection<IClass>(supportedClasses),
   propertyName: "supportedClasses",
   required: true,
   type: [hydra.ApiDocumentation as string]
 };
 mappings[hydra.entrypoint] = {
-  default: (entryPoints, context) => (entryPoints.length > 0 ? entryPoints[0].iri : ""),
+  default: (entryPoints, processingState) => (entryPoints.length > 0 ? entryPoints[0].iri : ""),
   propertyName: "entryPoint",
   required: true,
   type: [hydra.ApiDocumentation as string]
@@ -81,13 +82,13 @@ mappings[hydra.template] = {
   type: [hydra.IriTemplate as string]
 };
 mappings[hydra.variableRepresentation] = {
-  default: (representations, context) => ({ iri: hydra.BasicRepresentation }),
+  default: (representations, processingState) => ({ iri: hydra.BasicRepresentation }),
   propertyName: "variableRepresentation",
   required: true,
   type: [hydra.IriTemplate as string]
 };
 mappings[hydra.mapping] = {
-  default: (iriTemplateMappings, context) => new MappingsCollection(iriTemplateMappings),
+  default: (iriTemplateMappings, processingState) => new MappingsCollection(iriTemplateMappings),
   propertyName: "mappings",
   required: true,
   type: [hydra.IriTemplate as string]
@@ -99,32 +100,32 @@ mappings[hydra.totalItems] = {
   type: [hydra.Collection as string]
 };
 mappings[hydra.member] = {
-  default: (members, context) => new ResourceFilterableCollection(members),
+  default: (members, processingState) => new ResourceFilterableCollection(members),
   propertyName: "members",
   type: [hydra.Collection as string]
 };
 mappings[hydra.memberTemplate] = {
-  default: (memberTemplates, context) => memberTemplates[0] || null,
+  default: (memberTemplates, processingState) => memberTemplates[0] || null,
   propertyName: "memberTemplate",
   type: [hydra.Collection as string]
 };
 mappings[hydra.operation] = {
-  default: operationsExtractor,
+  default: memberTemplateOperationsExtractor,
   propertyName: "operations",
   required: true
 };
 mappings[hydra.supportedOperation] = {
-  default: (operations, context) => new OperationsCollection(operations),
+  default: (operations, processingState) => new OperationsCollection(operations),
   propertyName: "supportedOperations",
   type: [hydra.Class as string]
 };
 mappings[hydra.supportedProperty] = {
-  default: (properties, context) => new ResourceFilterableCollection(properties),
+  default: (properties, processingState) => new ResourceFilterableCollection(properties),
   propertyName: "supportedProperties",
   type: [hydra.Class as string]
 };
 mappings[hydra.expects] = {
-  default: (expected, context) => new ResourceFilterableCollection(expected),
+  default: (expected, processingState) => new ResourceFilterableCollection(expected),
   propertyName: "expects",
   type: [hydra.Operation as string]
 };
@@ -134,22 +135,24 @@ mappings[hydra.method] = {
   required: true,
   type: [hydra.Operation as string]
 };
-mappings.link = {
+mappings.links = {
   default: linksExtractor,
   propertyName: "links",
   required: true
 };
 mappings.baseUrl = {
-  default: (value, context) => context.baseUrl,
+  default: (value, processingState) => processingState.baseUrl,
   propertyName: "baseUrl",
   required: true,
   type: [hydra.Link as string, hydra.TemplatedLink as string, hydra.Operation as string]
 };
 mappings.target = {
-  default: (value, context) =>
-    context.ownerIri.match(/^[a-zA-Z][a-zA-Z0-9_]*:/)
-      ? context.ownerIri
-      : new URL(context.ownerIri, context.baseUrl).toString(),
+  default: (value, processingState) => {
+    const iri = processingState.ownerIri.match(/^[a-zA-Z][a-zA-Z0-9_]*:/)
+      ? processingState.ownerIri
+      : new URL(processingState.ownerIri, processingState.baseUrl).toString();
+    return processingState.resourceMap[iri] || { iri, type: new TypesCollection([]) };
+  },
   propertyName: "target",
   required: true,
   type: [hydra.Link as string, hydra.TemplatedLink as string, hydra.Operation as string]

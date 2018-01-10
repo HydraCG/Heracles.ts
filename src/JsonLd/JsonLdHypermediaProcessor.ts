@@ -1,5 +1,6 @@
 import { promises as jsonLd } from "jsonld";
 import ApiDocumentation from "../DataModel/ApiDocumentation";
+import LinksCollection from "../DataModel/Collections/LinksCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import HypermediaContainer from "../DataModel/HypermediaContainer";
@@ -40,6 +41,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       hypermedia.push(
         (rootResource = {
           iri: response.url,
+          links: new LinksCollection([]),
           operations: new OperationsCollection([]),
           type: new TypesCollection([])
         } as IHydraResource)

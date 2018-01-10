@@ -5,9 +5,10 @@ import { run } from "../../testing/AsyncHelper";
 import HydraResourceMatcher from "../../testing/HydraResourceMatcher";
 import { returnOk } from "../../testing/ResponseHelper";
 import * as inputJsonLd from "./input.json";
+import * as nestedResourcesInputJsonLd from "./nestedResourcesInput.json";
 
 describe("Given instance of the JsonLdHypermediaProcessor class", () => {
-  beforeEach(function() {
+  beforeEach(() => {
     jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
     this.hypermediaProcessors = HydraClient.hypermediaProcessors;
     HydraClient.hypermediaProcessors = [];
@@ -15,27 +16,27 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
     this.hypermediaProcessor = new HydraClient().getHypermediaProcessor(returnOk());
   });
 
-  it("should get itself registered", function() {
+  it("should get itself registered", () => {
     expect(this.hypermediaProcessor).toEqual(jasmine.any(JsonLdHypermediaProcessor));
   });
 
-  it("should expose supported media types", function() {
+  it("should expose supported media types", () => {
     expect(this.hypermediaProcessor.supportedMediaTypes).toEqual(["application/ld+json"]);
   });
 
   describe("when parsing", () => {
     beforeEach(
-      run(async function() {
+      run(async () => {
         this.response = returnOk("http://temp.uri/", inputJsonLd);
         this.result = await this.hypermediaProcessor.process(this.response, false);
       })
     );
 
-    it("should process data", function() {
+    it("should process data", () => {
       expect(this.result).toEqual(inputJsonLd);
     });
 
-    it("should separate hypermedia", function() {
+    it("should separate hypermedia", () => {
       expect(this.result.hypermedia).toBeLike([
         {
           iri: "http://temp.uri/api/events",
@@ -45,7 +46,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               iri: "http://temp.uri/vocab/closed-events",
               links: [],
               operations: [],
-              target: "http://temp.uri/api/events/closed",
+              target: { iri: "http://temp.uri/api/events/closed", type: [] },
               type: [hydra.Link]
             },
             {
@@ -53,7 +54,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               iri: "http://www.w3.org/ns/hydra/core#first",
               links: [],
               operations: [],
-              target: "http://temp.uri/api/events?page=1",
+              target: { iri: "http://temp.uri/api/events?page=1", type: [] },
               type: [hydra.Link]
             },
             {
@@ -61,7 +62,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               iri: "http://www.w3.org/ns/hydra/core#last",
               links: [],
               operations: [],
-              target: "http://temp.uri/api/events?page=9",
+              target: { iri: "http://temp.uri/api/events?page=9", type: [] },
               type: [hydra.Link]
             },
             {
@@ -71,7 +72,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               operations: [],
               target: null,
               template: "http://temp.uri/api/events{?searchPhrase}",
-              type: [hydra.Link, hydra.TemplatedLink]
+              type: [hydra.TemplatedLink]
             }
           ],
           members: [
@@ -94,9 +95,39 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         }
       ]);
     });
+
+    describe("response with nested resources", () => {
+      beforeEach(
+        run(async () => {
+          this.response = returnOk("http://temp.uri/api/people/markus", nestedResourcesInputJsonLd);
+          const result = await this.hypermediaProcessor.process(this.response, false);
+          this.markus = result.hypermedia.where(control => control.iri.match(/markus/)).first();
+          this.karol = this.markus.links
+            .withRelationOf("http://schema.org/knows")
+            .where(link => link.target.iri.match(/karol/))
+            .first().target;
+        })
+      );
+
+      it("should gain access to outer resource's links", () => {
+        expect(this.markus.links.withRelationOf("http://xmlns.com/foaf/0.1/homepage").first().target.iri).toBe(
+          "http://temp.uri/api/people/markus/home-page"
+        );
+      });
+
+      it("should gain access to inner resource's links", () => {
+        expect(this.karol.links.withRelationOf("http://xmlns.com/foaf/0.1/homepage").first().target.iri).toBe(
+          "http://temp.uri/api/people/karol/home-page"
+        );
+      });
+
+      it("should have a nested resource's link", () => {
+        expect(this.markus.links.withRelationOf("http://schema.org/knows").first().target).toBe(this.karol);
+      });
+    });
   });
 
-  afterEach(function() {
+  afterEach(() => {
     HydraClient.hypermediaProcessors = this.hypermediaProcessors;
   });
 });
