@@ -3,10 +3,11 @@ import { hydra } from "../../../src/namespaces";
 
 describe("Given instance of the LinksCollection", () => {
   beforeEach(() => {
-    this.link1 = { iri: "some:resource-url", type: [hydra.Link] };
-    this.link2 = { iri: "some:other-resource-url", type: [hydra.TemplatedLink] };
-    this.link3 = { iri: "yet:another-url", type: [hydra.Link] };
-    this.link4 = { iri: "yet:another-other-url", type: [hydra.Link] };
+    const target = "some:resource";
+    this.link1 = { relation: "some:resource-url", target, type: [hydra.Link] };
+    this.link2 = { relation: "some:other-url", target, type: [hydra.TemplatedLink] };
+    this.link3 = { relation: "yet:another-url", target, type: [hydra.Link] };
+    this.link4 = { relation: "yet:another-other-url", target, type: [hydra.Link] };
     this.allLinks = [this.link1, this.link2, this.link3, this.link4];
     this.links = new LinksCollection(this.allLinks);
   });

@@ -21,6 +21,8 @@ export default class TemplatedLink implements ITemplatedLink {
 
   public readonly iri: string;
 
+  public readonly relation: string;
+
   public readonly target: IResource;
 
   public readonly type: TypesCollection;
@@ -38,6 +40,7 @@ export default class TemplatedLink implements ITemplatedLink {
     const types = [...linkResource.type].filter(type => type !== hydra.Link).concat([hydra.TemplatedLink]);
     this.baseUrl = linkResource.baseUrl;
     this.iri = linkResource.iri;
+    this.relation = linkResource.relation;
     this.target = null;
     this.type = new TypesCollection(types.filter((type, index) => types.indexOf(type) === index));
     this.template = template.template;
@@ -55,6 +58,7 @@ export default class TemplatedLink implements ITemplatedLink {
       iri: `_:blankLink${++TemplatedLink.id}`,
       links: this.links,
       operations: this.operations,
+      relation: this.relation,
       target: { iri: target, type: new TypesCollection([]) },
       type: new TypesCollection([...this.type].filter(type => type !== hydra.TemplatedLink).concat([hydra.Link]))
     };

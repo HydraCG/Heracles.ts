@@ -146,6 +146,12 @@ mappings.baseUrl = {
   required: true,
   type: [hydra.Link as string, hydra.TemplatedLink as string, hydra.Operation as string]
 };
+mappings.relation = {
+  default: (value, processingState) => processingState.currentResource.iri,
+  propertyName: "relation",
+  required: true,
+  type: [hydra.Link as string, hydra.TemplatedLink as string]
+};
 mappings.target = {
   default: (value, processingState) => {
     const iri = processingState.ownerIri.match(/^[a-zA-Z][a-zA-Z0-9_]*:/)

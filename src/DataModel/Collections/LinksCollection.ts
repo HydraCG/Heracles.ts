@@ -19,11 +19,11 @@ export default class LinksCollection extends ResourceFilterableCollection<ILink>
 
   /**
    * Obtains a collection of links of a given relation type.
-   * @param iri {string} Expected type.
+   * @param iri {string} Expected relation type.
    * @returns {OperationsCollection}
    */
   public withRelationOf(iri: string): LinksCollection {
-    return this.narrowFiltersWith("iri", iri) as LinksCollection;
+    return this.narrowFiltersWith("relation", iri) as LinksCollection;
   }
 
   /**

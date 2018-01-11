@@ -36,6 +36,7 @@ export const linksExtractor = (resources, processingState) => {
           iri: predicate,
           links: new LinksCollection([]),
           operations: new OperationsCollection([]),
+          relation: predicate,
           target,
           type: new TypesCollection(linkType === hydra.TemplatedLink ? [hydra.TemplatedLink] : [hydra.Link])
         };

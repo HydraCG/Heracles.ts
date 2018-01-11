@@ -12,27 +12,24 @@
             "@type": "@id"
         }
     },
-    "@graph": {
-        "@id": "some:named.graph",
-        "@graph": [
-            {
-                "@id": "http://temp.uri/api/people/markus",
+    "@graph": [
+        {
+            "@id": "http://temp.uri/api/people/markus",
+            "@type": "schema:Person",
+            "foaf:homepage": "http://temp.uri/api/people/markus/home-page",
+            "schema:knows": {
+                "@id": "http://temp.uri/api/people/karol",
                 "@type": "schema:Person",
-                "foaf:homepage": "http://temp.uri/api/people/markus/home-page",
-                "schema:knows": {
-                    "@id": "http://temp.uri/api/people/karol",
-                    "@type": "schema:Person",
-                    "foaf:homepage": "http://temp.uri/api/people/karol/home-page"
-                }
-            },
-            {
-                "@id": "foaf:homepage",
-                "@type": "hydra:Link"
-            },
-            {
-                "@id": "schema:knows",
-                "@type": "hydra:Link"
+                "foaf:homepage": "http://temp.uri/api/people/karol/home-page"
             }
-        ]
-    }
+        },
+        {
+            "@id": "foaf:homepage",
+            "@type": "hydra:Link"
+        },
+        {
+            "@id": "schema:knows",
+            "@type": "hydra:Link"
+        }
+    ]
 }

@@ -46,6 +46,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               iri: "http://temp.uri/vocab/closed-events",
               links: [],
               operations: [],
+              relation: "http://temp.uri/vocab/closed-events",
               target: { iri: "http://temp.uri/api/events/closed", type: [] },
               type: [hydra.Link]
             },
@@ -54,6 +55,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               iri: "http://www.w3.org/ns/hydra/core#first",
               links: [],
               operations: [],
+              relation: "http://www.w3.org/ns/hydra/core#first",
               target: { iri: "http://temp.uri/api/events?page=1", type: [] },
               type: [hydra.Link]
             },
@@ -62,6 +64,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               iri: "http://www.w3.org/ns/hydra/core#last",
               links: [],
               operations: [],
+              relation: "http://www.w3.org/ns/hydra/core#last",
               target: { iri: "http://temp.uri/api/events?page=9", type: [] },
               type: [hydra.Link]
             },
@@ -70,6 +73,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               iri: "http://www.w3.org/ns/hydra/core#search",
               links: [],
               operations: [],
+              relation: "http://www.w3.org/ns/hydra/core#search",
               target: null,
               template: "http://temp.uri/api/events{?searchPhrase}",
               type: [hydra.TemplatedLink]
@@ -102,10 +106,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
           this.response = returnOk("http://temp.uri/api/people/markus", nestedResourcesInputJsonLd);
           const result = await this.hypermediaProcessor.process(this.response, false);
           this.markus = result.hypermedia.where(control => control.iri.match(/markus/)).first();
-          this.karol = this.markus.links
-            .withRelationOf("http://schema.org/knows")
-            .where(link => link.target.iri.match(/karol/))
-            .first().target;
+          this.karol = this.markus.links.withRelationOf("http://schema.org/knows").first().target;
         })
       );
 
