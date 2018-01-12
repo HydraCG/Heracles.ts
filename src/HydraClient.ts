@@ -1,6 +1,7 @@
 import "isomorphic-fetch";
 import * as jsonld from "jsonld";
 import ApiDocumentation from "./DataModel/ApiDocumentation";
+import { ILink } from "./DataModel/ILink";
 import { IOperation } from "./DataModel/IOperation";
 import { IResource } from "./DataModel/IResource";
 import { IWebResource } from "./DataModel/IWebResource";
@@ -76,9 +77,10 @@ export default class HydraClient {
   /**
    * Obtains a representation of a resource.
    *
-   * @param urlOrResource URL or a {@link IResource} carrying an IRI of the resource to be obtained.
+   * @param urlOrResource {string | IResource | ILink } Either URL, {@link IResource} pr {@link ILink}
+   *                                            carrying an IRI of the resource to be obtained.
    */
-  public async getResource(urlOrResource: string | IResource): Promise<IWebResource> {
+  public async getResource(urlOrResource: string | IResource | ILink): Promise<IWebResource> {
     const url = HydraClient.getUrl(urlOrResource);
     const response = await fetch(url);
     if (response.status !== 200) {
@@ -109,7 +111,7 @@ export default class HydraClient {
       throw new Error(HydraClient.noOperationProvided);
     }
 
-    return await fetch(operation.target, {
+    return await fetch(operation.target.iri, {
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/ld+json" },
       method: operation.method
@@ -137,8 +139,12 @@ export default class HydraClient {
       : result[1];
   }
 
-  private static getUrl(urlOrResource: string | IResource): string {
-    const url = typeof urlOrResource === "object" ? urlOrResource.iri : urlOrResource;
+  private static getUrl(urlOrResource: string | IResource | ILink): string {
+    let url: any = urlOrResource;
+    if (typeof url === "object") {
+      url = !!url.target ? url.target.iri : url.iri;
+    }
+
     if (!!!url) {
       throw new Error(HydraClient.noUrlProvided);
     }

@@ -16,6 +16,15 @@
             "@type": "schema:Event"
         }
     ],
+    "search": {
+        "@type": "hydra:IriTemplate",
+        "template": "/api/events{?searchText}",
+        "mappings": {
+            "variable": "searchText",
+            "property": "hydra:freetextQuery",
+            "variableRepresentation": "hydra:BasicRepresentation"
+        }
+    },
     "operation": [
         {
             "@type": ["hydra:Operation", "schema:CreateAction", "schema:AddAction"],

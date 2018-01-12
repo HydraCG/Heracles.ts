@@ -94,6 +94,27 @@ describe("Having a Hydra client", () => {
             })
           );
         });
+
+        describe("and then searching for events as in use case 7.searching-events", () => {
+          beforeEach(
+            run(async () => {
+              const link = this.events.hypermedia.links
+                .withRelationOf(hydra.search)
+                .withTemplate()
+                .first()
+                .expandTarget({ searchText: "whatever" });
+              this.searchResult = await this.client.getResource(link);
+            })
+          );
+
+          it("should obtain matching events", () => {
+            const matchingEvents = this.searchResult.hypermedia
+              .where(item => item.iri.match("/api/events$") && item.type.contains(hydra.Collection))
+              .first();
+            expect(matchingEvents).toBeDefined();
+            expect(matchingEvents).not.toBeNull();
+          });
+        });
       });
 
       describe("and then obtaining people", () => {

@@ -24,7 +24,18 @@ export default class HydraResourceMatcher {
     result: jasmine.CustomMatcherResult,
     visited: object[]
   ): void {
-    if ((actual && !expected) || (!actual && expected)) {
+    if ((!!actual && !expected) || (!actual && !!expected)) {
+      result.pass = false;
+      result.message = `Expected ${actual} to be ${expected} at ${path}.`;
+      return;
+    }
+
+    if ((actual === null && expected === null) || (actual === undefined && expected === undefined)) {
+      result.pass = true;
+      return;
+    }
+
+    if ((actual === null && expected === undefined) || (actual === undefined && expected === null)) {
       result.pass = false;
       result.message = `Expected ${actual} to be ${expected} at ${path}.`;
       return;
@@ -62,6 +73,12 @@ export default class HydraResourceMatcher {
     if (!actual[Symbol.iterator] && expected[Symbol.iterator]) {
       result.pass = false;
       result.message = `Expected ${actual} to have an iterator as ${expected} at ${path}.`;
+      return;
+    }
+
+    if (actual instanceof Array && expected instanceof Array && actual.length !== expected.length) {
+      result.pass = false;
+      result.message = `Expected ${path} to have length of ${expected.length}, but ${actual.length} was present.`;
       return;
     }
 

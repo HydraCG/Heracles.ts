@@ -6,6 +6,8 @@ import { IResource } from "../DataModel/IResource";
  * @class
  */
 export default class ProcessingState {
+  private finalHypermedia: IResource[] = null;
+
   /**
    * Gets the currently processed object.
    * @readonly
@@ -25,7 +27,18 @@ export default class ProcessingState {
    * @readonly
    * @returns {Array<IResource>}
    */
-  public readonly hypermedia: IResource[];
+  public get hypermedia(): IResource[] {
+    if (this.finalHypermedia === null) {
+      this.finalHypermedia = [];
+      for (const resource of this.allHypermedia) {
+        if (this.forbiddenHypermedia.indexOf(resource.iri) === -1) {
+          this.finalHypermedia.push(resource);
+        }
+      }
+    }
+
+    return this.finalHypermedia;
+  }
 
   /**
    * Gets the processed object's owning resource's IRI.
@@ -42,14 +55,24 @@ export default class ProcessingState {
   public readonly baseUrl: string;
 
   /**
+   * Gets the original payload.
+   * @type {object[]}
+   */
+  public readonly payload: object[];
+
+  /**
+   * Gets the collection of resources that should not be added to the resulting hypermedia collection.
+   */
+  public readonly forbiddenHypermedia: string[];
+
+  /**
    * Gets the processed object's resource.
    * This is provided once the {@link ProcessingState.createResource(boolean) is called.
    * @type {IResource = null}
    */
   public currentResource: IResource = null;
 
-  private readonly payload: object[];
-  private readonly forbiddenHypermedia: string[];
+  private readonly allHypermedia: IResource[];
 
   /**
    * Initializes a new instance of the {@link ProcessingState} class.
@@ -69,13 +92,13 @@ export default class ProcessingState {
   public constructor(objectToProcess: object | object[], ownerIri: string, parentContext: ProcessingState = null) {
     if (arguments.length === 2) {
       this.resourceMap = {};
-      this.hypermedia = [];
+      this.allHypermedia = [];
       this.payload = objectToProcess as object[];
       this.forbiddenHypermedia = [];
       this.baseUrl = ownerIri;
     } else {
       this.resourceMap = parentContext.resourceMap;
-      this.hypermedia = parentContext.hypermedia;
+      this.allHypermedia = parentContext.allHypermedia;
       this.payload = parentContext.payload;
       this.forbiddenHypermedia = parentContext.forbiddenHypermedia;
       this.baseUrl = parentContext.baseUrl;
@@ -123,23 +146,12 @@ export default class ProcessingState {
       this.resourceMap[result.iri] = result;
     }
 
-    this.adjustHypermedia(result, addToHypermedia);
-    return (this.currentResource = result);
-  }
-
-  private adjustHypermedia(result: IResource, addToHypermedia: boolean): void {
-    if (
-      addToHypermedia &&
-      this.forbiddenHypermedia.indexOf(result.iri) === -1 &&
-      this.hypermedia.indexOf(result) === -1
-    ) {
-      this.hypermedia.push(result);
+    if (addToHypermedia) {
+      this.allHypermedia.push(result);
     } else {
       this.forbiddenHypermedia.push(result.iri);
-      const existingHypermediaIndex = this.hypermedia.indexOf(result);
-      if (existingHypermediaIndex !== -1) {
-        this.hypermedia.splice(existingHypermediaIndex, 1);
-      }
     }
+
+    return (this.currentResource = result);
   }
 }

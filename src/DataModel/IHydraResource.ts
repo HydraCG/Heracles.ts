@@ -1,3 +1,4 @@
+import LinksCollection from "./Collections/LinksCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
 import { IResource } from "./IResource";
 
@@ -12,4 +13,11 @@ export interface IHydraResource extends IResource {
    * @returns {OperationsCollection}
    */
   readonly operations: OperationsCollection;
+
+  /**
+   * Gets links related to that resource.
+   * @readonly
+   * @returns {LinksCollection}
+   */
+  readonly links: LinksCollection;
 }

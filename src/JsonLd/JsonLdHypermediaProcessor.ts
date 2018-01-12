@@ -1,5 +1,6 @@
 import { promises as jsonLd } from "jsonld";
 import ApiDocumentation from "../DataModel/ApiDocumentation";
+import LinksCollection from "../DataModel/Collections/LinksCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import HypermediaContainer from "../DataModel/HypermediaContainer";
@@ -30,36 +31,40 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     let flattenPayload = await jsonLd.flatten(payload, null, { base: response.url, embed: "@link" });
     flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
     const context = JsonLdHypermediaProcessor.processHypermedia(new ProcessingContext(flattenPayload, response.url));
-    for (let index = context.hypermedia.length - 1; index >= 0; index--) {
-      JsonLdHypermediaProcessor.tryRemoveReferenceFrom(context.hypermedia, index);
+    const hypermedia = context.hypermedia;
+    for (let index = hypermedia.length - 1; index >= 0; index--) {
+      JsonLdHypermediaProcessor.tryRemoveReferenceFrom(hypermedia, index);
     }
 
-    if (!context.resourceMap[response.url]) {
-      context.hypermedia.push(
-        (context.resourceMap[response.url] = {
+    let rootResource = context.resourceMap[response.url];
+    if (!rootResource) {
+      hypermedia.push(
+        (rootResource = {
           iri: response.url,
+          links: new LinksCollection([]),
           operations: new OperationsCollection([]),
           type: new TypesCollection([])
         } as IHydraResource)
       );
     }
 
-    const apiDocumentation = context.hypermedia.find(item => item.type.contains(hydra.ApiDocumentation));
+    const apiDocumentation = hypermedia.find(item => item.type.contains(hydra.ApiDocumentation));
     if (apiDocumentation) {
-      context.hypermedia[context.hypermedia.indexOf(apiDocumentation)] = new ApiDocumentation(
+      hypermedia[hypermedia.indexOf(apiDocumentation)] = new ApiDocumentation(
         (apiDocumentation as any) as IApiDocumentation,
         client
       );
     }
 
-    const hypermedia = new HypermediaContainer(
-      context.hypermedia,
-      (context.resourceMap[response.url] as IHydraResource).operations,
-      (context.resourceMap[response.url] as ICollection).members
+    const hypermediaContainer = new HypermediaContainer(
+      hypermedia,
+      (rootResource as IHydraResource).operations,
+      (rootResource as IHydraResource).links,
+      (rootResource as ICollection).members
     );
     Object.defineProperty(result, "hypermedia", {
       enumerable: false,
-      value: hypermedia
+      value: hypermediaContainer
     });
     return result;
   }
@@ -112,7 +117,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
           !!context.processedObject["@type"].find(type => type.indexOf(hydra.namespace) !== -1)));
     const targetResource = context.createResource(addToHypermedia);
     const validPredicates = Object.keys(mappings).filter(
-      iri => !mappings[iri].type || targetResource.type.contains(mappings[iri].type)
+      iri => !mappings[iri].type || !!mappings[iri].type.find(type => targetResource.type.contains(type))
     );
     for (const predicate of validPredicates) {
       JsonLdHypermediaProcessor.setupProperty(targetResource, context, predicate);
