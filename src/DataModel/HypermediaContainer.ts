@@ -1,6 +1,8 @@
+import { hydra } from "../namespaces";
 import LinksCollection from "./Collections/LinksCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
+import { ICollection } from "./ICollection";
 import { IHypermediaContainer } from "./IHypermediaContainer";
 import { IResource } from "./IResource";
 
@@ -12,6 +14,8 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
   implements IHypermediaContainer {
   public readonly members?: ResourceFilterableCollection<IResource>;
 
+  public readonly collections: ResourceFilterableCollection<ICollection>;
+
   public readonly operations: OperationsCollection;
 
   public readonly links: LinksCollection;
@@ -21,7 +25,8 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
    * @param items {Iterable<IResource>} Hypermedia controls to be stored within this container.
    * @param operations {OperationsCollection} Operations available on the container.
    * @param links {LinksCollection} Links available on the container.
-   * @param members {Iterable<IResource>} Optional Hydra collection members in case container is a collection.
+   * @param members {ResourceFilterableCollection<IResource>} Optional Hydra collection members in case
+   *                                                          container is a collection.
    */
   public constructor(
     items: Iterable<IResource>,
@@ -31,6 +36,9 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
   ) {
     super(items);
     this.operations = operations;
+    this.collections = new ResourceFilterableCollection<ICollection>(Array.from(items).filter(control =>
+      control.type.contains(hydra.Collection)
+    ) as ICollection[]);
     this.links = links;
     this.members =
       members instanceof ResourceFilterableCollection ? members : new ResourceFilterableCollection<IResource>(members);

@@ -1,5 +1,6 @@
 import OperationsCollection from "./Collections/OperationsCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
+import { ICollection } from "./ICollection";
 import { IResource } from "./IResource";
 
 /**
@@ -21,4 +22,9 @@ export interface IHypermediaContainer extends ResourceFilterableCollection<IReso
    * Gets possible operations.
    */
   readonly operations: OperationsCollection;
+
+  /**
+   * Gets discovered collections.
+   */
+  readonly collections: ResourceFilterableCollection<ICollection>;
 }

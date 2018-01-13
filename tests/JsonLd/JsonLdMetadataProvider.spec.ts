@@ -36,6 +36,11 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       expect(this.result).toEqual(inputJsonLd);
     });
 
+    it("should discover all collections", () => {
+      expect(this.result.hypermedia.collections.length).toBe(1);
+      expect(this.result.hypermedia.collections.first().iri).toMatch("/api/events$");
+    });
+
     it("should separate hypermedia", () => {
       expect(this.result.hypermedia).toBeLike([
         {
