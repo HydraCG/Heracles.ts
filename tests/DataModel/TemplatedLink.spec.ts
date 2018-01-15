@@ -1,8 +1,10 @@
 import TemplatedLink from "../../src/DataModel/TemplatedLink";
 import { hydra } from "../../src/namespaces";
+import HydraResourceMatcher from "../../testing/HydraResourceMatcher";
 
 describe("Given instance of the TemplatedLink", () => {
   beforeEach(() => {
+    jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
     this.template = {
       template: "some-uri{?with-variable}"
     };
@@ -16,7 +18,7 @@ describe("Given instance of the TemplatedLink", () => {
   });
 
   it("should provide link of correct type", () => {
-    expect(this.link.type).toEqual([hydra.TemplatedLink]);
+    expect([...this.link.type]).toEqual([hydra.TemplatedLink]);
   });
 
   describe("when expanding URI with variable values", () => {
@@ -25,11 +27,11 @@ describe("Given instance of the TemplatedLink", () => {
     });
 
     it("should provide an expanded URL", () => {
-      expect(this.result.target).toEqual({ iri: "http://temp.uri/some-uri?with-variable=test-value", type: [] });
+      expect(this.result.target).toBeLike({ iri: "http://temp.uri/some-uri?with-variable=test-value", type: [] });
     });
 
     it("should copy original operation's types", () => {
-      expect(this.result.type).toEqual([hydra.Link]);
+      expect([...this.result.type]).toEqual([hydra.Link]);
     });
   });
 });
