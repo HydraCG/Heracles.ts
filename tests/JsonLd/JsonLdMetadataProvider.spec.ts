@@ -72,6 +72,17 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               baseUrl: "http://temp.uri/",
               iri: "http://www.w3.org/ns/hydra/core#search",
               links: [],
+              mappings: [
+                {
+                  iri: "_:b1",
+                  links: [],
+                  operations: [],
+                  property: { iri: "http://www.w3.org/ns/hydra/core#freetextQuery", type: [] },
+                  required: false,
+                  type: [],
+                  variable: "searchPhrase"
+                }
+              ],
               operations: [],
               relation: "http://www.w3.org/ns/hydra/core#search",
               target: null,

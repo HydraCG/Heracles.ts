@@ -115,6 +115,32 @@ describe("Having a Hydra client", () => {
             expect(matchingEvents).not.toBeNull();
           });
         });
+
+        describe("and then searching for events as in use case 8.filtering-events", () => {
+          beforeEach(
+            run(async () => {
+              const link = this.events.hypermedia.links
+                .withRelationOf("http://example.com/vocab#filter")
+                .withTemplate()
+                .first()
+                .expandTarget(_ =>
+                  _.withProperty("http://schema.org/name")
+                    .havingValueOf("name")
+                    .withVariable("eventDescription")
+                    .havingValueOf("description")
+                );
+              this.filteringResult = await this.client.getResource(link);
+            })
+          );
+
+          it("should obtain matching events", () => {
+            const matchingEvents = this.filteringResult.hypermedia
+              .where(item => item.iri.match("/api/events$") && item.type.contains(hydra.Collection))
+              .first();
+            expect(matchingEvents).toBeDefined();
+            expect(matchingEvents).not.toBeNull();
+          });
+        });
       });
 
       describe("and then obtaining people", () => {
