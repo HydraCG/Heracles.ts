@@ -27,7 +27,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
   describe("when parsing", () => {
     beforeEach(
       run(async () => {
-        this.response = returnOk("http://temp.uri/", inputJsonLd);
+        this.response = returnOk("http://temp.uri/api", inputJsonLd);
         this.result = await this.hypermediaProcessor.process(this.response, false);
       })
     );
@@ -37,70 +37,85 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
     });
 
     it("should discover all collections", () => {
-      expect(this.result.hypermedia.collections.length).toBe(1);
-      expect(this.result.hypermedia.collections.first().iri).toMatch("/api/events$");
+      expect(this.result.hypermedia.collections.length).toBe(2);
+    });
+
+    it("should discover people collection", () => {
+      expect(this.result.hypermedia.collections.first().iri).toMatch("/api/people$");
+    });
+
+    it("should discover events collection", () => {
+      expect(this.result.hypermedia.collections.last().iri).toMatch("/api/events$");
     });
 
     it("should separate hypermedia", () => {
       expect(this.result.hypermedia).toBeLike([
         {
-          iri: "http://temp.uri/api/events",
-          links: [
+          collections: [
             {
-              baseUrl: "http://temp.uri/",
-              iri: "http://temp.uri/vocab/closed-events",
-              links: [],
-              operations: [],
-              relation: "http://temp.uri/vocab/closed-events",
-              target: { iri: "http://temp.uri/api/events/closed", type: [] },
-              type: [hydra.Link]
-            },
-            {
-              baseUrl: "http://temp.uri/",
-              iri: "http://www.w3.org/ns/hydra/core#first",
-              links: [],
-              operations: [],
-              relation: "http://www.w3.org/ns/hydra/core#first",
-              target: { iri: "http://temp.uri/api/events?page=1", type: [] },
-              type: [hydra.Link]
-            },
-            {
-              baseUrl: "http://temp.uri/",
-              iri: "http://www.w3.org/ns/hydra/core#last",
-              links: [],
-              operations: [],
-              relation: "http://www.w3.org/ns/hydra/core#last",
-              target: { iri: "http://temp.uri/api/events?page=9", type: [] },
-              type: [hydra.Link]
-            },
-            {
-              baseUrl: "http://temp.uri/",
-              iri: "http://www.w3.org/ns/hydra/core#search",
-              links: [],
-              operations: [],
-              relation: "http://www.w3.org/ns/hydra/core#search",
-              target: null,
-              template: "http://temp.uri/api/events{?searchPhrase}",
-              type: [hydra.TemplatedLink]
-            }
-          ],
-          members: [
-            {
-              iri: "http://temp.uri/api/events/1",
+              iri: "http://temp.uri/api/people",
               links: [],
               operations: [],
               type: []
+            },
+            {
+              iri: "http://temp.uri/api/events",
+              links: [
+                {
+                  baseUrl: "http://temp.uri/api",
+                  iri: "http://temp.uri/vocab/closed-events",
+                  links: [],
+                  operations: [],
+                  relation: "http://temp.uri/vocab/closed-events",
+                  target: { iri: "http://temp.uri/api/events/closed", type: [] },
+                  type: [hydra.Link]
+                },
+                {
+                  baseUrl: "http://temp.uri/api",
+                  iri: "http://www.w3.org/ns/hydra/core#first",
+                  links: [],
+                  operations: [],
+                  relation: "http://www.w3.org/ns/hydra/core#first",
+                  target: { iri: "http://temp.uri/api/events?page=1", type: [] },
+                  type: [hydra.Link]
+                },
+                {
+                  baseUrl: "http://temp.uri/api",
+                  iri: "http://www.w3.org/ns/hydra/core#last",
+                  links: [],
+                  operations: [],
+                  relation: "http://www.w3.org/ns/hydra/core#last",
+                  target: { iri: "http://temp.uri/api/events?page=9", type: [] },
+                  type: [hydra.Link]
+                },
+                {
+                  baseUrl: "http://temp.uri/api",
+                  iri: "http://www.w3.org/ns/hydra/core#search",
+                  links: [],
+                  operations: [],
+                  relation: "http://www.w3.org/ns/hydra/core#search",
+                  target: null,
+                  template: "http://temp.uri/api/events{?searchPhrase}",
+                  type: [hydra.TemplatedLink]
+                }
+              ],
+              members: [
+                {
+                  iri: "http://temp.uri/api/events/1",
+                  links: [],
+                  operations: [],
+                  type: []
+                }
+              ],
+              operations: [],
+              totalItems: 1,
+              type: [hydra.Collection]
             }
           ],
-          operations: [],
-          totalItems: 1,
-          type: [hydra.Collection]
-        },
-        {
-          iri: "http://temp.uri/",
+          iri: "http://temp.uri/api",
           links: [],
           operations: [],
-          type: []
+          type: [hydra.EntryPoint]
         }
       ]);
     });

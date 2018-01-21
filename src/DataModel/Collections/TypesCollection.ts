@@ -16,7 +16,7 @@ export default class TypesCollection extends Array<string> {
   public constructor(...types: string[]);
 
   public constructor(types: any) {
-    super(...types);
+    super(...([...types] as string[]).filter((type, index, array) => array.indexOf(type) === index));
   }
 
   /**

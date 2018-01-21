@@ -16,6 +16,7 @@ export let hydra = {
   BasicRepresentation: hydraNamespace + "BasicRepresentation",
   IriTemplate: hydraNamespace + "IriTemplate",
 
+  collection: hydraNamespace + "collection",
   member: hydraNamespace + "member",
   memberTemplate: hydraNamespace + "memberTemplate",
   totalItems: hydraNamespace + "totalItems",

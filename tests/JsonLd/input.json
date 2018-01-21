@@ -12,24 +12,35 @@
         "@id": "some:named.graph",
         "@graph": [
             {
-                "@id": "http://temp.uri/api/events",
-                "@type": "hydra:Collection",
-                "api:closed-events": "http://temp.uri/api/events/closed",
-                "hydra:search": {
-                    "@type": "hydra:IriTemplate",
-                    "hydra:template": "http://temp.uri/api/events{?searchPhrase}",
-                    "hydra:mapping": {
-                        "hydra:variable": "searchPhrase",
-                        "hydra:property": "hydra:freetextQuery",
-                        "hydra:variableRepresentation": "hydra:BasicVariableRepresentation",
-                        "hydra:required": false
+                "@id": "http://temp.uri/api",
+                "@type": "hydra:EntryPoint",
+                "hydra:collection": [
+                    {
+                        "@id": "http://temp.uri/api/people"
+                    },
+                    {
+                        "@id": "http://temp.uri/api/events",
+                        "@type": "hydra:Collection",
+                        "api:closed-events": "http://temp.uri/api/events/closed",
+                        "hydra:search": {
+                            "@type": "hydra:IriTemplate",
+                            "hydra:template": "http://temp.uri/api/events{?searchPhrase}",
+                            "hydra:mapping": {
+                                "hydra:variable": "searchPhrase",
+                                "hydra:property": "hydra:freetextQuery",
+                                "hydra:variableRepresentation": "hydra:BasicVariableRepresentation",
+                                "hydra:required": false
+                            }
+                        },
+                        "hydra:first": "http://temp.uri/api/events?page=1",
+                        "hydra:last": "http://temp.uri/api/events?page=9",
+                        "hydra:totalItems": 1,
+                        "hydra:member": [
+                            {
+                                "@id": "http://temp.uri/api/events/1"
+                            }
+                        ]
                     }
-                },
-                "hydra:first": "http://temp.uri/api/events?page=1",
-                "hydra:last": "http://temp.uri/api/events?page=9",
-                "hydra:totalItems": 1,
-                "hydra:member": [
-                    { "@id": "http://temp.uri/api/events/1" }
                 ]
             },
             {
