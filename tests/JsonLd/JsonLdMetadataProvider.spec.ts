@@ -53,16 +53,19 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         {
           collections: [
             {
+              collections: [],
               iri: "http://temp.uri/api/people",
               links: [],
               operations: [],
               type: []
             },
             {
+              collections: [],
               iri: "http://temp.uri/api/events",
               links: [
                 {
                   baseUrl: "http://temp.uri/api",
+                  collections: [],
                   iri: "http://temp.uri/vocab/closed-events",
                   links: [],
                   operations: [],
@@ -72,6 +75,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 },
                 {
                   baseUrl: "http://temp.uri/api",
+                  collections: [],
                   iri: "http://www.w3.org/ns/hydra/core#first",
                   links: [],
                   operations: [],
@@ -81,6 +85,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 },
                 {
                   baseUrl: "http://temp.uri/api",
+                  collections: [],
                   iri: "http://www.w3.org/ns/hydra/core#last",
                   links: [],
                   operations: [],
@@ -90,6 +95,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 },
                 {
                   baseUrl: "http://temp.uri/api",
+                  collections: [],
                   iri: "http://www.w3.org/ns/hydra/core#search",
                   links: [],
                   operations: [],
@@ -101,6 +107,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               ],
               members: [
                 {
+                  collections: [],
                   iri: "http://temp.uri/api/events/1",
                   links: [],
                   operations: [],
