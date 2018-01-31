@@ -39,12 +39,12 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
     const explicitCollections: ICollection[] = itemsArray
       .filter(control => control.type.contains(hydra.Collection))
       .map(control => control as ICollection);
-    const entryPointCollections: ICollection[] =
+    const availableCollections: ICollection[] =
       itemsArray
         .filter(control => !!(control as any).collections)
         .map(control => Array.from((control as any).collections) as ICollection[])[0] || [];
     this.operations = operations;
-    this.collections = new ResourceFilterableCollection<ICollection>(explicitCollections.concat(entryPointCollections));
+    this.collections = new ResourceFilterableCollection<ICollection>(explicitCollections.concat(availableCollections));
     this.links = links;
     this.members =
       members instanceof ResourceFilterableCollection ? members : new ResourceFilterableCollection<IResource>(members);

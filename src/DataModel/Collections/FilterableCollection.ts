@@ -61,7 +61,7 @@ export default abstract class FilterableCollection<T> {
    * @returns {T}
    */
   public last(): T {
-    let result: T;
+    let result: T = null;
     for (const item of this) {
       result = item;
     }
