@@ -116,7 +116,7 @@ describe("Having a Hydra client", () => {
           });
         });
 
-        describe("and then searching for events as in use case 8.filtering-events", () => {
+        describe("and then using a custom arbitrarily pointed templated operation", () => {
           beforeEach(
             run(async () => {
               const link = this.events.hypermedia.links
