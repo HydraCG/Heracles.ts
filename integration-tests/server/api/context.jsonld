@@ -54,17 +54,18 @@
             "@id": "hydra:template",
             "@type": "xsd:string"
         },
-        "mapping": {
+        "mappings": {
             "@id": "hydra:mapping",
             "@type": "@id"
         },
         "variable": {
             "@id": "hydra:variable",
-            "@type": "@id"
+            "@type": "xsd:string"
         },
         "variableRepresentation": "hydra:variableRepresentation",
         "search": {
-            "@id": "hydra:search"
+            "@id": "hydra:search",
+            "@type": "@id"
         },
         "Event": {
             "@id": "schema:Event",
@@ -85,6 +86,10 @@
         "endDate": {
             "@id": "schema:endDate",
             "@type": "xsd:dateTime"
+        },
+        "examplevocab:filter": {
+            "@id": "examplevocab:filter",
+            "@type": "@id"
         }
     }
 }
