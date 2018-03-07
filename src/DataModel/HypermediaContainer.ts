@@ -3,6 +3,7 @@ import LinksCollection from "./Collections/LinksCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import { ICollection } from "./ICollection";
+import { IHydraResource } from "./IHydraResource";
 import { IHypermediaContainer } from "./IHypermediaContainer";
 import { IResource } from "./IResource";
 
@@ -36,15 +37,18 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
   ) {
     super(items);
     const itemsArray = Array.from(items);
-    const explicitCollections: ICollection[] = itemsArray
+    const explicitelyTypedCollections: ICollection[] = itemsArray
       .filter(control => control.type.contains(hydra.Collection))
       .map(control => control as ICollection);
-    const availableCollections: ICollection[] =
-      itemsArray
-        .filter(control => !!(control as any).collections)
-        .map(control => Array.from((control as any).collections) as ICollection[])[0] || [];
+    const linkedCollections: ICollection[] = Array.prototype.concat(
+      ...itemsArray
+        .filter((control: any) => !!control.collections)
+        .map((control: IHydraResource) => Array.from(control.collections))
+    );
     this.operations = operations;
-    this.collections = new ResourceFilterableCollection<ICollection>(explicitCollections.concat(availableCollections));
+    this.collections = new ResourceFilterableCollection<ICollection>(
+      explicitelyTypedCollections.concat(linkedCollections)
+    );
     this.links = links;
     this.members =
       members instanceof ResourceFilterableCollection ? members : new ResourceFilterableCollection<IResource>(members);
