@@ -32,9 +32,9 @@ export let hydra = {
 
   supportedOperation: hydraNamespace + "supportedOperation",
   supportedProperty: hydraNamespace + "supportedProperty",
-  readable: hydraNamespace + "readable",
+  readonly: hydraNamespace + "readonly",
   required: hydraNamespace + "required",
-  writeable: hydraNamespace + "writeable",
+  writeonly: hydraNamespace + "writeonly",
   Class: hydraNamespace + "Class",
   SupportedProperty: hydraNamespace + "SupportedProperty",
 

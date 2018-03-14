@@ -2,9 +2,11 @@ import * as md5 from "js-md5";
 import HydraClientFactory from "../src/HydraClientFactory";
 import { hydra } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
+import HydraResourceMatcher from "../testing/HydraResourceMatcher";
 
 describe("Having a Hydra client", () => {
   beforeEach(() => {
+    jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
     this.url = "http://localhost:3000/";
     this.client = HydraClientFactory.configure()
       .withDefaults()

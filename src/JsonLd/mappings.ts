@@ -35,18 +35,6 @@ mappings[hydra.operation] = {
   propertyName: "operations",
   required: true
 };
-mappings[hydra.title] = {
-  default: "",
-  propertyName: "displayName",
-  required: true,
-  type: [hydra.Class as string, hydra.ApiDocumentation as string]
-};
-mappings[hydra.description] = {
-  default: "",
-  propertyName: "description",
-  required: true,
-  type: [hydra.Class as string, hydra.ApiDocumentation as string]
-};
 mappings.links = {
   default: linksExtractor,
   propertyName: "links",

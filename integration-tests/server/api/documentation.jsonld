@@ -7,7 +7,7 @@
         {
             "@id": "schema:Event",
             "@type": "hydra:Class",
-            "title": "Event",
+            "label": "Event",
             "description": "An event happening at a certain time and location, such as a concert, lecture, or festival.",
             "supportedProperty": [
                 {
@@ -16,7 +16,7 @@
                         "@id": "schema:name",
                         "@type": "rdf:Property",
                         "label": "Name",
-                        "comment": "The name of the event.",
+                        "description": "The name of the event.",
                         "range": "http://www.w3.org/2001/XMLSchema#string"
                     }
                 },
@@ -26,7 +26,7 @@
                         "@id": "schema:description",
                         "@type": "rdf:Property",
                         "label": "Description",
-                        "comment": "Description of the event.",
+                        "description": "Description of the event.",
                         "range": "http://www.w3.org/2001/XMLSchema#string"
                     }
                 },
@@ -36,7 +36,7 @@
                         "@id": "schema:startDate",
                         "@type": "rdf:Property",
                         "label": "Start date",
-                        "comment": "The start date and time of the item (in ISO 8601 date format).",
+                        "description": "The start date and time of the item (in ISO 8601 date format).",
                         "range": ["http://www.w3.org/2001/XMLSchema#dateTime", "http://www.w3.org/2001/XMLSchema#date"]
                     }
                 },
@@ -46,7 +46,7 @@
                         "@id": "schema:endDate",
                         "@type": "rdf:Property",
                         "label": "End date",
-                        "comment": "The end date and time of the item (in ISO 8601 date format).",
+                        "description": "The end date and time of the item (in ISO 8601 date format).",
                         "range": ["http://www.w3.org/2001/XMLSchema#dateTime", "http://www.w3.org/2001/XMLSchema#date"]
                     }
                 }

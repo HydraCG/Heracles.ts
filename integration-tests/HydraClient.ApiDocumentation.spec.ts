@@ -1,5 +1,4 @@
-import ApiDocumentation from "../src/DataModel/ApiDocumentation";
-import HydraClientFactory from "../src/HydraClientFactory";
+import HydraClient from "../src/HydraClient";
 import { hydra, rdf } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
 import HydraResourceMatcher from "../testing/HydraResourceMatcher";
@@ -8,9 +7,7 @@ describe("Having a Hydra client", () => {
   beforeEach(() => {
     jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
     this.url = "http://localhost:3000/";
-    this.client = HydraClientFactory.configure()
-      .withDefaults()
-      .andCreate();
+    this.client = new HydraClient();
   });
 
   describe("while browsing the test website", () => {
@@ -22,7 +19,7 @@ describe("Having a Hydra client", () => {
 
     describe("and obtaining it's API documentation as in use case 2.api-documentation", () => {
       it("should obtain an API documentation", () => {
-        expect(this.apiDocumentation).toEqual(jasmine.any(ApiDocumentation));
+        expect(this.apiDocumentation).not.toBeNull();
       });
 
       it("should have access an entry point", () => {
@@ -32,7 +29,6 @@ describe("Having a Hydra client", () => {
       it("should provide class of schema:Event as in use case 2.1.api-documentation-data-structures", () => {
         expect(this.apiDocumentation.supportedClasses.ofIri("http://schema.org/Event")).toBeLike([
           {
-            collections: [],
             description: "An event happening at a certain time and location, such as a concert, lecture, or festival.",
             displayName: "Event",
             iri: "http://schema.org/Event",
@@ -41,12 +37,10 @@ describe("Having a Hydra client", () => {
             supportedOperations: [],
             supportedProperties: [
               {
-                collections: [],
                 iri: "_:b0",
                 links: [],
                 operations: [],
                 property: {
-                  collections: [],
                   description: "The name of the event.",
                   displayName: "Name",
                   iri: "http://schema.org/name",
@@ -55,18 +49,16 @@ describe("Having a Hydra client", () => {
                   type: [rdf.Property],
                   valuesOfType: [{ iri: "http://www.w3.org/2001/XMLSchema#string", type: [] }]
                 },
-                readable: false,
+                readOnly: false,
                 required: false,
                 type: [hydra.SupportedProperty],
-                writable: false
+                writeOnly: false
               },
               {
-                collections: [],
                 iri: "_:b1",
                 links: [],
                 operations: [],
                 property: {
-                  collections: [],
                   description: "Description of the event.",
                   displayName: "Description",
                   iri: "http://schema.org/description",
@@ -75,18 +67,16 @@ describe("Having a Hydra client", () => {
                   type: [rdf.Property],
                   valuesOfType: [{ iri: "http://www.w3.org/2001/XMLSchema#string", type: [] }]
                 },
-                readable: false,
+                readOnly: false,
                 required: false,
                 type: [hydra.SupportedProperty],
-                writable: false
+                writeOnly: false
               },
               {
-                collections: [],
                 iri: "_:b2",
                 links: [],
                 operations: [],
                 property: {
-                  collections: [],
                   description: "The start date and time of the item (in ISO 8601 date format).",
                   displayName: "Start date",
                   iri: "http://schema.org/startDate",
@@ -98,18 +88,16 @@ describe("Having a Hydra client", () => {
                     { iri: "http://www.w3.org/2001/XMLSchema#date", type: [] }
                   ]
                 },
-                readable: false,
+                readOnly: false,
                 required: false,
                 type: [hydra.SupportedProperty],
-                writable: false
+                writeOnly: false
               },
               {
-                collections: [],
                 iri: "_:b3",
                 links: [],
                 operations: [],
                 property: {
-                  collections: [],
                   description: "The end date and time of the item (in ISO 8601 date format).",
                   displayName: "End date",
                   iri: "http://schema.org/endDate",
@@ -121,10 +109,10 @@ describe("Having a Hydra client", () => {
                     { iri: "http://www.w3.org/2001/XMLSchema#date", type: [] }
                   ]
                 },
-                readable: false,
+                readOnly: false,
                 required: false,
                 type: [hydra.SupportedProperty],
-                writable: false
+                writeOnly: false
               }
             ],
             type: [hydra.Class]

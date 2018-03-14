@@ -1,7 +1,7 @@
 import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import { IResource } from "../DataModel/IResource";
-import { rdf, rdfs } from "../namespaces";
+import { hydra, rdf, rdfs } from "../namespaces";
 import { IPropertyMapping } from "./IPropertyMapping";
 
 export function rdfSchema(mappings: {
@@ -20,13 +20,13 @@ export function rdfSchema(mappings: {
     default: "",
     propertyName: "displayName",
     required: true,
-    type: [rdf.Property as string]
+    type: [rdf.Property as string, hydra.Class as string]
   };
   mappings[rdfs.comment] = {
     default: "",
     propertyName: "description",
     required: true,
-    type: [rdf.Property as string]
+    type: [rdf.Property as string, hydra.Class as string]
   };
   return mappings;
 }

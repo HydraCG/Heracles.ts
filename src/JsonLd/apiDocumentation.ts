@@ -28,15 +28,15 @@ export function apiDocumentation(mappings: {
     type: [hydra.ApiDocumentation as string]
   };
 
-  mappings[hydra.readable] = {
+  mappings[hydra.readonly] = {
     default: false,
-    propertyName: "readable",
+    propertyName: "readOnly",
     required: true,
     type: [hydra.SupportedProperty as string]
   };
-  mappings[hydra.writeable] = {
+  mappings[hydra.writeonly] = {
     default: false,
-    propertyName: "writable",
+    propertyName: "writeOnly",
     required: true,
     type: [hydra.SupportedProperty as string]
   };

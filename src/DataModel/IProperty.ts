@@ -14,7 +14,7 @@ export interface IProperty extends IResource {
   readonly displayName: string;
 
   /**
-   * Gets the property's description.
+   * Gets the class' description.
    * @readonly
    * @returns {string}
    */
