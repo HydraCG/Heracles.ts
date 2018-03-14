@@ -6,35 +6,60 @@
     "supportedClass": [
         {
             "@id": "schema:Event",
+            "@type": "hydra:Class",
+            "label": "Event",
+            "description": "An event happening at a certain time and location, such as a concert, lecture, or festival.",
             "supportedProperty": [
                 {
+                    "@type": "hydra:SupportedProperty",
                     "property": {
-                        "@id": "eventName"
+                        "@id": "schema:name",
+                        "@type": "rdf:Property",
+                        "label": "Name",
+                        "description": "The name of the event.",
+                        "range": "http://www.w3.org/2001/XMLSchema#string"
                     }
                 },
                 {
+                    "@type": "hydra:SupportedProperty",
                     "property": {
-                        "@id": "eventDescription"
+                        "@id": "schema:description",
+                        "@type": "rdf:Property",
+                        "label": "Description",
+                        "description": "Description of the event.",
+                        "range": "http://www.w3.org/2001/XMLSchema#string"
                     }
                 },
                 {
+                    "@type": "hydra:SupportedProperty",
                     "property": {
-                        "@id": "startDate"
+                        "@id": "schema:startDate",
+                        "@type": "rdf:Property",
+                        "label": "Start date",
+                        "description": "The start date and time of the item (in ISO 8601 date format).",
+                        "range": ["http://www.w3.org/2001/XMLSchema#dateTime", "http://www.w3.org/2001/XMLSchema#date"]
                     }
                 },
                 {
+                    "@type": "hydra:SupportedProperty",
                     "property": {
-                        "@id": "endDate"
+                        "@id": "schema:endDate",
+                        "@type": "rdf:Property",
+                        "label": "End date",
+                        "description": "The end date and time of the item (in ISO 8601 date format).",
+                        "range": ["http://www.w3.org/2001/XMLSchema#dateTime", "http://www.w3.org/2001/XMLSchema#date"]
                     }
                 }
             ]
         },
         {
             "@id": "schema:Person",
+            "@type": "hydra:Class",
             "supportedProperty": [
                 {
+                    "@type": "hydra:SupportedProperty",
                     "property": {
-                        "@id": "name"
+                        "@id": "schema:name"
                     }
                 }
             ]

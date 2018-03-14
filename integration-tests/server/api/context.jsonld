@@ -7,6 +7,9 @@
         "owl": "http://www.w3.org/2002/07/owl#",
         "schema": "http://schema.org/",
         "examplevocab": "http://example.com/vocab#",
+        "range": "rdfs:range",
+        "label": "rdfs:label",
+        "description": "rdfs:comment",
         "entrypoint": {
             "@id": "hydra:entrypoint",
             "@type": "@id"

@@ -29,7 +29,11 @@ export let hydra = {
 
   supportedOperation: hydraNamespace + "supportedOperation",
   supportedProperty: hydraNamespace + "supportedProperty",
+  readonly: hydraNamespace + "readonly",
+  required: hydraNamespace + "required",
+  writeonly: hydraNamespace + "writeonly",
   Class: hydraNamespace + "Class",
+  SupportedProperty: hydraNamespace + "SupportedProperty",
 
   method: hydraNamespace + "method",
   expects: hydraNamespace + "expects",
@@ -45,4 +49,21 @@ export let hydra = {
   last: hydraNamespace + "last",
   search: hydraNamespace + "search",
   view: hydraNamespace + "view"
+};
+
+const rdfNamespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+export let rdf = {
+  namespace: rdfNamespace,
+
+  Property: rdfNamespace + "Property"
+};
+
+const rdfsNamespace = "http://www.w3.org/2000/01/rdf-schema#";
+export let rdfs = {
+  namespace: rdfsNamespace,
+
+  comment: rdfsNamespace + "comment",
+  domain: rdfsNamespace + "domain",
+  label: rdfsNamespace + "label",
+  range: rdfsNamespace + "range"
 };

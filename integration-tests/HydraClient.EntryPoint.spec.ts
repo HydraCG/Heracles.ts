@@ -2,9 +2,11 @@ import * as md5 from "js-md5";
 import HydraClient from "../src/HydraClient";
 import { hydra } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
+import HydraResourceMatcher from "../testing/HydraResourceMatcher";
 
 describe("Having a Hydra client", () => {
   beforeEach(() => {
+    jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
     this.url = "http://localhost:3000/";
     this.client = new HydraClient();
   });
@@ -182,16 +184,6 @@ describe("Having a Hydra client", () => {
             expect(this.createdPerson.status).toBe(201);
           });
         });
-      });
-    });
-
-    describe("and obtaining it's API documentation as in use case 2.api-documentation", () => {
-      it("should obtain an API documentation", () => {
-        expect(this.apiDocumentation).not.toBeNull();
-      });
-
-      it("should have access an entry point", () => {
-        expect(this.apiDocumentation.entryPoint).toMatch(".*/api$");
       });
     });
   });
