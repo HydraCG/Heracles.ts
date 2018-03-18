@@ -41,7 +41,7 @@ export let hydra = {
   method: hydraNamespace + "method",
   expects: hydraNamespace + "expects",
   returns: hydraNamespace + "returns",
-  possibleStatus: hydraNamespace + "possibleStatus",
+  statusCodes: hydraNamespace + "statusCodes",
   Operation: hydraNamespace + "Operation",
   Status: hydraNamespace + "Status",
 

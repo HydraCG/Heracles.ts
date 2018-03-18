@@ -101,8 +101,7 @@ export default class ProcessingState {
     objectToProcess: object | object[],
     ownerIri: string,
     parentIri: string = null,
-    parentContext: ProcessingState = null
-  ) {
+    parentContext: ProcessingState = null) {
     if (arguments.length === 2) {
       this.resourceMap = {};
       this.allHypermedia = [];
@@ -142,11 +141,8 @@ export default class ProcessingState {
       parentIri = this.processedObject["@id"];
     } else {
       const parentResource = this.payload.find(
-        resource =>
-          !!Object.keys(resource)
-            .filter(predicate => predicate.charAt(0) !== "@")
-            .find(predicate => !!resource[predicate].find(value => value["@id"] === objectToProcess["@id"]))
-      );
+        resource => !!Object.keys(resource).filter(predicate => predicate.charAt(0) !== "@").find(
+          predicate => !!resource[predicate].find(value => value["@id"] === objectToProcess["@id"])));
       parentIri = !!parentResource ? parentResource["@id"] : parentIri;
     }
 

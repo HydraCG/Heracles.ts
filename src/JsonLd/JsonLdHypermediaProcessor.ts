@@ -11,7 +11,7 @@ import { IWebResource } from "../DataModel/IWebResource";
 import HydraClient from "../HydraClient";
 import { IHypermediaProcessor } from "../IHypermediaProcessor";
 import { hydra } from "../namespaces";
-import IndirectTypingProvider from "./IndirectTypingProvider";
+import isOfType from "./isOfType";
 import { mappings } from "./mappings";
 import ProcessingState from "./ProcessingState";
 
@@ -29,6 +29,8 @@ function isHydraIndependent(resource: object): boolean {
     !!resource["@type"].find(type => type.indexOf(hydra.namespace) === 0 && dependentTypes.indexOf(type) === -1)
   );
 }
+
+const literals = ["string", "number", "boolean"];
 
 /**
  * Provides a JSON-LD based implementation of the {@link IHypermediaProcessor} interface.
@@ -140,22 +142,12 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     const addToHypermedia =
       !isOwnedHypermedia && (!isBlank(context.processedObject) || isHydraIndependent(context.processedObject));
     const targetResource = context.createResource(addToHypermedia);
-    for (const predicate of Object.keys(mappings)) {
-      if (mappings[predicate].type) {
-        let isValidPredicate = false;
-        for (const type of mappings[predicate].type) {
-          if (await this.indirectTypingProvider.isOfType(type, context)) {
-            isValidPredicate = true;
-            break;
-          }
-        }
-
-        if (!isValidPredicate) {
-          continue;
-        }
-      }
-
-      await this.setupProperty(targetResource, context, predicate);
+    const validPredicates = Object.keys(mappings).filter(
+      iri => !mappings[iri].type
+        || !!mappings[iri].type.find(type => isOfType(type, context))
+    );
+    for (const predicate of validPredicates) {
+      JsonLdHypermediaProcessor.setupProperty(targetResource, context, predicate);
     }
 
     return targetResource;
@@ -168,10 +160,12 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
 
     const values = new Array<any>();
     for (const originalValue of context.processedObject[predicate]) {
-      const value =
-        literals.indexOf(typeof originalValue["@value"]) !== -1
-          ? originalValue["@value"]
-          : await this.processResource(context.copyFor(originalValue), predicate.indexOf(hydra.namespace) !== -1);
+      const value = literals.indexOf(typeof originalValue["@value"]) !== -1
+        ? originalValue["@value"]
+        : JsonLdHypermediaProcessor.processResource(
+            context.copyFor(originalValue),
+            predicate.indexOf(hydra.namespace) !== -1
+          );
       if (value) {
         values.push(value);
       }
