@@ -44,7 +44,7 @@
             "@type": "@vocab"
         },
         "required": "hydra:required",
-        "collections": {
+        "collection": {
             "@id": "hydra:collection",
             "@type": "@id"
         },
