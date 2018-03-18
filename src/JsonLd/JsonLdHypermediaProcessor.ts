@@ -11,8 +11,11 @@ import { IWebResource } from "../DataModel/IWebResource";
 import HydraClient from "../HydraClient";
 import { IHypermediaProcessor } from "../IHypermediaProcessor";
 import { hydra } from "../namespaces";
+import isOfType from "./isOfType";
 import { mappings } from "./mappings";
 import ProcessingContext from "./ProcessingState";
+
+const literals = ["string", "number", "boolean"];
 
 /**
  * Provides a JSON-LD based implementation of the {@link IHypermediaProcessor} interface.
@@ -117,7 +120,8 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
           !!context.processedObject["@type"].find(type => type.indexOf(hydra.namespace) !== -1)));
     const targetResource = context.createResource(addToHypermedia);
     const validPredicates = Object.keys(mappings).filter(
-      iri => !mappings[iri].type || !!mappings[iri].type.find(type => targetResource.type.contains(type))
+      iri => !mappings[iri].type
+        || !!mappings[iri].type.find(type => isOfType(type, context))
     );
     for (const predicate of validPredicates) {
       JsonLdHypermediaProcessor.setupProperty(targetResource, context, predicate);
@@ -133,7 +137,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
 
     const values = new Array<any>();
     for (const originalValue of context.processedObject[predicate]) {
-      const value = originalValue["@value"]
+      const value = literals.indexOf(typeof originalValue["@value"]) !== -1
         ? originalValue["@value"]
         : JsonLdHypermediaProcessor.processResource(
             context.copyFor(originalValue),
@@ -158,7 +162,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       }
     }
 
-    if (["string", "number", "boolean"].indexOf(typeof propertyDefinition.default) !== -1) {
+    if (literals.indexOf(typeof propertyDefinition.default) !== -1) {
       targetResource[propertyDefinition.propertyName] = value[0] || propertyDefinition.default;
     } else if (typeof propertyDefinition.default === "function") {
       targetResource[propertyDefinition.propertyName] = propertyDefinition.default(value, context);

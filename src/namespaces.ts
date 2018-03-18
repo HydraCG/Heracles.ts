@@ -21,11 +21,13 @@ export let hydra = {
   IriTemplateMapping: hydraNamespace + "IriTemplateMapping",
   TemplatedLink: hydraNamespace + "TemplatedLink",
   Link: hydraNamespace + "Link",
+  VariableRepresentation: hydraNamespace + "VariableRepresentation",
 
   member: hydraNamespace + "member",
   memberTemplate: hydraNamespace + "memberTemplate",
   totalItems: hydraNamespace + "totalItems",
   Collection: hydraNamespace + "Collection",
+  PartialCollectionView: hydraNamespace + "PartialCollectionView",
 
   supportedOperation: hydraNamespace + "supportedOperation",
   supportedProperty: hydraNamespace + "supportedProperty",
@@ -38,12 +40,15 @@ export let hydra = {
   method: hydraNamespace + "method",
   expects: hydraNamespace + "expects",
   returns: hydraNamespace + "returns",
+  statusCodes: hydraNamespace + "statusCodes",
   Operation: hydraNamespace + "Operation",
+  Status: hydraNamespace + "Status",
 
   operation: hydraNamespace + "operation",
   Resource: hydraNamespace + "Resource",
 
   first: hydraNamespace + "first",
+  freetextQuery: hydraNamespace + "freetextQuery",
   next: hydraNamespace + "next",
   previous: hydraNamespace + "previous",
   last: hydraNamespace + "last",

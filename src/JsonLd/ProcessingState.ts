@@ -41,11 +41,18 @@ export default class ProcessingState {
   }
 
   /**
-   * Gets the processed object's owning resource's IRI.
+   * Gets the processed object's owning resource's IRI. This owning resource may not be a direct parent.
    * @readonly
    * @returns {string}
    */
   public readonly ownerIri: string;
+
+  /**
+   * Gets the processed object's parent resource's IRI.
+   * @readonly
+   * @returns {string}
+   */
+  public readonly parentIri: string;
 
   /**
    * Gets the base URL to use for relative ones.
@@ -85,11 +92,16 @@ export default class ProcessingState {
    * Initializes a new instance of the {@link ProcessingState} class.
    * @param objectToProcess {object} Actual object to process.
    * @param ownerIri {string} Object to process owning resource's IRI.
+   * @param parentIri {string} Object to process parent resource's IRI.
    * @param parentContext {ProcessingState} Parent context to obtain more details from.
    */
-  public constructor(objectToProcess: object, ownerIri: string, parentContext: ProcessingState);
+  public constructor(objectToProcess: object, ownerIri: string, parentIri: string, parentContext: ProcessingState);
 
-  public constructor(objectToProcess: object | object[], ownerIri: string, parentContext: ProcessingState = null) {
+  public constructor(
+    objectToProcess: object | object[],
+    ownerIri: string,
+    parentIri: string = null,
+    parentContext: ProcessingState = null) {
     if (arguments.length === 2) {
       this.resourceMap = {};
       this.allHypermedia = [];
@@ -106,6 +118,7 @@ export default class ProcessingState {
 
     this.processedObject = objectToProcess;
     this.ownerIri = ownerIri;
+    this.parentIri = parentIri;
     if (Object.keys(this.processedObject).length === 1 && Object.keys(this.processedObject)[0] === "@id") {
       this.processedObject =
         this.payload.find(item => item["@id"] === this.processedObject["@id"]) || this.processedObject;
@@ -123,7 +136,17 @@ export default class ProcessingState {
       ownerIri = this.currentResource.iri;
     }
 
-    return new ProcessingState(objectToProcess, ownerIri, this);
+    let parentIri: string = ownerIri;
+    if (this.processedObject !== this.payload) {
+      parentIri = this.processedObject["@id"];
+    } else {
+      const parentResource = this.payload.find(
+        resource => !!Object.keys(resource).filter(predicate => predicate.charAt(0) !== "@").find(
+          predicate => !!resource[predicate].find(value => value["@id"] === objectToProcess["@id"])));
+      parentIri = !!parentResource ? parentResource["@id"] : parentIri;
+    }
+
+    return new ProcessingState(objectToProcess, ownerIri, parentIri, this);
   }
 
   /**

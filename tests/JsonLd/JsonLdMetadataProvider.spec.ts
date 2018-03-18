@@ -7,7 +7,7 @@ import { returnOk } from "../../testing/ResponseHelper";
 import * as inputJsonLd from "./input.json";
 import * as nestedResourcesInputJsonLd from "./nestedResourcesInput.json";
 
-describe("Given instance of the JsonLdHypermediaProcessor class", () => {
+describe("Given instance of the JsonLdMetadataProvider class", () => {
   beforeEach(() => {
     jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
     this.hypermediaProcessors = HydraClient.hypermediaProcessors;
@@ -52,39 +52,53 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
             },
             {
               baseUrl: "http://temp.uri/",
-              iri: "http://www.w3.org/ns/hydra/core#first",
+              iri: hydra.first,
               links: [],
               operations: [],
-              relation: "http://www.w3.org/ns/hydra/core#first",
+              relation: hydra.first,
               target: { iri: "http://temp.uri/api/events?page=1", type: [] },
               type: [hydra.Link]
             },
             {
               baseUrl: "http://temp.uri/",
-              iri: "http://www.w3.org/ns/hydra/core#last",
+              iri: hydra.last,
               links: [],
               operations: [],
-              relation: "http://www.w3.org/ns/hydra/core#last",
+              relation: hydra.last,
               target: { iri: "http://temp.uri/api/events?page=9", type: [] },
               type: [hydra.Link]
             },
             {
               baseUrl: "http://temp.uri/",
-              iri: "http://www.w3.org/ns/hydra/core#search",
+              iri: hydra.search,
               links: [],
               mappings: [
                 {
                   iri: "_:b1",
                   links: [],
                   operations: [],
-                  property: { iri: "http://www.w3.org/ns/hydra/core#freetextQuery", type: [] },
+                  property: {
+                    displayName: "",
+                    description: "",
+                    iri: hydra.freetextQuery,
+                    links: [],
+                    operations: [],
+                    type: [],
+                    valuesOfType: []
+                  },
                   required: false,
                   type: [],
-                  variable: "searchPhrase"
+                  variable: "searchPhrase",
+                  variableRepresentation: {
+                    iri: hydra.BasicRepresentation,
+                    links: [],
+                    operations: [],
+                    type: []
+                  }
                 }
               ],
               operations: [],
-              relation: "http://www.w3.org/ns/hydra/core#search",
+              relation: hydra.search,
               target: null,
               template: "http://temp.uri/api/events{?searchPhrase}",
               type: [hydra.TemplatedLink]

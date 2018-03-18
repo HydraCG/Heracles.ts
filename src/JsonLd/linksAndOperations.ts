@@ -27,7 +27,7 @@ export function linksAndOperations(mappings: {
     type: [hydra.IriTemplateMapping as string]
   };
   mappings[hydra.variableRepresentation] = {
-    default: () => ({ iri: hydra.BasicRepresentation }),
+    default: representations => representations[0] || null,
     propertyName: "variableRepresentation",
     required: true,
     type: [hydra.IriTemplateMapping as string]

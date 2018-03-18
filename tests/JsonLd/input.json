@@ -16,12 +16,11 @@
                 "@type": "hydra:Collection",
                 "api:closed-events": "http://temp.uri/api/events/closed",
                 "hydra:search": {
-                    "@type": "hydra:IriTemplate",
                     "hydra:template": "http://temp.uri/api/events{?searchPhrase}",
                     "hydra:mapping": {
                         "hydra:variable": "searchPhrase",
-                        "hydra:property": "hydra:freetextQuery",
-                        "hydra:variableRepresentation": "hydra:BasicVariableRepresentation",
+                        "hydra:property": { "@id": "hydra:freetextQuery" },
+                        "hydra:variableRepresentation": { "@id": "hydra:BasicRepresentation" },
                         "hydra:required": false
                     }
                 },
