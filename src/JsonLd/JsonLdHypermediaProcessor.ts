@@ -120,8 +120,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
           !!context.processedObject["@type"].find(type => type.indexOf(hydra.namespace) !== -1)));
     const targetResource = context.createResource(addToHypermedia);
     const validPredicates = Object.keys(mappings).filter(
-      iri => !mappings[iri].type
-        || !!mappings[iri].type.find(type => isOfType(type, context))
+      iri => !mappings[iri].type || !!mappings[iri].type.find(type => isOfType(type, context))
     );
     for (const predicate of validPredicates) {
       JsonLdHypermediaProcessor.setupProperty(targetResource, context, predicate);
@@ -137,12 +136,13 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
 
     const values = new Array<any>();
     for (const originalValue of context.processedObject[predicate]) {
-      const value = literals.indexOf(typeof originalValue["@value"]) !== -1
-        ? originalValue["@value"]
-        : JsonLdHypermediaProcessor.processResource(
-            context.copyFor(originalValue),
-            predicate.indexOf(hydra.namespace) !== -1
-          );
+      const value =
+        literals.indexOf(typeof originalValue["@value"]) !== -1
+          ? originalValue["@value"]
+          : JsonLdHypermediaProcessor.processResource(
+              context.copyFor(originalValue),
+              predicate.indexOf(hydra.namespace) !== -1
+            );
       if (value) {
         values.push(value);
       }
@@ -169,5 +169,3 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     }
   }
 }
-
-HydraClient.registerHypermediaProcessor(new JsonLdHypermediaProcessor());

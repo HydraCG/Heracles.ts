@@ -43,14 +43,18 @@ propertyRange[hydra.variableRepresentation] = hydra.VariableRepresentation;
 propertyRange[hydra.mapping] = hydra.IriTemplateMapping;
 
 export default function isOfType(expectedType: string, processingState: ProcessingState): boolean {
-  return isOfClass(expectedType, processingState)
-    || isInDomainOfPredicate(expectedType, processingState)
-    || isInRangeOfPredicate(expectedType, processingState);
+  return (
+    isOfClass(expectedType, processingState) ||
+    isInDomainOfPredicate(expectedType, processingState) ||
+    isInRangeOfPredicate(expectedType, processingState)
+  );
 }
 
 function isOfClass(expectedType: string, processingState: ProcessingState): boolean {
-  return processingState.processedObject["@type"] instanceof Array
-    && processingState.processedObject["@type"].indexOf(expectedType) !== -1;
+  return (
+    processingState.processedObject["@type"] instanceof Array &&
+    processingState.processedObject["@type"].indexOf(expectedType) !== -1
+  );
 }
 
 function isInDomainOfPredicate(expectedType: string, processingState: ProcessingState): boolean {
@@ -72,12 +76,14 @@ function isInRangeOfPredicate(expectedType: string, processingState: ProcessingS
 
   for (const property of Object.keys(ownerResource)) {
     const range = propertyRange[property];
-    if (!!range && range === expectedType
-      && ownerResource[property].find(resource => resource["@id"] === processingState.processedObject["@id"])) {
+    if (
+      !!range &&
+      range === expectedType &&
+      ownerResource[property].find(resource => resource["@id"] === processingState.processedObject["@id"])
+    ) {
       return true;
     }
   }
-
 
   return false;
 }

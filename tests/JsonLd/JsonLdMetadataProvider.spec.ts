@@ -1,4 +1,3 @@
-import HydraClient from "../../src/HydraClient";
 import JsonLdHypermediaProcessor from "../../src/JsonLd/JsonLdHypermediaProcessor";
 import { hydra } from "../../src/namespaces";
 import { run } from "../../testing/AsyncHelper";
@@ -10,10 +9,7 @@ import * as nestedResourcesInputJsonLd from "./nestedResourcesInput.json";
 describe("Given instance of the JsonLdMetadataProvider class", () => {
   beforeEach(() => {
     jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
-    this.hypermediaProcessors = HydraClient.hypermediaProcessors;
-    HydraClient.hypermediaProcessors = [];
-    HydraClient.registerHypermediaProcessor(new JsonLdHypermediaProcessor());
-    this.hypermediaProcessor = new HydraClient().getHypermediaProcessor(returnOk());
+    this.hypermediaProcessor = new JsonLdHypermediaProcessor();
   });
 
   it("should get itself registered", () => {
@@ -78,8 +74,8 @@ describe("Given instance of the JsonLdMetadataProvider class", () => {
                   links: [],
                   operations: [],
                   property: {
-                    displayName: "",
                     description: "",
+                    displayName: "",
                     iri: hydra.freetextQuery,
                     links: [],
                     operations: [],
@@ -151,9 +147,5 @@ describe("Given instance of the JsonLdMetadataProvider class", () => {
         expect(this.markus.links.withRelationOf("http://schema.org/knows").first().target).toBe(this.karol);
       });
     });
-  });
-
-  afterEach(() => {
-    HydraClient.hypermediaProcessors = this.hypermediaProcessors;
   });
 });

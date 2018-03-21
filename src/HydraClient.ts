@@ -8,6 +8,7 @@ import { IResource } from "./DataModel/IResource";
 import { IWebResource } from "./DataModel/IWebResource";
 import { IHydraClient } from "./IHydraClient";
 import { IHypermediaProcessor } from "./IHypermediaProcessor";
+import { IIriTemplateExpansionStrategy } from "./IIiriTemplateExpansionStrategy";
 import { hydra } from "./namespaces";
 
 /**
@@ -20,24 +21,34 @@ export default class HydraClient implements IHydraClient {
   public static noUrlProvided = "There was no Url provided.";
   public static apiDocumentationNotProvided = "API documentation not provided.";
   public static noEntryPointDefined = "API documentation has no entry point defined.";
-  public static noHypermediaProcessor = "No hypermedia processor instance was provided for registration.";
+  public static noHypermediaProcessors = "No valid hypermedia processor instances were provided.";
   public static invalidResponse = "Remote server responded with a status of ";
   public static responseFormatNotSupported = "Response format is not supported.";
+  public static noIriTemplateExpansionStrategy = "No IRI template expansion strategy was provided.";
 
-  // TODO: These shouldn't be public but the tests access them directly
-  public static hypermediaProcessors = new Array<IHypermediaProcessor>();
+  private readonly hypermediaProcessors: Iterable<IHypermediaProcessor>;
+  private readonly iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy;
 
   /**
-   * Registers a hypermedia processor.
-   *
-   * @param hypermediaProcessor Hypermedia processor to be registered.
+   * Initializes a new instance of the {@link HydraClient} class.
+   * @param {Iterable<IHypermediaProcessor>} hypermediaProcessors Hypermedia processors used for response hypermedia
+   *                                                              controls extraction.
+   * @param {IIriTemplateExpansionStrategy} iriTemplateExpansionStrategy IRI template variable expansion strategy.
    */
-  public static registerHypermediaProcessor(hypermediaProcessor: IHypermediaProcessor) {
-    if (!hypermediaProcessor) {
-      throw new Error(HydraClient.noHypermediaProcessor);
+  public constructor(
+    hypermediaProcessors: Iterable<IHypermediaProcessor>,
+    iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy
+  ) {
+    if (!hypermediaProcessors) {
+      throw new Error(HydraClient.noHypermediaProcessors);
     }
 
-    HydraClient.hypermediaProcessors.push(hypermediaProcessor);
+    if (!iriTemplateExpansionStrategy) {
+      throw new Error(HydraClient.noIriTemplateExpansionStrategy);
+    }
+
+    this.hypermediaProcessors = hypermediaProcessors;
+    this.iriTemplateExpansionStrategy = iriTemplateExpansionStrategy;
   }
 
   /**
@@ -46,7 +57,7 @@ export default class HydraClient implements IHydraClient {
    * @param response Raw response to find hypermedia processor for.
    */
   public getHypermediaProcessor(response: Response): IHypermediaProcessor {
-    for (const hypermediaProcessor of HydraClient.hypermediaProcessors) {
+    for (const hypermediaProcessor of this.hypermediaProcessors) {
       for (const supportedMediaType of hypermediaProcessor.supportedMediaTypes) {
         if (response.headers.get("Content-Type").indexOf(supportedMediaType) === 0) {
           return hypermediaProcessor;
@@ -106,17 +117,21 @@ export default class HydraClient implements IHydraClient {
    *
    * @param operation Operation descriptor to be invoked.
    * @param body Optional resource to be used as a body of the operation.
+   * @param parameters Optional auxiliary parameters.
    * @returns Response of the operation.
    */
-  public async invoke(operation: IOperation, body?: IWebResource): Promise<Response> {
+  public async invoke(operation: IOperation, body?: IWebResource, parameters?: object): Promise<Response> {
     if (!operation) {
       throw new Error(HydraClient.noOperationProvided);
     }
 
-    return await fetch(operation.target.iri, {
+    const targetOperation = this.iriTemplateExpansionStrategy.createRequest(operation, body, parameters);
+    // TODO: move Content-Type header to some specialized component.
+    // TODO: move body serialization to some specialized component.
+    return await fetch(targetOperation.target.iri, {
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/ld+json" },
-      method: operation.method
+      method: targetOperation.method
     });
   }
 
