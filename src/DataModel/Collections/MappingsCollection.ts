@@ -17,14 +17,23 @@ export default class MappingsCollection extends ResourceFilterableCollection<IIr
 
   /**
    * Obtains a collection of mappings for a given variable name.
-   * @param variableName {string} Variable name.
+   * @param {string} variableName Variable name.
    * @returns {IMappingsCollection}
    */
   public ofVariableName(variableName: string): MappingsCollection {
-    return (this.narrowFiltersWith<IIriTemplateMapping>(
-      "variable",
-      value => value.variable === variableName
-    ) as any) as MappingsCollection;
+    return this.narrowFiltersWith("variable", variableName) as MappingsCollection;
+  }
+
+  /**
+   * Obtains a collection of mappings for a given predicate.
+   * @param {string} property Predicate IRI.
+   * @returns {IMappingsCollection}
+   */
+  public ofProperty(property: string): MappingsCollection {
+    return this.narrowFiltersWith<IIriTemplateMapping>(
+      "property",
+      value => value.property.iri === property
+    ) as MappingsCollection;
   }
 
   protected createInstance(items: Iterable<IIriTemplateMapping>): MappingsCollection {

@@ -1,35 +1,62 @@
 {
     "@context": "/api/context.jsonld",
-    "@id": "/api/events",
-    "@type": ["hydra:Collection", "hydra:Resource"],
-    "member": [
+    "@graph": [
         {
-            "@id": "/api/events/1",
-            "@type": "schema:Event"
+            "@id": "/api/events",
+            "@type": ["hydra:Collection", "hydra:Resource"],
+            "member": [
+                {
+                    "@id": "/api/events/1",
+                    "@type": "schema:Event"
+                },
+                {
+                    "@id": "/api/events/2",
+                    "@type": "schema:Event"
+                },
+                {
+                    "@id": "/api/events/3",
+                    "@type": "schema:Event"
+                }
+            ],
+            "search": {
+                "@type": "hydra:IriTemplate",
+                "template": "/api/events{?searchText}",
+                "mappings": {
+                    "@type": "hydra:IriTemplateMapping",
+                    "variable": "searchText",
+                    "property": "hydra:freetextQuery",
+                    "variableRepresentation": "hydra:BasicRepresentation"
+                }
+            },
+            "examplevocab:filter": {
+                "@type": "hydra:IriTemplate",
+                "template": "/api/events{?eventName,eventDescription}",
+                "mappings": [
+                    {
+                        "@type": "hydra:IriTemplateMapping",
+                        "variable": "eventName",
+                        "property": "schema:name",
+                        "variableRepresentation": "hydra:BasicRepresentation"
+                    },
+                    {
+                        "@type": "hydra:IriTemplateMapping",
+                        "variable": "eventDescription",
+                        "property": "schema:description",
+                        "variableRepresentation": "hydra:BasicRepresentation"
+                    }
+                ]
+            },
+            "operation": [
+                {
+                    "@type": ["hydra:Operation", "schema:CreateAction", "schema:AddAction"],
+                    "method": "POST",
+                    "expects": "schema:Event"
+                }
+            ]
         },
         {
-            "@id": "/api/events/2",
-            "@type": "schema:Event"
-        },
-        {
-            "@id": "/api/events/3",
-            "@type": "schema:Event"
-        }
-    ],
-    "search": {
-        "@type": "hydra:IriTemplate",
-        "template": "/api/events{?searchText}",
-        "mappings": {
-            "variable": "searchText",
-            "property": "hydra:freetextQuery",
-            "variableRepresentation": "hydra:BasicRepresentation"
-        }
-    },
-    "operation": [
-        {
-            "@type": ["hydra:Operation", "schema:CreateAction", "schema:AddAction"],
-            "method": "POST",
-            "expects": "schema:Event"
+            "@id": "examplevocab:filter",
+            "@type": "hydra:TemplatedLink"
         }
     ]
 }

@@ -1,27 +1,13 @@
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import { IClass } from "./IClass";
 import { IHydraResource } from "./IHydraResource";
-import { IResource } from "./IResource";
+import { IPointingResource } from "./IPointingResource";
 
 /**
  * Describes an abstract Hydra operation.
  * @interface
  */
-export interface IOperation extends IHydraResource {
-  /**
-   * Gets a base URL that can be used to resolve target in case it is relative.
-   * @readonly
-   * @returns {string}
-   */
-  readonly baseUrl: string;
-
-  /**
-   * Gets a target URL to be called.
-   * @readonly
-   * @returns {IResource}
-   */
-  readonly target: IResource;
-
+export interface IOperation extends IHydraResource, IPointingResource {
   /**
    * Gets a method to be used for the call.
    * @readonly

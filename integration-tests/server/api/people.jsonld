@@ -12,7 +12,7 @@
         "@type": "hydra:IriTemplate",
         "template": "/api/people/{name}",
         "variableRepresentation": "hydra:BasicRepresentation",
-        "mapping": [
+        "mappings": [
             {
                 "@type": "hydra:IriTemplateMapping",
                 "variable": "name",

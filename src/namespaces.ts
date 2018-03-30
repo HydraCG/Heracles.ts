@@ -13,14 +13,19 @@ export let hydra = {
 
   mapping: hydraNamespace + "mapping",
   template: hydraNamespace + "template",
+  variable: hydraNamespace + "variable",
+  variableRepresentation: hydraNamespace + "variableRepresentation",
+  property: hydraNamespace + "property",
   BasicRepresentation: hydraNamespace + "BasicRepresentation",
   IriTemplate: hydraNamespace + "IriTemplate",
+  IriTemplateMapping: hydraNamespace + "IriTemplateMapping",
+  TemplatedLink: hydraNamespace + "TemplatedLink",
+  Link: hydraNamespace + "Link",
 
   collection: hydraNamespace + "collection",
   member: hydraNamespace + "member",
   memberTemplate: hydraNamespace + "memberTemplate",
   totalItems: hydraNamespace + "totalItems",
-  variableRepresentation: hydraNamespace + "variableRepresentation",
   Collection: hydraNamespace + "Collection",
 
   supportedOperation: hydraNamespace + "supportedOperation",
@@ -40,7 +45,5 @@ export let hydra = {
   previous: hydraNamespace + "previous",
   last: hydraNamespace + "last",
   search: hydraNamespace + "search",
-  view: hydraNamespace + "view",
-  TemplatedLink: hydraNamespace + "TemplatedLink",
-  Link: hydraNamespace + "Link"
+  view: hydraNamespace + "view"
 };

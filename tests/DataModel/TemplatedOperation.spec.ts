@@ -2,9 +2,11 @@ import ResourceFilterableCollection from "../../src/DataModel/Collections/Resour
 import { IClass } from "../../src/DataModel/IClass";
 import TemplatedOperation from "../../src/DataModel/TemplatedOperation";
 import { hydra } from "../../src/namespaces";
+import HydraResourceMatcher from "../../testing/HydraResourceMatcher";
 
 describe("Given instance of the TemplatedOperation", () => {
   beforeEach(() => {
+    jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
     this.template = {
       template: "some-uri{?with-variable}"
     };
@@ -24,7 +26,7 @@ describe("Given instance of the TemplatedOperation", () => {
     });
 
     it("should provide an expanded URL", () => {
-      expect(this.result.target).toEqual({ iri: "http://temp.uri/some-uri?with-variable=test-value", type: [] });
+      expect(this.result.target).toBeLike({ iri: "http://temp.uri/some-uri?with-variable=test-value", type: [] });
     });
 
     it("should pass a correct method", () => {
@@ -32,7 +34,7 @@ describe("Given instance of the TemplatedOperation", () => {
     });
 
     it("should copy original operation's types", () => {
-      expect(this.result.type).toEqual(["http://schema.org/AddAction", hydra.Operation]);
+      expect([...this.result.type]).toEqual(["http://schema.org/AddAction", hydra.Operation]);
     });
   });
 });

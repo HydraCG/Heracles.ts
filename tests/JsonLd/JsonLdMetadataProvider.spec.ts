@@ -98,6 +98,18 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   collections: [],
                   iri: "http://www.w3.org/ns/hydra/core#search",
                   links: [],
+                  mappings: [
+                    {
+                      collections: [],
+                      iri: "_:b1",
+                      links: [],
+                      operations: [],
+                      property: { iri: "http://www.w3.org/ns/hydra/core#freetextQuery", type: [] },
+                      required: false,
+                      type: [],
+                      variable: "searchPhrase"
+                    }
+                  ],
                   operations: [],
                   relation: "http://www.w3.org/ns/hydra/core#search",
                   target: null,
@@ -111,7 +123,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   iri: "http://temp.uri/api/events/1",
                   links: [],
                   operations: [],
-                  type: []
+                  type: [hydra.Collection]
                 }
               ],
               operations: [],

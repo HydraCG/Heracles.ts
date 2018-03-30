@@ -86,17 +86,29 @@ mappings[hydra.template] = {
   required: true,
   type: [hydra.IriTemplate as string]
 };
-mappings[hydra.variableRepresentation] = {
-  default: (representations, processingState) => ({ iri: hydra.BasicRepresentation }),
-  propertyName: "variableRepresentation",
-  required: true,
-  type: [hydra.IriTemplate as string]
-};
 mappings[hydra.mapping] = {
   default: (iriTemplateMappings, processingState) => new MappingsCollection(iriTemplateMappings),
   propertyName: "mappings",
   required: true,
   type: [hydra.IriTemplate as string]
+};
+mappings[hydra.variable] = {
+  default: "",
+  propertyName: "variable",
+  required: true,
+  type: [hydra.IriTemplateMapping as string]
+};
+mappings[hydra.variableRepresentation] = {
+  default: (representations, processingState) => ({ iri: hydra.BasicRepresentation }),
+  propertyName: "variableRepresentation",
+  required: true,
+  type: [hydra.IriTemplateMapping as string]
+};
+mappings[hydra.property] = {
+  default: (properties, processingState) => properties[0] || null,
+  propertyName: "property",
+  required: true,
+  type: [hydra.IriTemplateMapping as string]
 };
 mappings[hydra.totalItems] = {
   default: 0,
