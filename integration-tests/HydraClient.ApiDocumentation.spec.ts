@@ -2,6 +2,7 @@ import HydraClient from "../src/HydraClient";
 import { hydra, rdf } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
 import HydraResourceMatcher from "../testing/HydraResourceMatcher";
+import ApiDocumentation from "../src/DataModel/ApiDocumentation";
 
 describe("Having a Hydra client", () => {
   beforeEach(() => {
@@ -19,7 +20,7 @@ describe("Having a Hydra client", () => {
 
     describe("and obtaining it's API documentation as in use case 2.api-documentation", () => {
       it("should obtain an API documentation", () => {
-        expect(this.apiDocumentation).not.toBeNull();
+        expect(this.apiDocumentation).toEqual(jasmine.any(ApiDocumentation));
       });
 
       it("should have access an entry point", () => {
