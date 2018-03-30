@@ -65,7 +65,10 @@
             "@id": "hydra:variable",
             "@type": "xsd:string"
         },
-        "variableRepresentation": "hydra:variableRepresentation",
+        "variableRepresentation": {
+            "@id": "hydra:variableRepresentation",
+            "@type": "@id"
+        },
         "search": {
             "@id": "hydra:search",
             "@type": "@id"
