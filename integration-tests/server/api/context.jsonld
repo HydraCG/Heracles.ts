@@ -44,6 +44,10 @@
             "@type": "@vocab"
         },
         "required": "hydra:required",
+        "collection": {
+            "@id": "hydra:collection",
+            "@type": "@id"
+        },
         "member": {
             "@id": "hydra:member",
             "@type": "@id"

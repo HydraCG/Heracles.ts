@@ -75,6 +75,11 @@ mappings[hydra.entrypoint] = {
   required: true,
   type: [hydra.ApiDocumentation as string]
 };
+mappings[hydra.collection] = {
+  default: (collections, processingState) => new ResourceFilterableCollection(collections),
+  propertyName: "collections",
+  required: true
+};
 mappings[hydra.template] = {
   default: "",
   propertyName: "template",
