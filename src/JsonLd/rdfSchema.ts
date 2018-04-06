@@ -20,13 +20,13 @@ export function rdfSchema(mappings: {
     default: "",
     propertyName: "displayName",
     required: true,
-    type: [rdf.Property as string, hydra.Class as string]
+    type: [rdf.Property as string]
   };
   mappings[rdfs.comment] = {
     default: "",
     propertyName: "description",
     required: true,
-    type: [rdf.Property as string, hydra.Class as string]
+    type: [rdf.Property as string]
   };
   return mappings;
 }

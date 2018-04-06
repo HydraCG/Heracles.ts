@@ -7,12 +7,17 @@ import { returnOk } from "../../testing/ResponseHelper";
 import * as inputJsonLd from "./input.json";
 import * as nestedResourcesInputJsonLd from "./nestedResourcesInput.json";
 
-describe("Given instance of the JsonLdMetadataProvider class", () => {
+describe("Given instance of the JsonLdHypermediaProcessor class", () => {
   beforeEach(() => {
     jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
+    this.indirectTypingProvider = {
+      isOfType: (expectedType, processingState) =>
+        processingState.processedObject["@type"] instanceof Array &&
+        processingState.processedObject["@type"].indexOf(expectedType) !== -1
+    };
     this.hypermediaProcessors = HydraClient.hypermediaProcessors;
     HydraClient.hypermediaProcessors = [];
-    HydraClient.registerHypermediaProcessor(new JsonLdHypermediaProcessor());
+    HydraClient.registerHypermediaProcessor(new JsonLdHypermediaProcessor(this.indirectTypingProvider));
     this.hypermediaProcessor = new HydraClient().getHypermediaProcessor(returnOk());
   });
 
@@ -78,8 +83,8 @@ describe("Given instance of the JsonLdMetadataProvider class", () => {
                   links: [],
                   operations: [],
                   property: {
-                    displayName: "",
                     description: "",
+                    displayName: "",
                     iri: hydra.freetextQuery,
                     links: [],
                     operations: [],
@@ -87,7 +92,7 @@ describe("Given instance of the JsonLdMetadataProvider class", () => {
                     valuesOfType: []
                   },
                   required: false,
-                  type: [],
+                  type: [hydra.IriTemplateMapping],
                   variable: "searchPhrase",
                   variableRepresentation: {
                     iri: hydra.BasicRepresentation,

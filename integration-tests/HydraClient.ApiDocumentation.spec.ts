@@ -1,8 +1,8 @@
+import ApiDocumentation from "../src/DataModel/ApiDocumentation";
 import HydraClient from "../src/HydraClient";
 import { hydra, rdf } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
 import HydraResourceMatcher from "../testing/HydraResourceMatcher";
-import ApiDocumentation from "../src/DataModel/ApiDocumentation";
 
 describe("Having a Hydra client", () => {
   beforeEach(() => {
@@ -50,10 +50,10 @@ describe("Having a Hydra client", () => {
                   type: [rdf.Property],
                   valuesOfType: [{ iri: "http://www.w3.org/2001/XMLSchema#string", type: [] }]
                 },
-                readOnly: false,
+                readable: false,
                 required: false,
                 type: [hydra.SupportedProperty],
-                writeOnly: false
+                writable: false
               },
               {
                 iri: "_:b1",
@@ -68,10 +68,10 @@ describe("Having a Hydra client", () => {
                   type: [rdf.Property],
                   valuesOfType: [{ iri: "http://www.w3.org/2001/XMLSchema#string", type: [] }]
                 },
-                readOnly: false,
+                readable: false,
                 required: false,
                 type: [hydra.SupportedProperty],
-                writeOnly: false
+                writable: false
               },
               {
                 iri: "_:b2",
@@ -89,10 +89,10 @@ describe("Having a Hydra client", () => {
                     { iri: "http://www.w3.org/2001/XMLSchema#date", type: [] }
                   ]
                 },
-                readOnly: false,
+                readable: false,
                 required: false,
                 type: [hydra.SupportedProperty],
-                writeOnly: false
+                writable: false
               },
               {
                 iri: "_:b3",
@@ -110,10 +110,10 @@ describe("Having a Hydra client", () => {
                     { iri: "http://www.w3.org/2001/XMLSchema#date", type: [] }
                   ]
                 },
-                readOnly: false,
+                readable: false,
                 required: false,
                 type: [hydra.SupportedProperty],
-                writeOnly: false
+                writable: false
               }
             ],
             type: [hydra.Class]
