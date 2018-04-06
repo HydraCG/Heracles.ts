@@ -16,8 +16,10 @@
                 "@type": "hydra:Collection",
                 "api:closed-events": "http://temp.uri/api/events/closed",
                 "hydra:search": {
+                    "@type": "hydra:IriTemplate",
                     "hydra:template": "http://temp.uri/api/events{?searchPhrase}",
                     "hydra:mapping": {
+                        "@type": "hydra:IriTemplateMapping",
                         "hydra:variable": "searchPhrase",
                         "hydra:property": { "@id": "hydra:freetextQuery" },
                         "hydra:variableRepresentation": { "@id": "hydra:BasicRepresentation" },

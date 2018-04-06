@@ -2,8 +2,8 @@
   "name": "hydraclient.js",
   "version": "0.0.1",
   "contributors": [
-      { "name": "Karol Szczepanski" },
       { "name": "Markus Lanthaler" },
+      { "name": "Karol Szczepanski" },
       { "name": "Elf Pavlik" }
   ],
   "scripts": {

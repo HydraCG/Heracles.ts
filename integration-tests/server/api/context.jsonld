@@ -9,7 +9,8 @@
         "examplevocab": "http://example.com/vocab#",
         "range": "rdfs:range",
         "label": "rdfs:label",
-        "description": "rdfs:comment",
+        "comment": "rdfs:comment",
+        "description": "hydra:description",
         "entrypoint": {
             "@id": "hydra:entrypoint",
             "@type": "@id"

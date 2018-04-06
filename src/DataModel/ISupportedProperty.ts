@@ -19,14 +19,14 @@ export interface ISupportedProperty extends IResource {
   readonly required: boolean;
 
   /**
-   * Gets the value indicating whether this property is read-only.
+   * Gets the value indicating whether this property is readable.
    * @readonly
    */
-  readonly readOnly: boolean;
+  readonly readable: boolean;
 
   /**
-   * Gets the value indicating whether this property is write-only.
+   * Gets the value indicating whether this property is writable.
    * @readonly
    */
-  readonly writeOnly: boolean;
+  readonly writable: boolean;
 }

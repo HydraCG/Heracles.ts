@@ -11,9 +11,10 @@ import { IWebResource } from "../DataModel/IWebResource";
 import HydraClient from "../HydraClient";
 import { IHypermediaProcessor } from "../IHypermediaProcessor";
 import { hydra } from "../namespaces";
-import isOfType from "./isOfType";
+import IndirectTypingProvider from "./IndirectTypingProvider";
 import { mappings } from "./mappings";
-import ProcessingState from "./ProcessingState";
+import ProcessingContext from "./ProcessingState";
+import StaticOntologyProvider from "./StaticOntologyProvider";
 
 const literals = ["string", "number", "boolean"];
 
@@ -29,8 +30,6 @@ function isHydraIndependent(resource: object): boolean {
     !!resource["@type"].find(type => type.indexOf(hydra.namespace) === 0 && dependentTypes.indexOf(type) === -1)
   );
 }
-
-const literals = ["string", "number", "boolean"];
 
 /**
  * Provides a JSON-LD based implementation of the {@link IHypermediaProcessor} interface.
@@ -59,7 +58,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     const result: any = payload;
     let flattenPayload = await jsonLd.flatten(payload, null, { base: response.url, embed: "@link" });
     flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
-    const context = await this.processHypermedia(new ProcessingState(flattenPayload, response.url));
+    const context = await this.processHypermedia(new ProcessingContext(flattenPayload, response.url));
     const hypermedia = context.hypermedia;
     for (let index = hypermedia.length - 1; index >= 0; index--) {
       JsonLdHypermediaProcessor.tryRemoveReferenceFrom(hypermedia, index);
@@ -121,7 +120,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     );
   }
 
-  private async processHypermedia(context: ProcessingState): Promise<ProcessingState> {
+  private async processHypermedia(context: ProcessingContext): Promise<ProcessingContext> {
     if (context.processedObject instanceof Array) {
       return await this.processArray(context);
     }
@@ -130,7 +129,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return context;
   }
 
-  private async processArray(context: ProcessingState): Promise<ProcessingState> {
+  private async processArray(context: ProcessingContext): Promise<ProcessingContext> {
     for (const resource of context.processedObject as Iterable<object>) {
       await this.processHypermedia(context.copyFor(resource));
     }
@@ -138,34 +137,42 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return context;
   }
 
-  private async processResource(context: ProcessingState, isOwnedHypermedia = false): Promise<object> {
+  private async processResource(context: ProcessingContext, isOwnedHypermedia = false): Promise<object> {
     const addToHypermedia =
       !isOwnedHypermedia && (!isBlank(context.processedObject) || isHydraIndependent(context.processedObject));
     const targetResource = context.createResource(addToHypermedia);
-    const validPredicates = Object.keys(mappings).filter(
-      iri => !mappings[iri].type
-        || !!mappings[iri].type.find(type => isOfType(type, context))
-    );
-    for (const predicate of validPredicates) {
-      JsonLdHypermediaProcessor.setupProperty(targetResource, context, predicate);
+    for (const predicate of Object.keys(mappings)) {
+      if (mappings[predicate].type) {
+        let isValidPredicate = false;
+        for (const type of mappings[predicate].type) {
+          if (await this.indirectTypingProvider.isOfType(type, context)) {
+            isValidPredicate = true;
+            break;
+          }
+        }
+
+        if (!isValidPredicate) {
+          continue;
+        }
+      }
+
+      await this.setupProperty(targetResource, context, predicate);
     }
 
     return targetResource;
   }
 
-  private async gatherPropertyValues(context: ProcessingState, predicate: string): Promise<any[]> {
+  private async gatherPropertyValues(context: ProcessingContext, predicate: string): Promise<any[]> {
     if (!context.processedObject[predicate]) {
       return null;
     }
 
     const values = new Array<any>();
     for (const originalValue of context.processedObject[predicate]) {
-      const value = literals.indexOf(typeof originalValue["@value"]) !== -1
-        ? originalValue["@value"]
-        : JsonLdHypermediaProcessor.processResource(
-            context.copyFor(originalValue),
-            predicate.indexOf(hydra.namespace) !== -1
-          );
+      const value =
+        literals.indexOf(typeof originalValue["@value"]) !== -1
+          ? originalValue["@value"]
+          : await this.processResource(context.copyFor(originalValue), predicate.indexOf(hydra.namespace) !== -1);
       if (value) {
         values.push(value);
       }
@@ -174,7 +181,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return values;
   }
 
-  private async setupProperty(targetResource: object, context: ProcessingState, predicate: string): Promise<void> {
+  private async setupProperty(targetResource: object, context: ProcessingContext, predicate: string): Promise<void> {
     const propertyDefinition = mappings[predicate];
     let value = await this.gatherPropertyValues(context, predicate);
     if (value === null) {
@@ -192,3 +199,8 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     }
   }
 }
+
+/* tslint:disable:no-var-requires */
+HydraClient.registerHypermediaProcessor(
+  new JsonLdHypermediaProcessor(new IndirectTypingProvider(new StaticOntologyProvider(require("./hydra.json"))))
+);
