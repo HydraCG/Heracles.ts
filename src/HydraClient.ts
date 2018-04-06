@@ -11,6 +11,14 @@ import { IHypermediaProcessor } from "./IHypermediaProcessor";
 import { IIriTemplateExpansionStrategy } from "./IIiriTemplateExpansionStrategy";
 import { hydra } from "./namespaces";
 
+function isEmpty<T>(collection: Iterable<T>): boolean {
+  for (const item of collection || []) {
+    return false;
+  }
+
+  return true;
+}
+
 /**
  * HydraClient, also known as Heracles.ts, is a generic client for Hydra-powered Web APIs.
  *
@@ -39,7 +47,7 @@ export default class HydraClient implements IHydraClient {
     hypermediaProcessors: Iterable<IHypermediaProcessor>,
     iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy
   ) {
-    if (!hypermediaProcessors) {
+    if (isEmpty(hypermediaProcessors)) {
       throw new Error(HydraClient.noHypermediaProcessors);
     }
 

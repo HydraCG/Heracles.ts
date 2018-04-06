@@ -1,6 +1,4 @@
-import BodyResourceBoundIriTemplateExpansionStrategy from "../src/BodyResourceBoundIriTemplateExpansionStrategy";
 import HydraClientFactory from "../src/HydraClientFactory";
-import JsonLdHypermediaProcessor from "../src/JsonLd/JsonLdHypermediaProcessor";
 import { hydra, rdf } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
 import HydraResourceMatcher from "../testing/HydraResourceMatcher";

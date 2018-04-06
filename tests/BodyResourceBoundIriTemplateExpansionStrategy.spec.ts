@@ -1,7 +1,10 @@
+import * as sinon from "sinon";
 import BodyResourceBoundIriTemplateExpansionStrategy from "../src/BodyResourceBoundIriTemplateExpansionStrategy";
 import MappingsCollection from "../src/DataModel/Collections/MappingsCollection";
 import { MappingBuilder } from "../src/DataModel/ITemplatedResource";
 import MappingsBuilder from "../src/DataModel/MappingsBuilder";
+/* tslint:disable:no-var-requires */
+require("jasmine-sinon");
 
 describe("Given instance of the BodyResourceBoundIriTemplateExpansionStrategy class", () => {
   beforeEach(() => {
@@ -35,20 +38,19 @@ describe("Given instance of the BodyResourceBoundIriTemplateExpansionStrategy cl
 
   describe("when handling a templated operation", () => {
     beforeEach(() => {
-      this.expandedOperation = {};
       this.operation = {
-        expandTarget: (config: MappingBuilder) => {
+        expandTarget: sinon.stub().callsFake((config: MappingBuilder) => {
           config(this.builder);
           this.variables = this.builder.complete();
-          return this.expandedOperation;
-        }
+          return {};
+        })
       };
 
       this.result = this.strategy.createRequest(this.operation, this.body, this.parameters);
     });
 
-    it("should provide an expanded operation", () => {
-      expect(this.result).toBe(this.expandedOperation);
+    it("should expand target", () => {
+      expect(this.operation.expandTarget).toHaveBeenCalledOnce();
     });
 
     it("should use mappings from the body resource", () => {

@@ -317,7 +317,7 @@ describe("Given an instance of the HydraClient class", () => {
         );
       });
 
-      it("should execute tha request", () => {
+      it("should execute the request", () => {
         expect(this.fetch).toHaveBeenCalledWith(this.operation.target.iri);
       });
     });
