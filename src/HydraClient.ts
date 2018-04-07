@@ -1,6 +1,6 @@
 import "isomorphic-fetch";
 import * as jsonld from "jsonld";
-import ApiDocumentation from "./DataModel/ApiDocumentation";
+import FilterableCollection from "./DataModel/Collections/FilterableCollection";
 import { IApiDocumentation } from "./DataModel/IApiDocumentation";
 import { ILink } from "./DataModel/ILink";
 import { IOperation } from "./DataModel/IOperation";
@@ -10,14 +10,6 @@ import { IHydraClient } from "./IHydraClient";
 import { IHypermediaProcessor } from "./IHypermediaProcessor";
 import { IIriTemplateExpansionStrategy } from "./IIiriTemplateExpansionStrategy";
 import { hydra } from "./namespaces";
-
-function isEmpty<T>(collection: Iterable<T>): boolean {
-  for (const item of collection || []) {
-    return false;
-  }
-
-  return true;
-}
 
 /**
  * HydraClient, also known as Heracles.ts, is a generic client for Hydra-powered Web APIs.
@@ -47,7 +39,7 @@ export default class HydraClient implements IHydraClient {
     hypermediaProcessors: Iterable<IHypermediaProcessor>,
     iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy
   ) {
-    if (isEmpty(hypermediaProcessors)) {
+    if (!FilterableCollection.prototype.any.call(hypermediaProcessors)) {
       throw new Error(HydraClient.noHypermediaProcessors);
     }
 

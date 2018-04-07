@@ -309,7 +309,7 @@ describe("Given an instance of the HydraClient class", () => {
         })
       );
 
-      it("should expand IRI template if any", () => {
+      it("should create a request operation with the strategy provided", () => {
         expect(this.iriTemplateExpansionStrategy.createRequest).toHaveBeenCalledWith(
           this.operation,
           this.body,
