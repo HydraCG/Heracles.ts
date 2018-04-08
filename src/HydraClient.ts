@@ -1,10 +1,12 @@
 import "isomorphic-fetch";
 import * as jsonld from "jsonld";
 import ApiDocumentation from "./DataModel/ApiDocumentation";
+import { IApiDocumentation } from "./DataModel/IApiDocumentation";
 import { ILink } from "./DataModel/ILink";
 import { IOperation } from "./DataModel/IOperation";
 import { IResource } from "./DataModel/IResource";
 import { IWebResource } from "./DataModel/IWebResource";
+import { IHydraClient } from "./IHydraClient";
 import { IHypermediaProcessor } from "./IHypermediaProcessor";
 import { hydra } from "./namespaces";
 
@@ -13,7 +15,7 @@ import { hydra } from "./namespaces";
  *
  * To learn more about Hydra please refer to {@link https://www.hydra-cg.com/spec/latest/core/}
  */
-export default class HydraClient {
+export default class HydraClient implements IHydraClient {
   public static noOperationProvided = "There was no operation provided.";
   public static noUrlProvided = "There was no Url provided.";
   public static apiDocumentationNotProvided = "API documentation not provided.";
@@ -62,11 +64,11 @@ export default class HydraClient {
    *                      documentation.
    * @returns {ApiDocumentation}
    */
-  public async getApiDocumentation(urlOrResource: string | IResource): Promise<ApiDocumentation> {
+  public async getApiDocumentation(urlOrResource: string | IResource): Promise<IApiDocumentation> {
     const url = HydraClient.getUrl(urlOrResource);
     const apiDocumentationUrl = await this.getApiDocumentationUrl(url);
     const resource = await this.getResource(apiDocumentationUrl);
-    const apiDocumentation = resource.hypermedia.ofType(hydra.ApiDocumentation).first() as ApiDocumentation;
+    const apiDocumentation = resource.hypermedia.ofType(hydra.ApiDocumentation).first() as IApiDocumentation;
     if (!apiDocumentation) {
       throw new Error(HydraClient.noEntryPointDefined);
     }

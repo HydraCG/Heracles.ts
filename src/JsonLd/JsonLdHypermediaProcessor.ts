@@ -12,8 +12,25 @@ import { IWebResource } from "../DataModel/IWebResource";
 import HydraClient from "../HydraClient";
 import { IHypermediaProcessor } from "../IHypermediaProcessor";
 import { hydra } from "../namespaces";
+import IndirectTypingProvider from "./IndirectTypingProvider";
 import { mappings } from "./mappings";
 import ProcessingContext from "./ProcessingState";
+import StaticOntologyProvider from "./StaticOntologyProvider";
+
+const literals = ["string", "number", "boolean"];
+
+const dependentTypes = [hydra.IriTemplateMapping];
+
+function isBlank(resource: object): boolean {
+  return !resource["@id"] || resource["@id"].match(/^_:/);
+}
+
+function isHydraIndependent(resource: object): boolean {
+  return (
+    !!resource["@type"] &&
+    !!resource["@type"].find(type => type.indexOf(hydra.namespace) === 0 && dependentTypes.indexOf(type) === -1)
+  );
+}
 
 /**
  * Provides a JSON-LD based implementation of the {@link IHypermediaProcessor} interface.
@@ -21,6 +38,17 @@ import ProcessingContext from "./ProcessingState";
  */
 export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
   private static mediaTypes = ["application/ld+json"];
+
+  private readonly indirectTypingProvider: IndirectTypingProvider;
+
+  /**
+   * Initializes a new instance of the {@link JsonLdHypermediaProcessor} class.
+   * @param {IndirectTypingProvider} indirectTypingProvider Facility providing information whether given resources are
+   *                                                        of given type.
+   */
+  public constructor(indirectTypingProvider: IndirectTypingProvider) {
+    this.indirectTypingProvider = indirectTypingProvider;
+  }
 
   public get supportedMediaTypes(): Iterable<string> {
     return JsonLdHypermediaProcessor.mediaTypes;
@@ -31,7 +59,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     const result: any = payload;
     let flattenPayload = await jsonLd.flatten(payload, null, { base: response.url, embed: "@link" });
     flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
-    const context = JsonLdHypermediaProcessor.processHypermedia(new ProcessingContext(flattenPayload, response.url));
+    const context = await this.processHypermedia(new ProcessingContext(flattenPayload, response.url));
     const hypermedia = context.hypermedia;
     for (let index = hypermedia.length - 1; index >= 0; index--) {
       JsonLdHypermediaProcessor.tryRemoveReferenceFrom(hypermedia, index);
@@ -93,53 +121,59 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     );
   }
 
-  private static processHypermedia(context: ProcessingContext): ProcessingContext {
+  private async processHypermedia(context: ProcessingContext): Promise<ProcessingContext> {
     if (context.processedObject instanceof Array) {
-      return JsonLdHypermediaProcessor.processArray(context);
+      return await this.processArray(context);
     }
 
-    JsonLdHypermediaProcessor.processResource(context);
+    await this.processResource(context);
     return context;
   }
 
-  private static processArray(context: ProcessingContext): ProcessingContext {
+  private async processArray(context: ProcessingContext): Promise<ProcessingContext> {
     for (const resource of context.processedObject as Iterable<object>) {
-      JsonLdHypermediaProcessor.processHypermedia(context.copyFor(resource));
+      await this.processHypermedia(context.copyFor(resource));
     }
 
     return context;
   }
 
-  private static processResource(context: ProcessingContext, isOwnedHypermedia = false): object {
+  private async processResource(context: ProcessingContext, isOwnedHypermedia = false): Promise<object> {
     const addToHypermedia =
-      !isOwnedHypermedia &&
-      ((!!context.processedObject["@id"] && !context.processedObject["@id"].match(/^_:/)) ||
-        (!!context.processedObject["@type"] &&
-          !!context.processedObject["@type"].find(type => type.indexOf(hydra.namespace) !== -1)));
+      !isOwnedHypermedia && (!isBlank(context.processedObject) || isHydraIndependent(context.processedObject));
     const targetResource = context.createResource(addToHypermedia);
-    const validPredicates = Object.keys(mappings).filter(
-      iri => !mappings[iri].type || !!mappings[iri].type.find(type => targetResource.type.contains(type))
-    );
-    for (const predicate of validPredicates) {
-      JsonLdHypermediaProcessor.setupProperty(targetResource, context, predicate);
+    for (const predicate of Object.keys(mappings)) {
+      if (mappings[predicate].type) {
+        let isValidPredicate = false;
+        for (const type of mappings[predicate].type) {
+          if (await this.indirectTypingProvider.isOfType(type, context)) {
+            isValidPredicate = true;
+            break;
+          }
+        }
+
+        if (!isValidPredicate) {
+          continue;
+        }
+      }
+
+      await this.setupProperty(targetResource, context, predicate);
     }
 
     return targetResource;
   }
 
-  private static gatherPropertyValues(context: ProcessingContext, predicate: string): any[] {
+  private async gatherPropertyValues(context: ProcessingContext, predicate: string): Promise<any[]> {
     if (!context.processedObject[predicate]) {
       return null;
     }
 
     const values = new Array<any>();
     for (const originalValue of context.processedObject[predicate]) {
-      const value = originalValue["@value"]
-        ? originalValue["@value"]
-        : JsonLdHypermediaProcessor.processResource(
-            context.copyFor(originalValue),
-            predicate.indexOf(hydra.namespace) !== -1
-          );
+      const value =
+        literals.indexOf(typeof originalValue["@value"]) !== -1
+          ? originalValue["@value"]
+          : await this.processResource(context.copyFor(originalValue), predicate.indexOf(hydra.namespace) !== -1);
       if (value) {
         values.push(value);
       }
@@ -148,9 +182,9 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return values;
   }
 
-  private static setupProperty(targetResource: object, context: ProcessingContext, predicate: string): void {
+  private async setupProperty(targetResource: object, context: ProcessingContext, predicate: string): Promise<void> {
     const propertyDefinition = mappings[predicate];
-    let value = JsonLdHypermediaProcessor.gatherPropertyValues(context, predicate);
+    let value = await this.gatherPropertyValues(context, predicate);
     if (value === null) {
       if (propertyDefinition.required) {
         value = new Array<any>();
@@ -159,7 +193,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       }
     }
 
-    if (["string", "number", "boolean"].indexOf(typeof propertyDefinition.default) !== -1) {
+    if (literals.indexOf(typeof propertyDefinition.default) !== -1) {
       targetResource[propertyDefinition.propertyName] = value[0] || propertyDefinition.default;
     } else if (typeof propertyDefinition.default === "function") {
       targetResource[propertyDefinition.propertyName] = propertyDefinition.default(value, context);
@@ -167,4 +201,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
   }
 }
 
-HydraClient.registerHypermediaProcessor(new JsonLdHypermediaProcessor());
+/* tslint:disable:no-var-requires */
+HydraClient.registerHypermediaProcessor(
+  new JsonLdHypermediaProcessor(new IndirectTypingProvider(new StaticOntologyProvider(require("./hydra.json"))))
+);

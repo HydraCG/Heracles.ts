@@ -182,15 +182,5 @@ describe("Having a Hydra client", () => {
         });
       });
     });
-
-    describe("and obtaining it's API documentation as in use case 2.api-documentation", () => {
-      it("should obtain an API documentation", () => {
-        expect(this.apiDocumentation).not.toBeNull();
-      });
-
-      it("should have access an entry point", () => {
-        expect(this.apiDocumentation.entryPoint).toMatch(".*/api$");
-      });
-    });
   });
 });

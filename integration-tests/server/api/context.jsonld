@@ -7,6 +7,10 @@
         "owl": "http://www.w3.org/2002/07/owl#",
         "schema": "http://schema.org/",
         "examplevocab": "http://example.com/vocab#",
+        "range": "rdfs:range",
+        "label": "rdfs:label",
+        "comment": "rdfs:comment",
+        "description": "hydra:description",
         "entrypoint": {
             "@id": "hydra:entrypoint",
             "@type": "@id"
@@ -66,7 +70,10 @@
             "@id": "hydra:variable",
             "@type": "xsd:string"
         },
-        "variableRepresentation": "hydra:variableRepresentation",
+        "variableRepresentation": {
+            "@id": "hydra:variableRepresentation",
+            "@type": "@id"
+        },
         "search": {
             "@id": "hydra:search",
             "@type": "@id"

@@ -26,9 +26,10 @@
                             "@type": "hydra:IriTemplate",
                             "hydra:template": "http://temp.uri/api/events{?searchPhrase}",
                             "hydra:mapping": {
+                                "@type": "hydra:IriTemplateMapping",
                                 "hydra:variable": "searchPhrase",
-                                "hydra:property": "hydra:freetextQuery",
-                                "hydra:variableRepresentation": "hydra:BasicVariableRepresentation",
+                                "hydra:property": { "@id": "hydra:freetextQuery" },
+                                "hydra:variableRepresentation": { "@id": "hydra:BasicRepresentation" },
                                 "hydra:required": false
                             }
                         },
