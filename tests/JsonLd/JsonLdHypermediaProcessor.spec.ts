@@ -66,6 +66,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
             },
             {
               collections: [],
+              getAllMembers: jasmine.any(Function),
               iri: "http://temp.uri/api/events",
               links: [
                 {

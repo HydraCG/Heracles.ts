@@ -28,4 +28,10 @@ export interface ICollection extends IHydraResource {
    * @returns {IIriTemplate}
    */
   readonly memberTemplate?: IIriTemplate;
+
+  /**
+   * Gets all collection's members, regardless current collection is either complete or partial view.
+   * @returns {Promise<IResource[]>}
+   */
+  getAllMembers(): Promise<IResource[]>;
 }

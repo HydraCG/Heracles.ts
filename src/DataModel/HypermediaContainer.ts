@@ -21,6 +21,8 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
 
   public readonly links: LinksCollection;
 
+  public readonly getAllMembers: () => Promise<IResource[]>;
+
   /**
    * Initializes a new instance of the {@link HypermediaContainer} class.
    * @param items {Iterable<IResource>} Hypermedia controls to be stored within this container.
@@ -33,7 +35,7 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
     items: Iterable<IResource>,
     operations: OperationsCollection,
     links: LinksCollection,
-    members?: ResourceFilterableCollection<IResource>
+    collection?: ICollection
   ) {
     super(items);
     const itemsArray = Array.from(items);
@@ -50,7 +52,9 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
       explicitelyTypedCollections.concat(linkedCollections)
     );
     this.links = links;
-    this.members =
-      members instanceof ResourceFilterableCollection ? members : new ResourceFilterableCollection<IResource>(members);
+    if (collection != null) {
+      this.members = collection.members;
+      this.getAllMembers = collection.getAllMembers;
+    }
   }
 }

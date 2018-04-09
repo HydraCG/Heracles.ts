@@ -45,7 +45,7 @@ export default class HydraResourceMatcher {
       return this.compareIterable(actual, expected, path, result, visited);
     }
 
-    if (["string", "number", "boolean", "function"].indexOf(typeof actual) === -1) {
+    if (["string", "number", "boolean"].indexOf(typeof actual) === -1) {
       return this.compareObject(actual, expected, path, result, visited);
     }
 
@@ -96,7 +96,7 @@ export default class HydraResourceMatcher {
 
   private compareObject(
     actual: object,
-    expected: object,
+    expected: any,
     path: string,
     result: jasmine.CustomMatcherResult,
     visited: object[]
@@ -106,6 +106,12 @@ export default class HydraResourceMatcher {
     }
 
     visited.push(actual);
+    if (expected.asymmetricMatch) {
+      result.pass = expected.asymmetricMatch(actual);
+      result.message = `Expected ${actual} to be ${expected.jasmineToString()} at ${path}.`;
+      return;
+    }
+
     if (typeof actual === "object" && typeof expected !== "object") {
       result.pass = false;
       result.message = `Expected ${actual} not to be an object like ${expected} at ${path}.`;

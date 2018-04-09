@@ -152,6 +152,18 @@ describe("Having a Hydra client", () => {
           expect(this.people.hypermedia.members.ofType("http://schema.org/Person").length).toBe(1);
         });
 
+        describe("and then obtaining all people collection members", () => {
+          beforeEach(
+            run(async () => {
+              this.allPeople = await this.people.hypermedia.getAllMembers();
+            })
+          );
+
+          it("should follow all links and gather all members", () => {
+            expect(this.allPeople.length).toBe(2);
+          });
+        });
+
         describe("and then adding a new person to that collection", () => {
           beforeEach(
             run(async () => {

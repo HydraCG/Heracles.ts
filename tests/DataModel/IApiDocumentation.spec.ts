@@ -1,16 +1,19 @@
 import * as sinon from "sinon";
-import ApiDocumentation from "../../src/DataModel/ApiDocumentation";
+import TypesCollection from "../../src/DataModel/Collections/TypesCollection";
+import { IResource } from "../../src/DataModel/IResource";
+import { factories } from "../../src/JsonLd/factories";
+import { hydra } from "../../src/namespaces";
 import { run } from "../../testing/AsyncHelper";
 import { returnOk } from "../../testing/ResponseHelper";
 
-describe("Given an instance of the ApiDocumentation class", () => {
+describe("Given an instance of the IApiDocumentation interface", () => {
   beforeEach(function() {
     this.client = { getResource: sinon.stub() };
-    const setup = {
-      client: { value: this.client },
-      entryPoint: { value: "http://temp.uri/api" }
+    const setup: any = {
+      entryPoint: "http://temp.uri/api",
+      type: new TypesCollection([hydra.ApiDocumentation])
     };
-    this.apiDocumentation = Object.create(ApiDocumentation.prototype, setup);
+    this.apiDocumentation = factories[hydra.ApiDocumentation](setup as IResource, this.client);
   });
 
   describe("when obtaining an entry point", () => {

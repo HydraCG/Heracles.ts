@@ -9,12 +9,12 @@ export function collection(mappings: {
     default: 0,
     propertyName: "totalItems",
     required: true,
-    type: [hydra.Collection as string]
+    type: [hydra.Collection as string, hydra.PartialCollectionView as string]
   };
   mappings[hydra.member] = {
     default: members => new ResourceFilterableCollection(members),
     propertyName: "members",
-    type: [hydra.Collection as string]
+    type: [hydra.Collection as string, hydra.PartialCollectionView as string]
   };
   mappings[hydra.memberTemplate] = {
     default: memberTemplates => memberTemplates[0] || null,

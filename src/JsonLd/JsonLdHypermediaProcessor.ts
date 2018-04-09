@@ -1,15 +1,13 @@
 import { promises as jsonLd } from "jsonld";
-import ApiDocumentation from "../DataModel/ApiDocumentation";
 import LinksCollection from "../DataModel/Collections/LinksCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
-import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import HypermediaContainer from "../DataModel/HypermediaContainer";
-import { IApiDocumentation } from "../DataModel/IApiDocumentation";
 import { ICollection } from "../DataModel/ICollection";
 import { IHydraResource } from "../DataModel/IHydraResource";
 import { IWebResource } from "../DataModel/IWebResource";
 import HydraClient from "../HydraClient";
+import { IHydraClient } from "../IHydraClient";
 import { IHypermediaProcessor } from "../IHypermediaProcessor";
 import { hydra } from "../namespaces";
 import IndirectTypingProvider from "./IndirectTypingProvider";
@@ -54,12 +52,12 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return JsonLdHypermediaProcessor.mediaTypes;
   }
 
-  public async process(response: Response, client: HydraClient): Promise<IWebResource> {
+  public async process(response: Response, client: IHydraClient): Promise<IWebResource> {
     const payload = await response.json();
     const result: any = payload;
     let flattenPayload = await jsonLd.flatten(payload, null, { base: response.url, embed: "@link" });
     flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
-    const context = await this.processHypermedia(new ProcessingContext(flattenPayload, response.url));
+    const context = await this.processHypermedia(new ProcessingContext(flattenPayload, response.url, client));
     const hypermedia = context.hypermedia;
     for (let index = hypermedia.length - 1; index >= 0; index--) {
       JsonLdHypermediaProcessor.tryRemoveReferenceFrom(hypermedia, index);
@@ -77,19 +75,11 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       );
     }
 
-    const apiDocumentation = hypermedia.find(item => item.type.contains(hydra.ApiDocumentation));
-    if (apiDocumentation) {
-      hypermedia[hypermedia.indexOf(apiDocumentation)] = new ApiDocumentation(
-        (apiDocumentation as any) as IApiDocumentation,
-        client
-      );
-    }
-
     const hypermediaContainer = new HypermediaContainer(
       hypermedia,
       (rootResource as IHydraResource).operations,
       (rootResource as IHydraResource).links,
-      (rootResource as ICollection).members
+      (rootResource as ICollection).members ? rootResource as ICollection : null
     );
     Object.defineProperty(result, "hypermedia", {
       enumerable: false,
