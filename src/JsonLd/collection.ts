@@ -19,7 +19,7 @@ export function collection(mappings: {
   mappings[hydra.memberTemplate] = {
     default: memberTemplates => memberTemplates[0] || null,
     propertyName: "memberTemplate",
-    type: [hydra.Collection as string]
+    type: [hydra.Collection as string, hydra.PartialCollectionView as string]
   };
   mappings[hydra.collection] = {
     default: (collections, processingState) => new ResourceFilterableCollection(collections),

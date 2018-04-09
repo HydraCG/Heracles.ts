@@ -1,11 +1,16 @@
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
 import { ICollection } from "../DataModel/ICollection";
+import { IResource } from "../DataModel/IResource";
 import TemplatedOperation from "../DataModel/TemplatedOperation";
 import { hydra } from "../namespaces";
 
+function isCollection(resource: IResource) {
+  return resource.type.contains(hydra.Collection) || resource.type.contains(hydra.PartialCollectionView);
+}
+
 export const memberTemplateOperationsExtractor = (operations, processingState) => {
   if (
-    processingState.currentResource.type.contains(hydra.Collection) &&
+    isCollection(processingState.currentResource) &&
     !!(processingState.currentResource as ICollection).memberTemplate &&
     (processingState.currentResource as ICollection).memberTemplate.operations.length > 0
   ) {

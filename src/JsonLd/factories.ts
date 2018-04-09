@@ -20,6 +20,11 @@ factories[hydra.ApiDocumentation] = (resource, client) => {
 factories[hydra.Collection] = factories[hydra.PartialCollectionView] = (resource, client) => {
   const target = resource as any;
   const collection = resource as ICollection;
+  if (!collection.type.contains(hydra.PartialCollectionView)) {
+    target.getAllMembers = () => Promise.resolve(collection.members);
+    return resource;
+  }
+
   target.getAllMembers = async () => {
     const result = [];
     let next = collection.links.withRelationOf(hydra.first).first();
