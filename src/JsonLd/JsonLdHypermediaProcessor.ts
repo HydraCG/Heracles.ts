@@ -2,6 +2,7 @@ import { promises as jsonLd } from "jsonld";
 import ApiDocumentation from "../DataModel/ApiDocumentation";
 import LinksCollection from "../DataModel/Collections/LinksCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
+import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import HypermediaContainer from "../DataModel/HypermediaContainer";
 import { IApiDocumentation } from "../DataModel/IApiDocumentation";

@@ -23,6 +23,7 @@ export let hydra = {
   Link: hydraNamespace + "Link",
   VariableRepresentation: hydraNamespace + "VariableRepresentation",
 
+  collection: hydraNamespace + "collection",
   member: hydraNamespace + "member",
   memberTemplate: hydraNamespace + "memberTemplate",
   totalItems: hydraNamespace + "totalItems",
