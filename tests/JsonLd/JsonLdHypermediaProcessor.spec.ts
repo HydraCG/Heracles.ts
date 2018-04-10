@@ -76,7 +76,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   links: [],
                   operations: [],
                   relation: "http://temp.uri/vocab/closed-events",
-                  target: {iri: "http://temp.uri/api/events/closed", type: []},
+                  target: { iri: "http://temp.uri/api/events/closed", type: [] },
                   type: [hydra.Link]
                 },
                 {
@@ -86,7 +86,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   links: [],
                   operations: [],
                   relation: hydra.first,
-                  target: {iri: "http://temp.uri/api/events?page=1", type: []},
+                  target: { iri: "http://temp.uri/api/events?page=1", type: [] },
                   type: [hydra.Link]
                 },
                 {
@@ -96,7 +96,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   links: [],
                   operations: [],
                   relation: hydra.last,
-                  target: {iri: "http://temp.uri/api/events?page=9", type: []},
+                  target: { iri: "http://temp.uri/api/events?page=9", type: [] },
                   type: [hydra.Link]
                 },
                 {

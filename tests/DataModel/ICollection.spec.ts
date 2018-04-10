@@ -19,12 +19,13 @@ describe("Given an instance of the ICollection interface", () => {
         const setup: any = {
           links: new LinksCollection([{ relation: hydra.first } as any]),
           members: this.members,
-          type: new TypesCollection([hydra.Collection]),
+          type: new TypesCollection([hydra.Collection])
         };
         this.collection = factories[hydra.Collection](setup as IResource, this.client);
       });
 
-      it("should not call the collection once again",
+      it(
+        "should not call the collection once again",
         run(async () => {
           await this.collection.getAllMembers();
 
@@ -35,7 +36,7 @@ describe("Given an instance of the ICollection interface", () => {
       it("should provide members already obtained", () => {
         run(async () => {
           expect(await this.collection.getAllMembers()).toBe(this.members);
-        })
+        });
       });
     });
 
@@ -56,8 +57,10 @@ describe("Given an instance of the ICollection interface", () => {
           }
         };
         this.client.getResource
-          .onFirstCall().returns(this.firstBatch)
-          .onSecondCall().returns(this.lastBatch);
+          .onFirstCall()
+          .returns(this.firstBatch)
+          .onSecondCall()
+          .returns(this.lastBatch);
         const setup: any = {
           links: new LinksCollection([{ relation: hydra.first, target: this.firstPage } as any]),
           type: new TypesCollection([hydra.PartialCollectionView])
@@ -86,10 +89,10 @@ describe("Given an instance of the ICollection interface", () => {
       it(
         "should provide a correct result",
         run(async () => {
-          expect(await this.collection.getAllMembers())
-            .toEqual([
-              this.firstBatch.hypermedia.members[0],
-              this.lastBatch.hypermedia.members[0]]);
+          expect(await this.collection.getAllMembers()).toEqual([
+            this.firstBatch.hypermedia.members[0],
+            this.lastBatch.hypermedia.members[0]
+          ]);
         })
       );
     });
