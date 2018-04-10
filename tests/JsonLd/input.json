@@ -37,9 +37,7 @@
                         "hydra:last": "http://temp.uri/api/events?page=9",
                         "hydra:totalItems": 1,
                         "hydra:member": [
-                            {
-                                "@id": "http://temp.uri/api/events/1"
-                            }
+                            { "@id": "http://temp.uri/api/events/1" }
                         ]
                     }
                 ]

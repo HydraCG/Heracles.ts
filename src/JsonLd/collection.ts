@@ -26,5 +26,10 @@ export function collection(mappings: {
     propertyName: "collections",
     required: true
   };
+  mappings[hydra.collection] = {
+    default: collections => new ResourceFilterableCollection(collections),
+    propertyName: "collections",
+    required: true
+  };
   return mappings;
 }
