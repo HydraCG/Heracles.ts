@@ -1,18 +1,13 @@
 import * as md5 from "js-md5";
-import BodyResourceBoundIriTemplateExpansionStrategy from "../src/BodyResourceBoundIriTemplateExpansionStrategy";
 import HydraClientFactory from "../src/HydraClientFactory";
-import JsonLdHypermediaProcessor from "../src/JsonLd/JsonLdHypermediaProcessor";
 import { hydra } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
-import HydraResourceMatcher from "../testing/HydraResourceMatcher";
 
 describe("Having a Hydra client", () => {
   beforeEach(() => {
-    jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
     this.url = "http://localhost:3000/";
     this.client = HydraClientFactory.configure()
-      .with(new JsonLdHypermediaProcessor())
-      .with(new BodyResourceBoundIriTemplateExpansionStrategy())
+      .withDefaults()
       .andCreate();
   });
 
@@ -42,9 +37,7 @@ describe("Having a Hydra client", () => {
       });
 
       it("should obtain a collection of events", () => {
-        const collection = this.entryPoint.hypermedia
-          .where(item => item.iri.match("/api/events$") && item.type.contains(hydra.Collection))
-          .first();
+        const collection = this.entryPoint.hypermedia.collections.where(item => item.iri.match("/api/events$")).first();
         expect(collection).toBeDefined();
         expect(collection).not.toBeNull();
       });
@@ -115,8 +108,8 @@ describe("Having a Hydra client", () => {
           );
 
           it("should obtain matching events", () => {
-            const matchingEvents = this.searchResult.hypermedia
-              .where(item => item.iri.match("/api/events$") && item.type.contains(hydra.Collection))
+            const matchingEvents = this.searchResult.hypermedia.collections
+              .where(item => item.iri.match("/api/events$"))
               .first();
             expect(matchingEvents).toBeDefined();
             expect(matchingEvents).not.toBeNull();

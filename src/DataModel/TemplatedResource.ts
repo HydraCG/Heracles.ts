@@ -3,7 +3,9 @@ import { hydra } from "../namespaces";
 import LinksCollection from "./Collections/LinksCollection";
 import MappingsCollection from "./Collections/MappingsCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
+import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import TypesCollection from "./Collections/TypesCollection";
+import { ICollection } from "./ICollection";
 import { IIriTemplate } from "./IIriTemplate";
 import { IPointingResource } from "./IPointingResource";
 import { IResource } from "./IResource";
@@ -27,6 +29,8 @@ export default abstract class TemplatedResource<T extends IPointingResource> imp
 
   public readonly links: LinksCollection;
 
+  public readonly collections: ResourceFilterableCollection<ICollection>;
+
   private readonly template: string;
 
   private readonly mappings: MappingsCollection;
@@ -42,6 +46,7 @@ export default abstract class TemplatedResource<T extends IPointingResource> imp
     this.baseUrl = resource.baseUrl;
     this.iri = resource.iri;
     this.links = new LinksCollection([]);
+    this.collections = new ResourceFilterableCollection<ICollection>([]);
     this.type = new TypesCollection(types.filter((item, index) => types.indexOf(item) === index));
     this.target = null;
     this.template = template.template;
@@ -63,6 +68,7 @@ export default abstract class TemplatedResource<T extends IPointingResource> imp
     const target = targetUri.match(/^[a-zA-Z][a-zA-Z0-9_]*:/) ? targetUri : new URL(targetUri, this.baseUrl).toString();
     return this.createInstance({
       baseUrl: this.baseUrl,
+      collections: this.collections,
       iri: this.getNextIri(),
       links: this.links,
       operations: this.operations,

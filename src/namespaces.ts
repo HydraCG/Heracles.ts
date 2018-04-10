@@ -23,6 +23,7 @@ export let hydra = {
   Link: hydraNamespace + "Link",
   VariableRepresentation: hydraNamespace + "VariableRepresentation",
 
+  collection: hydraNamespace + "collection",
   member: hydraNamespace + "member",
   memberTemplate: hydraNamespace + "memberTemplate",
   totalItems: hydraNamespace + "totalItems",
@@ -31,16 +32,16 @@ export let hydra = {
 
   supportedOperation: hydraNamespace + "supportedOperation",
   supportedProperty: hydraNamespace + "supportedProperty",
-  readonly: hydraNamespace + "readonly",
+  readable: hydraNamespace + "readable",
   required: hydraNamespace + "required",
-  writeonly: hydraNamespace + "writeonly",
+  writeable: hydraNamespace + "writeable",
   Class: hydraNamespace + "Class",
   SupportedProperty: hydraNamespace + "SupportedProperty",
 
   method: hydraNamespace + "method",
   expects: hydraNamespace + "expects",
   returns: hydraNamespace + "returns",
-  statusCodes: hydraNamespace + "statusCodes",
+  possibleStatus: hydraNamespace + "possibleStatus",
   Operation: hydraNamespace + "Operation",
   Status: hydraNamespace + "Status",
 

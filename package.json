@@ -1,6 +1,11 @@
 {
   "name": "hydraclient.js",
   "version": "0.0.1",
+  "contributors": [
+      { "name": "Markus Lanthaler" },
+      { "name": "Karol Szczepanski" },
+      { "name": "Elf Pavlik" }
+  ],
   "scripts": {
     "test": "karma start --single-run",
     "test-watch": "karma start",

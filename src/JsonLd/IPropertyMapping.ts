@@ -4,7 +4,7 @@ type Literal = string | boolean | number;
 type MappingsProcessor = (items: any[], processingState: ProcessingState) => any;
 
 /**
- * Describes a simple RDF mappings used in Heracles' data model.
+ * Describes a simple RDF mapping in Heracles' data model.
  * @interface
  */
 export interface IPropertyMapping {

@@ -51,6 +51,19 @@ export default abstract class FilterableCollection<T> {
   }
 
   /**
+   * Gets the last item of the collection or null if there are no items matching the criteria.
+   * @returns {T}
+   */
+  public last(): T {
+    let result: T = null;
+    for (const item of this) {
+      result = item;
+    }
+
+    return result;
+  }
+
+  /**
    * Filters the collection with a generic match evaluator.
    * @param matchEvaluator {Function} Match evaluation delegate.
    * @returns {IFilterableCollection<T>}

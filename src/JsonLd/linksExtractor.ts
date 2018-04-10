@@ -1,6 +1,8 @@
 import LinksCollection from "../DataModel/Collections/LinksCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
+import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
+import { ICollection } from "../DataModel/ICollection";
 import TemplatedLink from "../DataModel/TemplatedLink";
 import { hydra } from "../namespaces";
 
@@ -33,6 +35,7 @@ export const linksExtractor = (resources, processingState) => {
         processingState.forbiddenHypermedia.push(predicate);
         let link = {
           baseUrl: processingState.baseUrl,
+          collections: new ResourceFilterableCollection<ICollection>([]),
           iri: predicate,
           links: new LinksCollection([]),
           operations: new OperationsCollection([]),

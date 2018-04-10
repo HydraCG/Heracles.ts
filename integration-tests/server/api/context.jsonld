@@ -9,7 +9,8 @@
         "examplevocab": "http://example.com/vocab#",
         "range": "rdfs:range",
         "label": "rdfs:label",
-        "description": "rdfs:comment",
+        "comment": "rdfs:comment",
+        "description": "hydra:description",
         "entrypoint": {
             "@id": "hydra:entrypoint",
             "@type": "@id"
@@ -47,6 +48,10 @@
             "@type": "@vocab"
         },
         "required": "hydra:required",
+        "collection": {
+            "@id": "hydra:collection",
+            "@type": "@id"
+        },
         "member": {
             "@id": "hydra:member",
             "@type": "@id"
@@ -65,7 +70,10 @@
             "@id": "hydra:variable",
             "@type": "xsd:string"
         },
-        "variableRepresentation": "hydra:variableRepresentation",
+        "variableRepresentation": {
+            "@id": "hydra:variableRepresentation",
+            "@type": "@id"
+        },
         "search": {
             "@id": "hydra:search",
             "@type": "@id"
