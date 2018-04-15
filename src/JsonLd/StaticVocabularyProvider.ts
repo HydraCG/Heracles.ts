@@ -1,21 +1,21 @@
 import { promises as jsonLd } from "jsonld";
 import { rdfs } from "../namespaces";
-import { IOntologyProvider } from "./IOntologyProvider";
+import { IVocabularyProvider } from "./IVocabularyProvider";
 
 /**
- * Provides a simple implementation of the RDF predicate range-domain provider that uses statically provided ontology.
+ * Provides a simple implementation of the RDF predicate range-domain provider that uses statically provided vocabulary.
  */
-export default class StaticOntologyProvider implements IOntologyProvider {
-  private readonly jsonLdOntology: object;
-  private ontology: object[];
+export default class StaticVocabularyProvider implements IVocabularyProvider {
+  private readonly jsonLdVocabulary: object;
+  private vocabulary: object[];
 
   /**
-   * Initializes a new instance of the {@link StaticOntologyProvider} class.
-   * @param {object} context JSON-LD encoded RDF ontology to use as range-domain source.
+   * Initializes a new instance of the {@link StaticVocabularyProvider} class.
+   * @param {object} context JSON-LD encoded RDF vocabulary to use as range-domain source.
    */
-  public constructor(ontology: object) {
-    this.jsonLdOntology = ontology;
-    this.ontology = null;
+  public constructor(vocabulary: object) {
+    this.jsonLdVocabulary = vocabulary;
+    this.vocabulary = null;
   }
 
   public getDomainFor(predicate: string): Promise<string> {
@@ -27,14 +27,14 @@ export default class StaticOntologyProvider implements IOntologyProvider {
   }
 
   private async ensureInitialized(): Promise<void> {
-    if (this.ontology === null) {
-      this.ontology = await jsonLd.flatten(this.jsonLdOntology);
+    if (this.vocabulary === null) {
+      this.vocabulary = await jsonLd.flatten(this.jsonLdVocabulary);
     }
   }
 
   private async findByIri(iri: string): Promise<object> {
     await this.ensureInitialized();
-    for (const resource of this.ontology) {
+    for (const resource of this.vocabulary) {
       if (resource["@id"] === iri) {
         return resource;
       }

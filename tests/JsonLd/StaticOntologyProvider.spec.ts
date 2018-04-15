@@ -1,4 +1,4 @@
-import StaticOntologyProvider from "../../src/JsonLd/StaticOntologyProvider";
+import StaticOntologyProvider from "../../src/JsonLd/StaticVocabularyProvider";
 import { hydra, rdf } from "../../src/namespaces";
 import { run } from "../../testing/AsyncHelper";
 
@@ -42,7 +42,7 @@ propertyRange[hydra.search] = hydra.IriTemplate;
 propertyRange[hydra.variableRepresentation] = hydra.VariableRepresentation;
 propertyRange[hydra.mapping] = hydra.IriTemplateMapping;
 
-describe("Given instance of the StaticOntologyProvider class", () => {
+describe("Given instance of the StaticVocabularyProvider class", () => {
   beforeEach(() => {
     this.provider = new StaticOntologyProvider(require("../../src/JsonLd/hydra.json"));
   });
@@ -52,7 +52,7 @@ describe("Given instance of the StaticOntologyProvider class", () => {
     run(async () => {
       for (const predicate of Object.keys(propertyDomain)) {
         const result = await this.provider.getDomainFor(predicate);
-        expect(result).toBe(propertyDomain[predicate], `as predicate ${predicate} is defined in ontology`);
+        expect(result).toBe(propertyDomain[predicate], `as predicate ${predicate} is defined in the vocabulary`);
       }
     })
   );

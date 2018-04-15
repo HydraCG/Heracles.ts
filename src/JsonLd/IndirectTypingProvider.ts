@@ -1,18 +1,18 @@
-import { IOntologyProvider } from "./IOntologyProvider";
+import { IVocabularyProvider } from "./IVocabularyProvider";
 import ProcessingState from "./ProcessingState";
 
 /**
  * Provides a logic checking type of RDF resources.
  */
 export default class IndirectTypingProvider {
-  private readonly ontologyProvider: IOntologyProvider;
+  private readonly vocabularyProvider: IVocabularyProvider;
 
   /**
    * Initializes a new instance of the {@link IndirectTypingProvider} class.
-   * @param {IOntologyProvider} ontologyProvider Provider of predicate range-domain details.
+   * @param {IVocabularyProvider} vocabularyProvider Provider of predicate range-domain details.
    */
-  public constructor(ontologyProvider: IOntologyProvider) {
-    this.ontologyProvider = ontologyProvider;
+  public constructor(vocabularyProvider: IVocabularyProvider) {
+    this.vocabularyProvider = vocabularyProvider;
   }
 
   /**
@@ -38,7 +38,7 @@ export default class IndirectTypingProvider {
 
   private async isInDomainOfPredicate(expectedType: string, processingState: ProcessingState): Promise<boolean> {
     for (const property of Object.keys(processingState.processedObject).filter(key => key.charAt(0) !== "@")) {
-      const domain = await this.ontologyProvider.getDomainFor(property);
+      const domain = await this.vocabularyProvider.getDomainFor(property);
       if (domain === expectedType) {
         return true;
       }
@@ -54,7 +54,7 @@ export default class IndirectTypingProvider {
     }
 
     for (const property of Object.keys(ownerResource).filter(key => key.charAt(0) !== "@")) {
-      const range = await this.ontologyProvider.getRangeFor(property);
+      const range = await this.vocabularyProvider.getRangeFor(property);
       if (
         range === expectedType &&
         ownerResource[property].find(resource => resource["@id"] === processingState.processedObject["@id"])

@@ -1,8 +1,8 @@
 /**
- * Provides an abstraction over ontology.
+ * Provides an abstraction over a vocabulary.
  * @interface
  */
-export interface IOntologyProvider {
+export interface IVocabularyProvider {
   /**
    * Gets the domain for a given property if defined; otherwise null;
    * @param {string} predicate IRI of the predicate for which to obtain a domain.
