@@ -1,12 +1,14 @@
 import * as md5 from "js-md5";
-import HydraClient from "../src/HydraClient";
+import HydraClientFactory from "../src/HydraClientFactory";
 import { hydra } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
 
 describe("Having a Hydra client", () => {
   beforeEach(() => {
     this.url = "http://localhost:3000/";
-    this.client = new HydraClient();
+    this.client = HydraClientFactory.configure()
+      .withDefaults()
+      .andCreate();
   });
 
   describe("while browsing the test website", () => {
@@ -169,14 +171,13 @@ describe("Having a Hydra client", () => {
             run(async () => {
               try {
                 this.body = {
-                  "@type": "http://schema.org/Person"
+                  "@type": "http://schema.org/Person",
+                  "http://schema.org/name": "test-name"
                 };
                 const operation = this.people.hypermedia.operations
                   .ofType("http://schema.org/UpdateAction")
                   .expecting("http://schema.org/Person")
-                  .withTemplate()
-                  .first()
-                  .expandTarget({ name: "new-test-event" });
+                  .first();
                 this.createdPerson = await this.client.invoke(operation, this.body);
               } catch (error) {
                 this.exception = error;

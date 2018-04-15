@@ -5,7 +5,8 @@
         "target": "es2017",
         "lib": ["es2017", "DOM"],
         "types": ["node", "jasmine", "sinon", "express"],
-        "sourceMap": true
+        "sourceMap": true,
+        "noUnusedLocals": true
     },
     "exclude": [
         "node_modules",

@@ -21,7 +21,8 @@
                 "name": "tslint-language-service"
             }
         ],
-        "sourceMap": true
+        "sourceMap": true,
+        "noUnusedLocals": true
     },
     "exclude": [
         "node_modules"
