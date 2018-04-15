@@ -1,6 +1,6 @@
 import "isomorphic-fetch";
 import * as jsonld from "jsonld";
-import ApiDocumentation from "./DataModel/ApiDocumentation";
+import FilterableCollection from "./DataModel/Collections/FilterableCollection";
 import { IApiDocumentation } from "./DataModel/IApiDocumentation";
 import { ILink } from "./DataModel/ILink";
 import { IOperation } from "./DataModel/IOperation";

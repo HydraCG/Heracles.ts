@@ -1,7 +1,7 @@
 import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import { IResource } from "../DataModel/IResource";
-import { hydra, rdf, rdfs } from "../namespaces";
+import { rdf, rdfs } from "../namespaces";
 import { IPropertyMapping } from "./IPropertyMapping";
 
 export function rdfSchema(mappings: {

@@ -14,7 +14,6 @@ import { hydra } from "../namespaces";
 import IndirectTypingProvider from "./IndirectTypingProvider";
 import { mappings } from "./mappings";
 import ProcessingContext from "./ProcessingState";
-import StaticOntologyProvider from "./StaticOntologyProvider";
 
 const literals = ["string", "number", "boolean"];
 
@@ -199,8 +198,3 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     }
   }
 }
-
-/* tslint:disable:no-var-requires */
-HydraClient.registerHypermediaProcessor(
-  new JsonLdHypermediaProcessor(new IndirectTypingProvider(new StaticOntologyProvider(require("./hydra.json"))))
-);

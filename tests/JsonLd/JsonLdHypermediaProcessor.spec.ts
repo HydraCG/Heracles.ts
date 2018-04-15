@@ -15,10 +15,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         processingState.processedObject["@type"] instanceof Array &&
         processingState.processedObject["@type"].indexOf(expectedType) !== -1
     };
-    this.hypermediaProcessors = HydraClient.hypermediaProcessors;
-    HydraClient.hypermediaProcessors = [];
-    HydraClient.registerHypermediaProcessor(new JsonLdHypermediaProcessor(this.indirectTypingProvider));
-    this.hypermediaProcessor = new HydraClient().getHypermediaProcessor(returnOk());
+    this.hypermediaProcessor = new JsonLdHypermediaProcessor(this.indirectTypingProvider);
   });
 
   it("should get itself registered", () => {
@@ -156,9 +153,5 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         expect(this.markus.links.withRelationOf("http://schema.org/knows").first().target).toBe(this.karol);
       });
     });
-  });
-
-  afterEach(() => {
-    HydraClient.hypermediaProcessors = this.hypermediaProcessors;
   });
 });
