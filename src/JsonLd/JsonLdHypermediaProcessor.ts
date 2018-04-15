@@ -17,7 +17,7 @@ import StaticOntologyProvider from "./StaticOntologyProvider";
 
 const literals = ["string", "number", "boolean"];
 
-const dependentTypes = [hydra.IriTemplateMapping];
+const dependentTypes = [hydra.IriTemplateMapping, hydra.PartialCollectionView];
 
 function isBlank(resource: object): boolean {
   return !resource["@id"] || resource["@id"].match(/^_:/);

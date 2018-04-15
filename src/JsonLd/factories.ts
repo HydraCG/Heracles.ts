@@ -17,17 +17,16 @@ factories[hydra.ApiDocumentation] = (resource, client) => {
   return resource;
 };
 
-factories[hydra.Collection] = factories[hydra.PartialCollectionView] = (resource, client) => {
+factories[hydra.Collection] = (resource, client) => {
   const target = resource as any;
   const collection = resource as ICollection;
-  if (!collection.type.contains(hydra.PartialCollectionView)) {
-    target.getAllMembers = () => Promise.resolve(collection.members);
-    return resource;
-  }
-
   target.getAllMembers = async () => {
     const result = [];
     let next = collection.links.withRelationOf(hydra.first).first();
+    if (!next) {
+      return collection.members;
+    }
+
     let collectionPart: IWebResource = null;
     while (next) {
       collectionPart = await client.getResource(next.target);

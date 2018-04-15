@@ -82,26 +82,6 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 {
                   baseUrl: "http://temp.uri/api",
                   collections: [],
-                  iri: hydra.first,
-                  links: [],
-                  operations: [],
-                  relation: hydra.first,
-                  target: { iri: "http://temp.uri/api/events?page=1", type: [] },
-                  type: [hydra.Link]
-                },
-                {
-                  baseUrl: "http://temp.uri/api",
-                  collections: [],
-                  iri: hydra.last,
-                  links: [],
-                  operations: [],
-                  relation: hydra.last,
-                  target: { iri: "http://temp.uri/api/events?page=9", type: [] },
-                  type: [hydra.Link]
-                },
-                {
-                  baseUrl: "http://temp.uri/api",
-                  collections: [],
                   iri: hydra.search,
                   links: [],
                   mappings: [
@@ -137,6 +117,26 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   target: null,
                   template: "http://temp.uri/api/events{?searchPhrase}",
                   type: [hydra.TemplatedLink]
+                },
+                {
+                  baseUrl: "http://temp.uri/api",
+                  collections: [],
+                  iri: hydra.first,
+                  links: [],
+                  operations: [],
+                  relation: hydra.first,
+                  target: { iri: "http://temp.uri/api/events?page=1", type: [] },
+                  type: [hydra.Link]
+                },
+                {
+                  baseUrl: "http://temp.uri/api",
+                  collections: [],
+                  iri: hydra.last,
+                  links: [],
+                  operations: [],
+                  relation: hydra.last,
+                  target: { iri: "http://temp.uri/api/events?page=9", type: [] },
+                  type: [hydra.Link]
                 }
               ],
               members: [

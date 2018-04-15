@@ -1,4 +1,4 @@
-import { hydra, rdf } from "../namespaces";
+import { hydra } from "../namespaces";
 import { apiDocumentation } from "./apiDocumentation";
 import { collection } from "./collection";
 import { IPropertyMapping } from "./IPropertyMapping";

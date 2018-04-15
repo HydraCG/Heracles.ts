@@ -1,14 +1,16 @@
 {
     "@context": "/api/context.jsonld",
     "@id": "/api/people/page2",
-    "@type": ["hydra:PartialCollectionView", "hydra:Resource"],
+    "@type": ["hydra:Collection", "hydra:Resource"],
     "member": [
         {
             "@id": "/api/people/2",
             "@type": "schema:Person"
         }
     ],
-    "first": "/api/people/page1",
-    "previous": "/api/people/page1",
-    "last": "/api/people/page2"
+    "view": {
+        "first": "/api/people/page1",
+        "previous": "/api/people/page1",
+        "last": "/api/people/page2"
+    }
 }

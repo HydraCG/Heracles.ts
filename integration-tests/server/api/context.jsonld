@@ -73,6 +73,10 @@
             "@id": "hydra:last",
             "@type": "@id"
         },
+        "view": {
+            "@id": "hydra:view",
+            "@type": "@id"
+        },
         "totalItems": "hydra:totalItems",
         "template": {
             "@id": "hydra:template",

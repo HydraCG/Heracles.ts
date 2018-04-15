@@ -17,7 +17,7 @@ describe("Given an instance of the ICollection interface", () => {
         this.members = [];
         this.client.getResource.returns(this.members);
         const setup: any = {
-          links: new LinksCollection([{ relation: hydra.first } as any]),
+          links: new LinksCollection([]),
           members: this.members,
           type: new TypesCollection([hydra.Collection])
         };
@@ -63,9 +63,9 @@ describe("Given an instance of the ICollection interface", () => {
           .returns(this.lastBatch);
         const setup: any = {
           links: new LinksCollection([{ relation: hydra.first, target: this.firstPage } as any]),
-          type: new TypesCollection([hydra.PartialCollectionView])
+          type: new TypesCollection([hydra.Collection])
         };
-        this.collection = factories[hydra.PartialCollectionView](setup as IResource, this.client);
+        this.collection = factories[hydra.Collection](setup as IResource, this.client);
       });
 
       it(
