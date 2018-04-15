@@ -25,7 +25,8 @@ export default abstract class FilterableCollection<T> {
    */
   public get length(): number {
     let result = 0;
-    for (const item of this) {
+    const iterator = this[Symbol.iterator]();
+    while (!iterator.next().done) {
       result++;
     }
 
@@ -37,11 +38,7 @@ export default abstract class FilterableCollection<T> {
    * @returns {boolean}
    */
   public any(): boolean {
-    for (const item of this) {
-      return true;
-    }
-
-    return false;
+    return !this[Symbol.iterator]().next().done;
   }
 
   /**
@@ -49,11 +46,8 @@ export default abstract class FilterableCollection<T> {
    * @returns {T}
    */
   public first(): T {
-    for (const item of this) {
-      return item;
-    }
-
-    return null;
+    const result = this[Symbol.iterator]().next();
+    return !result.done ? result.value : null;
   }
 
   /**

@@ -2,7 +2,6 @@ import { promises as jsonLd } from "jsonld";
 import ApiDocumentation from "../DataModel/ApiDocumentation";
 import LinksCollection from "../DataModel/Collections/LinksCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
-import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import HypermediaContainer from "../DataModel/HypermediaContainer";
 import { IApiDocumentation } from "../DataModel/IApiDocumentation";
@@ -15,7 +14,6 @@ import { hydra } from "../namespaces";
 import IndirectTypingProvider from "./IndirectTypingProvider";
 import { mappings } from "./mappings";
 import ProcessingContext from "./ProcessingState";
-import StaticOntologyProvider from "./StaticOntologyProvider";
 
 const literals = ["string", "number", "boolean"];
 
@@ -200,8 +198,3 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     }
   }
 }
-
-/* tslint:disable:no-var-requires */
-HydraClient.registerHypermediaProcessor(
-  new JsonLdHypermediaProcessor(new IndirectTypingProvider(new StaticOntologyProvider(require("./hydra.json"))))
-);

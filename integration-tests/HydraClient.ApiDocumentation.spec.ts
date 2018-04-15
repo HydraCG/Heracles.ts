@@ -1,5 +1,5 @@
 import ApiDocumentation from "../src/DataModel/ApiDocumentation";
-import HydraClient from "../src/HydraClient";
+import HydraClientFactory from "../src/HydraClientFactory";
 import { hydra, rdf } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
 import HydraResourceMatcher from "../testing/HydraResourceMatcher";
@@ -8,7 +8,9 @@ describe("Having a Hydra client", () => {
   beforeEach(() => {
     jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
     this.url = "http://localhost:3000/";
-    this.client = new HydraClient();
+    this.client = HydraClientFactory.configure()
+      .withDefaults()
+      .andCreate();
   });
 
   describe("while browsing the test website", () => {
