@@ -1,6 +1,5 @@
 import { hydra } from "../../namespaces";
 import { ILink } from "../ILink";
-import OperationsCollection from "./OperationsCollection";
 import ResourceFilterableCollection from "./ResourceFilterableCollection";
 
 /**
@@ -20,7 +19,7 @@ export default class LinksCollection extends ResourceFilterableCollection<ILink>
   /**
    * Obtains a collection of links of a given relation type.
    * @param iri {string} Expected relation type.
-   * @returns {OperationsCollection}
+   * @returns {LinksCollection}
    */
   public withRelationOf(iri: string): LinksCollection {
     return this.narrowFiltersWith("relation", iri) as LinksCollection;

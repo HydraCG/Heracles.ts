@@ -1,4 +1,3 @@
-import HydraClient from "../../src/HydraClient";
 import JsonLdHypermediaProcessor from "../../src/JsonLd/JsonLdHypermediaProcessor";
 import { hydra } from "../../src/namespaces";
 import { run } from "../../testing/AsyncHelper";
@@ -10,10 +9,12 @@ import * as nestedResourcesInputJsonLd from "./nestedResourcesInput.json";
 describe("Given instance of the JsonLdHypermediaProcessor class", () => {
   beforeEach(() => {
     jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
-    this.hypermediaProcessors = HydraClient.hypermediaProcessors;
-    HydraClient.hypermediaProcessors = [];
-    HydraClient.registerHypermediaProcessor(new JsonLdHypermediaProcessor());
-    this.hypermediaProcessor = new HydraClient().getHypermediaProcessor(returnOk());
+    this.indirectTypingProvider = {
+      isOfType: (expectedType, processingState) =>
+        processingState.processedObject["@type"] instanceof Array &&
+        processingState.processedObject["@type"].indexOf(expectedType) !== -1
+    };
+    this.hypermediaProcessor = new JsonLdHypermediaProcessor(this.indirectTypingProvider);
   });
 
   it("should get itself registered", () => {
@@ -76,27 +77,27 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 {
                   baseUrl: "http://temp.uri/api",
                   collections: [],
-                  iri: "http://www.w3.org/ns/hydra/core#first",
+                  iri: hydra.first,
                   links: [],
                   operations: [],
-                  relation: "http://www.w3.org/ns/hydra/core#first",
+                  relation: hydra.first,
                   target: { iri: "http://temp.uri/api/events?page=1", type: [] },
                   type: [hydra.Link]
                 },
                 {
                   baseUrl: "http://temp.uri/api",
                   collections: [],
-                  iri: "http://www.w3.org/ns/hydra/core#last",
+                  iri: hydra.last,
                   links: [],
                   operations: [],
-                  relation: "http://www.w3.org/ns/hydra/core#last",
+                  relation: hydra.last,
                   target: { iri: "http://temp.uri/api/events?page=9", type: [] },
                   type: [hydra.Link]
                 },
                 {
                   baseUrl: "http://temp.uri/api",
                   collections: [],
-                  iri: "http://www.w3.org/ns/hydra/core#search",
+                  iri: hydra.search,
                   links: [],
                   mappings: [
                     {
@@ -104,14 +105,30 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                       iri: "_:b1",
                       links: [],
                       operations: [],
-                      property: { iri: "http://www.w3.org/ns/hydra/core#freetextQuery", type: [] },
+                      property: {
+                        collections: [],
+                        description: "",
+                        displayName: "",
+                        iri: hydra.freetextQuery,
+                        links: [],
+                        operations: [],
+                        type: [],
+                        valuesOfType: []
+                      },
                       required: false,
-                      type: [],
-                      variable: "searchPhrase"
+                      type: [hydra.IriTemplateMapping],
+                      variable: "searchPhrase",
+                      variableRepresentation: {
+                        collections: [],
+                        iri: hydra.BasicRepresentation,
+                        links: [],
+                        operations: [],
+                        type: []
+                      }
                     }
                   ],
                   operations: [],
-                  relation: "http://www.w3.org/ns/hydra/core#search",
+                  relation: hydra.search,
                   target: null,
                   template: "http://temp.uri/api/events{?searchPhrase}",
                   type: [hydra.TemplatedLink]
@@ -165,9 +182,5 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         expect(this.markus.links.withRelationOf("http://schema.org/knows").first().target).toBe(this.karol);
       });
     });
-  });
-
-  afterEach(() => {
-    HydraClient.hypermediaProcessors = this.hypermediaProcessors;
   });
 });

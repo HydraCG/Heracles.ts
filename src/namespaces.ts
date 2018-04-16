@@ -21,29 +21,55 @@ export let hydra = {
   IriTemplateMapping: hydraNamespace + "IriTemplateMapping",
   TemplatedLink: hydraNamespace + "TemplatedLink",
   Link: hydraNamespace + "Link",
+  VariableRepresentation: hydraNamespace + "VariableRepresentation",
 
   collection: hydraNamespace + "collection",
   member: hydraNamespace + "member",
   memberTemplate: hydraNamespace + "memberTemplate",
   totalItems: hydraNamespace + "totalItems",
   Collection: hydraNamespace + "Collection",
+  PartialCollectionView: hydraNamespace + "PartialCollectionView",
 
   supportedOperation: hydraNamespace + "supportedOperation",
   supportedProperty: hydraNamespace + "supportedProperty",
+  readable: hydraNamespace + "readable",
+  required: hydraNamespace + "required",
+  writeable: hydraNamespace + "writeable",
   Class: hydraNamespace + "Class",
+  SupportedProperty: hydraNamespace + "SupportedProperty",
 
   method: hydraNamespace + "method",
   expects: hydraNamespace + "expects",
   returns: hydraNamespace + "returns",
+  possibleStatus: hydraNamespace + "possibleStatus",
   Operation: hydraNamespace + "Operation",
+  Status: hydraNamespace + "Status",
 
   operation: hydraNamespace + "operation",
   Resource: hydraNamespace + "Resource",
 
   first: hydraNamespace + "first",
+  freetextQuery: hydraNamespace + "freetextQuery",
   next: hydraNamespace + "next",
   previous: hydraNamespace + "previous",
   last: hydraNamespace + "last",
   search: hydraNamespace + "search",
   view: hydraNamespace + "view"
+};
+
+const rdfNamespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
+export let rdf = {
+  namespace: rdfNamespace,
+
+  Property: rdfNamespace + "Property"
+};
+
+const rdfsNamespace = "http://www.w3.org/2000/01/rdf-schema#";
+export let rdfs = {
+  namespace: rdfsNamespace,
+
+  comment: rdfsNamespace + "comment",
+  domain: rdfsNamespace + "domain",
+  label: rdfsNamespace + "label",
+  range: rdfsNamespace + "range"
 };
