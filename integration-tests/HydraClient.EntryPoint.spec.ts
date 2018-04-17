@@ -157,7 +157,13 @@ describe("Having a Hydra client", () => {
         describe("and then obtaining all people collection members", () => {
           beforeEach(
             run(async () => {
-              this.allPeople = await this.people.hypermedia.getAllMembers();
+              this.allPeople = [];
+              const view = this.people.hypermedia.getView();
+              while (view.hasNextPage) {
+                for (const item of (await view.getNextPage()).members) {
+                  this.allPeople.push(item);
+                }
+              }
             })
           );
 

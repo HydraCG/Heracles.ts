@@ -1,6 +1,7 @@
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import { IHydraResource } from "./IHydraResource";
 import { IIriTemplate } from "./IIriTemplate";
+import { IPartialCollectionView } from "./IPartialCollectionView";
 import { IResource } from "./IResource";
 
 /**
@@ -30,8 +31,8 @@ export interface ICollection extends IHydraResource {
   readonly memberTemplate?: IIriTemplate;
 
   /**
-   * Gets all collection's members, regardless current collection is either complete or partial view.
-   * @returns {Promise<IResource[]>}
+   * Gets a view associated with the collection in case it is a partial one.
+   * @returns {IPartialCollectionView}
    */
-  getAllMembers(): Promise<IResource[]>;
+  getView(): IPartialCollectionView;
 }

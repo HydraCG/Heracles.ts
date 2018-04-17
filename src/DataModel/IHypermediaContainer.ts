@@ -2,6 +2,7 @@ import LinksCollection from "./Collections/LinksCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import { ICollection } from "./ICollection";
+import { IPartialCollectionView } from "./IPartialCollectionView";
 import { IResource } from "./IResource";
 
 /**
@@ -30,9 +31,9 @@ export interface IHypermediaContainer extends ResourceFilterableCollection<IReso
   readonly members?: ResourceFilterableCollection<IResource>;
 
   /**
-   * Gets all collection's members, regardless current collection is either complete or partial view.
-   * This may be null if the resource owning this container is not a hydra:Collection.
-   * @returns {Promise<IResource[]>}
+   * Gets a view associated with the collection.
+   * This may be null if the resource owning this container is not a hydra:Collection with hydra:view.
+   * @returns {IPartialCollectionView}
    */
-  getAllMembers?(): Promise<IResource[]>;
+  getView?(): IPartialCollectionView;
 }

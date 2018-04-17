@@ -5,6 +5,7 @@ import ResourceFilterableCollection from "./Collections/ResourceFilterableCollec
 import { ICollection } from "./ICollection";
 import { IHydraResource } from "./IHydraResource";
 import { IHypermediaContainer } from "./IHypermediaContainer";
+import { IPartialCollectionView } from "./IPartialCollectionView";
 import { IResource } from "./IResource";
 
 /**
@@ -20,8 +21,6 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
   public readonly operations: OperationsCollection;
 
   public readonly links: LinksCollection;
-
-  public readonly getAllMembers: () => Promise<IResource[]>;
 
   /**
    * Initializes a new instance of the {@link HypermediaContainer} class.
@@ -54,7 +53,9 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
     this.links = links;
     if (collection != null) {
       this.members = collection.members;
-      this.getAllMembers = collection.getAllMembers;
+      Object.defineProperty(this, "getView", { value: collection.getView, writable: false });
     }
   }
+
+  public getView?(): IPartialCollectionView;
 }

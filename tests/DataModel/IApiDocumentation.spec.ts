@@ -13,7 +13,7 @@ describe("Given an instance of the IApiDocumentation interface", () => {
       entryPoint: "http://temp.uri/api",
       type: new TypesCollection([hydra.ApiDocumentation])
     };
-    this.apiDocumentation = factories[hydra.ApiDocumentation](setup as IResource, this.client);
+    this.apiDocumentation = factories[hydra.ApiDocumentation](setup as IResource, this.client, null);
   });
 
   describe("when obtaining an entry point", () => {
