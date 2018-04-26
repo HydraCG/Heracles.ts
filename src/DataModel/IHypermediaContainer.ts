@@ -10,6 +10,11 @@ import { IResource } from "./IResource";
  */
 export interface IHypermediaContainer extends ResourceFilterableCollection<IResource> {
   /**
+   * Gets the currently obtained resource IRI.
+   */
+  readonly iri: string;
+
+  /**
    * Gets a collection of links.
    */
   readonly links: LinksCollection;

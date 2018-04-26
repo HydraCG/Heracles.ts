@@ -1,4 +1,3 @@
-import { IPartialCollectionPage } from "./IPartialCollectionPage";
 import { IResource } from "./IResource";
 
 /**
@@ -7,6 +6,26 @@ import { IResource } from "./IResource";
  * @interface
  */
 export interface IPartialCollectionView extends IResource {
+  /**
+   * Gets the link to the first page.
+   */
+  readonly first: string;
+
+  /**
+   * Gets the link to the next page.
+   */
+  readonly next: string;
+
+  /**
+   * Gets the link to the previous page.
+   */
+  readonly previous: string;
+
+  /**
+   * Gets the link to the last page.
+   */
+  readonly last: string;
+
   /**
    * Gets a value indicating whether the view has a next page available.
    * @returns {boolean}
@@ -20,14 +39,26 @@ export interface IPartialCollectionView extends IResource {
   readonly hasPreviousPage: boolean;
 
   /**
-   * Retrieves a next page of the partial collection view.
-   * @returns {Promise<IPartialCollectionPage>}
+   * Retrieves a first page of the partial collection view.
+   * @returns {Promise<Iterable<IResource>>}
    */
-  getNextPage(): Promise<IPartialCollectionPage>;
+  getFirstPage(): Promise<Iterable<IResource>>;
+
+  /**
+   * Retrieves a next page of the partial collection view.
+   * @returns {Promise<Iterable<IResource>>}
+   */
+  getNextPage(): Promise<Iterable<IResource>>;
 
   /**
    * Retrieves a previous page of the partial collection view.
-   * @returns {Promise<IPartialCollectionPage>}
+   * @returns {Promise<Iterable<IResource>>}
    */
-  getPreviousPage(): Promise<IPartialCollectionPage>;
+  getPreviousPage(): Promise<Iterable<IResource>>;
+
+  /**
+   * Retrieves a last page of the partial collection view.
+   * @returns {Promise<Iterable<IResource>>}
+   */
+  getLastPage(): Promise<Iterable<IResource>>;
 }

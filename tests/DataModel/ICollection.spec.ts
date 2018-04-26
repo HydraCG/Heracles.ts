@@ -90,7 +90,7 @@ describe("Given an instance of the ICollection interface", () => {
 
           const view = this.collection.getView();
           while (view.hasNextPage) {
-            for (const member of (await view.getNextPage()).members) {
+            for (const member of await view.getNextPage()) {
               this.result.push(member);
             }
           }
@@ -127,7 +127,7 @@ describe("Given an instance of the ICollection interface", () => {
 
           const view = this.collection.getView();
           while (view.hasPreviousPage) {
-            for (const member of (await view.getPreviousPage()).members) {
+            for (const member of await view.getPreviousPage()) {
               this.result.push(member);
             }
           }

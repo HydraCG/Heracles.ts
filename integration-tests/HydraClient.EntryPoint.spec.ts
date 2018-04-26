@@ -1,6 +1,7 @@
 import * as md5 from "js-md5";
 import HydraClientFactory from "../src/HydraClientFactory";
 import { hydra } from "../src/namespaces";
+import PartialCollectionCrawler from "../src/PartialCollectionCrawler";
 import { run } from "../testing/AsyncHelper";
 
 describe("Having a Hydra client", () => {
@@ -157,13 +158,7 @@ describe("Having a Hydra client", () => {
         describe("and then obtaining all people collection members", () => {
           beforeEach(
             run(async () => {
-              this.allPeople = [];
-              const view = this.people.hypermedia.getView();
-              while (view.hasNextPage) {
-                for (const item of (await view.getNextPage()).members) {
-                  this.allPeople.push(item);
-                }
-              }
+              this.allPeople = await PartialCollectionCrawler.from(this.people.hypermedia).getMoreMembers();
             })
           );
 

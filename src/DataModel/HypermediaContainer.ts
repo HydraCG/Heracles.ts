@@ -14,6 +14,8 @@ import { IResource } from "./IResource";
  */
 export default class HypermediaContainer extends ResourceFilterableCollection<IResource>
   implements IHypermediaContainer {
+  public readonly iri: string;
+
   public readonly members?: ResourceFilterableCollection<IResource>;
 
   public readonly collections: ResourceFilterableCollection<ICollection>;
@@ -24,13 +26,15 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
 
   /**
    * Initializes a new instance of the {@link HypermediaContainer} class.
-   * @param items {Iterable<IResource>} Hypermedia controls to be stored within this container.
-   * @param operations {OperationsCollection} Operations available on the container.
-   * @param links {LinksCollection} Links available on the container.
-   * @param members {ResourceFilterableCollection<IResource>} Optional Hydra collection members in case
+   * @param {string} iri Iri of the resource obtained.
+   * @param {Iterable<IResource>} items Hypermedia controls to be stored within this container.
+   * @param {OperationsCollection} operations Operations available on the container.
+   * @param {LinksCollection} links Links available on the container.
+   * @param {ResourceFilterableCollection<IResource>} members Optional Hydra collection members in case
    *                                                          container is a collection.
    */
   public constructor(
+    iri: string,
     items: Iterable<IResource>,
     operations: OperationsCollection,
     links: LinksCollection,
@@ -46,6 +50,7 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
         .filter((control: any) => !!control.collections)
         .map((control: IHydraResource) => Array.from(control.collections))
     );
+    this.iri = iri;
     this.operations = operations;
     this.collections = new ResourceFilterableCollection<ICollection>(
       explicitelyTypedCollections.concat(linkedCollections)
