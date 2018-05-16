@@ -5,7 +5,7 @@ import ResourceFilterableCollection from "./Collections/ResourceFilterableCollec
 import { ICollection } from "./ICollection";
 import { IHydraResource } from "./IHydraResource";
 import { IHypermediaContainer } from "./IHypermediaContainer";
-import { IPartialCollectionView } from "./IPartialCollectionView";
+import { IPartialCollectionIterator } from "./IPartialCollectionIterator";
 import { IResource } from "./IResource";
 
 /**
@@ -15,6 +15,8 @@ import { IResource } from "./IResource";
 export default class HypermediaContainer extends ResourceFilterableCollection<IResource>
   implements IHypermediaContainer {
   public readonly iri: string;
+
+  public readonly view?: IHydraResource;
 
   public readonly members?: ResourceFilterableCollection<IResource>;
 
@@ -42,7 +44,7 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
   ) {
     super(items);
     const itemsArray = Array.from(items);
-    const explicitelyTypedCollections: ICollection[] = itemsArray
+    const explicitlyTypedCollections: ICollection[] = itemsArray
       .filter(control => control.type.contains(hydra.Collection))
       .map(control => control as ICollection);
     const linkedCollections: ICollection[] = Array.prototype.concat(
@@ -53,14 +55,15 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
     this.iri = iri;
     this.operations = operations;
     this.collections = new ResourceFilterableCollection<ICollection>(
-      explicitelyTypedCollections.concat(linkedCollections)
+      explicitlyTypedCollections.concat(linkedCollections)
     );
     this.links = links;
     if (collection != null) {
       this.members = collection.members;
-      Object.defineProperty(this, "getView", { value: collection.getView, writable: false });
+      this.view = collection.view;
+      Object.defineProperty(this, "getIterator", { value: collection.getIterator, writable: false });
     }
   }
 
-  public getView?(): IPartialCollectionView;
+  public getIterator?(): IPartialCollectionIterator;
 }

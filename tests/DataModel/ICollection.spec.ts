@@ -24,8 +24,10 @@ function collectionOf(next: string, previous: string, ...iri: string[]) {
 
   const result = {
     hypermedia: {
-      links: new LinksCollection(links),
-      members
+      members,
+      view: {
+        links: new LinksCollection(links)
+      }
     }
   };
 
@@ -50,7 +52,7 @@ describe("Given an instance of the ICollection interface", () => {
     });
 
     it("should not have that view available", () => {
-      expect(this.collection.getView()).toBeNull();
+      expect(this.collection.getIterator()).toBeNull();
     });
   });
 
@@ -64,13 +66,16 @@ describe("Given an instance of the ICollection interface", () => {
       this.lastBatch = collectionOf(null, this.secondPage, "yet:another-item");
       this.initialLink = { relation: null, target: this.secondPage };
       this.initialMembers = [];
-      const setup: any = {
-        links: new LinksCollection([this.initialLink as any]),
-        members: this.initialMembers,
-        type: new TypesCollection([hydra.Collection])
-      };
       const collectionResource = {};
       collectionResource[hydra.view] = [{ "@id": "some:view" }];
+      const setup: any = {
+        members: this.initialMembers,
+        type: new TypesCollection([hydra.Collection]),
+        view: {
+          iri: collectionResource[hydra.view][0]["@id"],
+          links: new LinksCollection([this.initialLink as any])
+        }
+      };
       this.result = [];
       this.collection = factories[hydra.Collection](setup as IResource, this.client, {
         processedObject: collectionResource
@@ -88,24 +93,24 @@ describe("Given an instance of the ICollection interface", () => {
             .onSecondCall()
             .returns(this.lastBatch);
 
-          const view = this.collection.getView();
-          while (view.hasNextPage) {
-            for (const member of await view.getNextPage()) {
+          const iterator = this.collection.getIterator();
+          while (iterator.hasNextPart) {
+            for (const member of await iterator.getNextPart()) {
               this.result.push(member);
             }
           }
         })
       );
 
-      it("should not call the client for first page", () => {
+      it("should not call the client for first part", () => {
         expect(this.client.getResource).not.toHaveBeenCalledWith(this.firstPage);
       });
 
-      it("should call the client for second page", () => {
+      it("should call the client for second part", () => {
         expect(this.client.getResource).toHaveBeenCalledWith(this.secondPage);
       });
 
-      it("should call the client for last page", () => {
+      it("should call the client for last part", () => {
         expect(this.client.getResource).toHaveBeenCalledWith(this.lastPage);
       });
 
@@ -125,24 +130,24 @@ describe("Given an instance of the ICollection interface", () => {
             .onSecondCall()
             .returns(this.firstBatch);
 
-          const view = this.collection.getView();
-          while (view.hasPreviousPage) {
-            for (const member of await view.getPreviousPage()) {
+          const iterator = this.collection.getIterator();
+          while (iterator.hasPreviousPart) {
+            for (const member of await iterator.getPreviousPart()) {
               this.result.push(member);
             }
           }
         })
       );
 
-      it("should not call the client for last page", () => {
+      it("should not call the client for last part", () => {
         expect(this.client.getResource).not.toHaveBeenCalledWith(this.lastPage);
       });
 
-      it("should call the client for second page", () => {
+      it("should call the client for second part", () => {
         expect(this.client.getResource).toHaveBeenCalledWith(this.secondPage);
       });
 
-      it("should call the client for first page", () => {
+      it("should call the client for first part", () => {
         expect(this.client.getResource).toHaveBeenCalledWith(this.firstPage);
       });
 

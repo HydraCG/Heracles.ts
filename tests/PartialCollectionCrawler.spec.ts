@@ -7,19 +7,19 @@ require("jasmine-sinon");
 describe("Given instance of the PartialCollectionCrawler class", () => {
   beforeEach(() => {
     this.part = 2;
-    this.view = {
+    this.iterator = {
       first: "page:1",
-      getFirstPage: sinon.stub().callsFake(() => [{ iri: `item:${(this.part = 1)}` }]),
-      getLastPage: sinon.stub().callsFake(() => [{ iri: `item:${(this.part = 4)}` }]),
-      getNextPage: sinon.stub(),
-      getPreviousPage: sinon.stub(),
+      getFirstPart: sinon.stub().callsFake(() => [{ iri: `item:${(this.part = 1)}` }]),
+      getLastPart: sinon.stub().callsFake(() => [{ iri: `item:${(this.part = 4)}` }]),
+      getNextPart: sinon.stub(),
+      getPreviousPart: sinon.stub(),
       last: "page:4"
     };
-    Object.defineProperty(this.view, "iri", { get: () => `page:${this.part}` });
-    Object.defineProperty(this.view, "next", { get: () => (this.part >= 4 ? null : `page:${this.part + 1}`) });
-    Object.defineProperty(this.view, "previous", { get: () => (this.part <= 1 ? null : `page:${this.part - 1}`) });
+    Object.defineProperty(this.iterator, "current", { get: () => `page:${this.part}` });
+    Object.defineProperty(this.iterator, "next", { get: () => (this.part >= 4 ? null : `page:${this.part + 1}`) });
+    Object.defineProperty(this.iterator, "previous", { get: () => (this.part <= 1 ? null : `page:${this.part - 1}`) });
     this.initialCollection = {
-      getView: sinon.stub().returns(this.view),
+      getIterator: sinon.stub().returns(this.iterator),
       iri: "page:2",
       members: [{ iri: "item:2" }]
     };
@@ -29,7 +29,7 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
   describe("while starting from middle of the collection", () => {
     describe("and fast-forwarding", () => {
       beforeEach(() => {
-        this.view.getNextPage
+        this.iterator.getNextPart
           .onFirstCall()
           .callsFake(() => [{ iri: `item:${(this.part = 3)}` }])
           .onSecondCall()
@@ -47,16 +47,16 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
           expect(this.result).toEqual([{ iri: "item:2" }, { iri: "item:3" }, { iri: "item:4" }, { iri: "item:1" }]);
         });
 
-        it("should request view", () => {
-          expect(this.initialCollection.getView).toHaveBeenCalledOnce();
+        it("should request an iterator", () => {
+          expect(this.initialCollection.getIterator).toHaveBeenCalledOnce();
         });
 
         it("should request page 3 and 4", () => {
-          expect(this.view.getNextPage).toHaveBeenCalledTwice();
+          expect(this.iterator.getNextPart).toHaveBeenCalledTwice();
         });
 
         it("should rewind back to page 1", () => {
-          expect(this.view.getFirstPage).toHaveBeenCalledOnce();
+          expect(this.iterator.getFirstPart).toHaveBeenCalledOnce();
         });
       });
 
@@ -72,11 +72,11 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
         });
 
         it("should request page 3", () => {
-          expect(this.view.getNextPage).toHaveBeenCalledOnce();
+          expect(this.iterator.getNextPart).toHaveBeenCalledOnce();
         });
 
         it("should not rewind back to page 1", () => {
-          expect(this.view.getFirstPage).not.toHaveBeenCalled();
+          expect(this.iterator.getFirstPart).not.toHaveBeenCalled();
         });
       });
 
@@ -92,18 +92,18 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
         });
 
         it("should request page 3", () => {
-          expect(this.view.getNextPage).toHaveBeenCalledOnce();
+          expect(this.iterator.getNextPart).toHaveBeenCalledOnce();
         });
 
         it("should not rewind back to page 1", () => {
-          expect(this.view.getFirstPage).not.toHaveBeenCalled();
+          expect(this.iterator.getFirstPart).not.toHaveBeenCalled();
         });
       });
     });
 
     describe("and moving backward", () => {
       beforeEach(() => {
-        this.view.getPreviousPage
+        this.iterator.getPreviousPart
           .onFirstCall()
           .callsFake(() => [{ iri: `item:${(this.part = 1)}` }])
           .onSecondCall()
@@ -121,16 +121,16 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
           expect(this.result).toEqual([{ iri: "item:2" }, { iri: "item:1" }, { iri: "item:4" }, { iri: "item:3" }]);
         });
 
-        it("should request view", () => {
-          expect(this.initialCollection.getView).toHaveBeenCalledOnce();
+        it("should request an iterator", () => {
+          expect(this.initialCollection.getIterator).toHaveBeenCalledOnce();
         });
 
         it("should request page 1 and 3", () => {
-          expect(this.view.getPreviousPage).toHaveBeenCalledTwice();
+          expect(this.iterator.getPreviousPart).toHaveBeenCalledTwice();
         });
 
         it("should fast-forward to page 4", () => {
-          expect(this.view.getLastPage).toHaveBeenCalledOnce();
+          expect(this.iterator.getLastPart).toHaveBeenCalledOnce();
         });
       });
     });

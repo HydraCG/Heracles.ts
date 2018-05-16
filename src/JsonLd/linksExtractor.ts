@@ -32,11 +32,6 @@ function getHydraLinkType(predicate: string, processingState: ProcessingState): 
 function internalLinksExtractor(resources: any[], processingState: ProcessingState, links: ILink[]): void {
   const originalResource = processingState.processedObject;
   for (const predicate of Object.keys(originalResource)) {
-    if (predicate === hydra.view) {
-      internalLinksExtractor([], processingState.copyFor(originalResource[predicate][0]), links);
-      continue;
-    }
-
     const linkType = getHydraLinkType(predicate, processingState);
     if (!!linkType) {
       for (const targetResource of originalResource[predicate]) {

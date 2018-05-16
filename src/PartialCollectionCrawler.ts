@@ -74,8 +74,8 @@ export default class PartialCollectionCrawler {
       result.push(item);
     }
 
-    const view = this.collection.getView();
-    if (view === null || result.length >= options.memberLimit) {
+    const iterator = this.collection.getIterator();
+    if (iterator === null || result.length >= options.memberLimit) {
       return result;
     }
 
@@ -83,12 +83,12 @@ export default class PartialCollectionCrawler {
     let requests = 0;
     do {
       let term = options.direction === CrawlingDirection.backward ? "Previous" : "Next";
-      let link: string = view[term.toLowerCase()];
-      let furtherPart: () => Promise<Iterable<IResource>> = view[`get${term}Page`];
+      let link: string = iterator[term.toLowerCase()];
+      let furtherPart: () => Promise<Iterable<IResource>> = iterator[`get${term}Part`];
       if (!link && !!options.rewind) {
         term = options.direction === CrawlingDirection.backward ? "Last" : "First";
-        link = view[term.toLowerCase()];
-        furtherPart = view[`get${term}Page`];
+        link = iterator[term.toLowerCase()];
+        furtherPart = iterator[`get${term}Part`];
       }
 
       if (!link || visitedPages.indexOf(link) !== -1) {
@@ -97,7 +97,7 @@ export default class PartialCollectionCrawler {
 
       const part = await furtherPart();
       requests++;
-      visitedPages.push(view.iri);
+      visitedPages.push(iterator.current);
       for (const item of part) {
         result.push(item);
       }

@@ -28,14 +28,14 @@ function update(state: IState, iri: string, links: LinksCollection): IState {
   return state;
 }
 
-async function getPage(state: IState, link: ILink, client: IHydraClient): Promise<Iterable<IResource>> {
+async function getPart(state: IState, link: ILink, client: IHydraClient): Promise<Iterable<IResource>> {
   const collectionPart = await client.getResource(link.target);
   const page = collectionPart.hypermedia.members;
-  update(state, collectionPart.hypermedia.iri, collectionPart.hypermedia.links);
+  update(state, collectionPart.hypermedia.iri, collectionPart.hypermedia.view.links);
   return page;
 }
 
-export function partialCollectionViewFactory(
+export function partialCollectionIteratorFactory(
   resource: IResource,
   client: IHydraClient,
   processingState: ProcessingState
@@ -45,24 +45,24 @@ export function partialCollectionViewFactory(
   const viewIri = processingState.processedObject[hydra.view]
     ? processingState.processedObject[hydra.view][0]["@id"]
     : null;
-  const getView = () => {
-    const state = createStateFrom(collection.iri, collection.links);
+  const getIterator = () => {
+    const state = createStateFrom(collection.iri, collection.view.links);
     const result = {
-      getFirstPage: () => getPage(state, state.first, client),
-      getLastPage: () => getPage(state, state.last, client),
-      getNextPage: () => getPage(state, state.next, client),
-      getPreviousPage: () => getPage(state, state.prev, client),
+      getFirstPart: () => getPart(state, state.first, client),
+      getLastPart: () => getPart(state, state.last, client),
+      getNextPart: () => getPart(state, state.next, client),
+      getPreviousPart: () => getPart(state, state.prev, client),
       type: new TypesCollection([hydra.PartialCollectionView])
     };
-    Object.defineProperty(result, "iri", { get: () => state.current });
+    Object.defineProperty(result, "current", { get: () => state.current });
     Object.defineProperty(result, "first", { get: () => state.first });
     Object.defineProperty(result, "next", { get: () => state.next });
     Object.defineProperty(result, "previous", { get: () => state.prev });
     Object.defineProperty(result, "last", { get: () => state.last });
-    Object.defineProperty(result, "hasNextPage", { get: () => !!state.next });
-    Object.defineProperty(result, "hasPreviousPage", { get: () => !!state.prev });
+    Object.defineProperty(result, "hasNextPart", { get: () => !!state.next });
+    Object.defineProperty(result, "hasPreviousPart", { get: () => !!state.prev });
     return result;
   };
-  Object.defineProperty(target, "getView", { value: viewIri ? getView : () => null, writable: false });
+  Object.defineProperty(target, "getIterator", { value: viewIri ? getIterator : () => null, writable: false });
   return resource;
 }

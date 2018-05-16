@@ -9,27 +9,27 @@ export function collection(mappings: {
     default: 0,
     propertyName: "totalItems",
     required: true,
-    type: [hydra.Collection as string, hydra.PartialCollectionView as string]
+    type: [hydra.Collection as string]
   };
   mappings[hydra.member] = {
     default: members => new ResourceFilterableCollection(members),
     propertyName: "members",
-    type: [hydra.Collection as string, hydra.PartialCollectionView as string]
+    type: [hydra.Collection as string]
   };
   mappings[hydra.memberTemplate] = {
     default: memberTemplates => memberTemplates[0] || null,
     propertyName: "memberTemplate",
-    type: [hydra.Collection as string, hydra.PartialCollectionView as string]
-  };
-  mappings[hydra.collection] = {
-    default: (collections, processingState) => new ResourceFilterableCollection(collections),
-    propertyName: "collections",
-    required: true
+    type: [hydra.Collection as string]
   };
   mappings[hydra.collection] = {
     default: collections => new ResourceFilterableCollection(collections),
     propertyName: "collections",
     required: true
+  };
+  mappings[hydra.view] = {
+    default: views => views[0] || null,
+    propertyName: "view",
+    type: [hydra.Collection as string]
   };
   return mappings;
 }

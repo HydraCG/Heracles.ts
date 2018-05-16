@@ -62,7 +62,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
             },
             {
               collections: [],
-              getAllMembers: jasmine.any(Function),
+              getIterator: jasmine.any(Function),
               iri: "http://temp.uri/api/events",
               links: [
                 {
@@ -117,6 +117,36 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 {
                   baseUrl: "http://temp.uri/api",
                   collections: [],
+                  iri: hydra.view,
+                  links: [
+                    {
+                      baseUrl: "http://temp.uri/api",
+                      collections: [],
+                      iri: hydra.first,
+                      links: [],
+                      operations: [],
+                      relation: hydra.first,
+                      target: { iri: "http://temp.uri/api/events?page=1", type: [] },
+                      type: [hydra.Link]
+                    },
+                    {
+                      baseUrl: "http://temp.uri/api",
+                      collections: [],
+                      iri: hydra.last,
+                      links: [],
+                      operations: [],
+                      relation: hydra.last,
+                      target: { iri: "http://temp.uri/api/events?page=9", type: [] },
+                      type: [hydra.Link]
+                    }],
+                  operations: [],
+                  relation: hydra.view,
+                  target: { iri: "_:b2", type: [] },
+                  type: [hydra.Link]
+                },
+                {
+                  baseUrl: "http://temp.uri/api",
+                  collections: [],
                   iri: hydra.first,
                   links: [],
                   operations: [],
@@ -146,7 +176,35 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               ],
               operations: [],
               totalItems: 1,
-              type: [hydra.Collection]
+              type: [hydra.Collection],
+              view: {
+                collections: [],
+                iri: "_:b2",
+                links: [
+                  {
+                    baseUrl: "http://temp.uri/api",
+                    collections: [],
+                    iri: hydra.first,
+                    links: [],
+                    operations: [],
+                    relation: hydra.first,
+                    target: { iri: "http://temp.uri/api/events?page=1", type: [] },
+                    type: [hydra.Link]
+                  },
+                  {
+                    baseUrl: "http://temp.uri/api",
+                    collections: [],
+                    iri: hydra.last,
+                    links: [],
+                    operations: [],
+                    relation: hydra.last,
+                    target: { iri: "http://temp.uri/api/events?page=9", type: [] },
+                    type: [hydra.Link]
+                  }
+                ],
+                operations: [],
+                type: [hydra.PartialCollectionView]
+              },
             }
           ],
           iri: "http://temp.uri/api",

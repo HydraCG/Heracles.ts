@@ -1,7 +1,7 @@
 import { IResource } from "../DataModel/IResource";
 import { IHydraClient } from "../IHydraClient";
 import { hydra } from "../namespaces";
-import { partialCollectionViewFactory } from "./partialCollectionViewFactory";
+import { partialCollectionIteratorFactory } from "./partialCollectionIteratorFactory";
 import ProcessingState from "./ProcessingState";
 
 type InstanceFactory = (resource: IResource, client: IHydraClient, processingState: ProcessingState) => IResource;
@@ -19,4 +19,4 @@ factories[hydra.ApiDocumentation] = (resource, client) => {
   return resource;
 };
 
-factories[hydra.Collection] = partialCollectionViewFactory;
+factories[hydra.Collection] = partialCollectionIteratorFactory;
