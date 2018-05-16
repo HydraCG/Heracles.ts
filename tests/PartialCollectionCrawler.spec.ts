@@ -39,7 +39,7 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
       describe("through all members with loop", () => {
         beforeEach(
           run(async () => {
-            this.result = await this.crawler.getMoreMembers({ rewind: true });
+            this.result = await this.crawler.getMembers({ rewind: true });
           })
         );
 
@@ -63,7 +63,7 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
       describe("and forwarding only once", () => {
         beforeEach(
           run(async () => {
-            this.result = await this.crawler.getMoreMembers({ requestLimit: 1 });
+            this.result = await this.crawler.getMembers({ requestLimit: 1 });
           })
         );
 
@@ -83,7 +83,7 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
       describe("and obtaining only 2 members", () => {
         beforeEach(
           run(async () => {
-            this.result = await this.crawler.getMoreMembers({ memberLimit: 2 });
+            this.result = await this.crawler.getMembers({ memberLimit: 2 });
           })
         );
 
@@ -113,7 +113,7 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
       describe("through all members with loop", () => {
         beforeEach(
           run(async () => {
-            this.result = await this.crawler.getMoreMembers({ direction: CrawlingDirection.backward, rewind: true });
+            this.result = await this.crawler.getMembers({ direction: CrawlingDirection.backward, rewind: true });
           })
         );
 

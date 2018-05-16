@@ -158,7 +158,7 @@ describe("Having a Hydra client", () => {
         describe("and then obtaining all people collection members", () => {
           beforeEach(
             run(async () => {
-              this.allPeople = await PartialCollectionCrawler.from(this.people.hypermedia).getMoreMembers();
+              this.allPeople = await PartialCollectionCrawler.from(this.people.hypermedia).getMembers();
             })
           );
 

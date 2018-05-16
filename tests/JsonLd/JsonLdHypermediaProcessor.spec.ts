@@ -138,7 +138,8 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                       relation: hydra.last,
                       target: { iri: "http://temp.uri/api/events?page=9", type: [] },
                       type: [hydra.Link]
-                    }],
+                    }
+                  ],
                   operations: [],
                   relation: hydra.view,
                   target: { iri: "_:b2", type: [] },
@@ -204,7 +205,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 ],
                 operations: [],
                 type: [hydra.PartialCollectionView]
-              },
+              }
             }
           ],
           iri: "http://temp.uri/api",

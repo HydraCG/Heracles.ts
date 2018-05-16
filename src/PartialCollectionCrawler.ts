@@ -23,21 +23,21 @@ export enum CrawlingDirection {
  */
 export interface ICrawlingOptions {
   /**
-   * Gets a direction of the crawling.
+   * The crawling direction .
    */
   direction?: CrawlingDirection;
   /**
-   * Gets the limit of the members to be obtained.
+   * The limit of the members to retrieve.
    */
   memberLimit?: number;
 
   /**
-   * Gets the limit of requests to be made.
+   * The limit of requests to make.
    */
   requestLimit?: number;
 
   /**
-   * Gets a value indicating whether to rewind back to the beginning (or end) of the collection in case the starting
+   * Value indicating whether to rewind back to the beginning (or end) of the collection in case the starting
    * point was not the first (or last) possible view.
    */
   rewind?: boolean;
@@ -67,11 +67,12 @@ export default class PartialCollectionCrawler {
    * @param {ICrawlingOptions} options Crawling options.
    * @returns {Promise<Iterable<IResource>>}
    */
-  public async getMoreMembers(options?: ICrawlingOptions): Promise<Iterable<IResource>> {
+  public async getMembers(options?: ICrawlingOptions): Promise<Iterable<IResource>> {
     options = options || {};
     const result = [];
-    for (const item of this.collection.members) {
-      result.push(item);
+    const memberLimit = options.memberLimit || Number.MAX_SAFE_INTEGER;
+    if (this.addWithLimitReached(result, this.collection.members, memberLimit)) {
+      return result;
     }
 
     const iterator = this.collection.getIterator();
@@ -98,14 +99,20 @@ export default class PartialCollectionCrawler {
       const part = await furtherPart();
       requests++;
       visitedPages.push(iterator.current);
-      for (const item of part) {
-        result.push(item);
-      }
-    } while (
-      requests < (options.requestLimit || Number.MAX_SAFE_INTEGER) &&
-      result.length < (options.memberLimit || Number.MAX_SAFE_INTEGER)
-    );
+      this.addWithLimitReached(result, part, memberLimit);
+    } while (requests < (options.requestLimit || Number.MAX_SAFE_INTEGER) && result.length < memberLimit);
 
     return result;
+  }
+
+  private addWithLimitReached(result: IResource[], part: Iterable<IResource>, memberLimit: number): boolean {
+    for (const item of part) {
+      result.push(item);
+      if (result.length >= memberLimit) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
