@@ -20,8 +20,9 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
     Object.defineProperty(this.iterator, "previous", { get: () => (this.part <= 1 ? null : `page:${this.part - 1}`) });
     this.initialCollection = {
       getIterator: sinon.stub().returns(this.iterator),
-      iri: "page:2",
-      members: [{ iri: "item:2" }]
+      iri: "collection",
+      members: [{ iri: "item:2" }],
+      view: { iri: "page:2" }
     };
     this.crawler = PartialCollectionCrawler.from(this.initialCollection);
   });

@@ -28,11 +28,20 @@ function update(state: IState, iri: string, links: LinksCollection): IState {
   return state;
 }
 
-async function getPart(state: IState, link: ILink, client: IHydraClient): Promise<Iterable<IResource>> {
+async function getPart(
+  state: IState,
+  link: ILink,
+  client: IHydraClient,
+  collectionIri: string
+): Promise<Iterable<IResource>> {
   const collectionPart = await client.getResource(link.target);
-  const page = collectionPart.hypermedia.members;
-  update(state, collectionPart.hypermedia.iri, collectionPart.hypermedia.view.links);
-  return page;
+  const page = collectionPart.hypermedia.collections.ofIri(collectionIri).first();
+  update(state, page.view.iri, page.view.links);
+  return page.members;
+}
+
+function getTargetOf(link: ILink) {
+  return link != null ? link.target.iri : null;
 }
 
 export function partialCollectionIteratorFactory(
@@ -48,17 +57,17 @@ export function partialCollectionIteratorFactory(
   const getIterator = () => {
     const state = createStateFrom(collection.iri, collection.view.links);
     const result = {
-      getFirstPart: () => getPart(state, state.first, client),
-      getLastPart: () => getPart(state, state.last, client),
-      getNextPart: () => getPart(state, state.next, client),
-      getPreviousPart: () => getPart(state, state.prev, client),
+      getFirstPart: () => getPart(state, state.first, client, collection.iri),
+      getLastPart: () => getPart(state, state.last, client, collection.iri),
+      getNextPart: () => getPart(state, state.next, client, collection.iri),
+      getPreviousPart: () => getPart(state, state.prev, client, collection.iri),
       type: new TypesCollection([hydra.PartialCollectionView])
     };
     Object.defineProperty(result, "current", { get: () => state.current });
-    Object.defineProperty(result, "first", { get: () => state.first });
-    Object.defineProperty(result, "next", { get: () => state.next });
-    Object.defineProperty(result, "previous", { get: () => state.prev });
-    Object.defineProperty(result, "last", { get: () => state.last });
+    Object.defineProperty(result, "first", { get: () => getTargetOf(state.first) });
+    Object.defineProperty(result, "next", { get: () => getTargetOf(state.next) });
+    Object.defineProperty(result, "previous", { get: () => getTargetOf(state.prev) });
+    Object.defineProperty(result, "last", { get: () => getTargetOf(state.last) });
     Object.defineProperty(result, "hasNextPart", { get: () => !!state.next });
     Object.defineProperty(result, "hasPreviousPart", { get: () => !!state.prev });
     return result;

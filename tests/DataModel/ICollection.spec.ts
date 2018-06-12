@@ -1,13 +1,15 @@
 import * as sinon from "sinon";
 import LinksCollection from "../../src/DataModel/Collections/LinksCollection";
+import ResourceFilterableCollection from "../../src/DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../../src/DataModel/Collections/TypesCollection";
+import { ICollection } from "../../src/DataModel/ICollection";
 import { ILink } from "../../src/DataModel/ILink";
 import { IResource } from "../../src/DataModel/IResource";
 import { factories } from "../../src/JsonLd/factories";
 import { hydra } from "../../src/namespaces";
 import { run } from "../../testing/AsyncHelper";
 
-function collectionOf(next: string, previous: string, ...iri: string[]) {
+function collectionOf(iri: string, next: IResource, previous: IResource, ...iris: string[]) {
   const links: ILink[] = [];
   if (next) {
     links.push({ relation: hydra.next, target: next } as any);
@@ -18,16 +20,20 @@ function collectionOf(next: string, previous: string, ...iri: string[]) {
   }
 
   const members: IResource[] = [];
-  for (const item of iri) {
+  for (const item of iris) {
     members.push({ iri: item } as any);
   }
 
+  const collection = {
+    members: new ResourceFilterableCollection(members),
+    view: {
+      iri,
+      links: new LinksCollection(links)
+    }
+  };
   const result = {
     hypermedia: {
-      members,
-      view: {
-        links: new LinksCollection(links)
-      }
+      collections: new ResourceFilterableCollection([collection as ICollection])
     }
   };
 
@@ -61,13 +67,13 @@ describe("Given an instance of the ICollection interface", () => {
       this.firstPage = { iri: "page:1" };
       this.secondPage = { iri: "page:2" };
       this.lastPage = { iri: "page:3" };
-      this.firstBatch = collectionOf(this.secondPage, null, "some:item");
-      this.secondBatch = collectionOf(this.lastPage, this.firstPage, "some:another-item");
-      this.lastBatch = collectionOf(null, this.secondPage, "yet:another-item");
+      this.firstBatch = collectionOf("view:1", this.secondPage, null, "some:item");
+      this.secondBatch = collectionOf("view:2", this.lastPage, this.firstPage, "some:another-item");
+      this.lastBatch = collectionOf("view:3", null, this.secondPage, "yet:another-item");
       this.initialLink = { relation: null, target: this.secondPage };
       this.initialMembers = [];
       const collectionResource = {};
-      collectionResource[hydra.view] = [{ "@id": "some:view" }];
+      collectionResource[hydra.view] = [{ "@id": "view:1" }];
       const setup: any = {
         members: this.initialMembers,
         type: new TypesCollection([hydra.Collection]),
@@ -86,7 +92,9 @@ describe("Given an instance of the ICollection interface", () => {
       beforeEach(
         run(async () => {
           this.initialLink.relation = hydra.next;
-          this.firstBatch.hypermedia.members.forEach(item => this.initialMembers.push(item));
+          Array.from(this.firstBatch.hypermedia.collections.first().members).forEach(item =>
+            this.initialMembers.push(item)
+          );
           this.client.getResource
             .onFirstCall()
             .returns(this.secondBatch)
@@ -115,7 +123,10 @@ describe("Given an instance of the ICollection interface", () => {
       });
 
       it("should provide a correct result", () => {
-        expect(this.result).toEqual([this.secondBatch.hypermedia.members[0], this.lastBatch.hypermedia.members[0]]);
+        expect(this.result).toEqual([
+          this.secondBatch.hypermedia.collections.first().members.first(),
+          this.lastBatch.hypermedia.collections.first().members.first()
+        ]);
       });
     });
 
@@ -123,7 +134,9 @@ describe("Given an instance of the ICollection interface", () => {
       beforeEach(
         run(async () => {
           this.initialLink.relation = hydra.previous;
-          this.lastBatch.hypermedia.members.forEach(item => this.initialMembers.push(item));
+          Array.from(this.lastBatch.hypermedia.collections.first().members).forEach(item =>
+            this.initialMembers.push(item)
+          );
           this.client.getResource
             .onFirstCall()
             .returns(this.secondBatch)
@@ -152,7 +165,10 @@ describe("Given an instance of the ICollection interface", () => {
       });
 
       it("should provide a correct result", () => {
-        expect(this.result).toEqual([this.secondBatch.hypermedia.members[0], this.firstBatch.hypermedia.members[0]]);
+        expect(this.result).toEqual([
+          this.secondBatch.hypermedia.collections.first().members.first(),
+          this.firstBatch.hypermedia.collections.first().members.first()
+        ]);
       });
     });
   });

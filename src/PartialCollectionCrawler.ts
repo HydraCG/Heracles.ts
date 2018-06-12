@@ -80,7 +80,7 @@ export default class PartialCollectionCrawler {
       return result;
     }
 
-    const visitedPages = [this.collection.iri];
+    const visitedPages = [this.collection.view.iri];
     let requests = 0;
     do {
       let term = options.direction === CrawlingDirection.backward ? "Previous" : "Next";
