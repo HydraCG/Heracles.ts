@@ -34,6 +34,7 @@
                             }
                         },
                         "hydra:view": {
+                            "@id": "http://temp.uri/api/events?page=1",
                             "@type": "hydra:PartialCollectionView",
                             "hydra:first": "http://temp.uri/api/events?page=1",
                             "hydra:last": "http://temp.uri/api/events?page=9"

@@ -8,16 +8,21 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
   beforeEach(() => {
     this.part = 2;
     this.iterator = {
-      first: "page:1",
+      firstPartIri: "page:1",
       getFirstPart: sinon.stub().callsFake(() => [{ iri: `item:${(this.part = 1)}` }]),
       getLastPart: sinon.stub().callsFake(() => [{ iri: `item:${(this.part = 4)}` }]),
       getNextPart: sinon.stub(),
       getPreviousPart: sinon.stub(),
-      last: "page:4"
+      lastPartIri: "page:4"
+    };
+    const makePartIri = (direction: number) => {
+      return (direction > 0 && this.part >= 4) || (direction < 0 && this.part <= 1)
+        ? null
+        : `page:${this.part + direction}`;
     };
     Object.defineProperty(this.iterator, "current", { get: () => `page:${this.part}` });
-    Object.defineProperty(this.iterator, "next", { get: () => (this.part >= 4 ? null : `page:${this.part + 1}`) });
-    Object.defineProperty(this.iterator, "previous", { get: () => (this.part <= 1 ? null : `page:${this.part - 1}`) });
+    Object.defineProperty(this.iterator, "nextPartIri", { get: () => makePartIri(1) });
+    Object.defineProperty(this.iterator, "previousPartIri", { get: () => makePartIri(-1) });
     this.initialCollection = {
       getIterator: sinon.stub().returns(this.iterator),
       iri: "collection",

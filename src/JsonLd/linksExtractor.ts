@@ -41,7 +41,7 @@ function internalLinksExtractor(resources: any[], processingState: ProcessingSta
         let link = {
           baseUrl: processingState.baseUrl,
           collections: new ResourceFilterableCollection<ICollection>([]),
-          iri: predicate,
+          iri: targetIri,
           links: new LinksCollection([]),
           operations: new OperationsCollection([]),
           relation: predicate,

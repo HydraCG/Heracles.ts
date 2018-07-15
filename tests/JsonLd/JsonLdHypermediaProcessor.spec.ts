@@ -68,7 +68,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 {
                   baseUrl: "http://temp.uri/api",
                   collections: [],
-                  iri: "http://temp.uri/vocab/closed-events",
+                  iri: "http://temp.uri/api/events/closed",
                   links: [],
                   operations: [],
                   relation: "http://temp.uri/vocab/closed-events",
@@ -78,7 +78,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 {
                   baseUrl: "http://temp.uri/api",
                   collections: [],
-                  iri: hydra.search,
+                  iri: "_:b0",
                   links: [],
                   mappings: [
                     {
@@ -117,12 +117,12 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 {
                   baseUrl: "http://temp.uri/api",
                   collections: [],
-                  iri: hydra.view,
+                  iri: "http://temp.uri/api/events?page=1",
                   links: [
                     {
                       baseUrl: "http://temp.uri/api",
                       collections: [],
-                      iri: hydra.first,
+                      iri: "http://temp.uri/api/events?page=1",
                       links: [],
                       operations: [],
                       relation: hydra.first,
@@ -132,7 +132,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                     {
                       baseUrl: "http://temp.uri/api",
                       collections: [],
-                      iri: hydra.last,
+                      iri: "http://temp.uri/api/events?page=9",
                       links: [],
                       operations: [],
                       relation: hydra.last,
@@ -180,12 +180,32 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               type: [hydra.Collection],
               view: {
                 collections: [],
-                iri: "_:b2",
+                first: {
+                  baseUrl: "http://temp.uri/api",
+                  collections: [],
+                  iri: "http://temp.uri/api/events?page=1",
+                  links: [],
+                  operations: [],
+                  relation: hydra.first,
+                  target: { iri: "http://temp.uri/api/events?page=1", type: [] },
+                  type: [hydra.Link]
+                },
+                iri: "http://temp.uri/api/events?page=1",
+                last: {
+                  baseUrl: "http://temp.uri/api",
+                  collections: [],
+                  iri: "http://temp.uri/api/events?page=9",
+                  links: [],
+                  operations: [],
+                  relation: hydra.last,
+                  target: { iri: "http://temp.uri/api/events?page=9", type: [] },
+                  type: [hydra.Link]
+                },
                 links: [
                   {
                     baseUrl: "http://temp.uri/api",
                     collections: [],
-                    iri: hydra.first,
+                    iri: "http://temp.uri/api/events?page=1",
                     links: [],
                     operations: [],
                     relation: hydra.first,
@@ -195,7 +215,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   {
                     baseUrl: "http://temp.uri/api",
                     collections: [],
-                    iri: hydra.last,
+                    iri: "http://temp.uri/api/events?page=9",
                     links: [],
                     operations: [],
                     relation: hydra.last,

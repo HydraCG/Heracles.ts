@@ -64,10 +64,10 @@ export function partialCollectionIteratorFactory(
       type: new TypesCollection([hydra.PartialCollectionView])
     };
     Object.defineProperty(result, "current", { get: () => state.current });
-    Object.defineProperty(result, "first", { get: () => getTargetOf(state.first) });
-    Object.defineProperty(result, "next", { get: () => getTargetOf(state.next) });
-    Object.defineProperty(result, "previous", { get: () => getTargetOf(state.prev) });
-    Object.defineProperty(result, "last", { get: () => getTargetOf(state.last) });
+    Object.defineProperty(result, "firstPartIri", { get: () => getTargetOf(state.first) });
+    Object.defineProperty(result, "nextPartIri", { get: () => getTargetOf(state.next) });
+    Object.defineProperty(result, "previousPartIri", { get: () => getTargetOf(state.prev) });
+    Object.defineProperty(result, "lastPartIri", { get: () => getTargetOf(state.last) });
     Object.defineProperty(result, "hasNextPart", { get: () => !!state.next });
     Object.defineProperty(result, "hasPreviousPart", { get: () => !!state.prev });
     return result;

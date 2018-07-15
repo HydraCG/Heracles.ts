@@ -14,22 +14,22 @@ export interface IPartialCollectionIterator {
   /**
    * Gets the IRI to the first part.
    */
-  readonly first: string;
+  readonly firstPartIri: string;
 
   /**
    * Gets the IRI to the next part.
    */
-  readonly next: string;
+  readonly nextPartIri: string;
 
   /**
    * Gets the IRI to the previous part.
    */
-  readonly previous: string;
+  readonly previousPartIri: string;
 
   /**
    * Gets the IRI to the last part.
    */
-  readonly last: string;
+  readonly lastPartIri: string;
 
   /**
    * Gets a value indicating whether the view has a next part available.

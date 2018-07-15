@@ -84,11 +84,11 @@ export default class PartialCollectionCrawler {
     let requests = 0;
     do {
       let term = options.direction === CrawlingDirection.backward ? "Previous" : "Next";
-      let link: string = iterator[term.toLowerCase()];
+      let link: string = iterator[`${term.toLowerCase()}PartIri`];
       let furtherPart: () => Promise<Iterable<IResource>> = iterator[`get${term}Part`];
       if (!link && !!options.rewind) {
         term = options.direction === CrawlingDirection.backward ? "Last" : "First";
-        link = iterator[term.toLowerCase()];
+        link = iterator[`${term.toLowerCase()}PartIri`];
         furtherPart = iterator[`get${term}Part`];
       }
 
