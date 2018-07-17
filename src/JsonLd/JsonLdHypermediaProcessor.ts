@@ -1,4 +1,5 @@
 import { promises as jsonLd } from "jsonld";
+import * as parseLinkHeader from "parse-link-header";
 import ApiDocumentation from "../DataModel/ApiDocumentation";
 import LinksCollection from "../DataModel/Collections/LinksCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
@@ -9,11 +10,14 @@ import { ICollection } from "../DataModel/ICollection";
 import { IHydraResource } from "../DataModel/IHydraResource";
 import { IWebResource } from "../DataModel/IWebResource";
 import HydraClient from "../HydraClient";
-import { IHypermediaProcessor } from "../IHypermediaProcessor";
+import { IHypermediaProcessor, Level } from "../IHypermediaProcessor";
 import { hydra } from "../namespaces";
 import IndirectTypingProvider from "./IndirectTypingProvider";
 import { mappings } from "./mappings";
 import ProcessingState from "./ProcessingState";
+
+const jsonLdContext = "http://www.w3.org/ns/json-ld#context";
+type HeaderMatcher = (headers: Headers) => boolean;
 
 const literals = ["string", "number", "boolean"];
 
@@ -35,7 +39,20 @@ function isHydraIndependent(resource: object): boolean {
  * @class
  */
 export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
-  private static mediaTypes = ["application/ld+json"];
+  private static json = "application/json";
+  private static jsonLd = "application/ld+json";
+  private static mediaTypes = [JsonLdHypermediaProcessor.jsonLd, JsonLdHypermediaProcessor.json];
+
+  private static exactMatchCases: HeaderMatcher[][] = [
+    [(headers: Headers) => headers.get("Content-Type").indexOf(JsonLdHypermediaProcessor.jsonLd) !== -1],
+    [
+      (headers: Headers) => headers.get("Content-Type").indexOf(JsonLdHypermediaProcessor.json) !== -1,
+      (headers: Headers) => {
+        const links = parseLinkHeader(headers.get("Link"));
+        return !!links[jsonLdContext] && links[jsonLdContext].type === jsonLd;
+      }
+    ]
+  ];
 
   private readonly indirectTypingProvider: IndirectTypingProvider;
 
@@ -52,8 +69,24 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return JsonLdHypermediaProcessor.mediaTypes;
   }
 
+  public supports(response: Response): Level {
+    let result = Level.None;
+    for (const approach of JsonLdHypermediaProcessor.exactMatchCases) {
+      const currentMatch = approach.reduce(
+        (previous: boolean, current: HeaderMatcher) => previous && current(response.headers),
+        true
+      );
+      if (currentMatch) {
+        result = Level.ExactMatch;
+        break;
+      }
+    }
+
+    return result;
+  }
+
   public async process(response: Response, client: HydraClient): Promise<IWebResource> {
-    const payload = await response.json();
+    const payload = await JsonLdHypermediaProcessor.ensureJsonLd(response);
     const result: any = payload;
     let flattenPayload = await jsonLd.flatten(payload, null, { base: response.url, embed: "@link" });
     flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
@@ -93,6 +126,17 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       enumerable: false,
       value: hypermediaContainer
     });
+    return result;
+  }
+
+  private static async ensureJsonLd(response: Response): Promise<any> {
+    const result = await response.json();
+    if (response.headers.get("Content-Type") === JsonLdHypermediaProcessor.json) {
+      const links = parseLinkHeader(response.headers.get("Link"));
+      const contextResponse = await fetch(links[jsonLdContext].url, { headers: { Accept: links[jsonLdContext].type } });
+      result["@context"] = contextResponse["@context"];
+    }
+
     return result;
   }
 

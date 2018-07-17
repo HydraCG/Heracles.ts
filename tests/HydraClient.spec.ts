@@ -2,6 +2,7 @@ import * as sinon from "sinon";
 import ApiDocumentation from "../src/DataModel/ApiDocumentation";
 import { IApiDocumentation } from "../src/DataModel/IApiDocumentation";
 import HydraClient from "../src/HydraClient";
+import { Level } from "../src/IHypermediaProcessor";
 import { hydra } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
 import { returnNotFound, returnOk } from "../testing/ResponseHelper";
@@ -11,7 +12,8 @@ describe("Given an instance of the HydraClient class", () => {
     this.baseUrl = "http://temp.uri/";
     this.hypermediaProcessor = {
       process: sinon.stub(),
-      supportedMediaTypes: ["application/ld+json"]
+      supports: (response: Response) =>
+        response.headers.get("Content-Type") === "application/ld+json" ? Level.ExactMatch : Level.None
     };
     this.iriTemplateExpansionStrategy = {};
     this.client = new HydraClient([this.hypermediaProcessor], this.iriTemplateExpansionStrategy);
