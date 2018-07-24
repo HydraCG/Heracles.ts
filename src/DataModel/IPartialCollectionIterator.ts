@@ -9,7 +9,7 @@ export interface IPartialCollectionIterator {
   /**
    * Gets the IRI of current part.
    */
-  readonly current: string;
+  readonly currentPartIri: string;
 
   /**
    * Gets the IRI to the first part.

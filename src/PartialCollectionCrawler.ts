@@ -98,7 +98,7 @@ export default class PartialCollectionCrawler {
 
       const part = await furtherPart();
       requests++;
-      visitedPages.push(iterator.current);
+      visitedPages.push(iterator.currentPartIri);
       this.addWithLimitReached(result, part, memberLimit);
     } while (requests < (options.requestLimit || Number.MAX_SAFE_INTEGER) && result.length < memberLimit);
 
