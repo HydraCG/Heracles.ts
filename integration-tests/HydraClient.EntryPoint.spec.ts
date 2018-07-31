@@ -1,6 +1,7 @@
 import * as md5 from "js-md5";
 import HydraClientFactory from "../src/HydraClientFactory";
 import { hydra } from "../src/namespaces";
+import PartialCollectionCrawler from "../src/PartialCollectionCrawler";
 import { run } from "../testing/AsyncHelper";
 
 describe("Having a Hydra client", () => {
@@ -152,6 +153,18 @@ describe("Having a Hydra client", () => {
 
         it("should obtain a collection of people", () => {
           expect(this.people.hypermedia.members.ofType("http://schema.org/Person").length).toBe(1);
+        });
+
+        describe("and then obtaining all people collection members", () => {
+          beforeEach(
+            run(async () => {
+              this.allPeople = await PartialCollectionCrawler.from(this.people.hypermedia).getMembers();
+            })
+          );
+
+          it("should follow all links and gather all members", () => {
+            expect(this.allPeople.length).toBe(2);
+          });
         });
 
         describe("and then adding a new person to that collection", () => {

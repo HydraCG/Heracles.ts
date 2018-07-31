@@ -1,4 +1,3 @@
-import HydraClient from "../../src/HydraClient";
 import JsonLdHypermediaProcessor from "../../src/JsonLd/JsonLdHypermediaProcessor";
 import { hydra } from "../../src/namespaces";
 import { run } from "../../testing/AsyncHelper";
@@ -53,57 +52,170 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               type: [hydra.Link]
             },
             {
-              baseUrl: "http://temp.uri/",
-              iri: hydra.first,
-              links: [],
-              operations: [],
-              relation: hydra.first,
-              target: { iri: "http://temp.uri/api/events?page=1", type: [] },
-              type: [hydra.Link]
-            },
-            {
-              baseUrl: "http://temp.uri/",
-              iri: hydra.last,
-              links: [],
-              operations: [],
-              relation: hydra.last,
-              target: { iri: "http://temp.uri/api/events?page=9", type: [] },
-              type: [hydra.Link]
-            },
-            {
-              baseUrl: "http://temp.uri/",
-              iri: hydra.search,
-              links: [],
-              mappings: [
+              collections: [],
+              getIterator: jasmine.any(Function),
+              iri: "http://temp.uri/api/events",
+              links: [
+                {
+                  baseUrl: "http://temp.uri/api",
+                  collections: [],
+                  iri: "http://temp.uri/api/events/closed",
+                  links: [],
+                  operations: [],
+                  relation: "http://temp.uri/vocab/closed-events",
+                  target: { iri: "http://temp.uri/api/events/closed", type: [] },
+                  type: [hydra.Link]
+                },
+                {
+                  baseUrl: "http://temp.uri/api",
+                  collections: [],
+                  iri: "_:b0",
+                  links: [],
+                  mappings: [
+                    {
+                      collections: [],
+                      iri: "_:b1",
+                      links: [],
+                      operations: [],
+                      property: {
+                        collections: [],
+                        description: "",
+                        displayName: "",
+                        iri: hydra.freetextQuery,
+                        links: [],
+                        operations: [],
+                        type: [],
+                        valuesOfType: []
+                      },
+                      required: false,
+                      type: [hydra.IriTemplateMapping],
+                      variable: "searchPhrase",
+                      variableRepresentation: {
+                        collections: [],
+                        iri: hydra.BasicRepresentation,
+                        links: [],
+                        operations: [],
+                        type: []
+                      }
+                    }
+                  ],
+                  operations: [],
+                  relation: hydra.search,
+                  target: null,
+                  template: "http://temp.uri/api/events{?searchPhrase}",
+                  type: [hydra.TemplatedLink]
+                },
+                {
+                  baseUrl: "http://temp.uri/api",
+                  collections: [],
+                  iri: "http://temp.uri/api/events?page=1",
+                  links: [
+                    {
+                      baseUrl: "http://temp.uri/api",
+                      collections: [],
+                      iri: "http://temp.uri/api/events?page=1",
+                      links: [],
+                      operations: [],
+                      relation: hydra.first,
+                      target: { iri: "http://temp.uri/api/events?page=1", type: [] },
+                      type: [hydra.Link]
+                    },
+                    {
+                      baseUrl: "http://temp.uri/api",
+                      collections: [],
+                      iri: "http://temp.uri/api/events?page=9",
+                      links: [],
+                      operations: [],
+                      relation: hydra.last,
+                      target: { iri: "http://temp.uri/api/events?page=9", type: [] },
+                      type: [hydra.Link]
+                    }
+                  ],
+                  operations: [],
+                  relation: hydra.view,
+                  target: { iri: "_:b2", type: [] },
+                  type: [hydra.Link]
+                },
+                {
+                  baseUrl: "http://temp.uri/api",
+                  collections: [],
+                  iri: hydra.first,
+                  links: [],
+                  operations: [],
+                  relation: hydra.first,
+                  target: { iri: "http://temp.uri/api/events?page=1", type: [] },
+                  type: [hydra.Link]
+                },
+                {
+                  baseUrl: "http://temp.uri/api",
+                  collections: [],
+                  iri: hydra.last,
+                  links: [],
+                  operations: [],
+                  relation: hydra.last,
+                  target: { iri: "http://temp.uri/api/events?page=9", type: [] },
+                  type: [hydra.Link]
+                }
+              ],
+              members: [
                 {
                   iri: "_:b1",
                   links: [],
                   operations: [],
-                  property: {
-                    description: "",
-                    displayName: "",
-                    iri: hydra.freetextQuery,
-                    links: [],
-                    operations: [],
-                    type: [],
-                    valuesOfType: []
-                  },
-                  required: false,
-                  type: [hydra.IriTemplateMapping],
-                  variable: "searchPhrase",
-                  variableRepresentation: {
-                    iri: hydra.BasicRepresentation,
-                    links: [],
-                    operations: [],
-                    type: []
-                  }
+                  type: []
                 }
               ],
               operations: [],
-              relation: hydra.search,
-              target: null,
-              template: "http://temp.uri/api/events{?searchPhrase}",
-              type: [hydra.TemplatedLink]
+              totalItems: 1,
+              type: [hydra.Collection],
+              view: {
+                collections: [],
+                first: {
+                  baseUrl: "http://temp.uri/api",
+                  collections: [],
+                  iri: "http://temp.uri/api/events?page=1",
+                  links: [],
+                  operations: [],
+                  relation: hydra.first,
+                  target: { iri: "http://temp.uri/api/events?page=1", type: [] },
+                  type: [hydra.Link]
+                },
+                iri: "http://temp.uri/api/events?page=1",
+                last: {
+                  baseUrl: "http://temp.uri/api",
+                  collections: [],
+                  iri: "http://temp.uri/api/events?page=9",
+                  links: [],
+                  operations: [],
+                  relation: hydra.last,
+                  target: { iri: "http://temp.uri/api/events?page=9", type: [] },
+                  type: [hydra.Link]
+                },
+                links: [
+                  {
+                    baseUrl: "http://temp.uri/api",
+                    collections: [],
+                    iri: "http://temp.uri/api/events?page=1",
+                    links: [],
+                    operations: [],
+                    relation: hydra.first,
+                    target: { iri: "http://temp.uri/api/events?page=1", type: [] },
+                    type: [hydra.Link]
+                  },
+                  {
+                    baseUrl: "http://temp.uri/api",
+                    collections: [],
+                    iri: "http://temp.uri/api/events?page=9",
+                    links: [],
+                    operations: [],
+                    relation: hydra.last,
+                    target: { iri: "http://temp.uri/api/events?page=9", type: [] },
+                    type: [hydra.Link]
+                  }
+                ],
+                operations: [],
+                type: [hydra.PartialCollectionView]
+              }
             }
           ],
           members: [
