@@ -5,6 +5,7 @@ import ResourceFilterableCollection from "./Collections/ResourceFilterableCollec
 import { ICollection } from "./ICollection";
 import { IHydraResource } from "./IHydraResource";
 import { IHypermediaContainer } from "./IHypermediaContainer";
+import { IPartialCollectionIterator } from "./IPartialCollectionIterator";
 import { IResource } from "./IResource";
 
 /**
@@ -13,6 +14,10 @@ import { IResource } from "./IResource";
  */
 export default class HypermediaContainer extends ResourceFilterableCollection<IResource>
   implements IHypermediaContainer {
+  public readonly iri: string;
+
+  public readonly view?: IHydraResource;
+
   public readonly members?: ResourceFilterableCollection<IResource>;
 
   public readonly collections: ResourceFilterableCollection<ICollection>;
@@ -23,21 +28,23 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
 
   /**
    * Initializes a new instance of the {@link HypermediaContainer} class.
-   * @param items {Iterable<IResource>} Hypermedia controls to be stored within this container.
-   * @param operations {OperationsCollection} Operations available on the container.
-   * @param links {LinksCollection} Links available on the container.
-   * @param members {ResourceFilterableCollection<IResource>} Optional Hydra collection members in case
+   * @param {string} iri Iri of the resource obtained.
+   * @param {Iterable<IResource>} items Hypermedia controls to be stored within this container.
+   * @param {OperationsCollection} operations Operations available on the container.
+   * @param {LinksCollection} links Links available on the container.
+   * @param {ResourceFilterableCollection<IResource>} members Optional Hydra collection members in case
    *                                                          container is a collection.
    */
   public constructor(
+    iri: string,
     items: Iterable<IResource>,
     operations: OperationsCollection,
     links: LinksCollection,
-    members?: ResourceFilterableCollection<IResource>
+    collection?: ICollection
   ) {
     super(items);
     const itemsArray = Array.from(items);
-    const explicitelyTypedCollections: ICollection[] = itemsArray
+    const explicitlyTypedCollections: ICollection[] = itemsArray
       .filter(control => control.type.contains(hydra.Collection))
       .map(control => control as ICollection);
     const linkedCollections: ICollection[] = Array.prototype.concat(
@@ -45,12 +52,18 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
         .filter((control: any) => !!control.collections)
         .map((control: IHydraResource) => Array.from(control.collections))
     );
+    this.iri = iri;
     this.operations = operations;
     this.collections = new ResourceFilterableCollection<ICollection>(
-      explicitelyTypedCollections.concat(linkedCollections)
+      explicitlyTypedCollections.concat(linkedCollections)
     );
     this.links = links;
-    this.members =
-      members instanceof ResourceFilterableCollection ? members : new ResourceFilterableCollection<IResource>(members);
+    if (collection != null) {
+      this.members = collection.members;
+      this.view = collection.view;
+      Object.defineProperty(this, "getIterator", { value: collection.getIterator, writable: false });
+    }
   }
+
+  public getIterator?(): IPartialCollectionIterator;
 }

@@ -1,6 +1,9 @@
+import LinksCollection from "./Collections/LinksCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import { ICollection } from "./ICollection";
+import { IHydraResource } from "./IHydraResource";
+import { IPartialCollectionIterator } from "./IPartialCollectionIterator";
 import { IResource } from "./IResource";
 
 /**
@@ -8,15 +11,14 @@ import { IResource } from "./IResource";
  */
 export interface IHypermediaContainer extends ResourceFilterableCollection<IResource> {
   /**
-   * Gets a collection members.
-   * This may be null if the resource owning this container is not a hydra:Collection.
+   * Gets the currently obtained resource IRI.
    */
-  readonly members?: ResourceFilterableCollection<IResource>;
+  readonly iri: string;
 
   /**
    * Gets a collection of links.
    */
-  readonly links: ResourceFilterableCollection<IResource>;
+  readonly links: LinksCollection;
 
   /**
    * Gets possible operations.
@@ -27,4 +29,23 @@ export interface IHypermediaContainer extends ResourceFilterableCollection<IReso
    * Gets discovered collections.
    */
   readonly collections: ResourceFilterableCollection<ICollection>;
+
+  /**
+   * Gets a collection members.
+   * This may be null if the resource owning this container is not a hydra:Collection.
+   */
+  readonly members?: ResourceFilterableCollection<IResource>;
+
+  /**
+   * Gets a partial collection view.
+   * This may be null if the resource owning this container is not a hydra:Collection with hydra:view.
+   */
+  readonly view?: IHydraResource;
+
+  /**
+   * Gets a part iterator associated with the collection.
+   * This may be null if the resource owning this container is not a hydra:Collection with hydra:view.
+   * @returns {IPartialCollectionIterator}
+   */
+  getIterator?(): IPartialCollectionIterator;
 }

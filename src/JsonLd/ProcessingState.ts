@@ -1,5 +1,7 @@
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import { IResource } from "../DataModel/IResource";
+import { IHydraClient } from "../IHydraClient";
+import { factories } from "./factories";
 
 /**
  * Maintains a JSON-LD processing context.
@@ -81,12 +83,15 @@ export default class ProcessingState {
 
   private readonly allHypermedia: IResource[];
 
+  private readonly client: IHydraClient;
+
   /**
    * Initializes a new instance of the {@link ProcessingState} class.
    * @param graphToProcess {Array<object>} Actual graph to process.
    * @param baseUrl {string} Base URL.
+   * @param client {IHydraClient} Hydra client instance.
    */
-  public constructor(graphToProcess: object[], baseUrl: string);
+  public constructor(graphToProcess: object[], baseUrl: string, client: IHydraClient);
 
   /**
    * Initializes a new instance of the {@link ProcessingState} class.
@@ -99,27 +104,30 @@ export default class ProcessingState {
 
   public constructor(
     objectToProcess: object | object[],
-    ownerIri: string,
-    parentIri: string = null,
+    baseUrlOrOwnerIri: string,
+    clientOrParentIri: IHydraClient | string = null,
     parentContext: ProcessingState = null
   ) {
-    if (arguments.length === 2) {
+    if (arguments.length === 3) {
       this.resourceMap = {};
       this.allHypermedia = [];
       this.payload = objectToProcess as object[];
       this.forbiddenHypermedia = [];
-      this.baseUrl = ownerIri;
+      this.baseUrl = baseUrlOrOwnerIri;
+      this.parentIri = baseUrlOrOwnerIri;
+      this.client = clientOrParentIri as IHydraClient;
     } else {
       this.resourceMap = parentContext.resourceMap;
       this.allHypermedia = parentContext.allHypermedia;
       this.payload = parentContext.payload;
       this.forbiddenHypermedia = parentContext.forbiddenHypermedia;
       this.baseUrl = parentContext.baseUrl;
+      this.parentIri = clientOrParentIri as string;
+      this.client = parentContext.client;
     }
 
     this.processedObject = objectToProcess;
-    this.ownerIri = ownerIri;
-    this.parentIri = parentIri;
+    this.ownerIri = baseUrlOrOwnerIri;
     if (Object.keys(this.processedObject).length === 1 && Object.keys(this.processedObject)[0] === "@id") {
       this.processedObject =
         this.payload.find(item => item["@id"] === this.processedObject["@id"]) || this.processedObject;
@@ -170,6 +178,12 @@ export default class ProcessingState {
         iri: this.processedObject["@id"],
         type: new TypesCollection(this.processedObject["@type"] || new Array<string>())
       };
+      for (const expectedType of Object.keys(factories)) {
+        if (result.type.contains(expectedType)) {
+          result = factories[expectedType](result, this.client, this);
+        }
+      }
+
       this.resourceMap[result.iri] = result;
     }
 

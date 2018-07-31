@@ -51,7 +51,7 @@ module.exports = {
       server.disable("etag");
       server.use(
         bodyParser.json({
-          type: request => request.get("Content-Type") === "application/ld+json"
+          type: request => request.headers["content-type"] === "application/ld+json"
         })
       );
       server.options("/*", (request, response) => {

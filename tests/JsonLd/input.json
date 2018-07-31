@@ -33,8 +33,12 @@
                                 "hydra:required": false
                             }
                         },
-                        "hydra:first": "http://temp.uri/api/events?page=1",
-                        "hydra:last": "http://temp.uri/api/events?page=9",
+                        "hydra:view": {
+                            "@id": "http://temp.uri/api/events?page=1",
+                            "@type": "hydra:PartialCollectionView",
+                            "hydra:first": "http://temp.uri/api/events?page=1",
+                            "hydra:last": "http://temp.uri/api/events?page=9"
+                        },
                         "hydra:totalItems": 1,
                         "hydra:member": [
                             { "@id": "http://temp.uri/api/events/1" }
