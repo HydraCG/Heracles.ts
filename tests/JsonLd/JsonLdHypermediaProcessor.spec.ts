@@ -28,7 +28,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
   describe("when parsing", () => {
     beforeEach(
       run(async () => {
-        this.response = returnOk("http://temp.uri/", inputJsonLd);
+        this.response = returnOk("http://temp.uri/api", inputJsonLd);
         this.result = await this.hypermediaProcessor.process(this.response, false);
       })
     );
@@ -37,19 +37,28 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       expect(this.result).toEqual(inputJsonLd);
     });
 
+    it("should discover all collections", () => {
+      expect(this.result.hypermedia.collections.length).toBe(2);
+    });
+
+    it("should discover people collection", () => {
+      expect(this.result.hypermedia.collections.first().iri).toMatch("/api/people$");
+    });
+
+    it("should discover events collection", () => {
+      expect(this.result.hypermedia.collections.last().iri).toMatch("/api/events$");
+    });
+
     it("should separate hypermedia", () => {
       expect(this.result.hypermedia).toBeLike([
         {
-          iri: "http://temp.uri/api/events",
-          links: [
+          collections: [
             {
-              baseUrl: "http://temp.uri/",
-              iri: "http://temp.uri/vocab/closed-events",
+              collections: [],
+              iri: "http://temp.uri/api/people",
               links: [],
               operations: [],
-              relation: "http://temp.uri/vocab/closed-events",
-              target: { iri: "http://temp.uri/api/events/closed", type: [] },
-              type: [hydra.Link]
+              type: []
             },
             {
               collections: [],
@@ -159,7 +168,8 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               ],
               members: [
                 {
-                  iri: "_:b1",
+                  collections: [],
+                  iri: "http://temp.uri/api/events/1",
                   links: [],
                   operations: [],
                   type: []
@@ -218,23 +228,10 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               }
             }
           ],
-          members: [
-            {
-              iri: "http://temp.uri/api/events/1",
-              links: [],
-              operations: [],
-              type: []
-            }
-          ],
-          operations: [],
-          totalItems: 1,
-          type: [hydra.Collection]
-        },
-        {
-          iri: "http://temp.uri/",
+          iri: "http://temp.uri/api",
           links: [],
           operations: [],
-          type: []
+          type: [hydra.EntryPoint]
         }
       ]);
     });

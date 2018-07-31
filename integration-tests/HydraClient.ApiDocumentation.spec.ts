@@ -31,6 +31,7 @@ describe("Having a Hydra client", () => {
       it("should provide class of schema:Event as in use case 2.1.api-documentation-data-structures", () => {
         expect(this.apiDocumentation.supportedClasses.ofIri("http://schema.org/Event")).toBeLike([
           {
+            collections: [],
             description: "An event happening at a certain time and location, such as a concert, lecture, or festival.",
             displayName: "Event",
             iri: "http://schema.org/Event",
@@ -39,10 +40,12 @@ describe("Having a Hydra client", () => {
             supportedOperations: [],
             supportedProperties: [
               {
+                collections: [],
                 iri: "_:b0",
                 links: [],
                 operations: [],
                 property: {
+                  collections: [],
                   description: "The name of the event.",
                   displayName: "Name",
                   iri: "http://schema.org/name",
@@ -57,10 +60,12 @@ describe("Having a Hydra client", () => {
                 writable: false
               },
               {
+                collections: [],
                 iri: "_:b1",
                 links: [],
                 operations: [],
                 property: {
+                  collections: [],
                   description: "Description of the event.",
                   displayName: "Description",
                   iri: "http://schema.org/description",
@@ -75,10 +80,12 @@ describe("Having a Hydra client", () => {
                 writable: false
               },
               {
+                collections: [],
                 iri: "_:b2",
                 links: [],
                 operations: [],
                 property: {
+                  collections: [],
                   description: "The start date and time of the item (in ISO 8601 date format).",
                   displayName: "Start date",
                   iri: "http://schema.org/startDate",
@@ -96,10 +103,12 @@ describe("Having a Hydra client", () => {
                 writable: false
               },
               {
+                collections: [],
                 iri: "_:b3",
                 links: [],
                 operations: [],
                 property: {
+                  collections: [],
                   description: "The end date and time of the item (in ISO 8601 date format).",
                   displayName: "End date",
                   iri: "http://schema.org/endDate",
