@@ -149,9 +149,7 @@ export default class HydraClient implements IHydraClient {
       throw new Error(HydraClient.apiDocumentationNotProvided);
     }
 
-    return !result.url.match(/^[a-z][a-z0-9+\-.]*:/)
-      ? jsonld.prependBase(url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0], result.url)
-      : result.url;
+    return jsonld.prependBase(url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0], result.url);
   }
 
   private static getUrl(urlOrResource: string | IResource | ILink): string {

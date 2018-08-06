@@ -1,15 +1,13 @@
-import { promises as jsonLd } from "jsonld";
+import * as jsonld from "jsonld";
 import * as parseLinkHeader from "parse-link-header";
-import ApiDocumentation from "../DataModel/ApiDocumentation";
 import LinksCollection from "../DataModel/Collections/LinksCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import HypermediaContainer from "../DataModel/HypermediaContainer";
-import { IApiDocumentation } from "../DataModel/IApiDocumentation";
 import { ICollection } from "../DataModel/ICollection";
 import { IHydraResource } from "../DataModel/IHydraResource";
 import { IWebResource } from "../DataModel/IWebResource";
-import HydraClient from "../HydraClient";
+import { IHydraClient } from "../IHydraClient";
 import { IHypermediaProcessor, Level } from "../IHypermediaProcessor";
 import { hydra } from "../namespaces";
 import IndirectTypingProvider from "./IndirectTypingProvider";
@@ -21,7 +19,7 @@ type HeaderMatcher = (headers: Headers) => boolean;
 
 const literals = ["string", "number", "boolean"];
 
-const dependentTypes = [hydra.IriTemplateMapping];
+const dependentTypes = [hydra.IriTemplateMapping, hydra.PartialCollectionView];
 
 function isBlank(resource: object): boolean {
   return !resource["@id"] || resource["@id"].match(/^_:/);
@@ -49,7 +47,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       (headers: Headers) => headers.get("Content-Type").indexOf(JsonLdHypermediaProcessor.json) !== -1,
       (headers: Headers) => {
         const links = parseLinkHeader(headers.get("Link"));
-        return !!links[jsonLdContext] && links[jsonLdContext].type === jsonLd;
+        return !!links[jsonLdContext] && links[jsonLdContext].type === JsonLdHypermediaProcessor.jsonLd;
       }
     ]
   ];
@@ -85,12 +83,12 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return result;
   }
 
-  public async process(response: Response, client: HydraClient): Promise<IWebResource> {
+  public async process(response: Response, client: IHydraClient): Promise<IWebResource> {
     const payload = await JsonLdHypermediaProcessor.ensureJsonLd(response);
     const result: any = payload;
-    let flattenPayload = await jsonLd.flatten(payload, null, { base: response.url, embed: "@link" });
+    let flattenPayload = await jsonld.promises.flatten(payload, null, { base: response.url, embed: "@link" });
     flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
-    const context = await this.processHypermedia(new ProcessingState(flattenPayload, response.url));
+    const context = await this.processHypermedia(new ProcessingState(flattenPayload, response.url, client));
     const hypermedia = context.hypermedia;
     for (let index = hypermedia.length - 1; index >= 0; index--) {
       JsonLdHypermediaProcessor.tryRemoveReferenceFrom(hypermedia, index);
@@ -108,19 +106,12 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       );
     }
 
-    const apiDocumentation = hypermedia.find(item => item.type.contains(hydra.ApiDocumentation));
-    if (apiDocumentation) {
-      hypermedia[hypermedia.indexOf(apiDocumentation)] = new ApiDocumentation(
-        (apiDocumentation as any) as IApiDocumentation,
-        client
-      );
-    }
-
     const hypermediaContainer = new HypermediaContainer(
+      rootResource.iri,
       hypermedia,
       (rootResource as IHydraResource).operations,
       (rootResource as IHydraResource).links,
-      (rootResource as ICollection).members
+      (rootResource as ICollection).members ? rootResource as ICollection : null
     );
     Object.defineProperty(result, "hypermedia", {
       enumerable: false,
@@ -133,7 +124,8 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     const result = await response.json();
     if (response.headers.get("Content-Type") === JsonLdHypermediaProcessor.json) {
       const links = parseLinkHeader(response.headers.get("Link"));
-      const contextResponse = await fetch(links[jsonLdContext].url, { headers: { Accept: links[jsonLdContext].type } });
+      const link = jsonld.prependBase(response.url, links[jsonLdContext].url);
+      const contextResponse = await fetch(link, { headers: { Accept: links[jsonLdContext].type } });
       result["@context"] = contextResponse["@context"];
     }
 

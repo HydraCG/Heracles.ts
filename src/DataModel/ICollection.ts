@@ -1,6 +1,8 @@
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import { IHydraResource } from "./IHydraResource";
 import { IIriTemplate } from "./IIriTemplate";
+import { IPartialCollectionIterator } from "./IPartialCollectionIterator";
+import { IPartialCollectionView } from "./IPartialCollectionView";
 import { IResource } from "./IResource";
 
 /**
@@ -28,4 +30,17 @@ export interface ICollection extends IHydraResource {
    * @returns {IIriTemplate}
    */
   readonly memberTemplate?: IIriTemplate;
+
+  /**
+   * Gets the optional partial collection view.
+   * @readonly
+   * @returns {IPartialCollectionView}
+   */
+  readonly view?: IPartialCollectionView;
+
+  /**
+   * Gets a partial collection iterator associated in case it is a partial one.
+   * @returns {IPartialCollectionIterator}
+   */
+  getIterator(): IPartialCollectionIterator;
 }

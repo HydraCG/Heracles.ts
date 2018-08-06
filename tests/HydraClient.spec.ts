@@ -1,6 +1,4 @@
 import * as sinon from "sinon";
-import ApiDocumentation from "../src/DataModel/ApiDocumentation";
-import { IApiDocumentation } from "../src/DataModel/IApiDocumentation";
 import HydraClient from "../src/HydraClient";
 import { Level } from "../src/IHypermediaProcessor";
 import { hydra } from "../src/namespaces";
@@ -165,10 +163,7 @@ describe("Given an instance of the HydraClient class", () => {
       describe("which is provided correctly", () => {
         beforeEach(() => {
           const apiDocumentationUrl = `${this.baseUrl}api/documentation`;
-          this.apiDocumentation = new ApiDocumentation(
-            ({ entryPoint: `${this.baseUrl}api` } as any) as IApiDocumentation,
-            this.client
-          );
+          this.apiDocumentation = { entryPoint: `${this.baseUrl}api` };
           this.data = [this.apiDocumentation];
           (this.data as any).ofType = sinon.stub().returns({ first: sinon.stub().returns(this.apiDocumentation) });
           this.apiDocumentationResponse = returnOk(apiDocumentationUrl, this.data);
@@ -200,16 +195,6 @@ describe("Given an instance of the HydraClient class", () => {
             await this.client.getApiDocumentation(this.baseUrl);
 
             (expect(this.hypermediaProcessor.process) as any).toHaveBeenCalledWith(this.apiDocumentationResponse);
-          })
-        );
-
-        it(
-          "should return a correct ApiDocumentation instance",
-          run(async () => {
-            const result = await this.client.getApiDocumentation(this.baseUrl);
-
-            expect(result).toEqual(jasmine.any(ApiDocumentation));
-            expect(result.client).toBe(this.client);
           })
         );
       });

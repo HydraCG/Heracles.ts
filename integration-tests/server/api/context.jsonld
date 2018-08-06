@@ -57,6 +57,26 @@
             "@type": "@id"
         },
         "memberTemplate": "hydra:memberTemplate",
+        "first": {
+            "@id": "hydra:first",
+            "@type": "@id"
+        },
+        "next": {
+            "@id": "hydra:next",
+            "@type": "@id"
+        },
+        "previous": {
+            "@id": "hydra:previous",
+            "@type": "@id"
+        },
+        "last": {
+            "@id": "hydra:last",
+            "@type": "@id"
+        },
+        "view": {
+            "@id": "hydra:view",
+            "@type": "@id"
+        },
         "totalItems": "hydra:totalItems",
         "template": {
             "@id": "hydra:template",

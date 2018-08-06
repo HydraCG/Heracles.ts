@@ -5,9 +5,9 @@ import { IHypermediaProcessor } from "./IHypermediaProcessor";
 import { IIriTemplateExpansionStrategy } from "./IIiriTemplateExpansionStrategy";
 import IndirectTypingProvider from "./JsonLd/IndirectTypingProvider";
 import JsonLdHypermediaProcessor from "./JsonLd/JsonLdHypermediaProcessor";
-import StaticVocabularyProvider from "./JsonLd/StaticVocabularyProvider";
+import StaticOntologyProvider from "./JsonLd/StaticOntologyProvider";
 /* tslint:disable:no-var-requires */
-const hydraVocabulary = require("./JsonLd/hydra.json");
+const hydraOntology = require("./JsonLd/hydra.json");
 
 /**
  * Provides a factory of the {@link IHydraClient}s.
@@ -31,7 +31,7 @@ export default class HydraClientFactory {
    */
   public withDefaults(): HydraClientFactory {
     return this.with(
-      new JsonLdHypermediaProcessor(new IndirectTypingProvider(new StaticVocabularyProvider(hydraVocabulary)))
+      new JsonLdHypermediaProcessor(new IndirectTypingProvider(new StaticOntologyProvider(hydraOntology)))
     ).with(new BodyResourceBoundIriTemplateExpansionStrategy());
   }
   /**
