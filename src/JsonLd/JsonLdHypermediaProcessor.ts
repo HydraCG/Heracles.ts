@@ -111,7 +111,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       hypermedia,
       (rootResource as IHydraResource).operations,
       (rootResource as IHydraResource).links,
-      (rootResource as ICollection).members ? rootResource as ICollection : null
+      (rootResource as ICollection).members ? (rootResource as ICollection) : null
     );
     Object.defineProperty(result, "hypermedia", {
       enumerable: false,

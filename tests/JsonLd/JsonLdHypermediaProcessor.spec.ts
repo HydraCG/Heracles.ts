@@ -43,7 +43,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
 
       it("should obtain JSON-LD context", () => {
         expect(this.fetch).toHaveBeenCalledOnce();
-        expect(this.fetch.firstCall.args[0]).toBe("http://temp.uri/api/context.jsonld");
+        expect(this.fetch.firstCall.args[0]).toBe("http://temp.uri/context.jsonld");
         expect(this.fetch.firstCall.args[1]).toEqual({ headers: { Accept: "application/ld+json" } });
       });
 
