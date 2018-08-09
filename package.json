@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "isomorphic-fetch": "2.2.1",
-    "jsonld": "0.4.12",
+    "jsonld": "1.0.2",
     "typescript": "3.0.1",
     "uri-templates": "0.2.0",
     "urijs": "1.19.1"
