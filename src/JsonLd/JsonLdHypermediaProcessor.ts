@@ -75,7 +75,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
         true
       );
       if (currentMatch) {
-        result = Level.ExactMatch;
+        result = Level.FullSupport;
         break;
       }
     }

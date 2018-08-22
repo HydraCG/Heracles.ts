@@ -14,7 +14,7 @@ export enum Level {
    * @type {number}
    * Defines an exact support of the response.
    */
-  ExactMatch = 99
+  FullSupport = 100
 }
 
 /**

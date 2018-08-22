@@ -11,7 +11,7 @@ describe("Given an instance of the HydraClient class", () => {
     this.hypermediaProcessor = {
       process: sinon.stub(),
       supports: (response: Response) =>
-        response.headers.get("Content-Type") === "application/ld+json" ? Level.ExactMatch : Level.None
+        response.headers.get("Content-Type") === "application/ld+json" ? Level.FullSupport : Level.None
     };
     this.iriTemplateExpansionStrategy = {};
     this.client = new HydraClient([this.hypermediaProcessor], this.iriTemplateExpansionStrategy);
