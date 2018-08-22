@@ -1,3 +1,4 @@
+import * as jsonld from "jsonld";
 import MappingsCollection from "../DataModel/Collections/MappingsCollection";
 import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
@@ -59,9 +60,7 @@ export function linksAndOperations(mappings: {
   };
   mappings.target = {
     default: (value, processingState) => {
-      const iri = processingState.ownerIri.match(/^[a-zA-Z][a-zA-Z0-9_]*:/)
-        ? processingState.ownerIri
-        : new URL(processingState.ownerIri, processingState.baseUrl).toString();
+      const iri = jsonld.prependBase(processingState.baseUrl, processingState.ownerIri);
       return processingState.resourceMap[iri] || { iri, type: new TypesCollection([]) };
     },
     propertyName: "target",

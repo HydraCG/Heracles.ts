@@ -1,5 +1,6 @@
 import "isomorphic-fetch";
 import * as jsonld from "jsonld";
+import * as parseLinkHeader from "parse-link-header";
 import FilterableCollection from "./DataModel/Collections/FilterableCollection";
 import { IApiDocumentation } from "./DataModel/IApiDocumentation";
 import { ILink } from "./DataModel/ILink";
@@ -26,7 +27,7 @@ export default class HydraClient implements IHydraClient {
   public static responseFormatNotSupported = "Response format is not supported.";
   public static noIriTemplateExpansionStrategy = "No IRI template expansion strategy was provided.";
 
-  private readonly hypermediaProcessors: Iterable<IHypermediaProcessor>;
+  private readonly hypermediaProcessors: IHypermediaProcessor[];
   private readonly iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy;
 
   /**
@@ -47,7 +48,7 @@ export default class HydraClient implements IHydraClient {
       throw new Error(HydraClient.noIriTemplateExpansionStrategy);
     }
 
-    this.hypermediaProcessors = hypermediaProcessors;
+    this.hypermediaProcessors = Array.from(hypermediaProcessors);
     this.iriTemplateExpansionStrategy = iriTemplateExpansionStrategy;
   }
 
@@ -57,15 +58,16 @@ export default class HydraClient implements IHydraClient {
    * @param response Raw response to find hypermedia processor for.
    */
   public getHypermediaProcessor(response: Response): IHypermediaProcessor {
-    for (const hypermediaProcessor of this.hypermediaProcessors) {
-      for (const supportedMediaType of hypermediaProcessor.supportedMediaTypes) {
-        if (response.headers.get("Content-Type").indexOf(supportedMediaType) === 0) {
-          return hypermediaProcessor;
-        }
-      }
-    }
-
-    return null;
+    return (
+      this.hypermediaProcessors
+        .map(item => ({
+          hypermediaProcessor: item,
+          supportLevel: item.supports(response) as number
+        }))
+        .filter(item => item.supportLevel > 0)
+        .sort((left, right) => right.supportLevel - left.supportLevel)
+        .map(item => item.hypermediaProcessor)[0] || null
+    );
   }
 
   /**
@@ -141,19 +143,13 @@ export default class HydraClient implements IHydraClient {
       throw new Error(HydraClient.invalidResponse + response.status);
     }
 
-    const link = response.headers.get("Link");
-    if (!link) {
-      throw new Error(HydraClient.apiDocumentationNotProvided);
-    }
-
-    const result = link.match(`<([^>]+)>; rel="${hydra.apiDocumentation}"`);
+    const links = parseLinkHeader(response.headers.get("Link"));
+    const result = !!links ? links[hydra.apiDocumentation] : null;
     if (!result) {
       throw new Error(HydraClient.apiDocumentationNotProvided);
     }
 
-    return !result[1].match(/^[a-z][a-z0-9+\-.]*:/)
-      ? jsonld.prependBase(url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0], result[1])
-      : result[1];
+    return jsonld.prependBase(url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0], result.url);
   }
 
   private static getUrl(urlOrResource: string | IResource | ILink): string {

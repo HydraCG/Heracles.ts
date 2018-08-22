@@ -18,8 +18,7 @@ function setHeaders(path: string, response: express.Response, isJsonLd: boolean)
   if (!fs.existsSync(file)) {
     return false;
   }
-  fs
-    .readFileSync(file, "utf8")
+  fs.readFileSync(file, "utf8")
     .replace("\r", "")
     .split("\n")
     .filter(header => header.length > 0)
