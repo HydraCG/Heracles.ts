@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "isomorphic-fetch": "2.2.1",
-    "jsonld": "0.4.12",
+    "jsonld": "1.1.0",
     "parse-link-header": "1.0.1",
     "typescript": "3.1.6",
     "uri-templates": "0.2.0",
