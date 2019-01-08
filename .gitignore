@@ -4,4 +4,6 @@ node_modules
 .vs
 .vscode
 bin
-lib/
+*.js
+*.d.ts
+*.js.map
