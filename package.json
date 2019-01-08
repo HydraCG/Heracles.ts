@@ -12,6 +12,11 @@
       "name": "Elf Pavlik"
     }
   ],
+  "files": [
+    "src/**/*.js",
+    "index.js"
+  ],
+  "main": "index.js",
   "scripts": {
     "test": "karma start --single-run",
     "test-watch": "karma start",
@@ -22,7 +27,7 @@
     "format-code": "npm run prettier && npm run tslint-fix",
     "docs-html": "typedoc --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs-html src",
     "docs-md": "typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src",
-    "prepare": "tsc"
+    "prepare": "tsc --declaration"
   },
   "dependencies": {
     "isomorphic-fetch": "2.2.1",
