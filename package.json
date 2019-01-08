@@ -14,7 +14,9 @@
   ],
   "files": [
     "src/**/*.js",
-    "index.js"
+    "src/*.d.ts",
+    "index.js",
+    "index.d.ts"
   ],
   "main": "index.js",
   "scripts": {
