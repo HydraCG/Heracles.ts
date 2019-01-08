@@ -14,9 +14,8 @@
   ],
   "files": [
     "src/**/*.js",
-    "src/*.d.ts",
     "index.js",
-    "index.d.ts"
+    "types"
   ],
   "main": "index.js",
   "scripts": {
@@ -29,7 +28,7 @@
     "format-code": "npm run prettier && npm run tslint-fix",
     "docs-html": "typedoc --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs-html src",
     "docs-md": "typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src",
-    "prepare": "tsc --declaration"
+    "prepare": "tsc"
   },
   "dependencies": {
     "isomorphic-fetch": "2.2.1",

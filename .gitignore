@@ -5,5 +5,5 @@ node_modules
 .vscode
 bin
 *.js
-*.d.ts
+types
 *.js.map
