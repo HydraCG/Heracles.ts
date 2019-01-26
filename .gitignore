@@ -4,3 +4,7 @@ node_modules
 .vs
 .vscode
 bin
+**/*.js
+types
+**/*.js.map
+!karma.conf.js

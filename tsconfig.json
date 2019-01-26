@@ -3,6 +3,8 @@
         "moduleResolution": "node",
         "module": "commonjs",
         "target": "es2017",
+        "declaration": true,
+        "declarationDir": "types",
         "lib": [
             "es2017",
             "dom"
@@ -25,6 +27,7 @@
         "noUnusedLocals": true
     },
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "types"
     ]
 }
