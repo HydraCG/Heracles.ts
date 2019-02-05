@@ -1,9 +1,9 @@
-import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
-import TypesCollection from "../DataModel/Collections/TypesCollection";
-import { IResource } from "../DataModel/IResource";
-import { hydra } from "../namespaces";
-import { IPropertyMapping } from "./IPropertyMapping";
-import ProcessingState from "./ProcessingState";
+import ResourceFilterableCollection from "../../DataModel/Collections/ResourceFilterableCollection";
+import TypesCollection from "../../DataModel/Collections/TypesCollection";
+import { IResource } from "../../DataModel/IResource";
+import { hydra } from "../../namespaces";
+import { IPropertyMapping } from "../IPropertyMapping";
+import ProcessingState from "../ProcessingState";
 
 function convertToResource(item: any, processingState: ProcessingState): IResource {
   let result = (item as IResource) || null;
@@ -28,11 +28,6 @@ export function collection(mappings: {
   mappings[hydra.member] = {
     default: members => new ResourceFilterableCollection(members),
     propertyName: "members",
-    type: [hydra.Collection as string]
-  };
-  mappings[hydra.memberTemplate] = {
-    default: memberTemplates => memberTemplates[0] || null,
-    propertyName: "memberTemplate",
     type: [hydra.Collection as string]
   };
   mappings[hydra.collection] = {

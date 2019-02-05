@@ -54,11 +54,11 @@ export default abstract class TemplatedResource<T extends IPointingResource> imp
     this.operations = new OperationsCollection([]);
   }
 
-  public expandTarget(mappedVariables: IDictionary | MappingBuilder): T {
+  public expand(mappedVariables: IDictionary | MappingBuilder): T {
     if (mappedVariables instanceof Function) {
       const builder = new MappingsBuilder(this.mappings);
       mappedVariables(builder);
-      return this.expandTarget(builder.complete());
+      return this.expand(builder.complete());
     }
 
     const templateVariables = mappedVariables as IDictionary;

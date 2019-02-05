@@ -19,7 +19,7 @@ propertyDomain[hydra.first] = hydra.Resource;
 propertyDomain[hydra.last] = hydra.Resource;
 propertyDomain[hydra.next] = hydra.Resource;
 propertyDomain[hydra.previous] = hydra.Resource;
-propertyDomain[hydra.mapping] = hydra.IriTemplate;
+propertyDomain[hydra.mapping] = hydra.Template;
 propertyDomain[hydra.variable] = hydra.IriTemplateMapping;
 
 const propertyRange = {};
@@ -31,8 +31,8 @@ propertyRange[hydra.possibleStatus] = hydra.Status;
 propertyRange[hydra.supportedProperty] = hydra.SupportedProperty;
 propertyRange[hydra.supportedOperation] = hydra.Operation;
 propertyRange[hydra.operation] = hydra.Operation;
-propertyRange[hydra.expects] = hydra.Class;
-propertyRange[hydra.returns] = hydra.Class;
+propertyRange[hydra.expects] = hydra.Resource;
+propertyRange[hydra.returns] = hydra.Resource;
 propertyRange[hydra.member] = hydra.Resource;
 propertyRange[hydra.view] = hydra.Resource;
 propertyRange[hydra.first] = hydra.Resource;
@@ -51,8 +51,8 @@ describe("Given instance of the StaticOntologyProvider class", () => {
     "should get a correct domain",
     run(async () => {
       for (const predicate of Object.keys(propertyDomain)) {
-        const result = await this.provider.getDomainFor(predicate);
-        expect(result).toBe(propertyDomain[predicate], `as predicate ${predicate} is defined in ontology`);
+        expect(await this.provider.getDomainFor(predicate))
+          .toBe(propertyDomain[predicate], `as predicate ${predicate} is defined in ontology`);
       }
     })
   );
@@ -61,7 +61,8 @@ describe("Given instance of the StaticOntologyProvider class", () => {
     "should get a correct range",
     run(async () => {
       for (const predicate of Object.keys(propertyRange)) {
-        expect(await this.provider.getRangeFor(predicate)).toBe(propertyRange[predicate]);
+        expect(await this.provider.getRangeFor(predicate))
+          .toBe(propertyRange[predicate], `as predicate ${predicate} is defined in ontology`);
       }
     })
   );

@@ -1,7 +1,8 @@
+import HeadersCollection from "./Collections/HeadersCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
-import { IClass } from "./IClass";
 import { IHydraResource } from "./IHydraResource";
 import { IPointingResource } from "./IPointingResource";
+import { IResource } from "./IResource";
 
 /**
  * Describes an abstract Hydra operation.
@@ -16,9 +17,30 @@ export interface IOperation extends IHydraResource, IPointingResource {
   readonly method: string;
 
   /**
-   * Gets the expected classes.
+   * Gets the expected resources.
    * @readonly
-   * @returns {TypedResourceFilterableCollection<IClass>}
+   * @returns {TypedResourceFilterableCollection<IResource>}
    */
-  readonly expects: ResourceFilterableCollection<IClass>;
+  readonly expects: ResourceFilterableCollection<IResource>;
+
+  /**
+   * Gets the returned resources.
+   * @readonly
+   * @returns {TypedResourceFilterableCollection<IResource>}
+   */
+  readonly returns: ResourceFilterableCollection<IResource>;
+
+  /**
+   * Gets the expected headers.
+   * @readonly
+   * @returns {HeadersCollection}
+   */
+  readonly expectedHeaders: HeadersCollection;
+
+  /**
+   * Gets the returned headers.
+   * @readonly
+   * @returns {Iterable<string>}
+   */
+  readonly returnedHeaders: Iterable<string>;
 }

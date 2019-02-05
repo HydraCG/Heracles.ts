@@ -1,11 +1,12 @@
-import { hydra } from "../namespaces";
+import { hydra } from "../../namespaces";
+import { IPropertyMapping } from "../IPropertyMapping";
+import { linksExtractor } from "../linksExtractor";
+import { operationsExtractor } from "../operationsExtractor";
 import { apiDocumentation } from "./apiDocumentation";
 import { collection } from "./collection";
-import { IPropertyMapping } from "./IPropertyMapping";
 import { linksAndOperations } from "./linksAndOperations";
-import { linksExtractor } from "./linksExtractor";
-import { memberTemplateOperationsExtractor } from "./memberTemplateOperationsExtractor";
 import { rdfSchema } from "./rdfSchema";
+import { schema } from "./schema.org";
 
 /**
  * Provides simple property mappings to be used when creating resources.
@@ -15,6 +16,7 @@ import { rdfSchema } from "./rdfSchema";
 export const mappings: { [property: string]: IPropertyMapping } = {};
 
 rdfSchema(mappings);
+schema(mappings);
 apiDocumentation(mappings);
 linksAndOperations(mappings);
 collection(mappings);
@@ -31,7 +33,7 @@ mappings[hydra.property] = {
   type: [hydra.SupportedProperty as string, hydra.IriTemplateMapping as string]
 };
 mappings[hydra.operation] = {
-  default: memberTemplateOperationsExtractor,
+  default: operationsExtractor,
   propertyName: "operations",
   required: true
 };

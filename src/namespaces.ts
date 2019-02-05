@@ -11,6 +11,7 @@ export let hydra = {
   ApiDocumentation: hydraNamespace + "ApiDocumentation",
   EntryPoint: hydraNamespace + "EntryPoint",
 
+  headerName: hydraNamespace + "headerName",
   mapping: hydraNamespace + "mapping",
   template: hydraNamespace + "template",
   variable: hydraNamespace + "variable",
@@ -19,13 +20,14 @@ export let hydra = {
   BasicRepresentation: hydraNamespace + "BasicRepresentation",
   IriTemplate: hydraNamespace + "IriTemplate",
   IriTemplateMapping: hydraNamespace + "IriTemplateMapping",
+  HeaderTemplate: hydraNamespace + "HeaderTemplate,",
   TemplatedLink: hydraNamespace + "TemplatedLink",
   Link: hydraNamespace + "Link",
   VariableRepresentation: hydraNamespace + "VariableRepresentation",
+  Template: hydraNamespace + "Template",
 
   collection: hydraNamespace + "collection",
   member: hydraNamespace + "member",
-  memberTemplate: hydraNamespace + "memberTemplate",
   totalItems: hydraNamespace + "totalItems",
   Collection: hydraNamespace + "Collection",
   PartialCollectionView: hydraNamespace + "PartialCollectionView",
@@ -41,7 +43,10 @@ export let hydra = {
   method: hydraNamespace + "method",
   expects: hydraNamespace + "expects",
   returns: hydraNamespace + "returns",
+  expectsHeader: hydraNamespace + "expectsHeader",
+  returnsHeader: hydraNamespace + "returnsHeader",
   possibleStatus: hydraNamespace + "possibleStatus",
+  target: hydraNamespace + "target",
   Operation: hydraNamespace + "Operation",
   Status: hydraNamespace + "Status",
 
@@ -54,7 +59,10 @@ export let hydra = {
   previous: hydraNamespace + "previous",
   last: hydraNamespace + "last",
   search: hydraNamespace + "search",
-  view: hydraNamespace + "view"
+  view: hydraNamespace + "view",
+
+  skip: hydraNamespace + "skip",
+  take: hydraNamespace + "take"
 };
 
 const rdfNamespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
@@ -72,4 +80,12 @@ export let rdfs = {
   domain: rdfsNamespace + "domain",
   label: rdfsNamespace + "label",
   range: rdfsNamespace + "range"
+};
+
+const schemaDotOrgNamespace = "http://schema.org/";
+export let schemaDotOrg = {
+  namespace: schemaDotOrgNamespace,
+
+  rangeIncludes: schemaDotOrgNamespace + "rangeIncludes",
+  domainIncludes: schemaDotOrgNamespace + "domainIncludes"
 };

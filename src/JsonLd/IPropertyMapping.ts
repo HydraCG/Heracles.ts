@@ -1,7 +1,7 @@
 import ProcessingState from "./ProcessingState";
 
 type Literal = string | boolean | number;
-type MappingsProcessor = (items: any[], processingState: ProcessingState) => any;
+type MappingsProcessor = (items: any[], processingState: ProcessingState, propertyName: string) => any;
 
 /**
  * Describes a simple RDF mapping in Heracles' data model.

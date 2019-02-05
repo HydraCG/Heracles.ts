@@ -11,7 +11,7 @@ import { IHydraClient } from "../IHydraClient";
 import { IHypermediaProcessor, Level } from "../IHypermediaProcessor";
 import { hydra } from "../namespaces";
 import IndirectTypingProvider from "./IndirectTypingProvider";
-import { mappings } from "./mappings";
+import { mappings } from "./Mappings/mappings";
 import ProcessingState from "./ProcessingState";
 
 const jsonLdContext = "http://www.w3.org/ns/json-ld#context";
@@ -173,6 +173,10 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
   }
 
   private async processResource(context: ProcessingState, isOwnedHypermedia = false): Promise<object> {
+    if (!!context.resourceMap[context.processedObject["@id"]]) {
+      return context.resourceMap[context.processedObject["@id"]];
+    }
+
     const addToHypermedia =
       !isOwnedHypermedia && (!isBlank(context.processedObject) || isHydraIndependent(context.processedObject));
     const targetResource = context.createResource(addToHypermedia);
@@ -230,7 +234,8 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     if (literals.indexOf(typeof propertyDefinition.default) !== -1) {
       targetResource[propertyDefinition.propertyName] = value[0] || propertyDefinition.default;
     } else if (typeof propertyDefinition.default === "function") {
-      targetResource[propertyDefinition.propertyName] = propertyDefinition.default(value, context);
+      targetResource[propertyDefinition.propertyName] =
+        propertyDefinition.default(value, context, propertyDefinition.propertyName);
     }
   }
 }

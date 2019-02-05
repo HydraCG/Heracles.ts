@@ -1,9 +1,10 @@
-import * as jsonld from "jsonld";
-import MappingsCollection from "../DataModel/Collections/MappingsCollection";
-import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
-import TypesCollection from "../DataModel/Collections/TypesCollection";
-import { hydra } from "../namespaces";
-import { IPropertyMapping } from "./IPropertyMapping";
+import MappingsCollection from "../../DataModel/Collections/MappingsCollection";
+import ResourceFilterableCollection from "../../DataModel/Collections/ResourceFilterableCollection";
+import TypesCollection from "../../DataModel/Collections/TypesCollection";
+import { hydra } from "../../namespaces";
+import { headersExtractor } from "../headersExtractor";
+import { IPropertyMapping } from "../IPropertyMapping";
+import { targetExtractor } from "../targetExtractor";
 
 export function linksAndOperations(mappings: {
   [property: string]: IPropertyMapping;
@@ -12,13 +13,19 @@ export function linksAndOperations(mappings: {
     default: "",
     propertyName: "template",
     required: true,
-    type: [hydra.IriTemplate as string]
+    type: [hydra.Template as string, hydra.IriTemplate as string, hydra.HeaderTemplate as string]
   };
   mappings[hydra.mapping] = {
     default: iriTemplateMappings => new MappingsCollection(iriTemplateMappings),
     propertyName: "mappings",
     required: true,
     type: [hydra.IriTemplate as string]
+  };
+  mappings[hydra.headerName] = {
+    default: names => names.length > 0 ? names[0] : "",
+    propertyName: "name",
+    required: true,
+    type: [hydra.HeaderTemplate as string]
   };
 
   mappings[hydra.variable] = {
@@ -28,7 +35,7 @@ export function linksAndOperations(mappings: {
     type: [hydra.IriTemplateMapping as string]
   };
   mappings[hydra.variableRepresentation] = {
-    default: representations => representations[0] || null,
+    default: representations => representations[0] || { iri: hydra.BasicRepresentation, type: TypesCollection.empty },
     propertyName: "variableRepresentation",
     required: true,
     type: [hydra.IriTemplateMapping as string]
@@ -37,6 +44,24 @@ export function linksAndOperations(mappings: {
   mappings[hydra.expects] = {
     default: expected => new ResourceFilterableCollection(expected),
     propertyName: "expects",
+    required: true,
+    type: [hydra.Operation as string]
+  };
+  mappings[hydra.returns] = {
+    default: returned => new ResourceFilterableCollection(returned),
+    propertyName: "returns",
+    required: true,
+    type: [hydra.Operation as string]
+  };
+  mappings[hydra.expectsHeader] = {
+    default: headersExtractor,
+    propertyName: "expectedHeaders",
+    required: true,
+    type: [hydra.Operation as string]
+  };
+  mappings[hydra.returnsHeader] = {
+    default: returnedHeaders => returnedHeaders,
+    propertyName: "returnedHeaders",
     type: [hydra.Operation as string]
   };
   mappings[hydra.method] = {
@@ -58,11 +83,8 @@ export function linksAndOperations(mappings: {
     required: true,
     type: [hydra.Link as string, hydra.TemplatedLink as string, hydra.Operation as string]
   };
-  mappings.target = {
-    default: (value, processingState) => {
-      const iri = jsonld.prependBase(processingState.baseUrl, processingState.ownerIri);
-      return processingState.resourceMap[iri] || { iri, type: new TypesCollection([]) };
-    },
+  mappings[hydra.target] = {
+    default: targetExtractor,
     propertyName: "target",
     required: true,
     type: [hydra.Link as string, hydra.TemplatedLink as string, hydra.Operation as string]

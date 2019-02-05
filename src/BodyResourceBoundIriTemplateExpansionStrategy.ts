@@ -11,8 +11,8 @@ import { IIriTemplateExpansionStrategy } from "./IIiriTemplateExpansionStrategy"
 export default class BodyResourceBoundIriTemplateExpansionStrategy implements IIriTemplateExpansionStrategy {
   public createRequest(operation: IOperation, body?: IResource, auxResource?: any): IOperation {
     const templatedOperation = operation as ITemplatedOperation;
-    if (typeof templatedOperation.expandTarget === "function") {
-      return templatedOperation.expandTarget(builder =>
+    if (typeof templatedOperation.expand === "function") {
+      return templatedOperation.expand(builder =>
         this.withResourceVariables(builder, body || {}, auxResource || {})
       );
     }

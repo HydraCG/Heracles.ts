@@ -23,7 +23,7 @@ describe("Given instance of the TemplatedLink", () => {
 
   describe("when expanding URI with variable values", () => {
     beforeEach(() => {
-      this.result = this.link.expandTarget({ "with-variable": "test-value" });
+      this.result = this.link.expand({ "with-variable": "test-value" });
     });
 
     it("should provide an expanded URL", () => {

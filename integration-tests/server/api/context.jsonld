@@ -1,126 +1,37 @@
 {
-    "@context": {
-        "hydra": "http://www.w3.org/ns/hydra/core#",
-        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
-        "xsd": "http://www.w3.org/2001/XMLSchema#",
-        "owl": "http://www.w3.org/2002/07/owl#",
-        "schema": "http://schema.org/",
-        "examplevocab": "http://example.com/vocab#",
-        "range": "rdfs:range",
-        "label": "rdfs:label",
-        "comment": "rdfs:comment",
-        "description": "hydra:description",
-        "entrypoint": {
-            "@id": "hydra:entrypoint",
-            "@type": "@id"
-        },
-        "title": {
-            "@id": "hydra:title",
-            "@type": "xsd:string"
-        },
-        "operation": {
-            "@id": "hydra:operation",
-            "@type": "@id"
-        },
-        "method": {
-            "@id": "hydra:method",
-            "@type": "xsd:string"
-        },
-        "returns": {
-            "@id": "hydra:returns",
-            "@type": "@vocab"
-        },
-        "expects": {
-            "@id": "hydra:expects",
-            "@type": "@vocab"
-        },
-        "supportedClass": {
-            "@id": "hydra:supportedClass",
-            "@type": "@vocab"
-        },
-        "supportedProperty": {
-            "@id": "hydra:supportedProperty",
-            "@type": "@vocab"
-        },
-        "property": {
-            "@id": "hydra:property",
-            "@type": "@vocab"
-        },
-        "required": "hydra:required",
-        "collection": {
-            "@id": "hydra:collection",
-            "@type": "@id"
-        },
-        "member": {
-            "@id": "hydra:member",
-            "@type": "@id"
-        },
-        "memberTemplate": "hydra:memberTemplate",
-        "first": {
-            "@id": "hydra:first",
-            "@type": "@id"
-        },
-        "next": {
-            "@id": "hydra:next",
-            "@type": "@id"
-        },
-        "previous": {
-            "@id": "hydra:previous",
-            "@type": "@id"
-        },
-        "last": {
-            "@id": "hydra:last",
-            "@type": "@id"
-        },
-        "view": {
-            "@id": "hydra:view",
-            "@type": "@id"
-        },
-        "totalItems": "hydra:totalItems",
-        "template": {
-            "@id": "hydra:template",
-            "@type": "xsd:string"
-        },
-        "mappings": {
-            "@id": "hydra:mapping",
-            "@type": "@id"
-        },
-        "variable": {
-            "@id": "hydra:variable",
-            "@type": "xsd:string"
-        },
-        "variableRepresentation": {
-            "@id": "hydra:variableRepresentation",
-            "@type": "@id"
-        },
-        "search": {
-            "@id": "hydra:search",
-            "@type": "@id"
-        },
-        "Event": {
-            "@id": "schema:Event",
-            "@type": "@id"
-        },
-        "eventName": {
-            "@id": "schema:name",
-            "@type": "xsd:string"
-        },
-        "eventDescription": {
-            "@id": "schema:description",
-            "@type": "xsd:string"
-        },
-        "startDate": {
-            "@id": "schema:startDate",
-            "@type": "xsd:dateTime"
-        },
-        "endDate": {
-            "@id": "schema:endDate",
-            "@type": "xsd:dateTime"
-        },
-        "examplevocab:filter": {
-            "@id": "examplevocab:filter",
-            "@type": "@id"
+    "@context": [
+        "/api/hydra.jsonld",
+        {
+            "xsd": "http://www.w3.org/2001/XMLSchema#",
+            "schema": "http://schema.org/",
+            "rangeIncludes": { "@id": "schema:rangeIncludes", "@type": "@id" },
+            "domainIncludes": { "@id": "schema:domainIncludes", "@type": "@id" },
+            "examplevocab": "http://example.com/vocab#",
+            "psd2": "http://example.com/psd2#",
+            "Event": {
+                "@id": "schema:Event",
+                "@type": "@id"
+            },
+            "eventName": {
+                "@id": "schema:name",
+                "@type": "xsd:string"
+            },
+            "eventDescription": {
+                "@id": "schema:description",
+                "@type": "xsd:string"
+            },
+            "startDate": {
+                "@id": "schema:startDate",
+                "@type": "xsd:dateTime"
+            },
+            "endDate": {
+                "@id": "schema:endDate",
+                "@type": "xsd:dateTime"
+            },
+            "examplevocab:filter": {
+                "@id": "examplevocab:filter",
+                "@type": "@id"
+            }
         }
-    }
+    ]
 }

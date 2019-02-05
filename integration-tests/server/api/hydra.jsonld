@@ -82,7 +82,9 @@
         "range": {"@id": "rdfs:range", "@type": "@vocab" },
         "subClassOf": { "@id": "rdfs:subClassOf", "@type": "@vocab" },
         "subPropertyOf": { "@id": "rdfs:subPropertyOf", "@type": "@vocab" },
-        "seeAlso": { "@id": "rdfs:seeAlso", "@type": "@id" }
+        "seeAlso": { "@id": "rdfs:seeAlso", "@type": "@id" },
+        "rangeIncludes": { "@id": "schema:rangeIncludes", "@type": "@id" },
+        "domainIncludes": { "@id": "schema:domainIncludes", "@type": "@id" }
     },
     "@id": "http://www.w3.org/ns/hydra/core",
     "@type": "owl:Ontology",

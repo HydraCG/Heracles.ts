@@ -6,6 +6,11 @@ import FilterableCollection from "./FilterableCollection";
  */
 export default class TypesCollection extends FilterableCollection<string> {
   /**
+   * Defines a default empty types collection.
+   */
+  public static empty: TypesCollection = new TypesCollection([]);
+
+  /**
    * Initializes a new instance of the {@link TypesCollection} class with initial collections of types to filter.
    * @param types {Iterable<string>} Initial collection of types to filter.
    */

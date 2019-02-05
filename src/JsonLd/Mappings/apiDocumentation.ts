@@ -1,8 +1,8 @@
-import OperationsCollection from "../DataModel/Collections/OperationsCollection";
-import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
-import { IClass } from "../DataModel/IClass";
-import { hydra } from "../namespaces";
-import { IPropertyMapping } from "./IPropertyMapping";
+import OperationsCollection from "../../DataModel/Collections/OperationsCollection";
+import ResourceFilterableCollection from "../../DataModel/Collections/ResourceFilterableCollection";
+import { IClass } from "../../DataModel/IClass";
+import { hydra } from "../../namespaces";
+import { IPropertyMapping } from "../IPropertyMapping";
 
 export function apiDocumentation(mappings: {
   [property: string]: IPropertyMapping;

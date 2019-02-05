@@ -195,4 +195,19 @@ export default class ProcessingState {
 
     return (this.currentResource = result);
   }
+
+  /**
+   * Marks a given hypermedia as owned resulting in removal from root hypermedia collection.
+   * @param {IResource} hypermedia Hypermedia to be marked as owned.
+   */
+  public markHypermediaAsOwned(hypermedia: IResource) {
+    for (let index = 0; index < this.allHypermedia.length; index++) {
+      if (this.allHypermedia[index].iri === hypermedia.iri) {
+        this.allHypermedia.splice(index, 1);
+        break;
+      }
+    }
+
+    this.forbiddenHypermedia.push(hypermedia.iri);
+  }
 }

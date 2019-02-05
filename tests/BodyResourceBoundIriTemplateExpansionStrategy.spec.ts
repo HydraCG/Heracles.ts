@@ -39,7 +39,7 @@ describe("Given instance of the BodyResourceBoundIriTemplateExpansionStrategy cl
   describe("when handling a templated operation", () => {
     beforeEach(() => {
       this.operation = {
-        expandTarget: sinon.stub().callsFake((config: MappingBuilder) => {
+        expand: sinon.stub().callsFake((config: MappingBuilder) => {
           config(this.builder);
           this.variables = this.builder.complete();
           return {};
@@ -50,7 +50,7 @@ describe("Given instance of the BodyResourceBoundIriTemplateExpansionStrategy cl
     });
 
     it("should expand target", () => {
-      expect(this.operation.expandTarget).toHaveBeenCalledOnce();
+      expect(this.operation.expand).toHaveBeenCalledOnce();
     });
 
     it("should use mappings from the body resource", () => {

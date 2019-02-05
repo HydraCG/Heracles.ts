@@ -21,7 +21,7 @@
             "search": {
                 "@type": "hydra:IriTemplate",
                 "template": "/api/events{?searchText}",
-                "mappings": {
+                "mapping": {
                     "@type": "hydra:IriTemplateMapping",
                     "variable": "searchText",
                     "property": "hydra:freetextQuery",
@@ -31,7 +31,7 @@
             "examplevocab:filter": {
                 "@type": "hydra:IriTemplate",
                 "template": "/api/events{?eventName,eventDescription}",
-                "mappings": [
+                "mapping": [
                     {
                         "@type": "hydra:IriTemplateMapping",
                         "variable": "eventName",

@@ -17,7 +17,7 @@
                         "@type": "rdf:Property",
                         "label": "Name",
                         "comment": "The name of the event.",
-                        "range": "http://www.w3.org/2001/XMLSchema#string"
+                        "range": "xsd:string"
                     }
                 },
                 {
@@ -27,7 +27,7 @@
                         "@type": "rdf:Property",
                         "label": "Description",
                         "comment": "Description of the event.",
-                        "range": "http://www.w3.org/2001/XMLSchema#string"
+                        "range": "xsd:string"
                     }
                 },
                 {
@@ -37,7 +37,7 @@
                         "@type": "rdf:Property",
                         "label": "Start date",
                         "comment": "The start date and time of the item (in ISO 8601 date format).",
-                        "range": ["http://www.w3.org/2001/XMLSchema#dateTime", "http://www.w3.org/2001/XMLSchema#date"]
+                        "rangeIncludes": ["xsd:dateTime", "xsd:date"]
                     }
                 },
                 {
@@ -47,7 +47,7 @@
                         "@type": "rdf:Property",
                         "label": "End date",
                         "comment": "The end date and time of the item (in ISO 8601 date format).",
-                        "range": ["http://www.w3.org/2001/XMLSchema#dateTime", "http://www.w3.org/2001/XMLSchema#date"]
+                        "rangeIncludes": ["xsd:dateTime", "xsd:date"]
                     }
                 }
             ]

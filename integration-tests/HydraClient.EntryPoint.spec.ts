@@ -103,7 +103,7 @@ describe("Having a Hydra client", () => {
                 .withRelationOf(hydra.search)
                 .withTemplate()
                 .first()
-                .expandTarget({ searchText: "whatever" });
+                .expand({ searchText: "whatever" });
               this.searchResult = await this.client.getResource(link);
             })
           );
@@ -124,7 +124,7 @@ describe("Having a Hydra client", () => {
                 .withRelationOf("http://example.com/vocab#filter")
                 .withTemplate()
                 .first()
-                .expandTarget(_ =>
+                .expand(_ =>
                   _.withProperty("http://schema.org/name")
                     .havingValueOf("name")
                     .withVariable("eventDescription")
