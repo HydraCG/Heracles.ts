@@ -12,9 +12,7 @@ export default class BodyResourceBoundIriTemplateExpansionStrategy implements II
   public createRequest(operation: IOperation, body?: IResource, auxResource?: any): IOperation {
     const templatedOperation = operation as ITemplatedOperation;
     if (typeof templatedOperation.expand === "function") {
-      return templatedOperation.expand(builder =>
-        this.withResourceVariables(builder, body || {}, auxResource || {})
-      );
+      return templatedOperation.expand(builder => this.withResourceVariables(builder, body || {}, auxResource || {}));
     }
 
     return operation;

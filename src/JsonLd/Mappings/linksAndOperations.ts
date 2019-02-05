@@ -22,7 +22,7 @@ export function linksAndOperations(mappings: {
     type: [hydra.IriTemplate as string]
   };
   mappings[hydra.headerName] = {
-    default: names => names.length > 0 ? names[0] : "",
+    default: names => (names.length > 0 ? names[0] : ""),
     propertyName: "name",
     required: true,
     type: [hydra.HeaderTemplate as string]

@@ -51,8 +51,10 @@ describe("Given instance of the StaticOntologyProvider class", () => {
     "should get a correct domain",
     run(async () => {
       for (const predicate of Object.keys(propertyDomain)) {
-        expect(await this.provider.getDomainFor(predicate))
-          .toBe(propertyDomain[predicate], `as predicate ${predicate} is defined in ontology`);
+        expect(await this.provider.getDomainFor(predicate)).toBe(
+          propertyDomain[predicate],
+          `as predicate ${predicate} is defined in ontology`
+        );
       }
     })
   );
@@ -61,8 +63,10 @@ describe("Given instance of the StaticOntologyProvider class", () => {
     "should get a correct range",
     run(async () => {
       for (const predicate of Object.keys(propertyRange)) {
-        expect(await this.provider.getRangeFor(predicate))
-          .toBe(propertyRange[predicate], `as predicate ${predicate} is defined in ontology`);
+        expect(await this.provider.getRangeFor(predicate)).toBe(
+          propertyRange[predicate],
+          `as predicate ${predicate} is defined in ontology`
+        );
       }
     })
   );

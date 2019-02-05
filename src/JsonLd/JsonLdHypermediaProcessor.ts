@@ -234,8 +234,11 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     if (literals.indexOf(typeof propertyDefinition.default) !== -1) {
       targetResource[propertyDefinition.propertyName] = value[0] || propertyDefinition.default;
     } else if (typeof propertyDefinition.default === "function") {
-      targetResource[propertyDefinition.propertyName] =
-        propertyDefinition.default(value, context, propertyDefinition.propertyName);
+      targetResource[propertyDefinition.propertyName] = propertyDefinition.default(
+        value,
+        context,
+        propertyDefinition.propertyName
+      );
     }
   }
 }

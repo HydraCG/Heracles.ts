@@ -12,7 +12,7 @@ describe("Given instance of the TemplatedHeader", () => {
       mappings: new MappingsCollection([this.mapping]),
       template: "some text {with-variable}"
     };
-    this.originalHeader = { name: "TEST",  value: "" };
+    this.originalHeader = { name: "TEST", value: "" };
     this.header = new TemplatedHeader(this.originalHeader, this.template);
   });
 
