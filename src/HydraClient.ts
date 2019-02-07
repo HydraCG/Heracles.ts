@@ -130,11 +130,19 @@ export default class HydraClient implements IHydraClient {
     const targetOperation = this.iriTemplateExpansionStrategy.createRequest(operation, body, parameters);
     // TODO: move Content-Type header to some specialized component.
     // TODO: move body serialization to some specialized component.
-    return await fetch(targetOperation.target.iri, {
-      body: JSON.stringify(body),
+    const request = {
       headers: { "Content-Type": "application/ld+json" },
       method: targetOperation.method
-    });
+    } as any;
+    for (const header of targetOperation.expectedHeaders) {
+      request.headers[header.name] = header.value;
+    }
+
+    if (!!body) {
+      request.body = JSON.stringify(body);
+    }
+
+    return await fetch(targetOperation.target.iri, request);
   }
 
   private async getApiDocumentationUrl(url: string): Promise<string> {

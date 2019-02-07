@@ -283,7 +283,11 @@ describe("Given an instance of the HydraClient class", () => {
 
   describe("when invoking an operation", () => {
     beforeEach(() => {
-      this.operation = { target: { iri: "some:iri" } };
+      this.operation = {
+        expectedHeaders: [{ name: "header", value: "value" }],
+        method: "GET",
+        target: { iri: "some:iri" }
+      };
       this.body = {};
       this.parameters = {};
       this.iriTemplateExpansionStrategy.createRequest = sinon.stub().returns(this.operation);
@@ -305,7 +309,11 @@ describe("Given an instance of the HydraClient class", () => {
       });
 
       it("should execute the request", () => {
-        expect(this.fetch).toHaveBeenCalledWith(this.operation.target.iri);
+        expect(this.fetch).toHaveBeenCalledWith(this.operation.target.iri, {
+          body: "{}",
+          headers: { "Content-Type": "application/ld+json", "header": "value" },
+          method: "GET"
+        });
       });
     });
 
