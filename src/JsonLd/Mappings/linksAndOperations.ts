@@ -1,5 +1,6 @@
 import MappingsCollection from "../../DataModel/Collections/MappingsCollection";
 import ResourceFilterableCollection from "../../DataModel/Collections/ResourceFilterableCollection";
+import ReturnedResourcesCollection from "../../DataModel/Collections/ReturnedResourcesCollection";
 import TypesCollection from "../../DataModel/Collections/TypesCollection";
 import { hydra } from "../../namespaces";
 import { headersExtractor } from "../headersExtractor";
@@ -48,7 +49,7 @@ export function linksAndOperations(mappings: {
     type: [hydra.Operation as string]
   };
   mappings[hydra.returns] = {
-    default: returned => new ResourceFilterableCollection(returned),
+    default: returned => new ReturnedResourcesCollection(returned),
     propertyName: "returns",
     required: true,
     type: [hydra.Operation as string]

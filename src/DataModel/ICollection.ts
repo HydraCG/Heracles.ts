@@ -1,4 +1,5 @@
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
+import { ICollectionSpecification } from "./ICollectionSpecification";
 import { IHydraResource } from "./IHydraResource";
 import { IPartialCollectionIterator } from "./IPartialCollectionIterator";
 import { IPartialCollectionView } from "./IPartialCollectionView";
@@ -8,7 +9,7 @@ import { IResource } from "./IResource";
  * Describes an abstract Hydra collection.
  * @interface
  */
-export interface ICollection extends IHydraResource {
+export interface ICollection extends IHydraResource, ICollectionSpecification {
   /**
    * Gets the collection's member resources.
    * @readonly

@@ -30,15 +30,18 @@ export default class TemplatedHeader implements IHeader, ITemplated<IHeader> {
   }
 
   public expand(mappedVariables: IDictionary | MappingBuilder): IHeader {
+    let templateVariables: IDictionary = null;
     if (mappedVariables instanceof Function) {
       const builder = new MappingsBuilder(this.mappings);
       mappedVariables(builder);
-      return this.expand(builder.complete());
+      templateVariables = builder.complete() as IDictionary;
+    } else {
+      templateVariables = mappedVariables as IDictionary;
     }
 
     let value = this.template;
-    for (const property of Object.keys(mappedVariables)) {
-      value = value.replace(new RegExp(`{ ?${property} ?}`), mappedVariables[property]);
+    for (const property of Object.keys(templateVariables)) {
+      value = value.replace(new RegExp(`{ ?${property} ?}`), templateVariables[property]);
     }
 
     return { name: this.name, value };

@@ -1,6 +1,7 @@
 import { hydra } from "../namespaces";
 import HeadersCollection from "./Collections/HeadersCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
+import ReturnedResourcesCollection from "./Collections/ReturnedResourcesCollection";
 import TypesCollection from "./Collections/TypesCollection";
 import { IIriTemplate } from "./IIriTemplate";
 import { IOperation } from "./IOperation";
@@ -21,7 +22,7 @@ export default class TemplatedOperation extends TemplatedResource<IOperation> im
 
   public readonly expects: ResourceFilterableCollection<IResource>;
 
-  public readonly returns: ResourceFilterableCollection<IResource>;
+  public readonly returns: ReturnedResourcesCollection;
 
   public readonly expectedHeaders: HeadersCollection;
 

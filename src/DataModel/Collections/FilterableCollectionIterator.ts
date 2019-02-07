@@ -1,17 +1,23 @@
+interface IAssertion {
+  value: any;
+
+  negated: boolean;
+}
+
 /**
  * Provides an Iterator<T> implementation for the {@link FilterableCollection}.
  * @class
  */
 export default class FilterableCollectionIterator<T> implements Iterator<T> {
   private readonly items: Iterator<T>;
-  private readonly filters: { [predicate: string]: any };
+  private readonly filters: { [predicate: string]: IAssertion[] };
 
   /**
    * Initializes a new instance of the {@link FilterableCollectionIterator<T>} class.
    * @param items {Iterable<T>} Collection of items to iterate through.
-   * @param filters {{ [predicate: string]: any }} Dictionary of predicate-value pairs used for filtering.
+   * @param filters {{ [predicate: string]: IAssertion[] }} Dictionary of predicate-value pairs used for filtering.
    */
-  public constructor(items: Iterable<T>, filters: { [predicate: string]: any }) {
+  public constructor(items: Iterable<T>, filters: { [predicate: string]: IAssertion[] }) {
     this.items = items[Symbol.iterator]();
     this.filters = filters;
   }
@@ -58,20 +64,32 @@ export default class FilterableCollectionIterator<T> implements Iterator<T> {
     );
   }
 
+  private static isMatch(expectedValue: any, itemValue: any, predicate: any): boolean {
+    return (
+      FilterableCollectionIterator.equals(expectedValue, itemValue, predicate) ||
+      FilterableCollectionIterator.isInArray(expectedValue, itemValue, predicate) ||
+      FilterableCollectionIterator.matchesRegex(expectedValue, itemValue, predicate)
+    );
+  }
+
   private getNextMatchingItemFrom(iterator: Iterator<T>): T {
     let item: IteratorResult<T> = iterator.next();
     while (!item.done) {
       let isMatch = true;
-      for (const predicate of Object.keys(this.filters).filter(
-        filter => !!item.value[filter] || filter.charAt(0) === "_"
-      )) {
-        const expectedValue = this.filters[predicate];
-        if (
-          !FilterableCollectionIterator.equals(expectedValue, item.value, predicate) &&
-          !FilterableCollectionIterator.isInArray(expectedValue, item.value, predicate) &&
-          !FilterableCollectionIterator.matchesRegex(expectedValue, item.value, predicate)
-        ) {
-          isMatch = false;
+      for (const predicate of Object.keys(this.filters).filter(_ => !!item.value[_] || _.charAt(0) === "_")) {
+        for (const assertion of this.filters[predicate]) {
+          let valueMatchesCondition = FilterableCollectionIterator.isMatch(assertion.value, item.value, predicate);
+          if (assertion.negated) {
+            valueMatchesCondition = !valueMatchesCondition;
+          }
+
+          if (!valueMatchesCondition) {
+            isMatch = false;
+            break;
+          }
+        }
+
+        if (!isMatch) {
           break;
         }
       }

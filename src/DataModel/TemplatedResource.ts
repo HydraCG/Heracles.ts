@@ -55,13 +55,15 @@ export default abstract class TemplatedResource<T extends IPointingResource> imp
   }
 
   public expand(mappedVariables: IDictionary | MappingBuilder): T {
+    let templateVariables: IDictionary = null;
     if (mappedVariables instanceof Function) {
       const builder = new MappingsBuilder(this.mappings);
       mappedVariables(builder);
-      return this.expand(builder.complete());
+      templateVariables = builder.complete() as IDictionary;
+    } else {
+      templateVariables = mappedVariables as IDictionary;
     }
 
-    const templateVariables = mappedVariables as IDictionary;
     const targetUri = URITemplate(this.template)
       .fillFromObject(templateVariables)
       .toString();

@@ -1,5 +1,11 @@
 import FilterableCollectionIterator from "./FilterableCollectionIterator";
 
+interface IAssertion {
+  value: any;
+
+  negated: boolean;
+}
+
 /**
  * Provides a base functionality of a collection that filters itself with given predicates.
  * @abstract
@@ -7,7 +13,7 @@ import FilterableCollectionIterator from "./FilterableCollectionIterator";
  */
 export default abstract class FilterableCollection<T> {
   private readonly items: Iterable<T>;
-  private filters: { [predicate: string]: any } = {};
+  private filters: { [predicate: string]: IAssertion[] } = {};
 
   /**
    * Initializes a new instance of the {@link FilterableCollection<T>} class
@@ -104,20 +110,41 @@ export default abstract class FilterableCollection<T> {
    * Creates a new instance of the {@link FilterableCollection} with filter made narrower with given predicate.
    * @param predicate {string} Predicate of the filter.
    * @param value {string | RegExp} Either value or regular expression to match the value of the predicate to filter.
+   * @param positiveAssertion {boolean} Value indicating whether to match the value positively or negatively
    * @returns {FilterableCollection<T>}
    */
-  protected narrowFiltersWith(predicate: string, value: string | RegExp): FilterableCollection<T>;
+  protected narrowFiltersWith(
+    predicate: string,
+    value: string | RegExp,
+    positiveAssertion?: boolean
+  ): FilterableCollection<T>;
 
-  protected narrowFiltersWith(predicate: string, value: any): FilterableCollection<T> {
+  protected narrowFiltersWith(
+    predicate: string,
+    value: any,
+    positiveAssertion: boolean = true
+  ): FilterableCollection<T> {
     const result = this.createInstance(this.items);
+    let currentPredicateFilter: IAssertion[] = null;
     for (const filter of Object.keys(this.filters)) {
-      result.filters[filter] = this.filters[filter];
+      result.filters[filter] = [];
+      for (const condition of this.filters[filter]) {
+        result.filters[filter].push(condition);
+      }
+
+      if (filter === predicate) {
+        currentPredicateFilter = result.filters[filter];
+      }
+    }
+
+    if (currentPredicateFilter === null) {
+      result.filters[predicate] = currentPredicateFilter = [];
     }
 
     if (!value) {
       delete result.filters[predicate];
     } else {
-      result.filters[predicate] = value;
+      currentPredicateFilter.push({ value, negated: !positiveAssertion });
     }
 
     return result;

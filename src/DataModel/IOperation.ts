@@ -1,5 +1,6 @@
 import HeadersCollection from "./Collections/HeadersCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
+import ReturnedResourcesCollection from "./Collections/ReturnedResourcesCollection";
 import { IHydraResource } from "./IHydraResource";
 import { IPointingResource } from "./IPointingResource";
 import { IResource } from "./IResource";
@@ -28,7 +29,7 @@ export interface IOperation extends IHydraResource, IPointingResource {
    * @readonly
    * @returns {TypedResourceFilterableCollection<IResource>}
    */
-  readonly returns: ResourceFilterableCollection<IResource>;
+  readonly returns: ReturnedResourcesCollection;
 
   /**
    * Gets the expected headers.

@@ -28,8 +28,10 @@ export let hydra = {
 
   collection: hydraNamespace + "collection",
   member: hydraNamespace + "member",
+  manages: hydraNamespace + "manages",
   totalItems: hydraNamespace + "totalItems",
   Collection: hydraNamespace + "Collection",
+  CollectionSpecification: hydraNamespace + "CollectionSpecification",
   PartialCollectionView: hydraNamespace + "PartialCollectionView",
 
   supportedOperation: hydraNamespace + "supportedOperation",
@@ -60,6 +62,8 @@ export let hydra = {
   last: hydraNamespace + "last",
   search: hydraNamespace + "search",
   view: hydraNamespace + "view",
+  subject: hydraNamespace + "subject",
+  object: hydraNamespace + "object",
 
   skip: hydraNamespace + "skip",
   take: hydraNamespace + "take"
