@@ -3,7 +3,7 @@ import HeadersCollection from "../../../src/DataModel/Collections/HeadersCollect
 describe("Given instance of the HeadersCollection", () => {
   beforeEach(() => {
     this.header1 = { name: "HEADER1", value: "VALUE1" };
-    this.header2 = { name: "HEADER2", value: "VALUE2" };
+    this.header2 = { name: "HEADER2", value: "VALUE2", template: "VALUE2" };
     this.allHeaders = [this.header1, this.header2];
     this.header = new HeadersCollection(this.allHeaders);
   });
@@ -20,6 +20,10 @@ describe("Given instance of the HeadersCollection", () => {
 
     it("should not confirm an existing header", () => {
       expect(this.header.ofName("whatever name")).toBeNull();
+    });
+
+    it("should confirm an existing header with template", () => {
+      expect(this.header.withTemplate().first()).toBe(this.header2);
     });
   });
 });

@@ -41,6 +41,13 @@ export default class TemplatedHeader implements IHeader, ITemplated<IHeader> {
 
     let value = this.template;
     for (const property of Object.keys(templateVariables)) {
+      if (this.template.length === 0) {
+        value = templateVariables[property] || "";
+        if (value.length > 0) {
+          break;
+        }
+      }
+
       value = value.replace(new RegExp(`{ ?${property} ?}`), templateVariables[property]);
     }
 

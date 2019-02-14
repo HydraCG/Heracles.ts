@@ -48,10 +48,16 @@ export default abstract class TemplatedResource<T extends IPointingResource> imp
     this.links = new LinksCollection([]);
     this.collections = new ResourceFilterableCollection<ICollection>([]);
     this.type = new TypesCollection(types.filter((item, index) => types.indexOf(item) === index));
-    this.target = null;
-    this.template = template.template;
-    this.mappings = template.mappings;
     this.operations = new OperationsCollection([]);
+    if (!!template) {
+      this.template = template.template;
+      this.mappings = template.mappings;
+      this.target = null;
+    } else {
+      this.template = null;
+      this.mappings = new MappingsCollection([]);
+      this.target = resource.target;
+    }
   }
 
   public expand(mappedVariables: IDictionary | MappingBuilder): T {
@@ -64,9 +70,12 @@ export default abstract class TemplatedResource<T extends IPointingResource> imp
       templateVariables = mappedVariables as IDictionary;
     }
 
-    const targetUri = URITemplate(this.template)
-      .fillFromObject(templateVariables)
-      .toString();
+    const targetUri =
+      this.template !== null
+        ? URITemplate(this.template)
+            .fillFromObject(templateVariables)
+            .toString()
+        : this.target.iri;
     const target = targetUri.match(/^[a-zA-Z][a-zA-Z0-9_]*:/) ? targetUri : new URL(targetUri, this.baseUrl).toString();
     return this.createInstance({
       baseUrl: this.baseUrl,

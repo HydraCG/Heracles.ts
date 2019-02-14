@@ -7,5 +7,11 @@ export const targetExtractor = (value, processingState) => {
   }
 
   const iri = jsonld.prependBase(processingState.baseUrl, processingState.ownerIri);
-  return processingState.resourceMap[iri] || { iri, type: new TypesCollection([]) };
+  const result = { iri, type: new TypesCollection([]) };
+  const existingResource = processingState.resourceMap[iri];
+  if (!!existingResource) {
+    result.type = existingResource.type || result.type;
+  }
+
+  return result;
 };

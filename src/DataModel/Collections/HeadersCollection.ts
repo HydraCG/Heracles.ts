@@ -23,6 +23,14 @@ export default class HeadersCollection extends FilterableCollection<IHeader> {
     return this.where(item => item.name === name).first();
   }
 
+  /**
+   * Obtains a collection of headers being an Hydra HeaderTemplate.
+   * @returns {HeadersCollection}
+   */
+  public withTemplate(): HeadersCollection {
+    return this.where(_ => !!(_ as any).template) as HeadersCollection;
+  }
+
   protected createInstance(items: Iterable<IHeader>): HeadersCollection {
     return new HeadersCollection(items);
   }
