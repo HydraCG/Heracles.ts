@@ -66,7 +66,8 @@ export let hydra = {
   object: hydraNamespace + "object",
 
   skip: hydraNamespace + "skip",
-  take: hydraNamespace + "take"
+  take: hydraNamespace + "take",
+  page: hydraNamespace + "page"
 };
 
 const rdfNamespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
