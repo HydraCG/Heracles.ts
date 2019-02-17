@@ -26,19 +26,23 @@ export default class HydraClient implements IHydraClient {
   public static invalidResponse = "Remote server responded with a status of ";
   public static responseFormatNotSupported = "Response format is not supported.";
   public static noIriTemplateExpansionStrategy = "No IRI template expansion strategy was provided.";
+  public static noHttpFacility = "No HTTP facility provided.";
 
   private readonly hypermediaProcessors: IHypermediaProcessor[];
   private readonly iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy;
+  private readonly httpCall: (url: string, options?: RequestInit) => Promise<Response>;
 
   /**
    * Initializes a new instance of the {@link HydraClient} class.
    * @param {Iterable<IHypermediaProcessor>} hypermediaProcessors Hypermedia processors used for response hypermedia
    *                                                              controls extraction.
    * @param {IIriTemplateExpansionStrategy} iriTemplateExpansionStrategy IRI template variable expansion strategy.
+   * @param {(url: string, options?: Request) => Promise<Response>} httpCall HTTP facility used to call remote server.
    */
   public constructor(
     hypermediaProcessors: Iterable<IHypermediaProcessor>,
-    iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy
+    iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy,
+    httpCall: (url: string, options?: RequestInit) => Promise<Response>
   ) {
     if (!FilterableCollection.prototype.any.call(hypermediaProcessors)) {
       throw new Error(HydraClient.noHypermediaProcessors);
@@ -48,8 +52,13 @@ export default class HydraClient implements IHydraClient {
       throw new Error(HydraClient.noIriTemplateExpansionStrategy);
     }
 
+    if (!httpCall) {
+      throw new Error(HydraClient.noHttpFacility);
+    }
+
     this.hypermediaProcessors = Array.from(hypermediaProcessors);
     this.iriTemplateExpansionStrategy = iriTemplateExpansionStrategy;
+    this.httpCall = httpCall;
   }
 
   /**
@@ -97,7 +106,7 @@ export default class HydraClient implements IHydraClient {
    */
   public async getResource(urlOrResource: string | IResource | ILink): Promise<IWebResource> {
     const url = HydraClient.getUrl(urlOrResource);
-    const response = await fetch(url);
+    const response = await this.makeRequestTo(url);
     if (response.status !== 200) {
       throw new Error(HydraClient.invalidResponse + response.status);
     }
@@ -130,7 +139,7 @@ export default class HydraClient implements IHydraClient {
     const targetOperation = this.iriTemplateExpansionStrategy.createRequest(operation, body, parameters);
     // TODO: move Content-Type header to some specialized component.
     // TODO: move body serialization to some specialized component.
-    return await fetch(targetOperation.target.iri, {
+    return await this.makeRequestTo(targetOperation.target.iri, {
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/ld+json" },
       method: targetOperation.method
@@ -138,7 +147,7 @@ export default class HydraClient implements IHydraClient {
   }
 
   private async getApiDocumentationUrl(url: string): Promise<string> {
-    const response = await fetch(url);
+    const response = await this.makeRequestTo(url);
     if (response.status !== 200) {
       throw new Error(HydraClient.invalidResponse + response.status);
     }
@@ -163,5 +172,9 @@ export default class HydraClient implements IHydraClient {
     }
 
     return url;
+  }
+
+  private async makeRequestTo(url: string, options?: RequestInit): Promise<Response> {
+    return await this.httpCall(url, options);
   }
 }
