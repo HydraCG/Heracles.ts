@@ -11,7 +11,6 @@ export let hydra = {
   ApiDocumentation: hydraNamespace + "ApiDocumentation",
   EntryPoint: hydraNamespace + "EntryPoint",
 
-  headerName: hydraNamespace + "headerName",
   mapping: hydraNamespace + "mapping",
   template: hydraNamespace + "template",
   variable: hydraNamespace + "variable",
@@ -20,11 +19,9 @@ export let hydra = {
   BasicRepresentation: hydraNamespace + "BasicRepresentation",
   IriTemplate: hydraNamespace + "IriTemplate",
   IriTemplateMapping: hydraNamespace + "IriTemplateMapping",
-  HeaderTemplate: hydraNamespace + "HeaderTemplate,",
   TemplatedLink: hydraNamespace + "TemplatedLink",
   Link: hydraNamespace + "Link",
   VariableRepresentation: hydraNamespace + "VariableRepresentation",
-  Template: hydraNamespace + "Template",
 
   collection: hydraNamespace + "collection",
   member: hydraNamespace + "member",
@@ -65,9 +62,10 @@ export let hydra = {
   subject: hydraNamespace + "subject",
   object: hydraNamespace + "object",
 
-  skip: hydraNamespace + "skip",
-  take: hydraNamespace + "take",
-  page: hydraNamespace + "page"
+  offset: hydraNamespace + "offset",
+  limit: hydraNamespace + "limit",
+  pageIndex: hydraNamespace + "pageIndex",
+  pageReference: hydraNamespace + "pageReference"
 };
 
 const rdfNamespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";

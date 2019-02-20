@@ -284,19 +284,19 @@ describe("Given an instance of the HydraClient class", () => {
   describe("when invoking an operation", () => {
     beforeEach(() => {
       this.operation = {
-        expectedHeaders: [{ name: "header", value: "value" }],
         method: "GET",
         target: { iri: "some:iri" }
       };
       this.body = {};
       this.parameters = {};
+      this.headers = { header: "value" };
       this.iriTemplateExpansionStrategy.createRequest = sinon.stub().returns(this.operation);
     });
 
     describe("and valid operation was provided", () => {
       beforeEach(
         run(async () => {
-          await this.client.invoke(this.operation, this.body, this.parameters);
+          await this.client.invoke(this.operation, this.body, this.parameters, this.headers);
         })
       );
 

@@ -5,7 +5,7 @@ import TemplatedOperation from "../DataModel/TemplatedOperation";
 export const operationsExtractor = (operations, processingState) => {
   const result = [];
   for (const operation of operations) {
-    if (!!(operation.target as IIriTemplate).mappings || operation.expectedHeaders.withTemplate().any()) {
+    if (!!(operation.target as IIriTemplate).mappings) {
       result.push(new TemplatedOperation(operation, operation.target as IIriTemplate));
     } else {
       result.push(operation);

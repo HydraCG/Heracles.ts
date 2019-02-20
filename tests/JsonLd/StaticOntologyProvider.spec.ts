@@ -19,7 +19,7 @@ propertyDomain[hydra.first] = hydra.Resource;
 propertyDomain[hydra.last] = hydra.Resource;
 propertyDomain[hydra.next] = hydra.Resource;
 propertyDomain[hydra.previous] = hydra.Resource;
-propertyDomain[hydra.mapping] = hydra.Template;
+propertyDomain[hydra.mapping] = hydra.IriTemplate;
 propertyDomain[hydra.variable] = hydra.IriTemplateMapping;
 
 const propertyRange = {};

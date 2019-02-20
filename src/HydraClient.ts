@@ -122,7 +122,8 @@ export default class HydraClient implements IHydraClient {
    * @param parameters Optional auxiliary parameters.
    * @returns Response of the operation.
    */
-  public async invoke(operation: IOperation, body?: IWebResource, parameters?: object): Promise<Response> {
+  public async invoke(operation: IOperation, body?: IWebResource, parameters?: object, headers?: object)
+    : Promise<Response> {
     if (!operation) {
       throw new Error(HydraClient.noOperationProvided);
     }
@@ -134,8 +135,10 @@ export default class HydraClient implements IHydraClient {
       headers: { "Content-Type": "application/ld+json" },
       method: targetOperation.method
     } as any;
-    for (const header of targetOperation.expectedHeaders) {
-      request.headers[header.name] = header.value;
+    if (!!headers) {
+      for (const header of Object.keys(headers)) {
+        request.headers[header] = headers[header];
+      }
     }
 
     if (!!body) {

@@ -3,7 +3,6 @@ import ResourceFilterableCollection from "../../DataModel/Collections/ResourceFi
 import ReturnedResourcesCollection from "../../DataModel/Collections/ReturnedResourcesCollection";
 import TypesCollection from "../../DataModel/Collections/TypesCollection";
 import { hydra } from "../../namespaces";
-import { headersExtractor } from "../headersExtractor";
 import { IPropertyMapping } from "../IPropertyMapping";
 import { targetExtractor } from "../targetExtractor";
 
@@ -14,19 +13,13 @@ export function linksAndOperations(mappings: {
     default: "",
     propertyName: "template",
     required: true,
-    type: [hydra.Template as string, hydra.IriTemplate as string, hydra.HeaderTemplate as string]
+    type: [hydra.IriTemplate as string]
   };
   mappings[hydra.mapping] = {
     default: iriTemplateMappings => new MappingsCollection(iriTemplateMappings),
     propertyName: "mappings",
     required: true,
     type: [hydra.IriTemplate as string]
-  };
-  mappings[hydra.headerName] = {
-    default: names => (names.length > 0 ? names[0] : ""),
-    propertyName: "name",
-    required: true,
-    type: [hydra.HeaderTemplate as string]
   };
 
   mappings[hydra.variable] = {
@@ -55,7 +48,6 @@ export function linksAndOperations(mappings: {
     type: [hydra.Operation as string]
   };
   mappings[hydra.expectsHeader] = {
-    default: headersExtractor,
     propertyName: "expectedHeaders",
     required: true,
     type: [hydra.Operation as string]

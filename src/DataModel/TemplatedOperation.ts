@@ -1,5 +1,4 @@
 import { hydra } from "../namespaces";
-import HeadersCollection from "./Collections/HeadersCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import ReturnedResourcesCollection from "./Collections/ReturnedResourcesCollection";
 import TypesCollection from "./Collections/TypesCollection";
@@ -8,7 +7,6 @@ import { IOperation } from "./IOperation";
 import { IPointingResource } from "./IPointingResource";
 import { IResource } from "./IResource";
 import { ITemplatedOperation } from "./ITemplatedOperation";
-import { IDictionary, MappingBuilder } from "./ITemplatedResource";
 import TemplatedResource from "./TemplatedResource";
 
 /**
@@ -24,7 +22,7 @@ export default class TemplatedOperation extends TemplatedResource<IOperation> im
 
   public readonly returns: ReturnedResourcesCollection;
 
-  public readonly expectedHeaders: HeadersCollection;
+  public readonly expectedHeaders: Iterable<string>;
 
   public readonly returnedHeaders: Iterable<string>;
 
@@ -42,34 +40,17 @@ export default class TemplatedOperation extends TemplatedResource<IOperation> im
     this.returnedHeaders = operationResource.returnedHeaders;
   }
 
-  public expand(mappedVariables: IDictionary | MappingBuilder): IOperation {
-    return this.expandHeaders(mappedVariables, super.expand(mappedVariables) as any);
-  }
-
   protected createInstance(resource: IPointingResource): IOperation {
     const result = resource as any;
     result.expects = this.expects;
     result.method = this.method;
     result.returnedHeaders = this.returnedHeaders;
+    result.expectedHeaders = this.expectedHeaders;
     result.type = new TypesCollection([...this.type].filter(type => type !== hydra.IriTemplate));
     return result as IOperation;
   }
 
   protected getNextIri(): string {
     return `_:operation${++TemplatedOperation.id}`;
-  }
-
-  private expandHeaders(mappedVariables: IDictionary | MappingBuilder, result: any): IOperation {
-    const expectedHeaders = [];
-    for (const expectedHeader of this.expectedHeaders) {
-      if (!!(expectedHeader as any).expand) {
-        expectedHeaders.push((expectedHeader as any).expand(mappedVariables));
-      } else {
-        expectedHeaders.push(expectedHeader);
-      }
-    }
-
-    result.expectedHeaders = new HeadersCollection(expectedHeaders);
-    return result;
   }
 }
