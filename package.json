@@ -45,7 +45,7 @@
     "@types/js-md5": "0.4.2",
     "@types/node": "7.10.2",
     "@types/parse-link-header": "1.0.0",
-    "@types/sinon": "7.0.9",
+    "@types/sinon": "7.0.10",
     "@types/uri-templates": "0.1.30",
     "body-parser": "1.18.3",
     "express": "4.16.4",
