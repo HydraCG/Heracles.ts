@@ -14,8 +14,8 @@ describe("Given an instance of the HydraClient class", () => {
         response.headers.get("Content-Type") === "application/ld+json" ? Level.FullSupport : Level.None
     };
     this.iriTemplateExpansionStrategy = {};
-    this.client = new HydraClient([this.hypermediaProcessor], this.iriTemplateExpansionStrategy);
-    this.fetch = sinon.stub(window, "fetch");
+    this.fetch = sinon.stub();
+    this.client = new HydraClient([this.hypermediaProcessor], this.iriTemplateExpansionStrategy, this.fetch);
   });
 
   it("should create an instance", () => {
@@ -321,9 +321,5 @@ describe("Given an instance of the HydraClient class", () => {
         })
       );
     });
-  });
-
-  afterEach(() => {
-    this.fetch.restore();
   });
 });

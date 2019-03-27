@@ -15,6 +15,7 @@ const hydraOntology = require("./JsonLd/hydra.json");
 export default class HydraClientFactory {
   private readonly hypermediaProcessors: IHypermediaProcessor[] = [];
   private iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy = null;
+  private httpCall: (url: string, options?: RequestInit) => Promise<Response> = null;
 
   /**
    * Starts the factory configuration.
@@ -25,14 +26,17 @@ export default class HydraClientFactory {
   }
 
   /**
-   * Configures a future {@link IHydraClient} with {@link JsonLdHypermediaProcessor} and
-   * {@link BodyResourceBoundIriTemplateExpansionStrategy} components.
+   * Configures a future {@link IHydraClient} with {@link JsonLdHypermediaProcessor},
+   * {@link BodyResourceBoundIriTemplateExpansionStrategy} and fetch components.
    * @returns {HydraClientFactory}
    */
   public withDefaults(): HydraClientFactory {
-    return this.with(
-      new JsonLdHypermediaProcessor(new IndirectTypingProvider(new StaticOntologyProvider(hydraOntology)))
-    ).with(new BodyResourceBoundIriTemplateExpansionStrategy());
+    const jsonLdHypermediaProcessor = new JsonLdHypermediaProcessor(
+      new IndirectTypingProvider(new StaticOntologyProvider(hydraOntology))
+    );
+    return this.with(jsonLdHypermediaProcessor)
+      .with(new BodyResourceBoundIriTemplateExpansionStrategy())
+      .with(fetch.bind(window));
   }
   /**
    * Adds an another {@link IHypermediaProcessor} component.
@@ -49,13 +53,21 @@ export default class HydraClientFactory {
    */
   /* tslint:disable-next-line:unified-signatures */
   public with(iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy): HydraClientFactory;
+  /**
+   * Adds HTTP requests facility component.
+   * @param {(url: string, options?: RequestInit) => Promise<Response>} httpCall HTTP call facility to be used for
+   *                                                                             remote server calls.
+   * @returns {HydraClientFactory}
+   */
+  /* tslint:disable-next-line:unified-signatures */
+  public with(httpCall: (url: string, options?: RequestInit) => Promise<Response>): HydraClientFactory;
   public with(component: any): HydraClientFactory {
     if (typeof component.createRequest === "function") {
       this.iriTemplateExpansionStrategy = component as IIriTemplateExpansionStrategy;
-    }
-
-    if (typeof component.process === "function") {
+    } else if (typeof component.process === "function") {
       this.hypermediaProcessors.push(component as IHypermediaProcessor);
+    } else {
+      this.httpCall = component;
     }
 
     return this;
@@ -66,6 +78,6 @@ export default class HydraClientFactory {
    * @returns {IHydraClient}
    */
   public andCreate(): IHydraClient {
-    return new HydraClient(this.hypermediaProcessors, this.iriTemplateExpansionStrategy);
+    return new HydraClient(this.hypermediaProcessors, this.iriTemplateExpansionStrategy, this.httpCall);
   }
 }
