@@ -9,6 +9,7 @@ import { IHydraResource } from "../DataModel/IHydraResource";
 import { IWebResource } from "../DataModel/IWebResource";
 import { IHydraClient } from "../IHydraClient";
 import { IHypermediaProcessor, Level } from "../IHypermediaProcessor";
+import { LinksPolicy } from "../LinksPolicy";
 import { hydra } from "../namespaces";
 import IndirectTypingProvider from "./IndirectTypingProvider";
 import { mappings } from "./mappings";
@@ -83,12 +84,13 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return result;
   }
 
-  public async process(response: Response, client: IHydraClient): Promise<IWebResource> {
+  public async process(response: Response, client: IHydraClient, linksPolicy: LinksPolicy): Promise<IWebResource> {
     const payload = await JsonLdHypermediaProcessor.ensureJsonLd(response);
     const result: any = payload;
     let flattenPayload = await jsonld.promises.flatten(payload, null, { base: response.url, embed: "@link" });
     flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
-    const context = await this.processHypermedia(new ProcessingState(flattenPayload, response.url, client));
+    const context = await this.processHypermedia(
+      new ProcessingState(flattenPayload, response.url, client, linksPolicy));
     const hypermedia = context.hypermedia;
     for (let index = hypermedia.length - 1; index >= 0; index--) {
       JsonLdHypermediaProcessor.tryRemoveReferenceFrom(hypermedia, index);

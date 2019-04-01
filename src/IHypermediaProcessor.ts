@@ -1,5 +1,6 @@
 import { IWebResource } from "./DataModel/IWebResource";
-import HydraClient from "./HydraClient";
+import { IHydraClient } from "./IHydraClient";
+import { LinksPolicy } from "./LinksPolicy";
 
 export enum Level {
   /**
@@ -40,8 +41,9 @@ export interface IHypermediaProcessor {
   /**
    * Parses a given raw response.
    * @param {Response} response Raw fetch response holding data to be parsed.
-   * @param client {HydraClient} Hydra client.
+   * @param client {IHydraClient} Hydra client.
+   * @param linksPolicy {LinksPolicy} Policy defining what is considered a link.
    * @returns {Promise<IWebResource>}
    */
-  process(response: Response, client: HydraClient): Promise<IWebResource>;
+  process(response: Response, client: IHydraClient, linksPolicy: LinksPolicy): Promise<IWebResource>;
 }

@@ -1,5 +1,6 @@
 import * as sinon from "sinon";
 import JsonLdHypermediaProcessor from "../../src/JsonLd/JsonLdHypermediaProcessor";
+import { LinksPolicy } from "../../src/LinksPolicy";
 import { hydra } from "../../src/namespaces";
 import { run } from "../../testing/AsyncHelper";
 import HydraResourceMatcher from "../../testing/HydraResourceMatcher";
@@ -37,7 +38,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               "Link": "<context.jsonld>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\""
             }
           );
-          this.result = await this.hypermediaProcessor.process(this.response, null);
+          this.result = await this.hypermediaProcessor.process(this.response, null, LinksPolicy.Strict);
         })
       );
 
@@ -56,7 +57,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       beforeEach(
         run(async () => {
           this.response = returnOk("http://temp.uri/api", inputJsonLd);
-          this.result = await this.hypermediaProcessor.process(this.response, null);
+          this.result = await this.hypermediaProcessor.process(this.response, null, LinksPolicy.Strict);
         })
       );
 
@@ -175,6 +176,16 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   {
                     baseUrl: "http://temp.uri/api",
                     collections: [],
+                    iri: "http://temp.uri/api/events/1",
+                    links: [],
+                    operations: [],
+                    relation: hydra.member,
+                    target: { iri: "http://temp.uri/api/events/1", type: [] },
+                    type: [hydra.Link]
+                  },
+                  {
+                    baseUrl: "http://temp.uri/api",
+                    collections: [],
                     iri: hydra.first,
                     links: [],
                     operations: [],
@@ -256,7 +267,28 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               }
             ],
             iri: "http://temp.uri/api",
-            links: [],
+            links: [
+              {
+                baseUrl: "http://temp.uri/api",
+                collections: [],
+                iri: "http://temp.uri/api/people",
+                links: [],
+                operations: [],
+                relation: hydra.collection,
+                target: { iri: "http://temp.uri/api/people", type: [] },
+                type: [hydra.Link]
+              },
+              {
+                baseUrl: "http://temp.uri/api",
+                collections: [],
+                iri: "http://temp.uri/api/events",
+                links: [],
+                operations: [],
+                relation: hydra.collection,
+                target: { iri: "http://temp.uri/api/events", type: [] },
+                type: [hydra.Link]
+              }
+            ],
             operations: [],
             type: [hydra.EntryPoint]
           }

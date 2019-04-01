@@ -1,6 +1,7 @@
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import { IResource } from "../DataModel/IResource";
 import { IHydraClient } from "../IHydraClient";
+import { LinksPolicy } from "../LinksPolicy";
 import { factories } from "./factories";
 
 /**
@@ -64,15 +65,22 @@ export default class ProcessingState {
   public readonly baseUrl: string;
 
   /**
+   * Gets the protocol, host and port of the {@link baseUrl};
+   * @readonly
+   * @returns {string}
+   */
+  public readonly rootUrl: string;
+
+  /**
    * Gets the original payload.
    * @type {object[]}
    */
   public readonly payload: object[];
 
   /**
-   * Gets the collection of resources that should not be added to the resulting hypermedia collection.
+   * Gets the current links policy.
    */
-  public readonly forbiddenHypermedia: string[];
+  public readonly linksPolicy: LinksPolicy;
 
   /**
    * Gets the processed object's resource.
@@ -80,6 +88,8 @@ export default class ProcessingState {
    * @type {IResource = null}
    */
   public currentResource: IResource = null;
+
+  private readonly forbiddenHypermedia: string[];
 
   private readonly allHypermedia: IResource[];
 
@@ -90,25 +100,36 @@ export default class ProcessingState {
    * @param graphToProcess {Array<object>} Actual graph to process.
    * @param baseUrl {string} Base URL.
    * @param client {IHydraClient} Hydra client instance.
+   * @param linksPolicy {LinksPolicy} Policy defining what is considered a link.
    */
-  public constructor(graphToProcess: object[], baseUrl: string, client: IHydraClient);
+  public constructor(graphToProcess: object[], baseUrl: string, client: IHydraClient, linksPolicy: LinksPolicy);
 
   /**
    * Initializes a new instance of the {@link ProcessingState} class.
    * @param objectToProcess {object} Actual object to process.
    * @param ownerIri {string} Object to process owning resource's IRI.
    * @param parentIri {string} Object to process parent resource's IRI.
-   * @param parentContext {ProcessingState} Parent context to obtain more details from.
+   * @param parentState {ProcessingState} Parent processing state to obtain more details from.
    */
-  public constructor(objectToProcess: object, ownerIri: string, parentIri: string, parentContext: ProcessingState);
+  public constructor(objectToProcess: object, ownerIri: string, parentIri: string, parentState: ProcessingState);
 
   public constructor(
     objectToProcess: object | object[],
     baseUrlOrOwnerIri: string,
     clientOrParentIri: IHydraClient | string = null,
-    parentContext: ProcessingState = null
+    parentContextOrLinksPolicy: any = null
   ) {
-    if (arguments.length === 3) {
+    if (arguments[3] instanceof ProcessingState) {
+      const parentState = parentContextOrLinksPolicy as ProcessingState;
+      this.resourceMap = parentState.resourceMap;
+      this.allHypermedia = parentState.allHypermedia;
+      this.payload = parentState.payload;
+      this.forbiddenHypermedia = parentState.forbiddenHypermedia;
+      this.baseUrl = parentState.baseUrl;
+      this.parentIri = clientOrParentIri as string;
+      this.client = parentState.client;
+      this.linksPolicy = parentState.linksPolicy;
+    } else {
       this.resourceMap = {};
       this.allHypermedia = [];
       this.payload = objectToProcess as object[];
@@ -116,21 +137,26 @@ export default class ProcessingState {
       this.baseUrl = baseUrlOrOwnerIri;
       this.parentIri = baseUrlOrOwnerIri;
       this.client = clientOrParentIri as IHydraClient;
-    } else {
-      this.resourceMap = parentContext.resourceMap;
-      this.allHypermedia = parentContext.allHypermedia;
-      this.payload = parentContext.payload;
-      this.forbiddenHypermedia = parentContext.forbiddenHypermedia;
-      this.baseUrl = parentContext.baseUrl;
-      this.parentIri = clientOrParentIri as string;
-      this.client = parentContext.client;
+      this.linksPolicy = parentContextOrLinksPolicy as LinksPolicy;
     }
 
+    const baseUrl = new URL(this.baseUrl);
+    this.rootUrl = `${baseUrl.protocol}//${baseUrl.host}/`;
     this.processedObject = objectToProcess;
     this.ownerIri = baseUrlOrOwnerIri;
     if (Object.keys(this.processedObject).length === 1 && Object.keys(this.processedObject)[0] === "@id") {
       this.processedObject =
         this.payload.find(item => item["@id"] === this.processedObject["@id"]) || this.processedObject;
+    }
+  }
+
+  /**
+   * Marks as owned hypermedia, this the given iri won't be available as a standalone hypermedia control.
+   * @param {string} iri Iri to be marked.
+   */
+  public markAsOwned(iri: string) {
+    if (this.forbiddenHypermedia.indexOf(iri) === -1) {
+      this.forbiddenHypermedia.push(iri);
     }
   }
 

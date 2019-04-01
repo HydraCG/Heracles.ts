@@ -10,6 +10,7 @@ import { IWebResource } from "./DataModel/IWebResource";
 import { IHydraClient } from "./IHydraClient";
 import { IHypermediaProcessor } from "./IHypermediaProcessor";
 import { IIriTemplateExpansionStrategy } from "./IIiriTemplateExpansionStrategy";
+import { LinksPolicy } from "./LinksPolicy";
 import { hydra } from "./namespaces";
 
 /**
@@ -29,16 +30,19 @@ export default class HydraClient implements IHydraClient {
 
   private readonly hypermediaProcessors: IHypermediaProcessor[];
   private readonly iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy;
+  private readonly linksPolicy: LinksPolicy;
 
   /**
    * Initializes a new instance of the {@link HydraClient} class.
    * @param {Iterable<IHypermediaProcessor>} hypermediaProcessors Hypermedia processors used for response hypermedia
    *                                                              controls extraction.
    * @param {IIriTemplateExpansionStrategy} iriTemplateExpansionStrategy IRI template variable expansion strategy.
+   * @param {LinksPolicy} linksPolicy Policy defining what is a considered a link.
    */
   public constructor(
     hypermediaProcessors: Iterable<IHypermediaProcessor>,
-    iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy
+    iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy,
+    linksPolicy: LinksPolicy = LinksPolicy.Strict
   ) {
     if (!FilterableCollection.prototype.any.call(hypermediaProcessors)) {
       throw new Error(HydraClient.noHypermediaProcessors);
@@ -50,6 +54,7 @@ export default class HydraClient implements IHydraClient {
 
     this.hypermediaProcessors = Array.from(hypermediaProcessors);
     this.iriTemplateExpansionStrategy = iriTemplateExpansionStrategy;
+    this.linksPolicy = linksPolicy;
   }
 
   /**
@@ -107,7 +112,7 @@ export default class HydraClient implements IHydraClient {
       throw new Error(HydraClient.responseFormatNotSupported);
     }
 
-    const result = await hypermediaProcessor.process(response, this);
+    const result = await hypermediaProcessor.process(response, this, this.linksPolicy);
     Object.defineProperty(result, "iri", {
       value: response.url
     });
