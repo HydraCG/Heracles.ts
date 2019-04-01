@@ -90,7 +90,8 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     let flattenPayload = await jsonld.promises.flatten(payload, null, { base: response.url, embed: "@link" });
     flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
     const context = await this.processHypermedia(
-      new ProcessingState(flattenPayload, response.url, client, linksPolicy));
+      new ProcessingState(flattenPayload, response.url, client, linksPolicy)
+    );
     const hypermedia = context.hypermedia;
     for (let index = hypermedia.length - 1; index >= 0; index--) {
       JsonLdHypermediaProcessor.tryRemoveReferenceFrom(hypermedia, index);

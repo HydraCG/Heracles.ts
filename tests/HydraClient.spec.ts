@@ -1,6 +1,7 @@
 import * as sinon from "sinon";
 import HydraClient from "../src/HydraClient";
 import { Level } from "../src/IHypermediaProcessor";
+import { LinksPolicy } from "../src/LinksPolicy";
 import { hydra } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
 import { returnNotFound, returnOk } from "../testing/ResponseHelper";
@@ -14,8 +15,13 @@ describe("Given an instance of the HydraClient class", () => {
         response.headers.get("Content-Type") === "application/ld+json" ? Level.FullSupport : Level.None
     };
     this.iriTemplateExpansionStrategy = {};
-    this.client = new HydraClient([this.hypermediaProcessor], this.iriTemplateExpansionStrategy);
-    this.fetch = sinon.stub(window, "fetch");
+    this.fetch = sinon.stub();
+    this.client = new HydraClient(
+      [this.hypermediaProcessor],
+      this.iriTemplateExpansionStrategy,
+      LinksPolicy.Strict,
+      this.fetch
+    );
   });
 
   it("should create an instance", () => {
@@ -321,9 +327,5 @@ describe("Given an instance of the HydraClient class", () => {
         })
       );
     });
-  });
-
-  afterEach(() => {
-    this.fetch.restore();
   });
 });

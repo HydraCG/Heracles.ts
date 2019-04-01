@@ -42,14 +42,15 @@ function tryGetResourceLinkType(iri: string, type: string[], processingState: Pr
   }
 
   if (!result && iri.charAt(0) !== "_") {
-    if (processingState.linksPolicy >= LinksPolicy.SameRoot
-      && iri.indexOf(processingState.rootUrl) === 0
-      && iri !== processingState.rootUrl) {
+    if (
+      processingState.linksPolicy >= LinksPolicy.SameRoot &&
+      iri.indexOf(processingState.rootUrl) === 0 &&
+      iri !== processingState.rootUrl
+    ) {
       result = hydra.Link;
     }
 
-    if (!result && processingState.linksPolicy >= LinksPolicy.AllHttp
-      && iri.indexOf("http") === 0) {
+    if (!result && processingState.linksPolicy >= LinksPolicy.AllHttp && iri.indexOf("http") === 0) {
       result = hydra.Link;
     }
 
@@ -68,11 +69,13 @@ function internalLinksExtractor(resources: any[], processingState: ProcessingSta
     const linkType = tryGetPredicateLinkType(predicate, processingState);
     const possibleLinkedResources = originalResource[predicate].filter(_ => !!_["@id"]);
     for (const targetResource of possibleLinkedResources) {
-      const resourceLinkType = linkType
-        || tryGetResourceLinkType(targetResource["@id"], targetResource["@type"], processingState);
+      const resourceLinkType =
+        linkType || tryGetResourceLinkType(targetResource["@id"], targetResource["@type"], processingState);
       if (!!resourceLinkType) {
-        const target = processingState.resourceMap[targetResource["@id"]]
-          || { iri: targetResource["@id"], type: new TypesCollection([]) };
+        const target = processingState.resourceMap[targetResource["@id"]] || {
+          iri: targetResource["@id"],
+          type: new TypesCollection([])
+        };
         processingState.markAsOwned(predicate);
         let link = {
           baseUrl: processingState.baseUrl,

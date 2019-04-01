@@ -12,7 +12,7 @@ function linkOf(predicate: string, resource: any): object {
   resource.links = [];
   resource.operations = [];
   resource.relation = predicate.indexOf("http:") === -1 ? `http://temp.uri/vocab#${predicate}` : predicate;
-  resource.target = { iri: resource.iri, type: []};
+  resource.target = { iri: resource.iri, type: [] };
   return resource;
 }
 
