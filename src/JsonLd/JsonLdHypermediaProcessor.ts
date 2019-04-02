@@ -104,11 +104,11 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       JsonLdHypermediaProcessor.tryRemoveReferenceFrom(hypermedia, index);
     }
 
-    let rootResource = context.resourceMap[response.url] || context.resourceMap[options.originalUrl];
+    let rootResource = context.resourceMap[options.originalUrl];
     if (!rootResource) {
       hypermedia.push(
         (rootResource = {
-          iri: response.url,
+          iri: options.originalUrl,
           links: new LinksCollection([]),
           operations: new OperationsCollection([]),
           type: new TypesCollection([])
