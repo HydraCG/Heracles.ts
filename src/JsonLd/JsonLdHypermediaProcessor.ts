@@ -91,7 +91,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     client: IHydraClient,
     options: IHypermediaProcessingOptions
   ): Promise<IWebResource> {
-    options = { ...options, ...{ linksPolicy: LinksPolicy.Strict, originalUrl: response.url } };
+    options = { ...{ linksPolicy: LinksPolicy.Strict, originalUrl: response.url }, ...options };
     const payload = await JsonLdHypermediaProcessor.ensureJsonLd(response);
     const result: any = payload;
     let flattenPayload = await jsonld.promises.flatten(payload, null, { base: response.url, embed: "@link" });
