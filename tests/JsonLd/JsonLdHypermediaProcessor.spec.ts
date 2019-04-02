@@ -1,6 +1,5 @@
 import * as sinon from "sinon";
 import JsonLdHypermediaProcessor from "../../src/JsonLd/JsonLdHypermediaProcessor";
-import { LinksPolicy } from "../../src/LinksPolicy";
 import { hydra } from "../../src/namespaces";
 import { run } from "../../testing/AsyncHelper";
 import HydraResourceMatcher from "../../testing/HydraResourceMatcher";
@@ -38,7 +37,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               "Link": "<context.jsonld>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\""
             }
           );
-          this.result = await this.hypermediaProcessor.process(this.response, null, LinksPolicy.Strict);
+          this.result = await this.hypermediaProcessor.process(this.response, null);
         })
       );
 
@@ -57,7 +56,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       beforeEach(
         run(async () => {
           this.response = returnOk("http://temp.uri/api", inputJsonLd);
-          this.result = await this.hypermediaProcessor.process(this.response, null, LinksPolicy.Strict);
+          this.result = await this.hypermediaProcessor.process(this.response, null);
         })
       );
 

@@ -1,6 +1,6 @@
 import * as sinon from "sinon";
 import HydraClient from "../src/HydraClient";
-import { Level } from "../src/IHypermediaProcessor";
+import { Level } from "../src/Level";
 import { LinksPolicy } from "../src/LinksPolicy";
 import { hydra } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";

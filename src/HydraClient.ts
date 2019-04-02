@@ -121,7 +121,10 @@ export default class HydraClient implements IHydraClient {
       throw new Error(HydraClient.responseFormatNotSupported);
     }
 
-    const result = await hypermediaProcessor.process(response, this, this.linksPolicy);
+    const result = await hypermediaProcessor.process(response, this, {
+      linksPolicy: this.linksPolicy,
+      originalUrl: url
+    });
     Object.defineProperty(result, "iri", {
       value: response.url
     });

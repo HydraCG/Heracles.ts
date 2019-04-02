@@ -8,7 +8,9 @@ import { ICollection } from "../DataModel/ICollection";
 import { IHydraResource } from "../DataModel/IHydraResource";
 import { IWebResource } from "../DataModel/IWebResource";
 import { IHydraClient } from "../IHydraClient";
-import { IHypermediaProcessor, Level } from "../IHypermediaProcessor";
+import { IHypermediaProcessingOptions } from "../IHypermediaProcessingOptions";
+import { IHypermediaProcessor } from "../IHypermediaProcessor";
+import { Level } from "../Level";
 import { LinksPolicy } from "../LinksPolicy";
 import { hydra } from "../namespaces";
 import IndirectTypingProvider from "./IndirectTypingProvider";
@@ -84,20 +86,25 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return result;
   }
 
-  public async process(response: Response, client: IHydraClient, linksPolicy: LinksPolicy): Promise<IWebResource> {
+  public async process(
+    response: Response,
+    client: IHydraClient,
+    options: IHypermediaProcessingOptions
+  ): Promise<IWebResource> {
+    options = { ...options, ...{ linksPolicy: LinksPolicy.Strict, originalUrl: response.url } };
     const payload = await JsonLdHypermediaProcessor.ensureJsonLd(response);
     const result: any = payload;
     let flattenPayload = await jsonld.promises.flatten(payload, null, { base: response.url, embed: "@link" });
     flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
     const context = await this.processHypermedia(
-      new ProcessingState(flattenPayload, response.url, client, linksPolicy)
+      new ProcessingState(flattenPayload, response.url, client, options.linksPolicy)
     );
     const hypermedia = context.hypermedia;
     for (let index = hypermedia.length - 1; index >= 0; index--) {
       JsonLdHypermediaProcessor.tryRemoveReferenceFrom(hypermedia, index);
     }
 
-    let rootResource = context.resourceMap[response.url];
+    let rootResource = context.resourceMap[response.url] || context.resourceMap[options.originalUrl];
     if (!rootResource) {
       hypermedia.push(
         (rootResource = {
