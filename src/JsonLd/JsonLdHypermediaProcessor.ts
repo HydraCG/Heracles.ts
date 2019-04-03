@@ -144,7 +144,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
 
   private static tryRemoveReferenceFrom(graph: object[], index: number): boolean {
     const resource = graph[index];
-    let keys = ["iri", "is"].concat(Object.keys(resource));
+    let keys = ["iri", "type"].concat(Object.keys(resource));
     keys = keys.filter((key, idx) => keys.indexOf(key) === idx);
     if (keys.length === 2) {
       graph.splice(index, 1);
