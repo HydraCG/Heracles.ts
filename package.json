@@ -49,7 +49,7 @@
     "@types/uri-templates": "0.1.30",
     "body-parser": "1.18.3",
     "express": "4.16.4",
-    "jasmine": "3.3.1",
+    "jasmine": "3.4.0",
     "jasmine-sinon": "0.4.0",
     "js-md5": "0.7.3",
     "karma": "3.1.4",
