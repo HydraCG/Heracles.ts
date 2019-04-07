@@ -1,4 +1,5 @@
 import * as sinon from "sinon";
+import TypesCollection from "../../src/DataModel/Collections/TypesCollection";
 import { linksExtractor } from "../../src/JsonLd/linksExtractor";
 import { LinksPolicy } from "../../src/LinksPolicy";
 import { hydra } from "../../src/namespaces";
@@ -21,10 +22,12 @@ describe("Given a resources with relations", () => {
     jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
     this.processingState = {
       baseUrl,
+      createResource(iri, type) { return { iri, type: new TypesCollection(type || []) }; },
+      findRawResource: iri => this.graph.find(_ => _["@id"] === iri),
+      getVisitedResource: () => null,
       markAsOwned: sinon.stub(),
       processedObject: this.resource,
-      resourceMap: {},
-      rootUrl: "http://temp.uri/"
+      rootUrl: "http://temp.uri/",
     };
     this.explicitLink = { "@id": "http://temp.uri/vocab#explicit_link", "@type": [hydra.Link] };
     this.processingState.processedObject = this.resource = {};
@@ -34,7 +37,7 @@ describe("Given a resources with relations", () => {
     this.resource["http://temp.uri/vocab#http_link"] = [{ "@id": "http://other.uri/some_http_resource" }];
     this.resource["http://temp.uri/vocab#ftp_link"] = [{ "@id": "ftp://temp.uri/some_ftp_resource" }];
     this.resource["http://temp.uri/vocab#link"] = [{ "@id": "urn:name" }];
-    this.processingState.payload = this.graph = [this.resource, this.explicitLink];
+    this.graph = [this.resource, this.explicitLink];
   });
 
   describe("when using strict links policy", () => {

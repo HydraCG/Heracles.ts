@@ -19,13 +19,6 @@ export default class ProcessingState {
   public readonly processedObject: object;
 
   /**
-   * Gets the hypermedia resources map.
-   * @readonly
-   * @returns {{ [name: string]: IResource }}
-   */
-  public readonly resourceMap: { [name: string]: IResource };
-
-  /**
    * Gets all hypermedia discovered.
    * @readonly
    * @returns {Array<IResource>}
@@ -34,7 +27,7 @@ export default class ProcessingState {
     if (this.finalHypermedia === null) {
       this.finalHypermedia = [];
       for (const resource of this.allHypermedia) {
-        if (this.forbiddenHypermedia.indexOf(resource.iri) === -1) {
+        if (!this.forbiddenHypermedia[resource.iri]) {
           this.finalHypermedia.push(resource);
         }
       }
@@ -72,28 +65,28 @@ export default class ProcessingState {
   public readonly rootUrl: string;
 
   /**
-   * Gets the original payload.
-   * @type {object[]}
-   */
-  public readonly payload: object[];
-
-  /**
    * Gets the current links policy.
    */
   public readonly linksPolicy: LinksPolicy;
 
   /**
    * Gets the processed object's resource.
-   * This is provided once the {@link ProcessingState.createResource(boolean) is called.
+   * This is provided once the {@link ProcessingState.provideResource(boolean) is called.
    * @type {IResource = null}
    */
   public currentResource: IResource = null;
 
-  private readonly forbiddenHypermedia: string[];
+  private readonly resourceMap: { [name: string]: IResource };
+
+  private readonly forbiddenHypermedia: { [name: string]: boolean };
 
   private readonly allHypermedia: IResource[];
 
   private readonly client: IHydraClient;
+
+  private readonly foundResources: { [iri: string]: any };
+
+  private readonly payload: object[];
 
   /**
    * Initializes a new instance of the {@link ProcessingState} class.
@@ -129,15 +122,17 @@ export default class ProcessingState {
       this.parentIri = clientOrParentIri as string;
       this.client = parentState.client;
       this.linksPolicy = parentState.linksPolicy;
+      this.foundResources = parentState.foundResources;
     } else {
       this.resourceMap = {};
       this.allHypermedia = [];
       this.payload = objectToProcess as object[];
-      this.forbiddenHypermedia = [];
+      this.forbiddenHypermedia = {};
       this.baseUrl = baseUrlOrOwnerIri;
       this.parentIri = baseUrlOrOwnerIri;
       this.client = clientOrParentIri as IHydraClient;
       this.linksPolicy = parentContextOrLinksPolicy as LinksPolicy;
+      this.foundResources = {};
     }
 
     const baseUrl = new URL(this.baseUrl);
@@ -146,7 +141,7 @@ export default class ProcessingState {
     this.ownerIri = baseUrlOrOwnerIri;
     if (Object.keys(this.processedObject).length === 1 && Object.keys(this.processedObject)[0] === "@id") {
       this.processedObject =
-        this.payload.find(item => item["@id"] === this.processedObject["@id"]) || this.processedObject;
+        this.findRawResource(this.processedObject["@id"]) || this.processedObject;
     }
   }
 
@@ -155,9 +150,40 @@ export default class ProcessingState {
    * @param {string} iri Iri to be marked.
    */
   public markAsOwned(iri: string) {
-    if (this.forbiddenHypermedia.indexOf(iri) === -1) {
-      this.forbiddenHypermedia.push(iri);
+    this.forbiddenHypermedia[iri] = true;
+
+    if (!!this.allHypermedia[iri]) {
+      this.allHypermedia.splice(this.allHypermedia[iri], 1);
+      delete this.allHypermedia[iri];
     }
+  }
+
+  /**
+   * Searches an original response payload for a resource of a given Iri.
+   * @param {string} iri Resource's Iri to search for.
+   * @returns {any}
+   */
+  public findRawResource(iri: string) {
+    let result = !!iri ? this.foundResources[iri] : null;
+    if (typeof(result) === "undefined") {
+      this.foundResources[iri] = result = this.payload.find(_ => _["@id"] === iri) || null;
+    }
+
+    return result;
+  }
+
+  /**
+   * Gets a visited resource.
+   * @param {string} iri Iri of the resource to be obtained.
+   * @returns {any}
+   */
+  public getVisitedResource(iri: string): any {
+    let result = null;
+    if (!!iri) {
+      result = this.resourceMap[iri] || null;
+    }
+
+    return result;
   }
 
   /**
@@ -193,32 +219,37 @@ export default class ProcessingState {
    *                                         {@link ProcessingState.hypermedia} collection.
    * @returns {IResource}
    */
-  public createResource(addToHypermedia: boolean = true): IResource {
-    let result: IResource;
-    if (this.processedObject["@id"]) {
-      result = this.resourceMap[this.processedObject["@id"]];
-    }
-
+  public provideResource(addToHypermedia: boolean = true): IResource {
+    let result = this.resourceMap[this.processedObject["@id"]];
     if (!result) {
-      result = {
-        iri: this.processedObject["@id"],
-        type: new TypesCollection(this.processedObject["@type"] || new Array<string>())
-      };
-      for (const expectedType of Object.keys(factories)) {
-        if (result.type.contains(expectedType)) {
-          result = factories[expectedType](result, this.client, this);
-        }
-      }
-
-      this.resourceMap[result.iri] = result;
+      result = this.createResource(this.processedObject["@id"], this.processedObject["@type"]);
     }
 
     if (addToHypermedia) {
+      this.allHypermedia[result.iri] = this.allHypermedia.length;
       this.allHypermedia.push(result);
     } else {
-      this.forbiddenHypermedia.push(result.iri);
+      this.markAsOwned(result.iri);
     }
 
     return (this.currentResource = result);
+  }
+
+  private createResource(iri: string, type: string[]): IResource {
+    let result = {
+      iri,
+      type: new TypesCollection(type || [])
+    };
+
+    for (const expectedType of Object.keys(factories)) {
+      if (result.type.contains(expectedType)) {
+        result = factories[expectedType](result, this.client, this);
+      }
+    }
+
+    Object.defineProperty(result, "_uninitialized", {value: true, enumerable: false, configurable: true});
+    this.resourceMap[result.iri] = result;
+
+    return result;
   }
 }

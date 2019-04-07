@@ -8,9 +8,8 @@ import ProcessingState from "./ProcessingState";
 function convertToResource(item: any, processingState: ProcessingState): IResource {
   let result = (item as IResource) || null;
   if (typeof item === "string") {
-    result =
-      processingState.resourceMap[item] ||
-      (processingState.resourceMap[item] = { iri: item, type: new TypesCollection([hydra.Link]) });
+    result = processingState.getVisitedResource(item)
+      || { iri: item, type: new TypesCollection([hydra.Link]) };
   }
 
   return result;

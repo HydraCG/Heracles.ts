@@ -26,7 +26,7 @@ function isLink(type) {
 function tryGetPredicateLinkType(predicate: string, processingState: ProcessingState): string {
   let result = hydraLinks[predicate] || null;
   if (!result) {
-    const predicateDefinition = processingState.payload.find(_ => _["@id"] === predicate);
+    const predicateDefinition = processingState.findRawResource(predicate);
     if (!!predicateDefinition && predicateDefinition["@type"]) {
       result = predicateDefinition["@type"].find(isLink) || null;
     }
@@ -72,10 +72,9 @@ function internalLinksExtractor(resources: any[], processingState: ProcessingSta
       const resourceLinkType =
         linkType || tryGetResourceLinkType(targetResource["@id"], targetResource["@type"], processingState);
       if (!!resourceLinkType) {
-        const target = processingState.resourceMap[targetResource["@id"]] || {
-          iri: targetResource["@id"],
-          type: new TypesCollection([])
-        };
+        const target = processingState.getVisitedResource(targetResource["@id"])
+          || { iri: targetResource["@id"], type: new TypesCollection([]) };
+
         processingState.markAsOwned(predicate);
         let link = {
           baseUrl: processingState.baseUrl,

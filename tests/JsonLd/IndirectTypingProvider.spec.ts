@@ -7,10 +7,11 @@ describe("Given instance of the IndirectTypingProvider class", () => {
   beforeEach(() => {
     this.ontologyProvider = {};
     const processedObject = { "@id": "some:resource", "@type": [hydra.ApiDocumentation] };
+    const payload = [{ "@id": "some:iri", "some:predicate": [processedObject] }];
     this.processingState = {
+      findRawResource: iri => payload.find(_ => _["@id"] === iri),
       parentIri: "some:iri",
-      payload: [{ "@id": "some:iri", "some:predicate": [processedObject] }],
-      processedObject
+      processedObject,
     };
     this.processingState.processedObject[hydra.entrypoint] = { "@value": "http://temp.uri/" };
     this.provider = new IndirectTypingProvider(this.ontologyProvider);

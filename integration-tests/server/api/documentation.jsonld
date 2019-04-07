@@ -2,7 +2,10 @@
     "@context": "/api/context.jsonld",
     "@id": "/api/documentation",
     "@type": "hydra:ApiDocumentation",
-    "entrypoint": "/api",
+    "entrypoint": {
+        "@id": "/api",
+        "@type": "hydra:EntryPoint"
+    },
     "supportedClass": [
         {
             "@id": "schema:Event",
