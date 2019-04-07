@@ -30,8 +30,10 @@ export default class IndirectTypingProvider {
   }
 
   private isOfClass(expectedType: string, processingState: ProcessingState): boolean {
-    return (processingState.processedObject["@type"] instanceof Array)
-      && (processingState.processedObject["@type"].indexOf(expectedType) !== -1);
+    return (
+      processingState.processedObject["@type"] instanceof Array &&
+      processingState.processedObject["@type"].indexOf(expectedType) !== -1
+    );
   }
 
   private async isInDomainOfPredicate(expectedType: string, processingState: ProcessingState): Promise<boolean> {

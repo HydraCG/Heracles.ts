@@ -140,8 +140,7 @@ export default class ProcessingState {
     this.processedObject = objectToProcess;
     this.ownerIri = baseUrlOrOwnerIri;
     if (Object.keys(this.processedObject).length === 1 && Object.keys(this.processedObject)[0] === "@id") {
-      this.processedObject =
-        this.findRawResource(this.processedObject["@id"]) || this.processedObject;
+      this.processedObject = this.findRawResource(this.processedObject["@id"]) || this.processedObject;
     }
   }
 
@@ -165,7 +164,7 @@ export default class ProcessingState {
    */
   public findRawResource(iri: string) {
     let result = !!iri ? this.foundResources[iri] : null;
-    if (typeof(result) === "undefined") {
+    if (typeof result === "undefined") {
       this.foundResources[iri] = result = this.payload.find(_ => _["@id"] === iri) || null;
     }
 
@@ -247,7 +246,7 @@ export default class ProcessingState {
       }
     }
 
-    Object.defineProperty(result, "_uninitialized", {value: true, enumerable: false, configurable: true});
+    Object.defineProperty(result, "_uninitialized", { value: true, enumerable: false, configurable: true });
     this.resourceMap[result.iri] = result;
 
     return result;

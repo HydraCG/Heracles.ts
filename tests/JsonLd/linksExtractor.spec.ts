@@ -22,12 +22,14 @@ describe("Given a resources with relations", () => {
     jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
     this.processingState = {
       baseUrl,
-      createResource(iri, type) { return { iri, type: new TypesCollection(type || []) }; },
+      createResource(iri, type) {
+        return { iri, type: new TypesCollection(type || []) };
+      },
       findRawResource: iri => this.graph.find(_ => _["@id"] === iri),
       getVisitedResource: () => null,
       markAsOwned: sinon.stub(),
       processedObject: this.resource,
-      rootUrl: "http://temp.uri/",
+      rootUrl: "http://temp.uri/"
     };
     this.explicitLink = { "@id": "http://temp.uri/vocab#explicit_link", "@type": [hydra.Link] };
     this.processingState.processedObject = this.resource = {};

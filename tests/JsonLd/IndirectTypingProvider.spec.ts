@@ -11,7 +11,7 @@ describe("Given instance of the IndirectTypingProvider class", () => {
     this.processingState = {
       findRawResource: iri => payload.find(_ => _["@id"] === iri),
       parentIri: "some:iri",
-      processedObject,
+      processedObject
     };
     this.processingState.processedObject[hydra.entrypoint] = { "@value": "http://temp.uri/" };
     this.provider = new IndirectTypingProvider(this.ontologyProvider);

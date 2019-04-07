@@ -72,8 +72,10 @@ function internalLinksExtractor(resources: any[], processingState: ProcessingSta
       const resourceLinkType =
         linkType || tryGetResourceLinkType(targetResource["@id"], targetResource["@type"], processingState);
       if (!!resourceLinkType) {
-        const target = processingState.getVisitedResource(targetResource["@id"])
-          || { iri: targetResource["@id"], type: new TypesCollection([]) };
+        const target = processingState.getVisitedResource(targetResource["@id"]) || {
+          iri: targetResource["@id"],
+          type: new TypesCollection([])
+        };
 
         processingState.markAsOwned(predicate);
         let link = {

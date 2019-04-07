@@ -29,7 +29,10 @@ function isBlank(resource: object): boolean {
 }
 
 function isHydraIndependent(resource: object): boolean {
-  return !!resource["@type"].find(_ => _.indexOf(hydra.namespace) === 0 && dependentTypes.indexOf(_) === -1);
+  return (
+    !!resource["@type"] &&
+    !!resource["@type"].find(_ => _.indexOf(hydra.namespace) === 0 && dependentTypes.indexOf(_) === -1)
+  );
 }
 
 /**
@@ -195,8 +198,8 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
 
   private async processResource(processingState: ProcessingState, isOwnedHypermedia = false): Promise<object> {
     const addToHypermedia =
-      !isOwnedHypermedia
-      && (!isBlank(processingState.processedObject) || isHydraIndependent(processingState.processedObject));
+      !isOwnedHypermedia &&
+      (!isBlank(processingState.processedObject) || isHydraIndependent(processingState.processedObject));
     const result = processingState.provideResource(addToHypermedia);
     for (const predicate of Object.keys(mappings)) {
       if (await this.isValidPredicate(processingState, predicate)) {
