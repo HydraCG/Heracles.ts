@@ -62,7 +62,7 @@
     "prettier": "1.17.0",
     "sinon": "7.3.1",
     "ts-node": "8.1.0",
-    "tslint": "5.15.0",
+    "tslint": "5.16.0",
     "tslint-eslint-rules": "5.4.0",
     "tslint-language-service": "0.9.9",
     "typedoc": "0.14.2",
