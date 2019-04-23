@@ -110,7 +110,7 @@ describe("Having a Hydra client", () => {
 
           it("should obtain matching events", () => {
             const matchingEvents = this.searchResult.hypermedia.collections
-              .where(item => item.iri.match("/api/events?"))
+              .where(item => item.iri.match("/api/events\?"))
               .first();
             expect(matchingEvents).toBeDefined();
             expect(matchingEvents).not.toBeNull();
@@ -136,7 +136,7 @@ describe("Having a Hydra client", () => {
 
           it("should obtain matching events", () => {
             const matchingEvents = this.filteringResult.hypermedia
-              .where(item => item.iri.match("/api/events?") && item.type.contains(hydra.Collection))
+              .where(item => item.iri.match("/api/events\?") && item.type.contains(hydra.Collection))
               .first();
             expect(matchingEvents).toBeDefined();
             expect(matchingEvents).not.toBeNull();
