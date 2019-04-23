@@ -39,7 +39,8 @@ export interface IHydraClient {
    *
    * @param operation Operation descriptor to be invoked.
    * @param body Optional resource to be used as a body of the operation.
+   * @param parameters Optional auxiliary parameters.
    * @returns Response of the operation.
    */
-  invoke(operation: IOperation, body?: IWebResource): Promise<Response>;
+  invoke(operation: IOperation, body?: IWebResource, parameters?: object): Promise<Response>;
 }

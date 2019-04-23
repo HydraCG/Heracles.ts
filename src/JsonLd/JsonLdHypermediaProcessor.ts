@@ -89,12 +89,13 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
   public async process(
     response: Response,
     client: IHydraClient,
-    options: IHypermediaProcessingOptions
+    options?: IHypermediaProcessingOptions
   ): Promise<IWebResource> {
-    options = { ...{ linksPolicy: LinksPolicy.Strict, originalUrl: response.url }, ...options };
+    options = { ...{ linksPolicy: LinksPolicy.Strict, originalUrl: response.url }, ...(options || {}) };
     const result = await JsonLdHypermediaProcessor.ensureJsonLd(response);
     let flattenPayload = await jsonld.promises.flatten(result, null, { base: response.url, embed: "@link" });
     flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
+    flattenPayload = await this.fixPossibleDiscrepancies(flattenPayload, options);
     const context = await this.processHypermedia(
       new ProcessingState(flattenPayload, response.url, client, options.linksPolicy)
     );
@@ -160,6 +161,29 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       [],
       payload[0]["@graph"].map(item => (item["@id"] && item["@graph"] ? item["@graph"] : [item]))
     );
+  }
+
+  private async fixPossibleDiscrepancies(payload: object[], options: IHypermediaProcessingOptions): Promise<object[]> {
+    const apiDocumentation = payload.find(_ => !!_["@type"] && _["@type"].indexOf(hydra.ApiDocumentation) !== -1);
+    if (
+      !!apiDocumentation &&
+      !apiDocumentation[hydra.entrypoint] &&
+      !!options.auxiliaryResponse &&
+      this.supports(options.auxiliaryResponse)
+    ) {
+      const result = await JsonLdHypermediaProcessor.ensureJsonLd(options.auxiliaryResponse);
+      let flattenPayload = await jsonld.promises.flatten(result, null, {
+        base: options.auxiliaryResponse.url,
+        embed: "@link"
+      });
+      flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
+      const entryPoint = flattenPayload.find(_ => !!_["@type"] && _["@type"].indexOf(hydra.EntryPoint) !== -1);
+      if (!!entryPoint) {
+        apiDocumentation[hydra.entrypoint] = [entryPoint];
+      }
+    }
+
+    return payload;
   }
 
   private async processHypermedia(processingState: ProcessingState): Promise<ProcessingState> {

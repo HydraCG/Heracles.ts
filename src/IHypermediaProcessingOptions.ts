@@ -13,4 +13,9 @@ export interface IHypermediaProcessingOptions {
    * Gets an originally requested Url. This may be different than the one provided in the Response.url after redirects.
    */
   readonly originalUrl: string;
+
+  /**
+   * Gets an auxiliar response that was used to obtain currently processed one.
+   */
+  readonly auxiliaryResponse?: Response;
 }

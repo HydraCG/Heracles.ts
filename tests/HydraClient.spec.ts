@@ -167,42 +167,38 @@ describe("Given an instance of the HydraClient class", () => {
       });
 
       describe("which is provided correctly", () => {
-        beforeEach(() => {
-          const apiDocumentationUrl = `${this.baseUrl}api/documentation`;
-          this.apiDocumentation = { entryPoint: `${this.baseUrl}api` };
-          this.data = [this.apiDocumentation];
-          (this.data as any).ofType = sinon.stub().returns({ first: sinon.stub().returns(this.apiDocumentation) });
-          this.apiDocumentationResponse = returnOk(apiDocumentationUrl, this.data);
-          this.fetch.withArgs(apiDocumentationUrl).returns(this.apiDocumentationResponse);
-          this.hypermediaProcessor.process.returns(Promise.resolve({ hypermedia: this.data }));
+        beforeEach(
+          run(async () => {
+            this.apiDocumentationUrl = `${this.baseUrl}api/documentation`;
+            this.apiDocumentation = { entryPoint: `${this.baseUrl}api` };
+            this.data = [this.apiDocumentation];
+            (this.data as any).ofType = sinon.stub().returns({ first: sinon.stub().returns(this.apiDocumentation) });
+            this.apiDocumentationResponse = returnOk(this.apiDocumentationUrl, this.data);
+            this.fetch.withArgs(this.apiDocumentationUrl).returns(this.apiDocumentationResponse);
+            this.hypermediaProcessor.process.returns(Promise.resolve({ hypermedia: this.data }));
+            await this.client.getApiDocumentation(this.baseUrl);
+          })
+        );
+
+        it("should call the given site url", () => {
+          expect(this.fetch).toHaveBeenCalledWith(this.baseUrl);
         });
 
-        it(
-          "should call the given site url",
-          run(async () => {
-            await this.client.getApiDocumentation(this.baseUrl);
+        it("should fetch the API documentation", () => {
+          expect(this.fetch).toHaveBeenCalledWith(`${this.baseUrl}api/documentation`);
+        });
 
-            expect(this.fetch).toHaveBeenCalledWith(this.baseUrl);
-          })
-        );
-
-        it(
-          "should fetch the API documentation",
-          run(async () => {
-            await this.client.getApiDocumentation(this.baseUrl);
-
-            expect(this.fetch).toHaveBeenCalledWith(`${this.baseUrl}api/documentation`);
-          })
-        );
-
-        it(
-          "should process API documentation with a hypermedia processor",
-          run(async () => {
-            await this.client.getApiDocumentation(this.baseUrl);
-
-            (expect(this.hypermediaProcessor.process) as any).toHaveBeenCalledWith(this.apiDocumentationResponse);
-          })
-        );
+        it("should process API documentation with a hypermedia processor", () => {
+          (expect(this.hypermediaProcessor.process) as any).toHaveBeenCalledWith(
+            this.apiDocumentationResponse,
+            this.client,
+            {
+              auxiliaryResponse: this.urlResponse,
+              linksPolicy: LinksPolicy.Strict,
+              originalUrl: this.apiDocumentationUrl
+            }
+          );
+        });
       });
     });
   });
@@ -271,19 +267,13 @@ describe("Given an instance of the HydraClient class", () => {
         })
       );
 
-      it(
-        "should process the response",
-        run(async () => {
-          expect(this.hypermediaProcessor.process).toHaveBeenCalledWith(this.resourceResponse);
-        })
-      );
+      it("should process the response", () => {
+        expect(this.hypermediaProcessor.process).toHaveBeenCalledWith(this.resourceResponse);
+      });
 
-      it(
-        "should return a correct result",
-        run(async () => {
-          expect(this.result).toBe(this.resource);
-        })
-      );
+      it("should return a correct result", () => {
+        expect(this.result).toBe(this.resource);
+      });
     });
   });
 

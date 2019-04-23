@@ -16,6 +16,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         processingState.processedObject["@type"] instanceof Array &&
         processingState.processedObject["@type"].indexOf(expectedType) !== -1
     };
+    this.client = {};
     this.hypermediaProcessor = new JsonLdHypermediaProcessor(this.indirectTypingProvider);
   });
 
@@ -37,7 +38,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               "Link": "<context.jsonld>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\""
             }
           );
-          this.result = await this.hypermediaProcessor.process(this.response, null);
+          this.result = await this.hypermediaProcessor.process(this.response, this.client);
         })
       );
 
@@ -56,7 +57,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       beforeEach(
         run(async () => {
           this.response = returnOk("http://temp.uri/api", inputJsonLd);
-          this.result = await this.hypermediaProcessor.process(this.response, null);
+          this.result = await this.hypermediaProcessor.process(this.response, this.client);
         })
       );
 
@@ -293,32 +294,50 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
           }
         ]);
       });
+    });
 
-      describe("response with nested resources", () => {
-        beforeEach(
-          run(async () => {
-            this.response = returnOk("http://temp.uri/api/people/markus", nestedResourcesInputJsonLd);
-            const result = await this.hypermediaProcessor.process(this.response, false);
-            this.markus = result.hypermedia.where(control => control.iri.match(/markus/)).first();
-            this.karol = this.markus.links.withRelationOf("http://schema.org/knows").first().target;
-          })
+    describe("JSON-LD response with nested resources", () => {
+      beforeEach(
+        run(async () => {
+          this.response = returnOk("http://temp.uri/api/people/markus", nestedResourcesInputJsonLd);
+          const result = await this.hypermediaProcessor.process(this.response, this.client);
+          this.markus = result.hypermedia.where(control => control.iri.match(/markus/)).first();
+          this.karol = this.markus.links.withRelationOf("http://schema.org/knows").first().target;
+        })
+      );
+
+      it("should gain access to outer resource's links", () => {
+        expect(this.markus.links.withRelationOf("http://xmlns.com/foaf/0.1/homepage").first().target.iri).toBe(
+          "http://temp.uri/api/people/markus/home-page"
         );
+      });
 
-        it("should gain access to outer resource's links", () => {
-          expect(this.markus.links.withRelationOf("http://xmlns.com/foaf/0.1/homepage").first().target.iri).toBe(
-            "http://temp.uri/api/people/markus/home-page"
-          );
-        });
+      it("should gain access to inner resource's links", () => {
+        expect(this.karol.links.withRelationOf("http://xmlns.com/foaf/0.1/homepage").first().target.iri).toBe(
+          "http://temp.uri/api/people/karol/home-page"
+        );
+      });
 
-        it("should gain access to inner resource's links", () => {
-          expect(this.karol.links.withRelationOf("http://xmlns.com/foaf/0.1/homepage").first().target.iri).toBe(
-            "http://temp.uri/api/people/karol/home-page"
-          );
-        });
+      it("should have a nested resource's link", () => {
+        expect(this.markus.links.withRelationOf("http://schema.org/knows").first().target).toBe(this.karol);
+      });
+    });
 
-        it("should have a nested resource's link", () => {
-          expect(this.markus.links.withRelationOf("http://schema.org/knows").first().target).toBe(this.karol);
-        });
+    describe("JSON-LD response with faulty API documentation", () => {
+      beforeEach(
+        run(async () => {
+          this.entryPoint = { "@id": "http://temp.uri/api", "@type": [hydra.EntryPoint] };
+          this.apiDocumentation = { "@id": "http://temp.uri/api#documentation", "@type": [hydra.ApiDocumentation] };
+          this.response = returnOk("http://temp.uri/api#documentation", this.apiDocumentation);
+          const options = { auxiliaryResponse: returnOk("http://temp.uri/api", this.entryPoint) };
+          this.result = await this.hypermediaProcessor.process(this.response, this.client, options);
+        })
+      );
+
+      it("should fix entry point", () => {
+        expect(this.result.hypermedia.ofIri("http://temp.uri/api#documentation").first().entryPoint).toBe(
+          "http://temp.uri/api"
+        );
       });
     });
   });

@@ -93,14 +93,14 @@ export default class HydraClient implements IHydraClient {
    */
   public async getApiDocumentation(urlOrResource: string | IResource): Promise<IApiDocumentation> {
     const url = HydraClient.getUrl(urlOrResource);
-    const apiDocumentationUrl = await this.getApiDocumentationUrl(url);
-    const resource = await this.getResource(apiDocumentationUrl);
-    const apiDocumentation = resource.hypermedia.ofType(hydra.ApiDocumentation).first() as IApiDocumentation;
+    const apiDocumentation = await this.getApiDocumentationUrl(url);
+    const resource = await this.getResourceFrom(apiDocumentation.url, { auxiliaryResponse: apiDocumentation.response });
+    const result = resource.hypermedia.ofType(hydra.ApiDocumentation).first() as IApiDocumentation;
     if (!apiDocumentation) {
       throw new Error(HydraClient.noEntryPointDefined);
     }
 
-    return apiDocumentation;
+    return result;
   }
 
   /**
@@ -110,25 +110,7 @@ export default class HydraClient implements IHydraClient {
    *                                            carrying an IRI of the resource to be obtained.
    */
   public async getResource(urlOrResource: string | IResource | ILink): Promise<IWebResource> {
-    const url = HydraClient.getUrl(urlOrResource);
-    const response = await this.makeRequestTo(url);
-    if (response.status !== 200) {
-      throw new Error(HydraClient.invalidResponse + response.status);
-    }
-
-    const hypermediaProcessor = this.getHypermediaProcessor(response);
-    if (!hypermediaProcessor) {
-      throw new Error(HydraClient.responseFormatNotSupported);
-    }
-
-    const result = await hypermediaProcessor.process(response, this, {
-      linksPolicy: this.linksPolicy,
-      originalUrl: url
-    });
-    Object.defineProperty(result, "iri", {
-      value: response.url
-    });
-    return result;
+    return await this.getResourceFrom(HydraClient.getUrl(urlOrResource), {});
   }
 
   /**
@@ -154,7 +136,26 @@ export default class HydraClient implements IHydraClient {
     });
   }
 
-  private async getApiDocumentationUrl(url: string): Promise<string> {
+  private async getResourceFrom(url: string, options: any): Promise<IWebResource> {
+    const response = await this.makeRequestTo(url);
+    if (response.status !== 200) {
+      throw new Error(HydraClient.invalidResponse + response.status);
+    }
+
+    const hypermediaProcessor = this.getHypermediaProcessor(response);
+    if (!hypermediaProcessor) {
+      throw new Error(HydraClient.responseFormatNotSupported);
+    }
+
+    options = { ...{ linksPolicy: this.linksPolicy, originalUrl: url }, ...options };
+    const result = await hypermediaProcessor.process(response, this, options);
+    Object.defineProperty(result, "iri", {
+      value: response.url
+    });
+    return result;
+  }
+
+  private async getApiDocumentationUrl(url: string): Promise<{ url: string; response: any }> {
     const response = await this.makeRequestTo(url);
     if (response.status !== 200) {
       throw new Error(HydraClient.invalidResponse + response.status);
@@ -166,7 +167,10 @@ export default class HydraClient implements IHydraClient {
       throw new Error(HydraClient.apiDocumentationNotProvided);
     }
 
-    return jsonld.prependBase(url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0], result.url);
+    return {
+      response,
+      url: jsonld.prependBase(url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0], result.url)
+    };
   }
 
   private static getUrl(urlOrResource: string | IResource | ILink): string {
