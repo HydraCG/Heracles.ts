@@ -3,6 +3,7 @@ import LinksCollection from "./Collections/LinksCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import { ICollection } from "./ICollection";
+import { IHeaders } from "./IHeaders";
 import { IHydraResource } from "./IHydraResource";
 import { IHypermediaContainer } from "./IHypermediaContainer";
 import { IPartialCollectionIterator } from "./IPartialCollectionIterator";
@@ -26,6 +27,8 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
 
   public readonly links: LinksCollection;
 
+  public readonly headers: IHeaders;
+
   /**
    * Initializes a new instance of the {@link HypermediaContainer} class.
    * @param {string} iri Iri of the resource obtained.
@@ -36,11 +39,12 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
    *                                                          container is a collection.
    */
   public constructor(
+    headers: IHeaders,
     iri: string,
     items: Iterable<IResource>,
     operations: OperationsCollection,
     links: LinksCollection,
-    collection?: ICollection
+    collection?: ICollection,
   ) {
     super(items);
     const itemsArray = Array.from(items);
@@ -52,6 +56,7 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
         .filter((control: any) => !!control.collections)
         .map((control: IHydraResource) => Array.from(control.collections))
     );
+    this.headers = headers;
     this.iri = iri;
     this.operations = operations;
     this.collections = new ResourceFilterableCollection<ICollection>(

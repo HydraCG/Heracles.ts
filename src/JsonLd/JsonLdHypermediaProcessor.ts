@@ -116,6 +116,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     }
 
     const hypermediaContainer = new HypermediaContainer(
+      response.headers,
       rootResource.iri,
       hypermedia,
       (rootResource as IHydraResource).operations,
