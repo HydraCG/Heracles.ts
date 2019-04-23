@@ -153,6 +153,10 @@ export default class ProcessingState {
 
     if (!!this.allHypermedia[iri]) {
       this.allHypermedia.splice(this.allHypermedia[iri], 1);
+      for (let index = this.allHypermedia[iri]; index < this.allHypermedia.length; index++) {
+        this.allHypermedia[this.allHypermedia[index].iri] = index;
+      }
+
       delete this.allHypermedia[iri];
     }
   }
