@@ -10,6 +10,7 @@ import { IWebResource } from "./DataModel/IWebResource";
 import { IHydraClient } from "./IHydraClient";
 import { IHypermediaProcessor } from "./IHypermediaProcessor";
 import { IIriTemplateExpansionStrategy } from "./IIiriTemplateExpansionStrategy";
+import { LinksPolicy } from "./LinksPolicy";
 import { hydra } from "./namespaces";
 
 /**
@@ -30,6 +31,7 @@ export default class HydraClient implements IHydraClient {
 
   private readonly hypermediaProcessors: IHypermediaProcessor[];
   private readonly iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy;
+  private readonly linksPolicy: LinksPolicy;
   private readonly httpCall: (url: string, options?: RequestInit) => Promise<Response>;
 
   /**
@@ -37,11 +39,13 @@ export default class HydraClient implements IHydraClient {
    * @param {Iterable<IHypermediaProcessor>} hypermediaProcessors Hypermedia processors used for response hypermedia
    *                                                              controls extraction.
    * @param {IIriTemplateExpansionStrategy} iriTemplateExpansionStrategy IRI template variable expansion strategy.
+   * @param {LinksPolicy} linksPolicy Policy defining what is a considered a link.
    * @param {(url: string, options?: Request) => Promise<Response>} httpCall HTTP facility used to call remote server.
    */
   public constructor(
     hypermediaProcessors: Iterable<IHypermediaProcessor>,
     iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy,
+    linksPolicy: LinksPolicy = LinksPolicy.Strict,
     httpCall: (url: string, options?: RequestInit) => Promise<Response>
   ) {
     if (!FilterableCollection.prototype.any.call(hypermediaProcessors)) {
@@ -58,6 +62,7 @@ export default class HydraClient implements IHydraClient {
 
     this.hypermediaProcessors = Array.from(hypermediaProcessors);
     this.iriTemplateExpansionStrategy = iriTemplateExpansionStrategy;
+    this.linksPolicy = linksPolicy;
     this.httpCall = httpCall;
   }
 
@@ -116,7 +121,10 @@ export default class HydraClient implements IHydraClient {
       throw new Error(HydraClient.responseFormatNotSupported);
     }
 
-    const result = await hypermediaProcessor.process(response, this);
+    const result = await hypermediaProcessor.process(response, this, {
+      linksPolicy: this.linksPolicy,
+      originalUrl: url
+    });
     Object.defineProperty(result, "iri", {
       value: response.url
     });

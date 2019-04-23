@@ -1,6 +1,7 @@
 import * as sinon from "sinon";
 import HydraClient from "../src/HydraClient";
-import { Level } from "../src/IHypermediaProcessor";
+import { Level } from "../src/Level";
+import { LinksPolicy } from "../src/LinksPolicy";
 import { hydra } from "../src/namespaces";
 import { run } from "../testing/AsyncHelper";
 import { returnNotFound, returnOk } from "../testing/ResponseHelper";
@@ -15,7 +16,12 @@ describe("Given an instance of the HydraClient class", () => {
     };
     this.iriTemplateExpansionStrategy = {};
     this.fetch = sinon.stub();
-    this.client = new HydraClient([this.hypermediaProcessor], this.iriTemplateExpansionStrategy, this.fetch);
+    this.client = new HydraClient(
+      [this.hypermediaProcessor],
+      this.iriTemplateExpansionStrategy,
+      LinksPolicy.Strict,
+      this.fetch
+    );
   });
 
   it("should create an instance", () => {

@@ -7,7 +7,7 @@ import { IOntologyProvider } from "./IOntologyProvider";
  */
 export default class StaticOntologyProvider implements IOntologyProvider {
   private readonly jsonLdOntology: object;
-  private ontology: object[];
+  private ontology: { [iri: string]: any };
 
   /**
    * Initializes a new instance of the {@link StaticOntologyProvider} class.
@@ -28,28 +28,24 @@ export default class StaticOntologyProvider implements IOntologyProvider {
 
   private async ensureInitialized(): Promise<void> {
     if (this.ontology === null) {
-      this.ontology = await jsonLd.flatten(this.jsonLdOntology);
-    }
-  }
-
-  private async findByIri(iri: string): Promise<object> {
-    await this.ensureInitialized();
-    for (const resource of this.ontology) {
-      if (resource["@id"] === iri) {
-        return resource;
+      const ontology = await jsonLd.flatten(this.jsonLdOntology);
+      const map = {};
+      for (const term of ontology) {
+        map[term["@id"]] = term;
       }
-    }
 
-    return null;
+      this.ontology = map;
+    }
   }
 
   private async getValueOf(iri: string, predicate: string): Promise<string> {
-    let resource: any = await this.findByIri(iri);
+    await this.ensureInitialized();
+    let resource: any = this.ontology[iri] || null;
     if (resource !== null) {
       resource = resource[predicate] || null;
     }
 
-    if (resource != null) {
+    if (resource !== null) {
       resource = resource[0]["@id"] || null;
     }
 

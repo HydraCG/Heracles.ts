@@ -61,7 +61,7 @@ export function linksAndOperations(mappings: {
   mappings.target = {
     default: (value, processingState) => {
       const iri = jsonld.prependBase(processingState.baseUrl, processingState.ownerIri);
-      return processingState.resourceMap[iri] || { iri, type: new TypesCollection([]) };
+      return processingState.getVisitedResource(iri) || { iri, type: new TypesCollection([]) };
     },
     propertyName: "target",
     required: true,

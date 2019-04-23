@@ -48,7 +48,7 @@ export default class IndirectTypingProvider {
   }
 
   private async isInRangeOfPredicate(expectedType: string, processingState: ProcessingState): Promise<boolean> {
-    const ownerResource = processingState.payload.find(resource => resource["@id"] === processingState.parentIri);
+    const ownerResource = processingState.findRawResource(processingState.parentIri);
     if (!ownerResource) {
       return false;
     }
@@ -57,7 +57,7 @@ export default class IndirectTypingProvider {
       const range = await this.ontologyProvider.getRangeFor(property);
       if (
         range === expectedType &&
-        ownerResource[property].find(resource => resource["@id"] === processingState.processedObject["@id"])
+        ownerResource[property].find(_ => _["@id"] === processingState.processedObject["@id"])
       ) {
         return true;
       }

@@ -6,6 +6,7 @@ import { ICollection } from "../DataModel/ICollection";
 import { IIriTemplate } from "../DataModel/IIriTemplate";
 import { ILink } from "../DataModel/ILink";
 import TemplatedLink from "../DataModel/TemplatedLink";
+import { LinksPolicy } from "../LinksPolicy";
 import { hydra } from "../namespaces";
 import ProcessingState from "./ProcessingState";
 
@@ -15,41 +16,80 @@ hydraLinks[hydra.last] = hydra.Link;
 hydraLinks[hydra.previous] = hydra.Link;
 hydraLinks[hydra.next] = hydra.Link;
 hydraLinks[hydra.view] = hydra.Link;
+hydraLinks[hydra.collection] = hydra.Link;
 hydraLinks[hydra.search] = hydra.TemplatedLink;
 
-function getHydraLinkType(predicate: string, processingState: ProcessingState): string {
+function isLink(type) {
+  return type === hydra.Link || type === hydra.TemplatedLink;
+}
+
+function tryGetPredicateLinkType(predicate: string, processingState: ProcessingState): string {
   let result = hydraLinks[predicate] || null;
   if (!result) {
-    const predicateDefinition = processingState.payload.find(entry => entry["@id"] === predicate);
+    const predicateDefinition = processingState.findRawResource(predicate);
     if (!!predicateDefinition && predicateDefinition["@type"]) {
-      result = predicateDefinition["@type"].find(type => type === hydra.Link || type === hydra.TemplatedLink) || null;
+      result = predicateDefinition["@type"].find(isLink) || null;
     }
   }
 
   return result;
 }
 
-function internalLinksExtractor(resources: any[], processingState: ProcessingState, links: ILink[]): void {
+function tryGetResourceLinkType(iri: string, type: string[], processingState: ProcessingState): string {
+  let result = null;
+  if (!!type) {
+    result = type.find(isLink) || null;
+  }
+
+  if (!result && iri.charAt(0) !== "_") {
+    if (
+      processingState.linksPolicy >= LinksPolicy.SameRoot &&
+      iri.indexOf(processingState.rootUrl) === 0 &&
+      iri !== processingState.rootUrl
+    ) {
+      result = hydra.Link;
+    }
+
+    if (!result && processingState.linksPolicy >= LinksPolicy.AllHttp && iri.indexOf("http") === 0) {
+      result = hydra.Link;
+    }
+
+    if (!result && processingState.linksPolicy >= LinksPolicy.All) {
+      result = hydra.Link;
+    }
+  }
+
+  return result;
+}
+
+function internalLinksExtractor(resources: any[], processingState: ProcessingState): ILink[] {
+  const links = [];
   const originalResource = processingState.processedObject;
-  for (const predicate of Object.keys(originalResource)) {
-    const linkType = getHydraLinkType(predicate, processingState);
-    if (!!linkType) {
-      for (const targetResource of originalResource[predicate]) {
-        const targetIri = targetResource["@value"] || targetResource["@id"];
-        const target = processingState.resourceMap[targetIri] || { iri: targetIri, type: new TypesCollection([]) };
-        processingState.forbiddenHypermedia.push(predicate);
+  for (const predicate of Object.keys(originalResource).filter(_ => _.length > 0 && _.charAt(0) !== "@")) {
+    const linkType = tryGetPredicateLinkType(predicate, processingState);
+    const possibleLinkedResources = originalResource[predicate].filter(_ => !!_["@id"]);
+    for (const targetResource of possibleLinkedResources) {
+      const resourceLinkType =
+        linkType || tryGetResourceLinkType(targetResource["@id"], targetResource["@type"], processingState);
+      if (!!resourceLinkType) {
+        const target = processingState.getVisitedResource(targetResource["@id"]) || {
+          iri: targetResource["@id"],
+          type: new TypesCollection([])
+        };
+
+        processingState.markAsOwned(predicate);
         let link = {
           baseUrl: processingState.baseUrl,
           collections: new ResourceFilterableCollection<ICollection>([]),
-          iri: targetIri,
+          iri: targetResource["@id"],
           links: new LinksCollection([]),
           operations: new OperationsCollection([]),
           relation: predicate,
           target,
-          type: new TypesCollection(linkType === hydra.TemplatedLink ? [hydra.TemplatedLink] : [hydra.Link])
+          type: new TypesCollection([resourceLinkType])
         };
-        if (linkType === hydra.TemplatedLink) {
-          processingState.forbiddenHypermedia.push(targetResource["@id"]);
+        if (resourceLinkType === hydra.TemplatedLink) {
+          processingState.markAsOwned(targetResource["@id"]);
           link = new TemplatedLink(link, target as IIriTemplate);
         }
 
@@ -57,10 +97,10 @@ function internalLinksExtractor(resources: any[], processingState: ProcessingSta
       }
     }
   }
+
+  return links;
 }
 
 export const linksExtractor = (resources, processingState) => {
-  const links: ILink[] = [];
-  internalLinksExtractor(resources, processingState, links);
-  return new LinksCollection(links);
+  return new LinksCollection(internalLinksExtractor(resources, processingState));
 };

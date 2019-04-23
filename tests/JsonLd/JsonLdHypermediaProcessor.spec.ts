@@ -175,6 +175,16 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   {
                     baseUrl: "http://temp.uri/api",
                     collections: [],
+                    iri: "http://temp.uri/api/events/1",
+                    links: [],
+                    operations: [],
+                    relation: hydra.member,
+                    target: { iri: "http://temp.uri/api/events/1", type: [] },
+                    type: [hydra.Link]
+                  },
+                  {
+                    baseUrl: "http://temp.uri/api",
+                    collections: [],
                     iri: hydra.first,
                     links: [],
                     operations: [],
@@ -256,7 +266,28 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               }
             ],
             iri: "http://temp.uri/api",
-            links: [],
+            links: [
+              {
+                baseUrl: "http://temp.uri/api",
+                collections: [],
+                iri: "http://temp.uri/api/people",
+                links: [],
+                operations: [],
+                relation: hydra.collection,
+                target: { iri: "http://temp.uri/api/people", type: [] },
+                type: [hydra.Link]
+              },
+              {
+                baseUrl: "http://temp.uri/api",
+                collections: [],
+                iri: "http://temp.uri/api/events",
+                links: [],
+                operations: [],
+                relation: hydra.collection,
+                target: { iri: "http://temp.uri/api/events", type: [] },
+                type: [hydra.Link]
+              }
+            ],
             operations: [],
             type: [hydra.EntryPoint]
           }

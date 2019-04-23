@@ -31,10 +31,18 @@ function setHeaders(path: string, response: express.Response, isJsonLd: boolean)
   return true;
 }
 
-function loadBody(path: string) {
+function loadBody(path: string, query: string) {
   const file = __dirname + path + (path.indexOf(".") === -1 ? ".jsonld" : "");
   if (fs.existsSync(file)) {
-    return fs.readFileSync(file, "utf8");
+    let result = fs.readFileSync(file, "utf8");
+    if (!!query) {
+      result = JSON.parse(result);
+      const matchingResource = !!result["@graph"] ? result["@graph"].find(_ => _["@id"] === path) : result;
+      matchingResource["@id"] = path + query;
+      result = JSON.stringify(result);
+    }
+
+    return result;
   }
 
   return null;
@@ -59,7 +67,7 @@ module.exports = {
       });
       server.get("/*", (request, response) => {
         const path = request.path === "/" ? "/root" : request.path;
-        const body = loadBody(path);
+        const body = loadBody(path, request.originalUrl.substr(path.length));
         if (setHeaders(path, response, !!body) || body) {
           response.status(200).send(body);
         } else {

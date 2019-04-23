@@ -1,21 +1,7 @@
 import { IWebResource } from "./DataModel/IWebResource";
-import HydraClient from "./HydraClient";
-
-export enum Level {
-  /**
-   * @enum
-   * @type {number}
-   * Defines a not supported response.
-   */
-  None = 0,
-
-  /**
-   * @enum
-   * @type {number}
-   * Defines an exact support of the response.
-   */
-  FullSupport = 100
-}
+import { IHydraClient } from "./IHydraClient";
+import { IHypermediaProcessingOptions } from "./IHypermediaProcessingOptions";
+import { Level } from "./Level";
 
 /**
  * Describes an abstract meta-data providing facility which translates from a raw {@link Response}
@@ -40,8 +26,9 @@ export interface IHypermediaProcessor {
   /**
    * Parses a given raw response.
    * @param {Response} response Raw fetch response holding data to be parsed.
-   * @param client {HydraClient} Hydra client.
+   * @param client {IHydraClient} Hydra client.
+   * @param options {IHypermediaProcessingOptions} Additional processing options.
    * @returns {Promise<IWebResource>}
    */
-  process(response: Response, client: HydraClient): Promise<IWebResource>;
+  process(response: Response, client: IHydraClient, options: IHypermediaProcessingOptions): Promise<IWebResource>;
 }
