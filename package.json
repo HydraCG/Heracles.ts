@@ -35,7 +35,7 @@
     "isomorphic-fetch": "2.2.1",
     "jsonld": "0.4.12",
     "parse-link-header": "1.0.1",
-    "typescript": "3.3.4000",
+    "typescript": "3.4.5",
     "uri-templates": "0.2.0",
     "urijs": "1.19.1"
   },
