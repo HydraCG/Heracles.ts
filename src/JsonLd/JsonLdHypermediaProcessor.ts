@@ -134,7 +134,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     const result = await response.json();
     if (response.headers.get("Content-Type") === JsonLdHypermediaProcessor.json) {
       const links = parseLinkHeader(response.headers.get("Link"));
-      const link = jsonld.prependBase(response.url, links[jsonLdContext].url);
+      const link = jsonld.url.prependBase(response.url, links[jsonLdContext].url);
       const contextResponse = await fetch(link, { headers: { Accept: links[jsonLdContext].type } });
       result["@context"] = contextResponse["@context"];
     }

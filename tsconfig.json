@@ -3,10 +3,13 @@
         "moduleResolution": "node",
         "module": "commonjs",
         "target": "es2017",
+        "sourceMap": true,
+        "noUnusedLocals": true,
         "declaration": true,
         "declarationDir": "types",
         "lib": [
             "es2017",
+            "es2016",
             "dom"
         ],
         "types": [
@@ -22,9 +25,7 @@
             {
                 "name": "tslint-language-service"
             }
-        ],
-        "sourceMap": true,
-        "noUnusedLocals": true
+        ]
     },
     "exclude": [
         "node_modules",

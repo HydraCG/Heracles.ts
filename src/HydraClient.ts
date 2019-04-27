@@ -169,7 +169,7 @@ export default class HydraClient implements IHydraClient {
 
     return {
       response,
-      url: jsonld.prependBase(url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0], result.url)
+      url: jsonld.url.prependBase(url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0], result.url)
     };
   }
 

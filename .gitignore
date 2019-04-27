@@ -8,3 +8,4 @@ bin
 types
 **/*.js.map
 !karma.conf.js
+coverage

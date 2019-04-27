@@ -90,7 +90,7 @@ describe("Given an instance of the HydraClient class", () => {
         "should throw",
         run(async () => {
           try {
-            this.client.getApiDocumentation(this.baseUrl);
+            await this.client.getApiDocumentation(this.baseUrl);
           } catch (e) {
             expect(e.message).toBe(HydraClient.apiDocumentationNotProvided);
           }
@@ -120,9 +120,9 @@ describe("Given an instance of the HydraClient class", () => {
           "should throw",
           run(async () => {
             try {
-              this.client.getApiDocumentation({ iri: this.baseUrl });
+              await this.client.getApiDocumentation({ iri: this.baseUrl });
             } catch (e) {
-              expect(e.message).toBe(HydraClient.invalidResponse);
+              expect(e.message).toMatch(HydraClient.invalidResponse);
             }
           })
         );
@@ -139,7 +139,7 @@ describe("Given an instance of the HydraClient class", () => {
           "should throw",
           run(async () => {
             try {
-              this.client.getApiDocumentation({ iri: this.baseUrl });
+              await this.client.getApiDocumentation({ iri: this.baseUrl });
             } catch (e) {
               expect(e.message).toBe(HydraClient.responseFormatNotSupported);
             }
@@ -151,14 +151,14 @@ describe("Given an instance of the HydraClient class", () => {
         beforeEach(() => {
           this.apiDocumentationResponse = returnOk();
           this.fetch.withArgs(`${this.baseUrl}api/documentation`).returns(this.apiDocumentationResponse);
-          this.hypermediaProcessor.process.returns({});
+          this.hypermediaProcessor.process.returns({ hypermedia: { ofType: () => ({ first: () => null }) } });
         });
 
         it(
           "should throw",
           run(async () => {
             try {
-              this.client.getApiDocumentation({ iri: this.baseUrl });
+              await this.client.getApiDocumentation({ iri: this.baseUrl });
             } catch (e) {
               expect(e.message).toBe(HydraClient.noEntryPointDefined);
             }
