@@ -1,5 +1,5 @@
 var path = require("path");
-var webpackConfig = require("./webpack.config");
+var webpackConfig = require("./webpack.config.js");
 var autoWatch = process.env.npm_lifecycle_script.indexOf("--auto-watch") !== -1;
 delete webpackConfig.entry;
 webpackConfig.node = { fs: "empty" };
