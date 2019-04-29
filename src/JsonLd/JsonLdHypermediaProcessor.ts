@@ -7,6 +7,7 @@ import HypermediaContainer from "../DataModel/HypermediaContainer";
 import { ICollection } from "../DataModel/ICollection";
 import { IHydraResource } from "../DataModel/IHydraResource";
 import { IWebResource } from "../DataModel/IWebResource";
+import { HttpCallFacility } from "../HydraClientFactory";
 import { IHydraClient } from "../IHydraClient";
 import { IHypermediaProcessingOptions } from "../IHypermediaProcessingOptions";
 import { IHypermediaProcessor } from "../IHypermediaProcessor";
@@ -56,14 +57,17 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
   ];
 
   private readonly indirectTypingProvider: IndirectTypingProvider;
+  private readonly httpCall: HttpCallFacility;
 
   /**
    * Initializes a new instance of the {@link JsonLdHypermediaProcessor} class.
    * @param {IndirectTypingProvider} indirectTypingProvider Facility providing information whether given resources are
    *                                                        of given type.
+   * @param {HttpCallFacility} httpCall HTTP facility used to call remote server.
    */
-  public constructor(indirectTypingProvider: IndirectTypingProvider) {
+  public constructor(indirectTypingProvider: IndirectTypingProvider, httpCall: HttpCallFacility) {
     this.indirectTypingProvider = indirectTypingProvider;
+    this.httpCall = httpCall;
   }
 
   public get supportedMediaTypes(): Iterable<string> {
@@ -92,7 +96,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     options?: IHypermediaProcessingOptions
   ): Promise<IWebResource> {
     options = { ...{ linksPolicy: LinksPolicy.Strict, originalUrl: response.url }, ...(options || {}) };
-    const result = await JsonLdHypermediaProcessor.ensureJsonLd(response);
+    const result = await this.ensureJsonLd(response);
     let flattenPayload = await jsonld.promises.flatten(result, null, { base: response.url, embed: "@link" });
     flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
     flattenPayload = await this.fixPossibleDiscrepancies(flattenPayload, options);
@@ -130,18 +134,6 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return result;
   }
 
-  private static async ensureJsonLd(response: Response): Promise<any> {
-    const result = await response.json();
-    if (response.headers.get("Content-Type") === JsonLdHypermediaProcessor.json) {
-      const links = parseLinkHeader(response.headers.get("Link"));
-      const link = jsonld.url.prependBase(response.url, links[jsonLdContext].url);
-      const contextResponse = await fetch(link, { headers: { Accept: links[jsonLdContext].type } });
-      result["@context"] = contextResponse["@context"];
-    }
-
-    return result;
-  }
-
   private static tryRemoveReferenceFrom(graph: object[], index: number): boolean {
     const keys = Object.keys(graph[index]);
     if (keys.length === 2 && keys.indexOf("iri") !== -1 && keys.indexOf("type") !== -1) {
@@ -163,6 +155,18 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     );
   }
 
+  private async ensureJsonLd(response: Response): Promise<any> {
+    const result = await response.json();
+    if (response.headers.get("Content-Type") === JsonLdHypermediaProcessor.json) {
+      const links = parseLinkHeader(response.headers.get("Link"));
+      const link = jsonld.url.prependBase(response.url, links[jsonLdContext].url);
+      const contextResponse = await this.httpCall(link, { headers: { Accept: links[jsonLdContext].type } });
+      result["@context"] = contextResponse["@context"];
+    }
+
+    return result;
+  }
+
   private async fixPossibleDiscrepancies(payload: object[], options: IHypermediaProcessingOptions): Promise<object[]> {
     const apiDocumentation = payload.find(_ => !!_["@type"] && _["@type"].indexOf(hydra.ApiDocumentation) !== -1);
     if (
@@ -171,7 +175,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       !!options.auxiliaryResponse &&
       this.supports(options.auxiliaryResponse)
     ) {
-      const result = await JsonLdHypermediaProcessor.ensureJsonLd(options.auxiliaryResponse);
+      const result = await this.ensureJsonLd(options.auxiliaryResponse);
       let flattenPayload = await jsonld.promises.flatten(result, null, {
         base: options.auxiliaryResponse.url,
         embed: "@link"

@@ -10,14 +10,17 @@ import { LinksPolicy } from "./LinksPolicy";
 /* tslint:disable:no-var-requires */
 const hydraOntology = require("./JsonLd/hydra.json");
 
+export type HttpCallFacility = (url: string, options?: RequestInit) => Promise<Response>;
+export type HypermediaProcessorFactory = () => IHypermediaProcessor;
+
 /**
  * Provides a factory of the {@link IHydraClient}s.
  */
 export default class HydraClientFactory {
-  private readonly hypermediaProcessors: IHypermediaProcessor[] = [];
+  private readonly hypermediaProcessorFactories: HypermediaProcessorFactory[] = [];
   private iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy = null;
   private linksPolicy: LinksPolicy = LinksPolicy.Strict;
-  private httpCall: (url: string, options?: RequestInit) => Promise<Response> = null;
+  private httpCall: HttpCallFacility = null;
 
   /**
    * Starts the factory configuration.
@@ -27,8 +30,11 @@ export default class HydraClientFactory {
     return new HydraClientFactory();
   }
 
-  private static createJsonLdHypermediaProcessor() {
-    return new JsonLdHypermediaProcessor(new IndirectTypingProvider(new StaticOntologyProvider(hydraOntology)));
+  private static createJsonLdHypermediaProcessor(httpCall: HttpCallFacility) {
+    return new JsonLdHypermediaProcessor(
+      new IndirectTypingProvider(new StaticOntologyProvider(hydraOntology)),
+      httpCall
+    );
   }
 
   /**
@@ -84,7 +90,7 @@ export default class HydraClientFactory {
    * @returns {HydraClientFactory}
    */
   public withJsonLd(): HydraClientFactory {
-    this.with(HydraClientFactory.createJsonLdHypermediaProcessor());
+    this.with(() => HydraClientFactory.createJsonLdHypermediaProcessor(this.httpCall));
     return this;
   }
 
@@ -97,6 +103,15 @@ export default class HydraClientFactory {
   public with(hypermediaProcessor: IHypermediaProcessor): HydraClientFactory;
 
   /**
+   * Adds an another {@link IHypermediaProcessor} component via it's factory method.
+   * @param {HypermediaProcessorFactory} hypermediaProcessorFactory Hypermedia processor facvtory to be passed
+   *                                                                to future {@link HydraClient} instances.
+   * @returns {HydraClientFactory}
+   */
+  /* tslint:disable-next-line:unified-signatures */
+  public with(hypermediaProcessorFactory: HypermediaProcessorFactory): HydraClientFactory;
+
+  /**
    * Sets a {@link IIriTemplateExpansionStrategy} component.
    * @param {IIriTemplateExpansionStrategy} iriTemplateExpansionStrategy IRI template expansion strategy to be used
    *                                                                      when an IRI template is encountered.
@@ -107,17 +122,21 @@ export default class HydraClientFactory {
 
   /**
    * Adds HTTP requests facility component.
-   * @param {(url: string, options?: RequestInit) => Promise<Response>} httpCall HTTP call facility to be used for
+   * @param {HttpCallFacility} httpCall HTTP call facility to be used for
    *                                                                             remote server calls.
    * @returns {HydraClientFactory}
    */
   /* tslint:disable-next-line:unified-signatures */
-  public with(httpCall: (url: string, options?: RequestInit) => Promise<Response>): HydraClientFactory;
+  public with(httpCall: HttpCallFacility): HydraClientFactory;
+
+  /* tslint:disable:ban-types */
   public with(component: any): HydraClientFactory {
     if (typeof component.createRequest === "function") {
       this.iriTemplateExpansionStrategy = component as IIriTemplateExpansionStrategy;
     } else if (typeof component.process === "function") {
-      this.hypermediaProcessors.push(component as IHypermediaProcessor);
+      this.hypermediaProcessorFactories.push(() => component as IHypermediaProcessor);
+    } else if ((component as Function).length === 0) {
+      this.hypermediaProcessorFactories.push(component as HypermediaProcessorFactory);
     } else {
       this.httpCall = component;
     }
@@ -131,7 +150,7 @@ export default class HydraClientFactory {
    */
   public andCreate(): IHydraClient {
     return new HydraClient(
-      this.hypermediaProcessors,
+      this.hypermediaProcessorFactories.map(_ => _()),
       this.iriTemplateExpansionStrategy,
       this.linksPolicy,
       this.httpCall

@@ -17,7 +17,8 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         processingState.processedObject["@type"].indexOf(expectedType) !== -1
     };
     this.client = {};
-    this.hypermediaProcessor = new JsonLdHypermediaProcessor(this.indirectTypingProvider);
+    this.httpCall = sinon.stub();
+    this.hypermediaProcessor = new JsonLdHypermediaProcessor(this.indirectTypingProvider, this.httpCall);
   });
 
   it("should expose supported media types", () => {
@@ -28,8 +29,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
     describe("JSON response", () => {
       beforeEach(
         run(async () => {
-          this.fetch = sinon.stub(window, "fetch");
-          this.fetch.returns(Promise.resolve(jsonLdContext));
+          this.httpCall.returns(Promise.resolve(jsonLdContext));
           this.response = returnOk(
             "http://temp.uri/api",
             {},
@@ -43,13 +43,9 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       );
 
       it("should obtain JSON-LD context", () => {
-        expect(this.fetch).toHaveBeenCalledOnce();
-        expect(this.fetch.firstCall.args[0]).toBe("http://temp.uri/context.jsonld");
-        expect(this.fetch.firstCall.args[1]).toEqual({ headers: { Accept: "application/ld+json" } });
-      });
-
-      afterEach(() => {
-        this.fetch.restore();
+        expect(this.httpCall).toHaveBeenCalledOnce();
+        expect(this.httpCall.firstCall.args[0]).toBe("http://temp.uri/context.jsonld");
+        expect(this.httpCall.firstCall.args[1]).toEqual({ headers: { Accept: "application/ld+json" } });
       });
     });
 
