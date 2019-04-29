@@ -1,6 +1,6 @@
-var path = require("path");
-var webpackConfig = require("./webpack.config");
-var autoWatch = process.env.npm_lifecycle_script.indexOf("--auto-watch") !== -1;
+const path = require("path");
+const webpackConfig = require("./webpack.config");
+const autoWatch = process.env.npm_lifecycle_script.indexOf("--auto-watch") !== -1;
 delete webpackConfig.entry;
 webpackConfig.node = { fs: "empty" };
 webpackConfig.mode = "development";
@@ -17,7 +17,7 @@ if (!autoWatch) {
 }
 
 module.exports = function(config) {
-  var settings = {
+  const settings = {
     basePath: "",
     plugins: ["karma-*", require("./integration-tests/server/server")],
     frameworks: ["jasmine", "sinon", "jasmine-sinon", "source-map-support", "hydra-testserver"],
