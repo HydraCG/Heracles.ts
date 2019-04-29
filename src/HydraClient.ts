@@ -7,6 +7,7 @@ import { ILink } from "./DataModel/ILink";
 import { IOperation } from "./DataModel/IOperation";
 import { IResource } from "./DataModel/IResource";
 import { IWebResource } from "./DataModel/IWebResource";
+import { HttpCallFacility } from "./HydraClientFactory";
 import { IHydraClient } from "./IHydraClient";
 import { IHypermediaProcessor } from "./IHypermediaProcessor";
 import { IIriTemplateExpansionStrategy } from "./IIiriTemplateExpansionStrategy";
@@ -40,13 +41,13 @@ export default class HydraClient implements IHydraClient {
    *                                                              controls extraction.
    * @param {IIriTemplateExpansionStrategy} iriTemplateExpansionStrategy IRI template variable expansion strategy.
    * @param {LinksPolicy} linksPolicy Policy defining what is a considered a link.
-   * @param {(url: string, options?: Request) => Promise<Response>} httpCall HTTP facility used to call remote server.
+   * @param {HttpCallFacility} httpCall HTTP facility used to call remote server.
    */
   public constructor(
     hypermediaProcessors: Iterable<IHypermediaProcessor>,
     iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy,
     linksPolicy: LinksPolicy = LinksPolicy.Strict,
-    httpCall: (url: string, options?: RequestInit) => Promise<Response>
+    httpCall: HttpCallFacility
   ) {
     if (!FilterableCollection.prototype.any.call(hypermediaProcessors)) {
       throw new Error(HydraClient.noHypermediaProcessors);

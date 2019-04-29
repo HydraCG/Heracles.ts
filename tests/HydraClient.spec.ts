@@ -15,12 +15,12 @@ describe("Given an instance of the HydraClient class", () => {
         response.headers.get("Content-Type") === "application/ld+json" ? Level.FullSupport : Level.None
     };
     this.iriTemplateExpansionStrategy = {};
-    this.fetch = sinon.stub();
+    this.httpCall = sinon.stub();
     this.client = new HydraClient(
       [this.hypermediaProcessor],
       this.iriTemplateExpansionStrategy,
       LinksPolicy.Strict,
-      this.fetch
+      this.httpCall
     );
   });
 
@@ -48,7 +48,7 @@ describe("Given an instance of the HydraClient class", () => {
 
     describe("of which site's main document is not found", () => {
       beforeEach(() => {
-        this.fetch.withArgs(this.baseUrl).returns(Promise.resolve(returnNotFound()));
+        this.httpCall.withArgs(this.baseUrl).returns(Promise.resolve(returnNotFound()));
       });
 
       it(
@@ -65,7 +65,7 @@ describe("Given an instance of the HydraClient class", () => {
 
     describe("which has no LINK header returned", () => {
       beforeEach(() => {
-        this.fetch.withArgs(this.baseUrl).returns(Promise.resolve(returnOk()));
+        this.httpCall.withArgs(this.baseUrl).returns(Promise.resolve(returnOk()));
       });
 
       it(
@@ -83,7 +83,7 @@ describe("Given an instance of the HydraClient class", () => {
     describe("which is not provided within the LINK header", () => {
       beforeEach(() => {
         this.urlResponse = returnOk(this.baseUrl, {}, { Link: `<${this.baseUrl}api/documentation>; rel="next"` });
-        this.fetch.withArgs(this.baseUrl).returns(Promise.resolve(this.urlResponse));
+        this.httpCall.withArgs(this.baseUrl).returns(Promise.resolve(this.urlResponse));
       });
 
       it(
@@ -107,13 +107,13 @@ describe("Given an instance of the HydraClient class", () => {
             Link: `<${this.baseUrl}api/documentation>; rel="${hydra.apiDocumentation}"`
           }
         );
-        this.fetch.withArgs(this.baseUrl).returns(Promise.resolve(this.urlResponse));
+        this.httpCall.withArgs(this.baseUrl).returns(Promise.resolve(this.urlResponse));
       });
 
       describe("and that documentation is not found", () => {
         beforeEach(() => {
           this.apiDocumentationResponse = returnNotFound();
-          this.fetch.withArgs(`${this.baseUrl}api/documentation`).returns(this.apiDocumentationResponse);
+          this.httpCall.withArgs(`${this.baseUrl}api/documentation`).returns(this.apiDocumentationResponse);
         });
 
         it(
@@ -132,7 +132,7 @@ describe("Given an instance of the HydraClient class", () => {
         beforeEach(() => {
           const apiDocumentationUrl = `${this.baseUrl}api/documentation`;
           this.apiDocumentationResponse = returnOk(apiDocumentationUrl, {}, { "Content-Type": "text/turtle" });
-          this.fetch.withArgs(apiDocumentationUrl).returns(this.apiDocumentationResponse);
+          this.httpCall.withArgs(apiDocumentationUrl).returns(this.apiDocumentationResponse);
         });
 
         it(
@@ -150,7 +150,7 @@ describe("Given an instance of the HydraClient class", () => {
       describe("and that documentation has no entry point provided", () => {
         beforeEach(() => {
           this.apiDocumentationResponse = returnOk();
-          this.fetch.withArgs(`${this.baseUrl}api/documentation`).returns(this.apiDocumentationResponse);
+          this.httpCall.withArgs(`${this.baseUrl}api/documentation`).returns(this.apiDocumentationResponse);
           this.hypermediaProcessor.process.returns({ hypermedia: { ofType: () => ({ first: () => null }) } });
         });
 
@@ -174,18 +174,18 @@ describe("Given an instance of the HydraClient class", () => {
             this.data = [this.apiDocumentation];
             (this.data as any).ofType = sinon.stub().returns({ first: sinon.stub().returns(this.apiDocumentation) });
             this.apiDocumentationResponse = returnOk(this.apiDocumentationUrl, this.data);
-            this.fetch.withArgs(this.apiDocumentationUrl).returns(this.apiDocumentationResponse);
+            this.httpCall.withArgs(this.apiDocumentationUrl).returns(this.apiDocumentationResponse);
             this.hypermediaProcessor.process.returns(Promise.resolve({ hypermedia: this.data }));
             await this.client.getApiDocumentation(this.baseUrl);
           })
         );
 
         it("should call the given site url", () => {
-          expect(this.fetch).toHaveBeenCalledWith(this.baseUrl);
+          expect(this.httpCall).toHaveBeenCalledWith(this.baseUrl);
         });
 
         it("should fetch the API documentation", () => {
-          expect(this.fetch).toHaveBeenCalledWith(`${this.baseUrl}api/documentation`);
+          expect(this.httpCall).toHaveBeenCalledWith(`${this.baseUrl}api/documentation`);
         });
 
         it("should process API documentation with a hypermedia processor", () => {
@@ -223,7 +223,7 @@ describe("Given an instance of the HydraClient class", () => {
 
     describe("and that resource was not found", () => {
       beforeEach(() => {
-        this.fetch.withArgs(this.resourceUrl).returns(Promise.resolve(returnNotFound()));
+        this.httpCall.withArgs(this.resourceUrl).returns(Promise.resolve(returnNotFound()));
       });
 
       it(
@@ -241,7 +241,7 @@ describe("Given an instance of the HydraClient class", () => {
     describe("and that resource was provided in an unsupported format", () => {
       beforeEach(() => {
         this.resourceResponse = returnOk(this.resourceUrl, {}, { "Content-Type": "text/turtle" });
-        this.fetch.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
+        this.httpCall.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
       });
 
       it(
@@ -261,7 +261,7 @@ describe("Given an instance of the HydraClient class", () => {
         run(async () => {
           this.resource = { hypermedia: {} };
           this.resourceResponse = returnOk(this.resource);
-          this.fetch.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
+          this.httpCall.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
           this.hypermediaProcessor.process.withArgs(this.resourceResponse).returns(Promise.resolve(this.resource));
           this.result = await this.client.getResource(this.resourceUrl);
         })
@@ -301,7 +301,7 @@ describe("Given an instance of the HydraClient class", () => {
       });
 
       it("should execute the request", () => {
-        expect(this.fetch).toHaveBeenCalledWith(this.operation.target.iri);
+        expect(this.httpCall).toHaveBeenCalledWith(this.operation.target.iri);
       });
     });
 
