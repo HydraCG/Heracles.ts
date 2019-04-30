@@ -250,6 +250,6 @@ export default class ProcessingState {
       }
     }
 
-    return this.resourceMap[result.iri] = result;
+    return (this.resourceMap[result.iri] = result);
   }
 }

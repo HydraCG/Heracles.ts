@@ -2,6 +2,7 @@ import { hydra } from "../namespaces";
 import LinksCollection from "./Collections/LinksCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
+import TypesCollection from "./Collections/TypesCollection";
 import { ICollection } from "./ICollection";
 import { IHeaders } from "./IHeaders";
 import { IHydraResource } from "./IHydraResource";
@@ -9,13 +10,40 @@ import { IHypermediaContainer } from "./IHypermediaContainer";
 import { IPartialCollectionIterator } from "./IPartialCollectionIterator";
 import { IResource } from "./IResource";
 
+function addTo(collection: ICollection[], hashList: string[], item: ICollection): void {
+  if (hashList.indexOf(item.iri) === -1) {
+    collection.push(item);
+    hashList.push(item.iri);
+  }
+}
+
+function discoverCollectionsFrom(hypermedia: Iterable<IResource>): ICollection[] {
+  const collectionIris: string[] = [];
+  const collections: ICollection[] = [];
+  for (const control of hypermedia) {
+    if (control.type.contains(hydra.Collection)) {
+      addTo(collections, collectionIris, control as ICollection);
+    } else if (!!(control as IHydraResource).collections) {
+      for (const linkedCollection of (control as IHydraResource).collections) {
+        addTo(collections, collectionIris, linkedCollection);
+      }
+    }
+  }
+
+  return collections;
+}
+
 /**
  * Provides a default implementation of the {@link IHypermediaContainer} interface.
  * @class
  */
 export default class HypermediaContainer extends ResourceFilterableCollection<IResource>
   implements IHypermediaContainer {
+  public readonly headers: IHeaders;
+
   public readonly iri: string;
+
+  public readonly type: TypesCollection;
 
   public readonly view?: IHydraResource;
 
@@ -27,42 +55,20 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
 
   public readonly links: LinksCollection;
 
-  public readonly headers: IHeaders;
-
   /**
    * Initializes a new instance of the {@link HypermediaContainer} class.
-   * @param {string} iri Iri of the resource obtained.
-   * @param {Iterable<IResource>} items Hypermedia controls to be stored within this container.
-   * @param {OperationsCollection} operations Operations available on the container.
-   * @param {LinksCollection} links Links available on the container.
-   * @param {ResourceFilterableCollection<IResource>} members Optional Hydra collection members in case
-   *                                                          container is a collection.
+   * @param {IResource} rootResource Main resource associated with the requested Url.
+   * @param {Iterable<IResource>} hypermedia Hypermedia controls to be stored within this container.
    */
-  public constructor(
-    headers: IHeaders,
-    iri: string,
-    items: Iterable<IResource>,
-    operations: OperationsCollection,
-    links: LinksCollection,
-    collection?: ICollection,
-  ) {
-    super(items);
-    const itemsArray = Array.from(items);
-    const explicitlyTypedCollections: ICollection[] = itemsArray
-      .filter(control => control.type.contains(hydra.Collection))
-      .map(control => control as ICollection);
-    const linkedCollections: ICollection[] = Array.prototype.concat(
-      ...itemsArray
-        .filter((control: any) => !!control.collections)
-        .map((control: IHydraResource) => Array.from(control.collections))
-    );
+  public constructor(headers: IHeaders, rootResource: IResource, hypermedia: Iterable<IResource>) {
+    super(hypermedia);
     this.headers = headers;
-    this.iri = iri;
-    this.operations = operations;
-    this.collections = new ResourceFilterableCollection<ICollection>(
-      explicitlyTypedCollections.concat(linkedCollections)
-    );
-    this.links = links;
+    this.iri = rootResource.iri;
+    this.type = rootResource.type;
+    this.operations = (rootResource as IHydraResource).operations;
+    this.collections = new ResourceFilterableCollection<ICollection>(discoverCollectionsFrom(hypermedia));
+    this.links = (rootResource as IHydraResource).links;
+    const collection = rootResource as ICollection;
     if (collection != null) {
       this.members = collection.members;
       this.view = collection.view;

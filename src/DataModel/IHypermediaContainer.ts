@@ -10,12 +10,7 @@ import { IResource } from "./IResource";
 /**
  * Provides an abstraction layer over hypermedia container.
  */
-export interface IHypermediaContainer extends ResourceFilterableCollection<IResource> {
-  /**
-   * Gets the currently obtained resource IRI.
-   */
-  readonly iri: string;
-
+export interface IHypermediaContainer extends ResourceFilterableCollection<IResource>, IResource {
   /**
    * Gets a collection of links.
    */

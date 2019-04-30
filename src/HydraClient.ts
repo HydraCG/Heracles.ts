@@ -125,9 +125,6 @@ export default class HydraClient implements IHydraClient {
       linksPolicy: this.linksPolicy,
       originalUrl: url
     });
-    Object.defineProperty(result, "iri", {
-      value: response.url
-    });
     return result;
   }
 
