@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const test = require("./webpack.config");
 const webpackConfig = {
   entry: "index.ts",
   mode: "production",
