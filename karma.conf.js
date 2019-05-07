@@ -91,8 +91,8 @@ module.exports = function(config) {
       }
     },
     singleRun: false,
-    concurrency: Infinity/*,
-    webpack: webpackConfig*/
+    concurrency: Infinity,
+    webpack: webpackConfig
   };
   if (!autoWatch) {
     settings.reporters.push("coverage-istanbul");
