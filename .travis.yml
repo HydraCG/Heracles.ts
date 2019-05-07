@@ -13,7 +13,6 @@ node_js:
   - 9
   - 8
   - 7
-  - 6
 
 before_install:
   - export CHROME_BIN=chromium-browser
