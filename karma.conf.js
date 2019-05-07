@@ -1,7 +1,8 @@
 const path = require("path");
-// const webpackConfig = require("./webpack.config");
+//const webpackConfig = require("./webpack.config");
+const webpackConfig = { module: { rules: [] } };
 const autoWatch = process.env.npm_lifecycle_script.indexOf("--auto-watch") !== -1;
-/* delete webpackConfig.entry;
+delete webpackConfig.entry;
 webpackConfig.node = { fs: "empty" };
 webpackConfig.mode = "development";
 if (!autoWatch) {
@@ -14,7 +15,7 @@ if (!autoWatch) {
       options: { esModules: true }
     }
   });
-}*/
+}
 
 module.exports = function(config) {
   const settings = {
