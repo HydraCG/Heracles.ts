@@ -193,6 +193,7 @@ describe("Given an instance of the HydraClient class", () => {
             this.apiDocumentationResponse,
             this.client,
             {
+              auxiliaryOriginalUrl: this.baseUrl,
               auxiliaryResponse: this.urlResponse,
               linksPolicy: LinksPolicy.Strict,
               originalUrl: this.apiDocumentationUrl

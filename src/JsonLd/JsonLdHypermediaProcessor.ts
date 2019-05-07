@@ -76,14 +76,16 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
 
   public supports(response: Response): Level {
     let result = Level.None;
-    for (const approach of JsonLdHypermediaProcessor.exactMatchCases) {
-      const currentMatch = approach.reduce(
-        (previous: boolean, current: HeaderMatcher) => previous && current(response.headers),
-        true
-      );
-      if (currentMatch) {
-        result = Level.FullSupport;
-        break;
+    if (!!response) {
+      for (const approach of JsonLdHypermediaProcessor.exactMatchCases) {
+        const currentMatch = approach.reduce(
+          (previous: boolean, current: HeaderMatcher) => previous && current(response.headers),
+          true
+        );
+        if (currentMatch) {
+          result = Level.FullSupport;
+          break;
+        }
       }
     }
 
@@ -99,7 +101,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     const result = await this.ensureJsonLd(response);
     let flattenPayload = await jsonld.promises.flatten(result, null, { base: response.url, embed: "@link" });
     flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
-    flattenPayload = await this.fixPossibleDiscrepancies(flattenPayload, options);
+    flattenPayload = this.fixPossibleDiscrepancies(flattenPayload, options);
     const context = await this.processHypermedia(
       new ProcessingState(flattenPayload, response.url, client, options.linksPolicy)
     );
@@ -167,24 +169,15 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return result;
   }
 
-  private async fixPossibleDiscrepancies(payload: object[], options: IHypermediaProcessingOptions): Promise<object[]> {
+  private fixPossibleDiscrepancies(payload: object[], options: IHypermediaProcessingOptions): object[] {
     const apiDocumentation = payload.find(_ => !!_["@type"] && _["@type"].indexOf(hydra.ApiDocumentation) !== -1);
     if (
       !!apiDocumentation &&
       !apiDocumentation[hydra.entrypoint] &&
-      !!options.auxiliaryResponse &&
-      this.supports(options.auxiliaryResponse)
+      this.supports(options.auxiliaryResponse) &&
+      options.auxiliaryOriginalUrl.match(/.+:\/\/[^\/]+\/?/)
     ) {
-      const result = await this.ensureJsonLd(options.auxiliaryResponse);
-      let flattenPayload = await jsonld.promises.flatten(result, null, {
-        base: options.auxiliaryResponse.url,
-        embed: "@link"
-      });
-      flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
-      const entryPoint = flattenPayload.find(_ => !!_["@type"] && _["@type"].indexOf(hydra.EntryPoint) !== -1);
-      if (!!entryPoint) {
-        apiDocumentation[hydra.entrypoint] = [entryPoint];
-      }
+      apiDocumentation[hydra.entrypoint] = [{ "@id": options.auxiliaryOriginalUrl }];
     }
 
     return payload;

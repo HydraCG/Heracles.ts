@@ -95,7 +95,8 @@ export default class HydraClient implements IHydraClient {
   public async getApiDocumentation(urlOrResource: string | IResource): Promise<IApiDocumentation> {
     const url = HydraClient.getUrl(urlOrResource);
     const apiDocumentation = await this.getApiDocumentationUrl(url);
-    const resource = await this.getResourceFrom(apiDocumentation.url, { auxiliaryResponse: apiDocumentation.response });
+    const options = { auxiliaryResponse: apiDocumentation.response, auxiliaryOriginalUrl: url };
+    const resource = await this.getResourceFrom(apiDocumentation.url, options);
     const result = resource.hypermedia.ofType(hydra.ApiDocumentation).first() as IApiDocumentation;
     if (!result) {
       throw new Error(HydraClient.noEntryPointDefined);

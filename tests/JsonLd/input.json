@@ -13,7 +13,6 @@
         "@graph": [
             {
                 "@id": "http://temp.uri/api",
-                "@type": "hydra:EntryPoint",
                 "hydra:collection": [
                     {
                         "@id": "http://temp.uri/api/people"

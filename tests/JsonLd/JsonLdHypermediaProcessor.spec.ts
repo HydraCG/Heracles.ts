@@ -286,7 +286,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               }
             ],
             operations: [],
-            type: [hydra.EntryPoint]
+            type: []
           }
         ]);
       });
@@ -322,17 +322,20 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
     describe("JSON-LD response with faulty API documentation", () => {
       beforeEach(
         run(async () => {
-          this.entryPoint = { "@id": "http://temp.uri/api", "@type": [hydra.EntryPoint] };
-          this.apiDocumentation = { "@id": "http://temp.uri/api#documentation", "@type": [hydra.ApiDocumentation] };
-          this.response = returnOk("http://temp.uri/api#documentation", this.apiDocumentation);
-          const options = { auxiliaryResponse: returnOk("http://temp.uri/api", this.entryPoint) };
+          this.entryPoint = { "@id": "http://temp.uri/" };
+          this.apiDocumentation = { "@id": "http://temp.uri/#documentation", "@type": [hydra.ApiDocumentation] };
+          this.response = returnOk("http://temp.uri/#documentation", this.apiDocumentation);
+          const options = {
+            auxiliaryOriginalUrl: "http://temp.uri/",
+            auxiliaryResponse: returnOk("http://temp.uri/", this.entryPoint)
+          };
           this.result = await this.hypermediaProcessor.process(this.response, this.client, options);
         })
       );
 
       it("should fix entry point", () => {
-        expect(this.result.hypermedia.ofIri("http://temp.uri/api#documentation").first().entryPoint).toBe(
-          "http://temp.uri/api"
+        expect(this.result.hypermedia.ofIri("http://temp.uri/#documentation").first().entryPoint).toBe(
+          "http://temp.uri/"
         );
       });
     });

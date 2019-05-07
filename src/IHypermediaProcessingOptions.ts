@@ -15,7 +15,13 @@ export interface IHypermediaProcessingOptions {
   readonly originalUrl: string;
 
   /**
-   * Gets an auxiliar response that was used to obtain currently processed one.
+   * Gets an auxiliary response that was used to obtain currently processed one.
    */
   readonly auxiliaryResponse?: Response;
+
+  /**
+   * Gets an original auxiliary Url requested that was used to obtain currently processed one.
+   * This property should be set in case {@link auxiliaryResponse} is also set.
+   */
+  readonly auxiliaryOriginalUrl?: string;
 }
