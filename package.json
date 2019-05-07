@@ -22,7 +22,7 @@
   "types": "types/index.d.ts",
   "scripts": {
     "test": "karma start --single-run",
-    "test-watch": "karma start --no-single-run --auto-watch",
+    "test-watch": "karma start",
     "serve": "ts-node integration-tests/server/server.ts",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "tslint-fix": "tslint -c tslint.json -p tsconfig.json -p tsconfig.json --fix",
