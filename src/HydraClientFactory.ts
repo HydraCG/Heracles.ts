@@ -3,6 +3,9 @@ import HydraClient from "./HydraClient";
 import { IHydraClient } from "./IHydraClient";
 import { IHypermediaProcessor } from "./IHypermediaProcessor";
 import { IIriTemplateExpansionStrategy } from "./IIiriTemplateExpansionStrategy";
+import CompoundGraphTransformer from "./JsonLd/GraphTransformations/CompoundGraphTransformer";
+import EntryPointCorrectingGraphTransformer from "./JsonLd/GraphTransformations/EntryPointCorrectingGraphTransformer";
+import FlatteningGraphTransformer from "./JsonLd/GraphTransformations/FlatteningGraphTransformer";
 import IndirectTypingProvider from "./JsonLd/IndirectTypingProvider";
 import JsonLdHypermediaProcessor from "./JsonLd/JsonLdHypermediaProcessor";
 import StaticOntologyProvider from "./JsonLd/StaticOntologyProvider";
@@ -31,9 +34,13 @@ export default class HydraClientFactory {
   }
 
   private static createJsonLdHypermediaProcessor(httpCall: HttpCallFacility) {
+    const graphTransformer = new CompoundGraphTransformer(
+      new FlatteningGraphTransformer(),
+      new EntryPointCorrectingGraphTransformer());
     return new JsonLdHypermediaProcessor(
       new IndirectTypingProvider(new StaticOntologyProvider(hydraOntology)),
-      httpCall
+      httpCall,
+      graphTransformer
     );
   }
 

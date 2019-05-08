@@ -18,7 +18,11 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
     };
     this.client = {};
     this.httpCall = sinon.stub();
-    this.hypermediaProcessor = new JsonLdHypermediaProcessor(this.indirectTypingProvider, this.httpCall);
+    this.graphTransformer = { transform: sinon.stub().callsFake(_ => _) };
+    this.hypermediaProcessor = new JsonLdHypermediaProcessor(
+      this.indirectTypingProvider,
+      this.httpCall,
+      this.graphTransformer);
   });
 
   it("should expose supported media types", () => {
@@ -56,6 +60,10 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
           this.result = await this.hypermediaProcessor.process(this.response, this.client);
         })
       );
+
+      it("should transform graph", () => {
+        expect(this.graphTransformer.transform).toHaveBeenCalledOnce();
+      });
 
       it("should process data", () => {
         expect(this.result).toEqual(inputJsonLd);
@@ -316,27 +324,6 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
 
       it("should have a nested resource's link", () => {
         expect(this.markus.links.withRelationOf("http://schema.org/knows").first().target).toBe(this.karol);
-      });
-    });
-
-    describe("JSON-LD response with faulty API documentation", () => {
-      beforeEach(
-        run(async () => {
-          this.entryPoint = { "@id": "http://temp.uri/" };
-          this.apiDocumentation = { "@id": "http://temp.uri/#documentation", "@type": [hydra.ApiDocumentation] };
-          this.response = returnOk("http://temp.uri/#documentation", this.apiDocumentation);
-          const options = {
-            auxiliaryOriginalUrl: "http://temp.uri/",
-            auxiliaryResponse: returnOk("http://temp.uri/", this.entryPoint)
-          };
-          this.result = await this.hypermediaProcessor.process(this.response, this.client, options);
-        })
-      );
-
-      it("should fix entry point", () => {
-        expect(this.result.hypermedia.ofIri("http://temp.uri/#documentation").first().entryPoint).toBe(
-          "http://temp.uri/"
-        );
       });
     });
   });
