@@ -15,7 +15,8 @@ export default class CompoundGraphTransformer implements IGraphTransformer {
   public async transform(
     graph: object[],
     processor: IHypermediaProcessor,
-    options?: IHypermediaProcessingOptions): Promise<object[]> {
+    options?: IHypermediaProcessingOptions
+  ): Promise<object[]> {
     let result = graph;
     for (const graphTransformer of this.graphTransformers) {
       result = await graphTransformer.transform(result, processor, options);

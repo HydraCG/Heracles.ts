@@ -71,7 +71,8 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
   public constructor(
     indirectTypingProvider: IndirectTypingProvider,
     httpCall: HttpCallFacility,
-    graphTransformer: IGraphTransformer) {
+    graphTransformer: IGraphTransformer
+  ) {
     this.indirectTypingProvider = indirectTypingProvider;
     this.httpCall = httpCall;
     this.graphTransformer = graphTransformer;

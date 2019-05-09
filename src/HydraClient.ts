@@ -10,7 +10,7 @@ import { IWebResource } from "./DataModel/IWebResource";
 import { HttpCallFacility } from "./HydraClientFactory";
 import { IHydraClient } from "./IHydraClient";
 import { IHypermediaProcessor } from "./IHypermediaProcessor";
-import { IIriTemplateExpansionStrategy } from "./IIiriTemplateExpansionStrategy";
+import { IIriTemplateExpansionStrategy } from "./IIriTemplateExpansionStrategy";
 import { LinksPolicy } from "./LinksPolicy";
 import { hydra } from "./namespaces";
 

@@ -9,9 +9,11 @@ describe("Given instance of FlatteningGraphTransformer class", () => {
   });
 
   describe("when transforming", () => {
-    beforeEach(run(async () => {
-      this.result = await this.transformer.transform(this.graph, this.processor);
-    }));
+    beforeEach(
+      run(async () => {
+        this.result = await this.transformer.transform(this.graph, this.processor);
+      })
+    );
 
     it("flatten graphs", () => {
       expect(this.result.find(_ => _["@graph"])).toBeUndefined();

@@ -22,7 +22,8 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
     this.hypermediaProcessor = new JsonLdHypermediaProcessor(
       this.indirectTypingProvider,
       this.httpCall,
-      this.graphTransformer);
+      this.graphTransformer
+    );
   });
 
   it("should expose supported media types", () => {

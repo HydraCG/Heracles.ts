@@ -9,7 +9,8 @@ export default class FlatteningGraphTransformer implements IGraphTransformer {
   public async transform(
     graph: object[],
     processor: IHypermediaProcessor,
-    options?: IHypermediaProcessingOptions): Promise<object[]> {
+    options?: IHypermediaProcessingOptions
+  ): Promise<object[]> {
     let result = graph;
     if (graph.find(_ => _["@graph"])) {
       result = [].concat.apply(

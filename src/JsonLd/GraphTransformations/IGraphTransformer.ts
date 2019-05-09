@@ -12,5 +12,6 @@ export interface IGraphTransformer {
   transform(
     graph: object[],
     processor: IHypermediaProcessor,
-    options?: IHypermediaProcessingOptions): Promise<object[]>;
+    options?: IHypermediaProcessingOptions
+  ): Promise<object[]>;
 }

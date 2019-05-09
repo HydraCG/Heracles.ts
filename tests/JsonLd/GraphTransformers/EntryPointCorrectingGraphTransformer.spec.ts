@@ -1,7 +1,6 @@
 import * as sinon from "sinon";
-/* tslint:disable:import-spacing */
-import EntryPointCorrectingGraphTransformer
-  from "../../../src/JsonLd/GraphTransformations/EntryPointCorrectingGraphTransformer";
+/* tslint:disable:max-line-length */
+import EntryPointCorrectingGraphTransformer from "../../../src/JsonLd/GraphTransformations/EntryPointCorrectingGraphTransformer";
 import { hydra } from "../../../src/namespaces";
 import { run } from "../../../testing/AsyncHelper";
 import { returnOk } from "../../../testing/ResponseHelper";
@@ -21,9 +20,11 @@ describe("Given instance of EntryPointCorrectingGraphTransformer class", () => {
   });
 
   describe("when transforming", () => {
-    beforeEach(run(async () => {
-      this.result = await this.transformer.transform(this.graph, this.processor, this.options);
-    }));
+    beforeEach(
+      run(async () => {
+        this.result = await this.transformer.transform(this.graph, this.processor, this.options);
+      })
+    );
 
     it("should check processor supports the initial request", () => {
       expect(this.processor.supports).toHaveBeenCalledWith(this.options.auxiliaryResponse);

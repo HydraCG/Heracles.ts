@@ -10,7 +10,8 @@ export default class EntryPointCorrectingGraphTransformer implements IGraphTrans
   public async transform(
     graph: object[],
     processor: IHypermediaProcessor,
-    options?: IHypermediaProcessingOptions): Promise<object[]> {
+    options?: IHypermediaProcessingOptions
+  ): Promise<object[]> {
     const apiDocumentation = graph.find(_ => !!_["@type"] && _["@type"].indexOf(hydra.ApiDocumentation) !== -1);
     if (
       !!apiDocumentation &&

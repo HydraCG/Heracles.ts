@@ -12,9 +12,11 @@ describe("Given instance of CompoundGraphTransformer class", () => {
   });
 
   describe("when transforming", () => {
-    beforeEach(run(async () => {
-      this.result = await this.transformer.transform(this.graph, this.processor);
-    }));
+    beforeEach(
+      run(async () => {
+        this.result = await this.transformer.transform(this.graph, this.processor);
+      })
+    );
 
     it("should call all underlying graph transformers", () => {
       expect(this.primaryGraphTransformer.transform).toHaveBeenCalledWith(this.graph, this.processor);
