@@ -11,7 +11,6 @@ export { default as PartialCollectionCrawler, CrawlingDirection, ICrawlingOption
 export { IApiDocumentation } from "./src/DataModel/IApiDocumentation";
 export { IClass } from "./src/DataModel/IClass";
 export { ICollection } from "./src/DataModel/ICollection";
-export { IHeaders } from "./src/DataModel/IHeaders";
 export { IHydraResource } from "./src/DataModel/IHydraResource";
 export { IHypermediaContainer } from "./src/DataModel/IHypermediaContainer";
 export { IIriTemplate } from "./src/DataModel/IIriTemplate";
