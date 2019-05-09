@@ -143,7 +143,7 @@ export default class HydraClientFactory {
       this.iriTemplateExpansionStrategy = component as IIriTemplateExpansionStrategy;
     } else if (typeof component.process === "function") {
       this.hypermediaProcessorFactories.push(() => component as IHypermediaProcessor);
-    } else if ((component as Function).length === 0) {
+    } else if ((component as Function).length === 0 && (component as Function).name.indexOf("bound") === -1) {
       this.hypermediaProcessorFactories.push(component as HypermediaProcessorFactory);
     } else {
       this.httpCall = component;
