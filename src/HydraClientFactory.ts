@@ -98,7 +98,18 @@ export default class HydraClientFactory {
    * @returns {HydraClientFactory}
    */
   public withJsonLd(): HydraClientFactory {
-    this.with(() => HydraClientFactory.createJsonLdHypermediaProcessor(this.httpCall));
+    this.withFactory(() => HydraClientFactory.createJsonLdHypermediaProcessor(this.httpCall));
+    return this;
+  }
+
+  /**
+   * Adds an another {@link IHypermediaProcessor} component via it's factory method.
+   * @param {HypermediaProcessorFactory} hypermediaProcessorFactory Hypermedia processor facvtory to be passed
+   *                                                                to future {@link HydraClient} instances.
+   * @returns {HydraClientFactory}
+   */
+  public withFactory(hypermediaProcessorFactory: HypermediaProcessorFactory): HydraClientFactory {
+    this.hypermediaProcessorFactories.push(hypermediaProcessorFactory);
     return this;
   }
 
@@ -109,15 +120,6 @@ export default class HydraClientFactory {
    * @returns {HydraClientFactory}
    */
   public with(hypermediaProcessor: IHypermediaProcessor): HydraClientFactory;
-
-  /**
-   * Adds an another {@link IHypermediaProcessor} component via it's factory method.
-   * @param {HypermediaProcessorFactory} hypermediaProcessorFactory Hypermedia processor facvtory to be passed
-   *                                                                to future {@link HydraClient} instances.
-   * @returns {HydraClientFactory}
-   */
-  /* tslint:disable-next-line:unified-signatures */
-  public with(hypermediaProcessorFactory: HypermediaProcessorFactory): HydraClientFactory;
 
   /**
    * Sets a {@link IIriTemplateExpansionStrategy} component.
@@ -143,8 +145,6 @@ export default class HydraClientFactory {
       this.iriTemplateExpansionStrategy = component as IIriTemplateExpansionStrategy;
     } else if (typeof component.process === "function") {
       this.hypermediaProcessorFactories.push(() => component as IHypermediaProcessor);
-    } else if ((component as Function).length === 0 && (component as Function).name.indexOf("bound") === -1) {
-      this.hypermediaProcessorFactories.push(component as HypermediaProcessorFactory);
     } else {
       this.httpCall = component;
     }
