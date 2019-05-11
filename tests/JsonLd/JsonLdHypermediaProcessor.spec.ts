@@ -16,7 +16,14 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         processingState.processedObject["@type"] instanceof Array &&
         processingState.processedObject["@type"].indexOf(expectedType) !== -1
     };
-    this.hypermediaProcessor = new JsonLdHypermediaProcessor(this.indirectTypingProvider);
+    this.client = {};
+    this.httpCall = sinon.stub();
+    this.graphTransformer = { transform: sinon.stub().callsFake(_ => _) };
+    this.hypermediaProcessor = new JsonLdHypermediaProcessor(
+      this.indirectTypingProvider,
+      this.httpCall,
+      this.graphTransformer
+    );
   });
 
   it("should expose supported media types", () => {
@@ -27,8 +34,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
     describe("JSON response", () => {
       beforeEach(
         run(async () => {
-          this.fetch = sinon.stub(window, "fetch");
-          this.fetch.returns(Promise.resolve(jsonLdContext));
+          this.httpCall.returns(Promise.resolve(jsonLdContext));
           this.response = returnOk(
             "http://temp.uri/api",
             {},
@@ -37,18 +43,14 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               "Link": "<context.jsonld>; rel=\"http://www.w3.org/ns/json-ld#context\"; type=\"application/ld+json\""
             }
           );
-          this.result = await this.hypermediaProcessor.process(this.response, null);
+          this.result = await this.hypermediaProcessor.process(this.response, this.client);
         })
       );
 
       it("should obtain JSON-LD context", () => {
-        expect(this.fetch).toHaveBeenCalledOnce();
-        expect(this.fetch.firstCall.args[0]).toBe("http://temp.uri/context.jsonld");
-        expect(this.fetch.firstCall.args[1]).toEqual({ headers: { Accept: "application/ld+json" } });
-      });
-
-      afterEach(() => {
-        this.fetch.restore();
+        expect(this.httpCall).toHaveBeenCalledOnce();
+        expect(this.httpCall.firstCall.args[0]).toBe("http://temp.uri/context.jsonld");
+        expect(this.httpCall.firstCall.args[1]).toEqual({ headers: { Accept: "application/ld+json" } });
       });
     });
 
@@ -56,9 +58,13 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       beforeEach(
         run(async () => {
           this.response = returnOk("http://temp.uri/api", inputJsonLd);
-          this.result = await this.hypermediaProcessor.process(this.response, null);
+          this.result = await this.hypermediaProcessor.process(this.response, this.client);
         })
       );
+
+      it("should transform graph", () => {
+        expect(this.graphTransformer.transform).toHaveBeenCalledOnce();
+      });
 
       it("should process data", () => {
         expect(this.result).toEqual(inputJsonLd);
@@ -289,36 +295,36 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               }
             ],
             operations: [],
-            type: [hydra.EntryPoint]
+            type: []
           }
         ]);
       });
+    });
 
-      describe("response with nested resources", () => {
-        beforeEach(
-          run(async () => {
-            this.response = returnOk("http://temp.uri/api/people/markus", nestedResourcesInputJsonLd);
-            const result = await this.hypermediaProcessor.process(this.response, false);
-            this.markus = result.hypermedia.where(control => control.iri.match(/markus/)).first();
-            this.karol = this.markus.links.withRelationOf("http://schema.org/knows").first().target;
-          })
+    describe("JSON-LD response with nested resources", () => {
+      beforeEach(
+        run(async () => {
+          this.response = returnOk("http://temp.uri/api/people/markus", nestedResourcesInputJsonLd);
+          const result = await this.hypermediaProcessor.process(this.response, this.client);
+          this.markus = result.hypermedia.where(control => control.iri.match(/markus/)).first();
+          this.karol = this.markus.links.withRelationOf("http://schema.org/knows").first().target;
+        })
+      );
+
+      it("should gain access to outer resource's links", () => {
+        expect(this.markus.links.withRelationOf("http://xmlns.com/foaf/0.1/homepage").first().target.iri).toBe(
+          "http://temp.uri/api/people/markus/home-page"
         );
+      });
 
-        it("should gain access to outer resource's links", () => {
-          expect(this.markus.links.withRelationOf("http://xmlns.com/foaf/0.1/homepage").first().target.iri).toBe(
-            "http://temp.uri/api/people/markus/home-page"
-          );
-        });
+      it("should gain access to inner resource's links", () => {
+        expect(this.karol.links.withRelationOf("http://xmlns.com/foaf/0.1/homepage").first().target.iri).toBe(
+          "http://temp.uri/api/people/karol/home-page"
+        );
+      });
 
-        it("should gain access to inner resource's links", () => {
-          expect(this.karol.links.withRelationOf("http://xmlns.com/foaf/0.1/homepage").first().target.iri).toBe(
-            "http://temp.uri/api/people/karol/home-page"
-          );
-        });
-
-        it("should have a nested resource's link", () => {
-          expect(this.markus.links.withRelationOf("http://schema.org/knows").first().target).toBe(this.karol);
-        });
+      it("should have a nested resource's link", () => {
+        expect(this.markus.links.withRelationOf("http://schema.org/knows").first().target).toBe(this.karol);
       });
     });
   });

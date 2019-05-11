@@ -2,7 +2,7 @@ import { IOperation } from "./DataModel/IOperation";
 import { IResource } from "./DataModel/IResource";
 import { ITemplatedOperation } from "./DataModel/ITemplatedOperation";
 import MappingsBuilder from "./DataModel/MappingsBuilder";
-import { IIriTemplateExpansionStrategy } from "./IIiriTemplateExpansionStrategy";
+import { IIriTemplateExpansionStrategy } from "./IIriTemplateExpansionStrategy";
 
 /**
  * Provides a simple implementation of the {@link IIriTemplateExpansionStrategy} interface where an input resource

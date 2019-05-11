@@ -8,3 +8,5 @@ bin
 types
 **/*.js.map
 !karma.conf.js
+!webpack.config.js
+coverage
