@@ -1,0 +1,37 @@
+{
+    "compilerOptions": {
+        "moduleResolution": "node",
+        "module": "commonjs",
+        "target": "es2017",
+        "sourceMap": true,
+        "noUnusedLocals": true,
+        "declaration": true,
+        "declarationDir": "types",
+        "lib": [
+            "es2017",
+            "es2016",
+            "dom"
+        ],
+        "types": [
+            "node",
+            "jasmine",
+            "sinon",
+            "express"
+        ],
+        "typeRoots": [
+            "./typings"
+        ],
+        "plugins": [
+            {
+                "name": "tslint-language-service"
+            }
+        ]
+    },
+    "exclude": [
+        "node_modules",
+        "types",
+        "tests",
+        "integration-tests",
+        "testing"
+    ]
+}

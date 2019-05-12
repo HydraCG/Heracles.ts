@@ -52,6 +52,10 @@ module.exports = function(config) {
   };
   if (!autoWatch) {
     settings.reporters.push("coverage-istanbul");
+    if (process.env.TRAVIS) {
+      settings.reporters.push("coveralls");
+    }
+
     settings.coverageIstanbulReporter = {
       reports: [ "html", "lcovonly", "text-summary" ],
         dir: path.join(__dirname, "coverage"),
