@@ -1,6 +1,6 @@
 {
-  "name": "heracles.ts",
-  "version": "0.1.0",
+  "name": "@hydra-cg/heracles.ts",
+  "version": "0.2.0",
   "contributors": [
     {
       "name": "Karol Szczepanski"
@@ -30,7 +30,7 @@
     "format-code": "npm run prettier && npm run tslint-fix",
     "docs-html": "typedoc --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs-html src",
     "docs-md": "typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src",
-    "prepare": "tsc"
+    "prepare": "tsc --project tsconfig.build.json"
   },
   "dependencies": {
     "isomorphic-fetch": "2.2.1",
@@ -60,6 +60,7 @@
     "karma": "4.1.0",
     "karma-chrome-launcher": "2.2.0",
     "karma-coverage-istanbul-reporter": "^2.0.5",
+    "karma-coveralls": "^2.1.0",
     "karma-jasmine": "2.0.1",
     "karma-jasmine-sinon": "1.0.4",
     "karma-sinon": "1.0.5",
