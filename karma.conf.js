@@ -1,29 +1,40 @@
+const path = require("path");
+const webpackConfig = require("./webpack.config");
+const autoWatch = process.env.npm_lifecycle_script.indexOf("--auto-watch") !== -1;
+delete webpackConfig.entry;
+webpackConfig.node = { fs: "empty" };
+webpackConfig.mode = "development";
+if (!autoWatch) {
+  webpackConfig.module.rules.push({
+    test: /\.ts$/,
+    include: [path.resolve("src")],
+    enforce: "post",
+    use: {
+      loader: "istanbul-instrumenter-loader",
+      options: { esModules: true }
+    }
+  });
+}
+
 module.exports = function(config) {
-  config.set({
+  const settings = {
     basePath: "",
     plugins: ["karma-*", require("./integration-tests/server/server")],
-    frameworks: ["jasmine", "sinon", "jasmine-sinon", "source-map-support", "karma-typescript", "hydra-testserver"],
+    frameworks: ["jasmine", "sinon", "jasmine-sinon", "source-map-support", "hydra-testserver"],
     files: [
       { pattern: "src/**/*.ts", included: true },
-      { pattern: "testing/**/*.ts", included: true },
       { pattern: "tests/**/*.spec.ts", included: true },
       { pattern: "integration-tests/**/*.spec.ts", included: true }
     ],
     exclude: ["jsonld-request", "server"],
     preprocessors: {
-      "**/*.ts": ["karma-typescript"]
+      "testing/**/*.ts": ["webpack", "sourcemap"],
+      "tests/**/*.ts": ["webpack", "sourcemap"],
+      "integration-tests/**/*.ts": ["webpack", "sourcemap"],
+      "src/**/*.ts": ["webpack", "sourcemap"]
     },
-    karmaTypescriptConfig: {
-      tsconfig: "tsconfig.json",
-      coverageOptions: {
-        instrumentation: false
-      },
-      bundlerOptions: {
-        entrypoints: /\.spec\.ts$/,
-        exclude: ["jsonld-request", "pkginfo"]
-      }
-    },
-    reporters: ["progress", "karma-typescript"],
+    mime: { "text/x-typescript": ["ts"] },
+    reporters: ["progress"],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
@@ -36,6 +47,25 @@ module.exports = function(config) {
       }
     },
     singleRun: false,
-    concurrency: Infinity
-  });
+    concurrency: Infinity,
+    webpack: webpackConfig
+  };
+  if (!autoWatch) {
+    settings.reporters.push("coverage-istanbul");
+    if (process.env.TRAVIS) {
+      settings.reporters.push("coveralls");
+    }
+
+    settings.coverageIstanbulReporter = {
+      reports: [ "html", "lcovonly", "text-summary" ],
+        dir: path.join(__dirname, "coverage"),
+        combineBrowserReports: true,
+        fixWebpackSourcePaths: true,
+        "report-config": {
+        html: { outdir: "html" }
+      }
+    };
+  }
+
+  config.set(settings);
 };

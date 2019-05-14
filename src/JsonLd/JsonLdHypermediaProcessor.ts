@@ -6,12 +6,14 @@ import TypesCollection from "../DataModel/Collections/TypesCollection";
 import HypermediaContainer from "../DataModel/HypermediaContainer";
 import { IHydraResource } from "../DataModel/IHydraResource";
 import { IWebResource } from "../DataModel/IWebResource";
+import { HttpCallFacility } from "../HydraClientFactory";
 import { IHydraClient } from "../IHydraClient";
 import { IHypermediaProcessingOptions } from "../IHypermediaProcessingOptions";
 import { IHypermediaProcessor } from "../IHypermediaProcessor";
 import { Level } from "../Level";
 import { LinksPolicy } from "../LinksPolicy";
 import { hydra } from "../namespaces";
+import { IGraphTransformer } from "./GraphTransformations/IGraphTransformer";
 import IndirectTypingProvider from "./IndirectTypingProvider";
 import { mappings } from "./mappings";
 import ProcessingState from "./ProcessingState";
@@ -55,14 +57,24 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
   ];
 
   private readonly indirectTypingProvider: IndirectTypingProvider;
+  private readonly httpCall: HttpCallFacility;
+  private readonly graphTransformer: IGraphTransformer;
 
   /**
    * Initializes a new instance of the {@link JsonLdHypermediaProcessor} class.
    * @param {IndirectTypingProvider} indirectTypingProvider Facility providing information whether given resources are
    *                                                        of given type.
+   * @param {HttpCallFacility} httpCall HTTP facility used to call remote server.
+   * @param {IGraphTransformer} graphTransformer Graph transformation facility.
    */
-  public constructor(indirectTypingProvider: IndirectTypingProvider) {
+  public constructor(
+    indirectTypingProvider: IndirectTypingProvider,
+    httpCall: HttpCallFacility,
+    graphTransformer: IGraphTransformer
+  ) {
     this.indirectTypingProvider = indirectTypingProvider;
+    this.httpCall = httpCall;
+    this.graphTransformer = graphTransformer;
   }
 
   public get supportedMediaTypes(): Iterable<string> {
@@ -71,14 +83,16 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
 
   public supports(response: Response): Level {
     let result = Level.None;
-    for (const approach of JsonLdHypermediaProcessor.exactMatchCases) {
-      const currentMatch = approach.reduce(
-        (previous: boolean, current: HeaderMatcher) => previous && current(response.headers),
-        true
-      );
-      if (currentMatch) {
-        result = Level.FullSupport;
-        break;
+    if (!!response) {
+      for (const approach of JsonLdHypermediaProcessor.exactMatchCases) {
+        const currentMatch = approach.reduce(
+          (previous: boolean, current: HeaderMatcher) => previous && current(response.headers),
+          true
+        );
+        if (currentMatch) {
+          result = Level.FullSupport;
+          break;
+        }
       }
     }
 
@@ -88,12 +102,12 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
   public async process(
     response: Response,
     client: IHydraClient,
-    options: IHypermediaProcessingOptions
+    options?: IHypermediaProcessingOptions
   ): Promise<IWebResource> {
-    options = { ...{ linksPolicy: LinksPolicy.Strict, originalUrl: response.url }, ...options };
-    const result = await JsonLdHypermediaProcessor.ensureJsonLd(response);
+    options = { ...{ linksPolicy: LinksPolicy.Strict, originalUrl: response.url }, ...(options || {}) };
+    const result = await this.ensureJsonLd(response);
     let flattenPayload = await jsonld.promises.flatten(result, null, { base: response.url, embed: "@link" });
-    flattenPayload = JsonLdHypermediaProcessor.flattenGraphs(flattenPayload);
+    flattenPayload = await this.graphTransformer.transform(flattenPayload, this, options);
     const context = await this.processHypermedia(
       new ProcessingState(flattenPayload, response.url, client, options.linksPolicy)
     );
@@ -122,18 +136,6 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return result;
   }
 
-  private static async ensureJsonLd(response: Response): Promise<any> {
-    const result = await response.json();
-    if (response.headers.get("Content-Type") === JsonLdHypermediaProcessor.json) {
-      const links = parseLinkHeader(response.headers.get("Link"));
-      const link = jsonld.prependBase(response.url, links[jsonLdContext].url);
-      const contextResponse = await fetch(link, { headers: { Accept: links[jsonLdContext].type } });
-      result["@context"] = contextResponse["@context"];
-    }
-
-    return result;
-  }
-
   private static tryRemoveReferenceFrom(graph: object[], index: number): boolean {
     const keys = Object.keys(graph[index]);
     if (keys.length === 2 && keys.indexOf("iri") !== -1 && keys.indexOf("type") !== -1) {
@@ -144,15 +146,16 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return false;
   }
 
-  private static flattenGraphs(payload: object[]): object[] {
-    if (!payload.find(_ => _["@graph"])) {
-      return payload;
+  private async ensureJsonLd(response: Response): Promise<any> {
+    const result = await response.json();
+    if (response.headers.get("Content-Type") === JsonLdHypermediaProcessor.json) {
+      const links = parseLinkHeader(response.headers.get("Link"));
+      const link = jsonld.url.prependBase(response.url, links[jsonLdContext].url);
+      const contextResponse = await this.httpCall(link, { headers: { Accept: links[jsonLdContext].type } });
+      result["@context"] = contextResponse["@context"];
     }
 
-    return [].concat.apply(
-      [],
-      payload[0]["@graph"].map(item => (item["@id"] && item["@graph"] ? item["@graph"] : [item]))
-    );
+    return result;
   }
 
   private async processHypermedia(processingState: ProcessingState): Promise<ProcessingState> {

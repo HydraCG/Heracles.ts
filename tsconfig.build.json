@@ -29,6 +29,9 @@
     },
     "exclude": [
         "node_modules",
-        "types"
+        "types",
+        "tests",
+        "integration-tests",
+        "testing"
     ]
 }

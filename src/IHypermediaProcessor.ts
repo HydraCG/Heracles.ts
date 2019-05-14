@@ -27,8 +27,8 @@ export interface IHypermediaProcessor {
    * Parses a given raw response.
    * @param {Response} response Raw fetch response holding data to be parsed.
    * @param client {IHydraClient} Hydra client.
-   * @param options {IHypermediaProcessingOptions} Additional processing options.
+   * @param options {IHypermediaProcessingOptions} Optional additional processing options.
    * @returns {Promise<IWebResource>}
    */
-  process(response: Response, client: IHydraClient, options: IHypermediaProcessingOptions): Promise<IWebResource>;
+  process(response: Response, client: IHydraClient, options?: IHypermediaProcessingOptions): Promise<IWebResource>;
 }

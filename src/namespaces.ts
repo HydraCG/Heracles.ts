@@ -9,7 +9,6 @@ export let hydra = {
   apiDocumentation: hydraNamespace + "apiDocumentation",
   supportedClass: hydraNamespace + "supportedClass",
   ApiDocumentation: hydraNamespace + "ApiDocumentation",
-  EntryPoint: hydraNamespace + "EntryPoint",
 
   mapping: hydraNamespace + "mapping",
   template: hydraNamespace + "template",
