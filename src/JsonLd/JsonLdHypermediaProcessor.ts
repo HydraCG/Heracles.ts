@@ -4,7 +4,6 @@ import LinksCollection from "../DataModel/Collections/LinksCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import HypermediaContainer from "../DataModel/HypermediaContainer";
-import { ICollection } from "../DataModel/ICollection";
 import { IHydraResource } from "../DataModel/IHydraResource";
 import { IWebResource } from "../DataModel/IWebResource";
 import { HttpCallFacility } from "../HydraClientFactory";
@@ -129,13 +128,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       );
     }
 
-    const hypermediaContainer = new HypermediaContainer(
-      rootResource.iri,
-      hypermedia,
-      (rootResource as IHydraResource).operations,
-      (rootResource as IHydraResource).links,
-      (rootResource as ICollection).members ? (rootResource as ICollection) : null
-    );
+    const hypermediaContainer = new HypermediaContainer(response.headers, rootResource, hypermedia);
     Object.defineProperty(result, "hypermedia", {
       enumerable: false,
       value: hypermediaContainer

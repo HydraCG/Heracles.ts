@@ -82,6 +82,10 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         expect(this.result.hypermedia.collections.last().iri).toMatch("/api/events$");
       });
 
+      it("should provide response headers", () => {
+        expect(this.result.hypermedia.headers.get("Content-Type")).toBe("application/ld+json");
+      });
+
       it("should separate hypermedia", () => {
         expect(this.result.hypermedia).toBeLike([
           {

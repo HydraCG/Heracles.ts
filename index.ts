@@ -12,6 +12,7 @@ export { IApiDocumentation } from "./src/DataModel/IApiDocumentation";
 export { IClass } from "./src/DataModel/IClass";
 export { ICollection } from "./src/DataModel/ICollection";
 export { IHydraResource } from "./src/DataModel/IHydraResource";
+export { IHeaders } from "./src/DataModel/IHeaders";
 export { IHypermediaContainer } from "./src/DataModel/IHypermediaContainer";
 export { IIriTemplate } from "./src/DataModel/IIriTemplate";
 export { IIriTemplateMapping } from "./src/DataModel/IIriTemplateMapping";

@@ -250,9 +250,6 @@ export default class ProcessingState {
       }
     }
 
-    Object.defineProperty(result, "_uninitialized", { value: true, enumerable: false, configurable: true });
-    this.resourceMap[result.iri] = result;
-
-    return result;
+    return (this.resourceMap[result.iri] = result);
   }
 }
