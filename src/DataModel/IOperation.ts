@@ -21,4 +21,25 @@ export interface IOperation extends IHydraResource, IPointingResource {
    * @returns {TypedResourceFilterableCollection<IClass>}
    */
   readonly expects: ResourceFilterableCollection<IClass>;
+
+  /**
+   * Gets the returned classes.
+   * @readonly
+   * @returns {TypedResourceFilterableCollection<IClass>}
+   */
+  readonly returns: ResourceFilterableCollection<IClass>;
+
+  /**
+   * Gets the expected headers.
+   * @readonly
+   * @returns {Iterable<string>}
+   */
+  readonly expectedHeaders: Iterable<string>;
+
+  /**
+   * Gets the returned headers.
+   * @readonly
+   * @returns {Iterable<string>}
+   */
+  readonly returnedHeaders: Iterable<string>;
 }

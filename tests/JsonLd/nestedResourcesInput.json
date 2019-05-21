@@ -3,11 +3,11 @@
         "hydra": "http://www.w3.org/ns/hydra/core#",
         "schema": "http://schema.org/",
         "foaf": "http://xmlns.com/foaf/0.1/",
-        "foaf:homepage": {
+        "homepage": {
             "@id": "foaf:homepage",
             "@type": "@id"
         },
-        "schema:knows": {
+        "knows": {
             "@id": "schema:knows",
             "@type": "@id"
         }
@@ -16,11 +16,11 @@
         {
             "@id": "http://temp.uri/api/people/markus",
             "@type": "schema:Person",
-            "foaf:homepage": "http://temp.uri/api/people/markus/home-page",
-            "schema:knows": {
+            "homepage": "http://temp.uri/api/people/markus/home-page",
+            "knows": {
                 "@id": "http://temp.uri/api/people/karol",
                 "@type": "schema:Person",
-                "foaf:homepage": "http://temp.uri/api/people/karol/home-page"
+                "homepage": "http://temp.uri/api/people/karol/home-page"
             }
         },
         {

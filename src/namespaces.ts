@@ -23,8 +23,9 @@ export let hydra = {
   VariableRepresentation: hydraNamespace + "VariableRepresentation",
 
   collection: hydraNamespace + "collection",
+  pageIndex: hydraNamespace + "pageIndex",
+  pageReference: hydraNamespace + "pageReference",
   member: hydraNamespace + "member",
-  memberTemplate: hydraNamespace + "memberTemplate",
   totalItems: hydraNamespace + "totalItems",
   Collection: hydraNamespace + "Collection",
   PartialCollectionView: hydraNamespace + "PartialCollectionView",
@@ -40,6 +41,8 @@ export let hydra = {
   method: hydraNamespace + "method",
   expects: hydraNamespace + "expects",
   returns: hydraNamespace + "returns",
+  returnsHeader: hydraNamespace + "returnsHeader",
+  expectsHeader: hydraNamespace + "expectsHeader",
   possibleStatus: hydraNamespace + "possibleStatus",
   Operation: hydraNamespace + "Operation",
   Status: hydraNamespace + "Status",
@@ -60,7 +63,8 @@ const rdfNamespace = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 export let rdf = {
   namespace: rdfNamespace,
 
-  Property: rdfNamespace + "Property"
+  Property: rdfNamespace + "Property",
+  type: rdfNamespace + "type"
 };
 
 const rdfsNamespace = "http://www.w3.org/2000/01/rdf-schema#";

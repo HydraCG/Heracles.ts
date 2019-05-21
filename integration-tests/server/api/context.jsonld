@@ -43,6 +43,10 @@
             "@id": "hydra:supportedProperty",
             "@type": "@vocab"
         },
+        "supportedOperation": {
+            "@id": "hydra:supportedOperation",
+            "@type": "@vocab"
+        },
         "property": {
             "@id": "hydra:property",
             "@type": "@vocab"
@@ -56,7 +60,6 @@
             "@id": "hydra:member",
             "@type": "@id"
         },
-        "memberTemplate": "hydra:memberTemplate",
         "first": {
             "@id": "hydra:first",
             "@type": "@id"

@@ -31,8 +31,8 @@ describe("Having a Hydra client", () => {
       });
 
       it("should obtain a schema:AddAction operations", () => {
-        const operations = this.entryPoint.hypermedia.where(hypermedia =>
-          hypermedia.operations.ofType("http://schema.org/AddAction").any()
+        const operations = this.entryPoint.hypermedia.where(_ =>
+          _.operations.ofType("http://schema.org/AddAction").any()
         );
         expect(operations.length).toBe(2);
       });

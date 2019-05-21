@@ -37,6 +37,23 @@ export function linksAndOperations(mappings: {
   mappings[hydra.expects] = {
     default: expected => new ResourceFilterableCollection(expected),
     propertyName: "expects",
+    required: true,
+    type: [hydra.Operation as string]
+  };
+  mappings[hydra.returns] = {
+    default: returned => new ResourceFilterableCollection(returned),
+    propertyName: "returns",
+    required: true,
+    type: [hydra.Operation as string]
+  };
+  mappings[hydra.expectsHeader] = {
+    propertyName: "expectedHeaders",
+    required: true,
+    type: [hydra.Operation as string]
+  };
+  mappings[hydra.returnsHeader] = {
+    propertyName: "returnedHeaders",
+    required: true,
     type: [hydra.Operation as string]
   };
   mappings[hydra.method] = {

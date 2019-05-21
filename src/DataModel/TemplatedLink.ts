@@ -1,4 +1,5 @@
 import { hydra } from "../namespaces";
+import OperationsCollection from "./Collections/OperationsCollection";
 import TypesCollection from "./Collections/TypesCollection";
 import { IIriTemplate } from "./IIriTemplate";
 import { ILink } from "./ILink";
@@ -15,6 +16,8 @@ export default class TemplatedLink extends TemplatedResource<ILink> implements I
 
   public readonly relation: string;
 
+  public readonly supportedOperations: OperationsCollection;
+
   /**
    * Initializes a new instance of the {@link TemplatedLink} class.
    * @param linkResource {ILink} Original link to create templated one from.
@@ -27,11 +30,13 @@ export default class TemplatedLink extends TemplatedResource<ILink> implements I
       [...linkResource.type].filter(type => type !== hydra.Link).concat([hydra.TemplatedLink])
     );
     this.relation = linkResource.relation;
+    this.supportedOperations = linkResource.supportedOperations;
   }
 
   protected createInstance(resource: IPointingResource): ILink {
     const result = resource as any;
     result.relation = this.relation;
+    result.supportedOperations = this.supportedOperations;
     result.type = new TypesCollection([...this.type].filter(type => type !== hydra.TemplatedLink).concat([hydra.Link]));
     return result as ILink;
   }

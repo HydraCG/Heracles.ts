@@ -4,8 +4,8 @@ import { collection } from "./collection";
 import { IPropertyMapping } from "./IPropertyMapping";
 import { linksAndOperations } from "./linksAndOperations";
 import { linksExtractor } from "./linksExtractor";
-import { memberTemplateOperationsExtractor } from "./memberTemplateOperationsExtractor";
 import { rdfSchema } from "./rdfSchema";
+import { templatedOperationsExtractor } from "./templatedOperationsExtractor";
 
 /**
  * Provides simple property mappings to be used when creating resources.
@@ -31,7 +31,7 @@ mappings[hydra.property] = {
   type: [hydra.SupportedProperty as string, hydra.IriTemplateMapping as string]
 };
 mappings[hydra.operation] = {
-  default: memberTemplateOperationsExtractor,
+  default: templatedOperationsExtractor,
   propertyName: "operations",
   required: true
 };

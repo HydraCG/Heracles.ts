@@ -19,6 +19,12 @@ export default class TemplatedOperation extends TemplatedResource<IOperation> im
 
   public readonly expects: ResourceFilterableCollection<IClass>;
 
+  public readonly returns: ResourceFilterableCollection<IClass>;
+
+  public readonly expectedHeaders: Iterable<string>;
+
+  public readonly returnedHeaders: Iterable<string>;
+
   /**
    * Initializes a new instance of the {@link TemplatedOperation} class.
    * @param operationResource {IOperation} Original operation to create templated one from.
@@ -28,12 +34,18 @@ export default class TemplatedOperation extends TemplatedResource<IOperation> im
     super(operationResource, template, [...operationResource.type].concat([hydra.Operation, hydra.IriTemplate]));
     this.method = operationResource.method;
     this.expects = operationResource.expects;
+    this.returns = operationResource.returns;
+    this.expectedHeaders = operationResource.expectedHeaders;
+    this.returnedHeaders = operationResource.returnedHeaders;
   }
 
   protected createInstance(resource: IPointingResource): IOperation {
     const result = resource as any;
-    result.expects = this.expects;
     result.method = this.method;
+    result.expects = this.expects;
+    result.returns = this.returns;
+    result.expectedHeaders = this.expectedHeaders;
+    result.returnedHeaders = this.returnedHeaders;
     result.type = new TypesCollection([...this.type].filter(type => type !== hydra.IriTemplate));
     return result as IOperation;
   }

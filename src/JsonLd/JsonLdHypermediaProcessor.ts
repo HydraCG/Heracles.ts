@@ -210,6 +210,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       }
     }
 
+    processingState.onMaterialized(result);
     return result;
   }
 

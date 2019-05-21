@@ -8,6 +8,7 @@
         "vs": "http://www.w3.org/2003/06/sw-vocab-status/ns#",
         "dc": "http://purl.org/dc/terms/",
         "cc": "http://creativecommons.org/ns#",
+        "schema": "http://schema.org/",
         "apiDocumentation": "hydra:apiDocumentation",
         "ApiDocumentation": "hydra:ApiDocumentation",
         "title": "hydra:title",
@@ -59,6 +60,12 @@
         "mapping": "hydra:mapping",
         "IriTemplateMapping": "hydra:IriTemplateMapping",
         "variable": "hydra:variable",
+        "offset": { "@id": "hydra:offset", "@type": "xsd:nonNegativeInteger" },
+        "limit": { "@id": "hydra:limit", "@type": "xsd:nonNegativeInteger" },
+        "pageIndex": { "@id": "hydra:pageIndex", "@type": "xsd:nonNegativeInteger" },
+        "pageReference": { "@id": "hydra:pageReference" },
+        "returnsHeader": { "@id": "hydra:returnsHeader", "@type": "xsd:string" },
+        "expectsHeader": { "@id": "hydra:expectsHeader", "@type": "xsd:string" },
         "defines": { "@reverse": "rdfs:isDefinedBy" },
         "comment": "rdfs:comment",
         "label": "rdfs:label",
@@ -69,7 +76,8 @@
         "range": {"@id": "rdfs:range", "@type": "@vocab" },
         "subClassOf": { "@id": "rdfs:subClassOf", "@type": "@vocab" },
         "subPropertyOf": { "@id": "rdfs:subPropertyOf", "@type": "@vocab" },
-        "seeAlso": { "@id": "rdfs:seeAlso", "@type": "@id" }
+        "seeAlso": { "@id": "rdfs:seeAlso", "@type": "@id" },
+        "domainIncludes": { "@id": "schema:domainIncludes", "@type": "@id" }
     },
     "@id": "http://www.w3.org/ns/hydra/core",
     "@type": "owl:Ontology",
@@ -113,6 +121,7 @@
             "label": "apiDocumentation",
             "comment": "A link to the API documentation",
             "range": "hydra:ApiDocumentation",
+            "domain": "hydra:Resource",
             "vs:term_status": "testing"
         },
         {
@@ -147,6 +156,7 @@
             "label": "possible status",
             "comment": "A status that might be returned by the Web API (other statuses should be expected and properly handled as well)",
             "range": "hydra:Status",
+            "domainIncludes": ["hydra:ApiDocumentation", "hydra:Operation"],
             "vs:term_status": "testing"
         },
         {
@@ -172,6 +182,7 @@
             "label": "property",
             "comment": "A property",
             "range": "rdf:Property",
+            "domainIncludes": ["hydra:SupportedProperty", "hydra:IriTemplateMapping"],
             "vs:term_status": "testing"
         },
         {
@@ -180,6 +191,7 @@
             "label": "required",
             "comment": "True if the property is required, false otherwise.",
             "range": "xsd:boolean",
+            "domainIncludes": ["hydra:SupportedProperty", "hydra:IriTemplateMapping"],
             "vs:term_status": "testing"
         },
         {
@@ -206,6 +218,7 @@
             "label": "supported operation",
             "comment": "An operation supported by instances of the specific Hydra class or the target of the Hydra link",
             "range": "hydra:Operation",
+            "domainIncludes": ["hydra:Class", "hydra:Link"],
             "vs:term_status": "testing"
         },
         {
@@ -276,6 +289,13 @@
             "label": "title",
             "comment": "A title, often used along with a description.",
             "range": "xsd:string",
+            "domainIncludes": [
+                "hydra:ApiDocumentation",
+                "hydra:Status",
+                "hydra:Class",
+                "hydra:SupportedProperty",
+                "hydra:Operation",
+                "hydra:Link"],
             "vs:term_status": "testing"
         },
         {
@@ -285,6 +305,13 @@
             "label": "description",
             "comment": "A description.",
             "range": "xsd:string",
+            "domainIncludes": [
+                "hydra:ApiDocumentation",
+                "hydra:Status",
+                "hydra:Class",
+                "hydra:SupportedProperty",
+                "hydra:Operation",
+                "hydra:Link"],
             "vs:term_status": "testing"
         },
         {
@@ -308,7 +335,8 @@
             "@type": "hydra:Link",
             "label": "collection",
             "comment": "Collections somehow related to this resource.",
-            "domain": "hydra:Collection",
+            "domain": "hydra:Resource",
+            "range": "hydra:Collection",
             "vs:term_status": "testing"
         },
         {
@@ -407,6 +435,7 @@
             "label": "search",
             "comment": "A IRI template that can be used to query a collection.",
             "range": "hydra:IriTemplate",
+            "domain": "hydra:Resource",
             "vs:term_status": "testing"
         },
         {
@@ -415,6 +444,7 @@
             "label": "freetext query",
             "comment": "A property representing a freetext query.",
             "range": "xsd:string",
+            "domain": "hydra:Resource",
             "vs:term_status": "testing"
         },
         {
@@ -439,6 +469,8 @@
             "label": "template",
             "comment": "A templated string with placeholders. The literal's datatype indicates the template syntax; if not specified, hydra:Rfc6570Template is assumed.",
             "seeAlso": "hydra:Rfc6570Template",
+            "domain": "hydra:IriTemplate",
+            "range": "hydra:Rfc6570Template",
             "vs:term_status": "testing"
         },
         {
@@ -456,6 +488,7 @@
             "label": "variable representation",
             "comment": "The representation format to use when expanding the IRI template.",
             "range": "hydra:VariableRepresentation",
+            "domain": "hydra:IriTemplateMapping",
             "vs:term_status": "testing"
         },
         {
@@ -503,6 +536,56 @@
             "label": "variable",
             "comment": "An IRI template variable",
             "domain": "hydra:IriTemplateMapping",
+            "range": "xsd:string",
+            "vs:term_status": "testing"
+        },
+        {
+            "@id": "hydra:offset",
+            "@type": "rdf:Property",
+            "label": "skip",
+            "comment": "Instructs to skip N elements of the set.",
+            "range": "xsd:nonNegativeInteger",
+            "vs:term_status": "testing"
+        },
+        {
+            "@id": "hydra:limit",
+            "@type": "rdf:Property",
+            "label": "take",
+            "comment": "Instructs to limit set only to N elements.",
+            "range": "xsd:nonNegativeInteger",
+            "vs:term_status": "testing"
+        },
+        {
+            "@id": "hydra:pageIndex",
+            "@type": "rdf:Property",
+            "subPropertyOf": "hydra:pageReference",
+            "label": "page index",
+            "comment": "Instructs to provide a specific page of the collection at a given index.",
+            "range": "xsd:nonNegativeInteger",
+            "vs:term_status": "testing"
+        },
+        {
+            "@id": "hydra:pageReference",
+            "@type": "rdf:Property",
+            "label": "page reference",
+            "comment": "Instructs to provide a specific page reference of the collection.",
+            "vs:term_status": "testing"
+        },
+        {
+            "@id": "hydra:returnsHeader",
+            "@type": "rdf:Property",
+            "label": "returns header",
+            "comment": "Name of the header returned by the operation.",
+            "domain": "hydra:Operation",
+            "range": "xsd:string",
+            "vs:term_status": "testing"
+        },
+        {
+            "@id": "hydra:expectsHeader",
+            "@type": "rdf:Property",
+            "label": "expects header",
+            "comment": "Specification of the header expected by the operation.",
+            "domain": "hydra:Operation",
             "range": "xsd:string",
             "vs:term_status": "testing"
         }

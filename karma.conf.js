@@ -1,6 +1,6 @@
 const path = require("path");
 const webpackConfig = require("./webpack.config");
-const autoWatch = process.env.npm_lifecycle_script.indexOf("--auto-watch") !== -1;
+const autoWatch = process.env.npm_lifecycle_script.indexOf("--single-run") === -1;
 delete webpackConfig.entry;
 webpackConfig.node = { fs: "empty" };
 webpackConfig.mode = "development";
@@ -15,7 +15,6 @@ if (!autoWatch) {
     }
   });
 }
-
 module.exports = function(config) {
   const settings = {
     basePath: "",
@@ -48,7 +47,10 @@ module.exports = function(config) {
     },
     singleRun: false,
     concurrency: Infinity,
-    webpack: webpackConfig
+    webpack: webpackConfig,
+    webpackMiddleware: {
+      noInfo: true
+    }
   };
   if (!autoWatch) {
     settings.reporters.push("coverage-istanbul");
@@ -62,8 +64,8 @@ module.exports = function(config) {
         combineBrowserReports: true,
         fixWebpackSourcePaths: true,
         "report-config": {
-        html: { outdir: "html" }
-      }
+          html: { outdir: "html" }
+        }
     };
   }
 
