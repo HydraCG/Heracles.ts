@@ -4,6 +4,7 @@ import { ILink } from "../DataModel/ILink";
 import { IOperation } from "../DataModel/IOperation";
 import TemplatedOperation from "../DataModel/TemplatedOperation";
 import { hydra } from "../namespaces";
+import { JsonLdHelper as JsonLd } from "./JsonLdHelper";
 import ProcessingState from "./ProcessingState";
 
 function onTemplateMaterialized(
@@ -43,10 +44,7 @@ function tryCreateOperationFrom(
 }
 
 export const templatedOperationsExtractor = (operations: IOperation[], processingState: ProcessingState) => {
-  const links = Object.keys(processingState.processedObject).filter(
-    _ => _.length > 0 && _.charAt(0) !== "@" && Object.keys(hydra).indexOf(_) === -1
-  );
-  for (const link of links) {
+  for (const link of JsonLd.validKeys(processingState.processedObject, true)) {
     for (const value of processingState.processedObject[link]) {
       const template = processingState.findRawResource(value["@id"]);
       let processedTemplate: IIriTemplate = null;

@@ -1,4 +1,5 @@
 import { promises as jsonLd } from "jsonld";
+import { IDictionary } from "../IDictionary";
 import { rdfs } from "../namespaces";
 import { IOntologyProvider } from "./IOntologyProvider";
 
@@ -7,7 +8,7 @@ import { IOntologyProvider } from "./IOntologyProvider";
  */
 export default class StaticOntologyProvider implements IOntologyProvider {
   private readonly jsonLdOntology: object;
-  private ontology: { [iri: string]: any };
+  private ontology: IDictionary<any>;
 
   /**
    * Initializes a new instance of the {@link StaticOntologyProvider} class.
@@ -18,10 +19,12 @@ export default class StaticOntologyProvider implements IOntologyProvider {
     this.ontology = null;
   }
 
+  /** @inheritDoc */
   public getDomainFor(predicate: string): Promise<string> {
     return this.getValueOf(predicate, rdfs.domain);
   }
 
+  /** @inheritDoc */
   public getRangeFor(predicate: string): Promise<string> {
     return this.getValueOf(predicate, rdfs.range);
   }

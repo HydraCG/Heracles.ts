@@ -1,3 +1,4 @@
+import { IDictionary } from "../IDictionary";
 import MappingsCollection from "./Collections/MappingsCollection";
 import PropertyMapping from "./PropertyMapping";
 
@@ -6,13 +7,13 @@ import PropertyMapping from "./PropertyMapping";
  */
 export default class MappingsBuilder {
   private readonly mappings: MappingsCollection;
-  private readonly result: { [name: string]: string };
+  private readonly result: IDictionary<string>;
 
   /**
    * Gets variable mappings in form of variable name - property IRI pairs.
-   * @returns {{[variableName: string]: string}}
+   * @returns {IDictionary<string>}
    */
-  public get variableMappings(): { [variableName: string]: string } {
+  public get variableMappings(): IDictionary<string> {
     const result = {};
     for (const mapping of this.mappings) {
       result[mapping.variable] = mapping.property.iri;
@@ -60,9 +61,9 @@ export default class MappingsBuilder {
 
   /**
    * Completes the variable values mappings in form of variable name - serialized value pairs.
-   * @returns {{[variable: string]: string}}
+   * @returns {IDictionary<string>}
    */
-  public complete(): { [name: string]: string } {
+  public complete(): IDictionary<string> {
     return this.result;
   }
 }

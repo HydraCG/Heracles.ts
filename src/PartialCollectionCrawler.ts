@@ -17,30 +17,39 @@ export enum CrawlingDirection {
    */
   backward
 }
+
 /**
  * Describes {@link PartialCollectionCrawler.getMoreMembersStartingFrom(IPartialCollectionView)} crawling options.
  * @interface
  */
 export interface ICrawlingOptions {
   /**
-   * The crawling direction .
+   * The crawling direction.
+   * @readonly
+   * @returns {CrawlingDirection}
    */
-  direction?: CrawlingDirection;
+  readonly direction?: CrawlingDirection;
   /**
    * The limit of the members to retrieve.
+   * @readonly
+   * @returns {number}
    */
-  memberLimit?: number;
+  readonly memberLimit?: number;
 
   /**
    * The limit of requests to make.
+   * @readonly
+   * @returns {number}
    */
-  requestLimit?: number;
+  readonly requestLimit?: number;
 
   /**
    * Value indicating whether to rewind back to the beginning (or end) of the collection in case the starting
    * point was not the first (or last) possible view.
+   * @readonly
+   * @returns {boolean}
    */
-  rewind?: boolean;
+  readonly rewind?: boolean;
 }
 
 /**

@@ -50,7 +50,7 @@ describe("Given an instance of the ICollection interface", () => {
       this.members = [];
       this.client.getResource.returns(this.members);
       const setup: any = {
-        links: new LinksCollection([]),
+        links: LinksCollection.empty,
         members: this.members,
         type: new TypesCollection([hydra.Collection])
       };

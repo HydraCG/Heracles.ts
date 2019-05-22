@@ -3,10 +3,19 @@
         "moduleResolution": "node",
         "module": "commonjs",
         "target": "es2017",
-        "lib": ["es2017", "DOM"],
-        "types": ["node", "jasmine", "sinon", "express"],
         "sourceMap": true,
-        "noUnusedLocals": true
+        "noUnusedLocals": true,
+        "lib": [
+            "es2017",
+            "es2016",
+            "dom"
+        ],
+        "types": [
+            "node",
+            "jasmine",
+            "sinon",
+            "express"
+        ]
     },
     "exclude": [
         "node_modules",

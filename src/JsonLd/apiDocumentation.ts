@@ -1,12 +1,11 @@
 import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import { IClass } from "../DataModel/IClass";
+import { IDictionary } from "../IDictionary";
 import { hydra } from "../namespaces";
 import { IPropertyMapping } from "./IPropertyMapping";
 import { templatedOperationsExtractor } from "./templatedOperationsExtractor";
 
-export function apiDocumentation(mappings: {
-  [property: string]: IPropertyMapping;
-}): { [property: string]: IPropertyMapping } {
+export function apiDocumentation(mappings: IDictionary<IPropertyMapping>): IDictionary<IPropertyMapping> {
   mappings[hydra.description] = {
     propertyName: "description",
     type: [hydra.ApiDocumentation as string]

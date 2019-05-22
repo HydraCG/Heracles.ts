@@ -8,6 +8,10 @@ describe("Given instance of the TypesCollection", () => {
     this.type = new TypesCollection(this.allTypes);
   });
 
+  it("should create an empty collection if no types are provided", () => {
+    expect(new TypesCollection().toArray()).toEqual([]);
+  });
+
   it("should provide all types", () => {
     expect([...this.type]).toEqual(this.allTypes);
   });
@@ -19,6 +23,12 @@ describe("Given instance of the TypesCollection", () => {
 
     it("should not confirm an existing type", () => {
       expect(this.type.contains("whatever type")).toBeFalsy();
+    });
+  });
+
+  describe("when excluding a type", () => {
+    it("should actually exclude that type", () => {
+      expect(this.type.except(this.type1).toArray()).toEqual([this.type2]);
     });
   });
 });

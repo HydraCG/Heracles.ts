@@ -1,8 +1,6 @@
+import { IDictionary } from "../IDictionary";
 import { IPointingResource } from "./IPointingResource";
 
-export interface IDictionary {
-  [name: string]: string;
-}
 export type MappingBuilder = (MappingsBuilder) => void;
 
 /**
@@ -12,9 +10,9 @@ export type MappingBuilder = (MappingsBuilder) => void;
 export interface ITemplatedResource<T extends IPointingResource> extends IPointingResource {
   /**
    * Expands an URI template with given variables.
-   * @param {{ [name: string]: string } | (MappingsBuilder) => void} mappedVariables Template variables with values or
-   *                                                                                 {@link MappingsBuilder}.
+   * @param {IDictionary<string> | MappingBuilder} mappedVariables Template variables with values or
+   *                                                               {@link MappingsBuilder}.
    * @returns {T}
    */
-  expandTarget(mappedVariables: IDictionary | MappingBuilder): T;
+  expandTarget(mappedVariables: IDictionary<string> | MappingBuilder): T;
 }

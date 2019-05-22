@@ -2,12 +2,11 @@ import * as jsonld from "jsonld";
 import MappingsCollection from "../DataModel/Collections/MappingsCollection";
 import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
+import { IDictionary } from "../IDictionary";
 import { hydra } from "../namespaces";
 import { IPropertyMapping } from "./IPropertyMapping";
 
-export function linksAndOperations(mappings: {
-  [property: string]: IPropertyMapping;
-}): { [property: string]: IPropertyMapping } {
+export function linksAndOperations(mappings: IDictionary<IPropertyMapping>): IDictionary<IPropertyMapping> {
   mappings[hydra.template] = {
     default: "",
     propertyName: "template",
@@ -78,7 +77,7 @@ export function linksAndOperations(mappings: {
   mappings.target = {
     default: (value, processingState) => {
       const iri = jsonld.url.prependBase(processingState.baseUrl, processingState.ownerIri);
-      return processingState.getVisitedResource(iri) || { iri, type: new TypesCollection([]) };
+      return processingState.getVisitedResource(iri) || { iri, type: TypesCollection.empty };
     },
     propertyName: "target",
     required: true,

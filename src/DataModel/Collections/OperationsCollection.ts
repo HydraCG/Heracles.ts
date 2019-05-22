@@ -9,25 +9,36 @@ import ResourceFilterableCollection from "./ResourceFilterableCollection";
  */
 export default class OperationsCollection extends ResourceFilterableCollection<IOperation> {
   /**
+   * Defines an empty operations collection.
+   * @constant {OperationsCollection}
+   */
+  public static readonly empty = new OperationsCollection();
+
+  /**
    * Initializes a new instance of the {@link OperationsCollection}
    * class with initial collections of operations to filter.
-   * @param operations {Iterable<IOperation>} Initial collection of operations to filter.
+   * @param {Iterable<IOperation>} [operations] Initial collection of operations to filter.
    */
-  public constructor(operations: Iterable<IOperation>) {
+  public constructor(operations?: Iterable<IOperation>) {
     super(operations);
   }
 
   /**
    * Obtains a collection of operations expecting a given type.
-   * @param iri {string} Expected type.
+   * @param {string} iri Expected type.
    * @returns {OperationsCollection}
    */
   public expecting(iri: string): OperationsCollection {
-    return this.narrowFiltersWith<IClass>("expects", value => value.iri === iri) as OperationsCollection;
+    let result: OperationsCollection = this;
+    if (typeof iri === "string" && iri.length > 0) {
+      result = this.narrowFiltersWith<IClass>("expects", value => value.iri === iri) as OperationsCollection;
+    }
+
+    return result;
   }
 
   /**
-   * Obtains a collection of operations being an Hydra IriTemplate.
+   * Obtains a collection of operations being an hydra:IriTemplate.
    * @returns {OperationsCollection}
    */
   public withTemplate(): OperationsCollection {

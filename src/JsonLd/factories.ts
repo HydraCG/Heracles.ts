@@ -1,4 +1,5 @@
 import { IResource } from "../DataModel/IResource";
+import { IDictionary } from "../IDictionary";
 import { IHydraClient } from "../IHydraClient";
 import { hydra } from "../namespaces";
 import { partialCollectionIteratorFactory } from "./partialCollectionIteratorFactory";
@@ -9,9 +10,9 @@ type InstanceFactory = (resource: IResource, client: IHydraClient, processingSta
 /**
  * Provides factory methods for strongly typed resources.
  * @const
- * @type {{ [type: string]: InstanceFactory }}
+ * @type {IDictionary<InstanceFactory>}
  */
-export const factories: { [type: string]: InstanceFactory } = {};
+export const factories: IDictionary<InstanceFactory> = {};
 
 factories[hydra.ApiDocumentation] = (resource, client) => {
   const target = resource as any;

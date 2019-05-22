@@ -9,9 +9,9 @@ export default class MappingsCollection extends ResourceFilterableCollection<IIr
   /**
    * Initializes a new instance of the {@link MappingsCollection}
    * class with initial collections of mappings to filter.
-   * @param mappings {Iterable<IIriTemplateMapping>} Initial collection of mappings to filter.
+   * @param {Iterable<IIriTemplateMapping>} [mappings] Initial collection of mappings to filter.
    */
-  public constructor(mappings: Iterable<IIriTemplateMapping>) {
+  public constructor(mappings?: Iterable<IIriTemplateMapping>) {
     super(mappings);
   }
 
@@ -21,7 +21,12 @@ export default class MappingsCollection extends ResourceFilterableCollection<IIr
    * @returns {IMappingsCollection}
    */
   public ofVariableName(variableName: string): MappingsCollection {
-    return this.narrowFiltersWith("variable", variableName) as MappingsCollection;
+    let result: MappingsCollection = this;
+    if (typeof variableName === "string" && variableName.length > 0) {
+      result = this.narrowFiltersWith("variable", variableName) as MappingsCollection;
+    }
+
+    return result;
   }
 
   /**
@@ -30,10 +35,15 @@ export default class MappingsCollection extends ResourceFilterableCollection<IIr
    * @returns {IMappingsCollection}
    */
   public ofProperty(property: string): MappingsCollection {
-    return this.narrowFiltersWith<IIriTemplateMapping>(
-      "property",
-      value => value.property.iri === property
-    ) as MappingsCollection;
+    let result: MappingsCollection = this;
+    if (typeof property === "string" && property.length > 0) {
+      result = this.narrowFiltersWith<IIriTemplateMapping>(
+        "property",
+        value => value.property.iri === property
+      ) as MappingsCollection;
+    }
+
+    return result;
   }
 
   protected createInstance(items: Iterable<IIriTemplateMapping>): MappingsCollection {

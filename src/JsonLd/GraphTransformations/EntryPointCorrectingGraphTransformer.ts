@@ -7,6 +7,7 @@ import { IGraphTransformer } from "./IGraphTransformer";
  * Tries to correct missing entry point in hydra:ApiDocumentation resource.
  */
 export default class EntryPointCorrectingGraphTransformer implements IGraphTransformer {
+  /** @inheritDoc */
   public async transform(
     graph: object[],
     processor: IHypermediaProcessor,

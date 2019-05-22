@@ -6,6 +6,7 @@ import { IGraphTransformer } from "./IGraphTransformer";
  * Flattens a given graph.
  */
 export default class FlatteningGraphTransformer implements IGraphTransformer {
+  /** @inheritDoc */
   public async transform(
     graph: object[],
     processor: IHypermediaProcessor,

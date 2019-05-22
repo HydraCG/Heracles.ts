@@ -1,3 +1,4 @@
+import TypesCollection from "../../src/DataModel/Collections/TypesCollection";
 import TemplatedLink from "../../src/DataModel/TemplatedLink";
 import { hydra } from "../../src/namespaces";
 import HydraResourceMatcher from "../../testing/HydraResourceMatcher";
@@ -12,7 +13,7 @@ describe("Given instance of the TemplatedLink", () => {
       baseUrl: "http://temp.uri/",
       method: "GET",
       target: { iri: "test-url" },
-      type: [hydra.Link]
+      type: new TypesCollection([hydra.Link])
     };
     this.link = new TemplatedLink(this.originalLink, this.template);
   });

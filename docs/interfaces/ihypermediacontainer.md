@@ -1,1910 +1,437 @@
-[hydraclient.js](../README.md) > [IHypermediaContainer](../interfaces/ihypermediacontainer.md)
-
-
+[@hydra-cg/heracles.ts](../README.md) > [IHypermediaContainer](../interfaces/ihypermediacontainer.md)
 
 # Interface: IHypermediaContainer
-
 
 Provides an abstraction layer over hypermedia container.
 
 ## Hierarchy
 
+↳  [ResourceFilterableCollection](../classes/resourcefilterablecollection.md)<[IResource](iresource.md)>
 
- `Array`<[IHypermedia](ihypermedia.md)>
+ [IResource](iresource.md)
 
 **↳ IHypermediaContainer**
 
+## Implemented by
 
+* [HypermediaContainer](../classes/hypermediacontainer.md)
 
+## Index
 
+### Constructors
 
+* [constructor](ihypermediacontainer.md#constructor)
 
+### Properties
 
-## Indexable
+* [collections](ihypermediacontainer.md#collections)
+* [headers](ihypermediacontainer.md#headers)
+* [iri](ihypermediacontainer.md#iri)
+* [links](ihypermediacontainer.md#links)
+* [members](ihypermediacontainer.md#members)
+* [operations](ihypermediacontainer.md#operations)
+* [type](ihypermediacontainer.md#type)
+* [view](ihypermediacontainer.md#view)
 
-\[n: `number`\]:&nbsp;[IHypermedia](ihypermedia.md)
-Provides an abstraction layer over hypermedia container.
+### Accessors
 
+* [length](ihypermediacontainer.md#length)
 
+### Methods
+
+* [__@iterator](ihypermediacontainer.md#___iterator)
+* [any](ihypermediacontainer.md#any)
+* [createInstance](ihypermediacontainer.md#createinstance)
+* [first](ihypermediacontainer.md#first)
+* [getIterator](ihypermediacontainer.md#getiterator)
+* [last](ihypermediacontainer.md#last)
+* [narrowFiltersWith](ihypermediacontainer.md#narrowfilterswith)
+* [nonBlank](ihypermediacontainer.md#nonblank)
+* [ofIri](ihypermediacontainer.md#ofiri)
+* [ofType](ihypermediacontainer.md#oftype)
+* [toArray](ihypermediacontainer.md#toarray)
+* [where](ihypermediacontainer.md#where)
+
+---
+
+## Constructors
+
+<a id="constructor"></a>
+
+###  constructor
+
+⊕ **new IHypermediaContainer**(resources?: *`Iterable`<[IResource](iresource.md)>*): [IHypermediaContainer](ihypermediacontainer.md)
+
+*Inherited from [ResourceFilterableCollection](../classes/resourcefilterablecollection.md).[constructor](../classes/resourcefilterablecollection.md#constructor)*
+
+*Overrides [FilterableCollection](../classes/filterablecollection.md).[constructor](../classes/filterablecollection.md#constructor)*
+
+*Defined in [DataModel/Collections/ResourceFilterableCollection.ts:8](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/ResourceFilterableCollection.ts#L8)*
+
+Initializes a new instance of the {@link ResourceFilterableCollection} class with initial collections of resources to filter.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| `Optional` resources | `Iterable`<[IResource](iresource.md)> |
+
+**Returns:** [IHypermediaContainer](ihypermediacontainer.md)
+
+___
 
 ## Properties
 
-| Name  | Type                
-| ------ | ------------------- 
-| Array | `ArrayConstructor`
-| length | `number`
-| members | [IResource](iresource.md)[]
+<a id="collections"></a>
 
+###  collections
+
+**● collections**: *[ResourceFilterableCollection](../classes/resourcefilterablecollection.md)<[ICollection](icollection.md)>*
+
+*Defined in [DataModel/IHypermediaContainer.ts:27](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/IHypermediaContainer.ts#L27)*
+
+Gets discovered collections.
+
+___
+<a id="headers"></a>
+
+###  headers
+
+**● headers**: *[IHeaders](iheaders.md)*
+
+*Defined in [DataModel/IHypermediaContainer.ts:44](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/IHypermediaContainer.ts#L44)*
+
+Gets response headers.
+
+___
+<a id="iri"></a>
+
+###  iri
+
+**● iri**: *`string`*
+
+*Inherited from [IResource](iresource.md).[iri](iresource.md#iri)*
+
+*Defined in [DataModel/IResource.ts:13](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/IResource.ts#L13)*
+
+Gets an Iri of a resource.
+
+*__readonly__*: 
+
+*__returns__*: 
+
+___
+<a id="links"></a>
+
+###  links
+
+**● links**: *[LinksCollection](../classes/linkscollection.md)*
+
+*Defined in [DataModel/IHypermediaContainer.ts:17](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/IHypermediaContainer.ts#L17)*
+
+Gets a collection of links.
+
+___
+<a id="members"></a>
+
+### `<Optional>` members
+
+**● members**: *[ResourceFilterableCollection](../classes/resourcefilterablecollection.md)<[IResource](iresource.md)>*
+
+*Defined in [DataModel/IHypermediaContainer.ts:33](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/IHypermediaContainer.ts#L33)*
+
+Gets a collection members. This may be null if the resource owning this container is not a hydra:Collection.
+
+___
+<a id="operations"></a>
+
+###  operations
+
+**● operations**: *[OperationsCollection](../classes/operationscollection.md)*
+
+*Defined in [DataModel/IHypermediaContainer.ts:22](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/IHypermediaContainer.ts#L22)*
+
+Gets possible operations.
+
+___
+<a id="type"></a>
+
+###  type
+
+**● type**: *[TypesCollection](../classes/typescollection.md)*
+
+*Inherited from [IResource](iresource.md).[type](iresource.md#type)*
+
+*Defined in [DataModel/IResource.ts:20](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/IResource.ts#L20)*
+
+Gets classes a given resource is of.
+
+*__readonly__*: 
+
+*__returns__*: 
+
+___
+<a id="view"></a>
+
+### `<Optional>` view
+
+**● view**: *[IHydraResource](ihydraresource.md)*
+
+*Defined in [DataModel/IHypermediaContainer.ts:39](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/IHypermediaContainer.ts#L39)*
+
+Gets a partial collection view. This may be null if the resource owning this container is not a hydra:Collection with hydra:view.
+
+___
+
+## Accessors
+
+<a id="length"></a>
+
+###  length
+
+**get length**(): `number`
+
+*Inherited from [FilterableCollection](../classes/filterablecollection.md).[length](../classes/filterablecollection.md#length)*
+
+*Defined in [DataModel/Collections/FilterableCollection.ts:38](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/FilterableCollection.ts#L38)*
+
+Gets the number of items in this collection.
+
+*__readonly__*: 
+
+**Returns:** `number`
+
+___
 
 ## Methods
+
 <a id="___iterator"></a>
 
 ###  __@iterator
 
-► **__@iterator**(): `IterableIterator`<[IHypermedia](ihypermedia.md)>
+▸ **__@iterator**(): `Iterator`<[IResource](iresource.md)>
 
+*Inherited from [FilterableCollection](../classes/filterablecollection.md).[__@iterator](../classes/filterablecollection.md#___iterator)*
 
+*Defined in [DataModel/Collections/FilterableCollection.ts:111](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/FilterableCollection.ts#L111)*
 
+*__inheritdoc__*: 
 
-*Inherited from Array.[Symbol.iterator]*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2015.iterable.d.ts:52*
-
-
-
-Iterator
-
-
-
-
-**Returns:** `IterableIterator`<[IHypermedia](ihypermedia.md)>
-
-
-
-
+**Returns:** `Iterator`<[IResource](iresource.md)>
 
 ___
+<a id="any"></a>
 
-<a id="___unscopables"></a>
+###  any
 
-###  __@unscopables
+▸ **any**(): `boolean`
 
-► **__@unscopables**(): object
+*Inherited from [FilterableCollection](../classes/filterablecollection.md).[any](../classes/filterablecollection.md#any)*
 
+*Defined in [DataModel/Collections/FilterableCollection.ts:52](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/FilterableCollection.ts#L52)*
 
-
-
-*Inherited from Array.[Symbol.unscopables]*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts:94*
-
-
-
-Returns an object whose properties have the value 'true' when they will be absent when used in a 'with' statement.
-
-
-
-
-**Returns:** object
-
-
-
-
-
-___
-
-<a id="concat"></a>
-
-###  concat
-
-► **concat**(...items: *[IHypermedia](ihypermedia.md)[][]*): [IHypermedia](ihypermedia.md)[]
-
-► **concat**(...items: *(`T`[]⎮`T`)[]*): [IHypermedia](ihypermedia.md)[]
-
-
-
-
-*Inherited from Array.concat*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1134*
-
-
-
-Combines two or more arrays.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| items | [IHypermedia](ihypermedia.md)[][] | Additional items to add to the end of array1. |
-
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)[]
-
-
-
-
-*Inherited from Array.concat*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1139*
-
-
-
-Combines two or more arrays.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| items | (`T`[]⎮`T`)[] | Additional items to add to the end of array1. |
-
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)[]
-
-
-
-
-
-___
-
-<a id="copywithin"></a>
-
-###  copyWithin
-
-► **copyWithin**(target: *`number`*, start: *`number`*, end?: *`number`*): `this`
-
-
-
-
-*Inherited from Array.copyWithin*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2015.core.d.ts:69*
-
-
-
-Returns the this object after copying a section of the array identified by start and end to the same array starting at position target
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| target | `number` | If target is negative, it is treated as length+target where length is thelength of the array. |
-| start | `number` | If start is negative, it is treated as length+start. If end is negative, itis treated as length+end. |
-| end | `number` | If not specified, length of the this object is used as its default value. |
-
-
-
-
-
-**Returns:** `this`
-
-
-
-
-
-___
-
-<a id="entries"></a>
-
-###  entries
-
-► **entries**(): `IterableIterator`<[`number`,[IHypermedia](ihypermedia.md)]>
-
-
-
-
-*Inherited from Array.entries*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2015.iterable.d.ts:57*
-
-
-
-Returns an array of key, value pairs for every entry in the array
-
-
-
-
-**Returns:** `IterableIterator`<[`number`,[IHypermedia](ihypermedia.md)]>
-
-
-
-
-
-___
-
-<a id="every"></a>
-
-###  every
-
-► **every**(callbackfn: *function*): `boolean`
-
-► **every**(callbackfn: *function*, thisArg: *`undefined`*): `boolean`
-
-► **every**Z(callbackfn: *function*, thisArg: *`Z`*): `boolean`
-
-
-
-
-*Inherited from Array.every*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1199*
-
-
-
-Determines whether all the members of an array satisfy the specified test.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | A function that accepts up to three arguments. The every method calls the callbackfn function for each element in array1 until the callbackfn returns false, or until the end of the array. |
-
-
-
-
+Checks whether this collection has any items fitlered.
 
 **Returns:** `boolean`
 
+___
+<a id="createinstance"></a>
 
+### `<Protected>` createInstance
 
+▸ **createInstance**(items: *`Iterable`<[IResource](iresource.md)>*): [ResourceFilterableCollection](../classes/resourcefilterablecollection.md)<[IResource](iresource.md)>
 
-*Inherited from Array.every*
+*Inherited from [ResourceFilterableCollection](../classes/resourcefilterablecollection.md).[createInstance](../classes/resourcefilterablecollection.md#createinstance)*
 
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1200*
+*Overrides [FilterableCollection](../classes/filterablecollection.md).[createInstance](../classes/filterablecollection.md#createinstance)*
 
-
+*Defined in [DataModel/Collections/ResourceFilterableCollection.ts:54](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/ResourceFilterableCollection.ts#L54)*
 
 **Parameters:**
 
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | - |
-| thisArg | `undefined` | - |
+| Name | Type |
+| ------ | ------ |
+| items | `Iterable`<[IResource](iresource.md)> |
 
+**Returns:** [ResourceFilterableCollection](../classes/resourcefilterablecollection.md)<[IResource](iresource.md)>
 
+___
+<a id="first"></a>
 
+###  first
 
+▸ **first**(): [IResource](iresource.md)
 
-**Returns:** `boolean`
+*Inherited from [FilterableCollection](../classes/filterablecollection.md).[first](../classes/filterablecollection.md#first)*
 
+*Defined in [DataModel/Collections/FilterableCollection.ts:60](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/FilterableCollection.ts#L60)*
 
+Gets the first item of the collection or null if there are no items matching the criteria.
 
+**Returns:** [IResource](iresource.md)
 
-*Inherited from Array.every*
+___
+<a id="getiterator"></a>
 
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1201*
+### `<Optional>` getIterator
 
+▸ **getIterator**(): [IPartialCollectionIterator](ipartialcollectioniterator.md)
 
+*Defined in [DataModel/IHypermediaContainer.ts:51](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/IHypermediaContainer.ts#L51)*
+
+Gets a part iterator associated with the collection. This may be null if the resource owning this container is not a hydra:Collection with hydra:view.
+
+**Returns:** [IPartialCollectionIterator](ipartialcollectioniterator.md)
+
+___
+<a id="last"></a>
+
+###  last
+
+▸ **last**(): [IResource](iresource.md)
+
+*Inherited from [FilterableCollection](../classes/filterablecollection.md).[last](../classes/filterablecollection.md#last)*
+
+*Defined in [DataModel/Collections/FilterableCollection.ts:69](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/FilterableCollection.ts#L69)*
+
+Gets the last item of the collection or null if there are no items matching the criteria.
+
+**Returns:** [IResource](iresource.md)
+
+___
+<a id="narrowfilterswith"></a>
+
+### `<Protected>` narrowFiltersWith
+
+▸ **narrowFiltersWith**<`TValue`>(predicate: *`string`*, matchEvaluator: *`function`*): [FilterableCollection](../classes/filterablecollection.md)<[IResource](iresource.md)>
+
+▸ **narrowFiltersWith**(predicate: *`string`*, value: *`string` \| `RegExp`*): [FilterableCollection](../classes/filterablecollection.md)<[IResource](iresource.md)>
+
+*Inherited from [FilterableCollection](../classes/filterablecollection.md).[narrowFiltersWith](../classes/filterablecollection.md#narrowfilterswith)*
+
+*Defined in [DataModel/Collections/FilterableCollection.ts:129](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/FilterableCollection.ts#L129)*
+
+Creates a new instance of the [FilterableCollection](../classes/filterablecollection.md) with filter made narrower with given predicate.
 
 **Type parameters:**
 
-#### Z 
+#### TValue 
 **Parameters:**
 
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | - |
-| thisArg | `Z` | - |
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| predicate | `string` |  Predicate of the filter. |
+| matchEvaluator | `function` |  Match evaluator of the predicate to filter. |
 
+**Returns:** [FilterableCollection](../classes/filterablecollection.md)<[IResource](iresource.md)>
 
+*Inherited from [FilterableCollection](../classes/filterablecollection.md).[narrowFiltersWith](../classes/filterablecollection.md#narrowfilterswith)*
 
+*Defined in [DataModel/Collections/FilterableCollection.ts:140](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/FilterableCollection.ts#L140)*
 
+Creates a new instance of the [FilterableCollection](../classes/filterablecollection.md) with filter made narrower with given predicate.
 
-**Returns:** `boolean`
+**Parameters:**
 
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| predicate | `string` |  Predicate of the filter. |
+| value | `string` \| `RegExp` |  Either value or regular expression to match the value of the predicate to filter. |
 
-
-
+**Returns:** [FilterableCollection](../classes/filterablecollection.md)<[IResource](iresource.md)>
 
 ___
+<a id="nonblank"></a>
 
-<a id="fill"></a>
+###  nonBlank
 
-###  fill
+▸ **nonBlank**(): [ResourceFilterableCollection](../classes/resourcefilterablecollection.md)<[IResource](iresource.md)>
 
-► **fill**(value: *[IHypermedia](ihypermedia.md)*, start?: *`number`*, end?: *`number`*): `this`
+*Inherited from [ResourceFilterableCollection](../classes/resourcefilterablecollection.md).[nonBlank](../classes/resourcefilterablecollection.md#nonblank)*
 
+*Defined in [DataModel/Collections/ResourceFilterableCollection.ts:50](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/ResourceFilterableCollection.ts#L50)*
 
+Obtains a collection of resources being non blank nodes;
 
-
-*Inherited from Array.fill*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2015.core.d.ts:58*
-
-
-
-Returns the this object after filling the section identified by start and end with value
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| value | [IHypermedia](ihypermedia.md) | value to fill array section with |
-| start | `number` | index to start filling the array at. If start is negative, it is treated aslength+start where length is the length of the array. |
-| end | `number` | index to stop filling the array at. If end is negative, it is treated aslength+end. |
-
-
-
-
-
-**Returns:** `this`
-
-
-
-
+**Returns:** [ResourceFilterableCollection](../classes/resourcefilterablecollection.md)<[IResource](iresource.md)>
 
 ___
+<a id="ofiri"></a>
 
-<a id="filter"></a>
+###  ofIri
 
-###  filter
+▸ **ofIri**(iri: *`string`*): [ResourceFilterableCollection](../classes/resourcefilterablecollection.md)<[IResource](iresource.md)>
 
-► **filter**(callbackfn: *function*): [IHypermedia](ihypermedia.md)[]
+*Inherited from [ResourceFilterableCollection](../classes/resourcefilterablecollection.md).[ofIri](../classes/resourcefilterablecollection.md#ofiri)*
 
-► **filter**(callbackfn: *function*, thisArg: *`undefined`*): [IHypermedia](ihypermedia.md)[]
+*Defined in [DataModel/Collections/ResourceFilterableCollection.ts:37](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/ResourceFilterableCollection.ts#L37)*
 
-► **filter**Z(callbackfn: *function*, thisArg: *`Z`*): [IHypermedia](ihypermedia.md)[]
-
-
-
-
-*Inherited from Array.filter*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1263*
-
-
-
-Returns the elements of an array that meet the condition specified in a callback function.
-
+Obtains a collection of resources of a given Iri;
 
 **Parameters:**
 
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | A function that accepts up to three arguments. The filter method calls the callbackfn function one time for each element in the array. |
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| iri | `string` |  Iri of the resources. |
 
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)[]
-
-
-
-
-*Inherited from Array.filter*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1264*
-
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | - |
-| thisArg | `undefined` | - |
-
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)[]
-
-
-
-
-*Inherited from Array.filter*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1265*
-
-
-
-**Type parameters:**
-
-#### Z 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | - |
-| thisArg | `Z` | - |
-
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)[]
-
-
-
-
+**Returns:** [ResourceFilterableCollection](../classes/resourcefilterablecollection.md)<[IResource](iresource.md)>
 
 ___
+<a id="oftype"></a>
 
-<a id="find"></a>
+###  ofType
 
-###  find
+▸ **ofType**(iri: *`string`*): [ResourceFilterableCollection](../classes/resourcefilterablecollection.md)<[IResource](iresource.md)>
 
-► **find**(predicate: *function*): [IHypermedia](ihypermedia.md)⎮`undefined`
+*Inherited from [ResourceFilterableCollection](../classes/resourcefilterablecollection.md).[ofType](../classes/resourcefilterablecollection.md#oftype)*
 
-► **find**(predicate: *function*, thisArg: *`undefined`*): [IHypermedia](ihypermedia.md)⎮`undefined`
+*Defined in [DataModel/Collections/ResourceFilterableCollection.ts:23](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/ResourceFilterableCollection.ts#L23)*
 
-► **find**Z(predicate: *function*, thisArg: *`Z`*): [IHypermedia](ihypermedia.md)⎮`undefined`
-
-
-
-
-*Inherited from Array.find*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2015.core.d.ts:33*
-
-
-
-Returns the value of the first element in the array where predicate is true, and undefined otherwise.
-
+Obtains a collection of resources of a given type;
 
 **Parameters:**
 
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| predicate | function | find calls predicate once for each element of the array, in ascendingorder, until it finds one where predicate returns true. If such an element is found, findimmediately returns that element value. Otherwise, find returns undefined. |
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| iri | `string` |  Type of the resources. |
 
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)⎮`undefined`
-
-
-
-
-*Inherited from Array.find*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2015.core.d.ts:34*
-
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| predicate | function | - |
-| thisArg | `undefined` | - |
-
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)⎮`undefined`
-
-
-
-
-*Inherited from Array.find*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2015.core.d.ts:35*
-
-
-
-**Type parameters:**
-
-#### Z 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| predicate | function | - |
-| thisArg | `Z` | - |
-
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)⎮`undefined`
-
-
-
-
+**Returns:** [ResourceFilterableCollection](../classes/resourcefilterablecollection.md)<[IResource](iresource.md)>
 
 ___
+<a id="toarray"></a>
 
-<a id="findindex"></a>
+###  toArray
 
-###  findIndex
+▸ **toArray**(): [IResource](iresource.md)[]
 
-► **findIndex**(predicate: *function*): `number`
+*Inherited from [FilterableCollection](../classes/filterablecollection.md).[toArray](../classes/filterablecollection.md#toarray)*
 
-► **findIndex**(predicate: *function*, thisArg: *`undefined`*): `number`
+*Defined in [DataModel/Collections/FilterableCollection.ts:101](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/FilterableCollection.ts#L101)*
 
-► **findIndex**Z(predicate: *function*, thisArg: *`Z`*): `number`
+Flattens this collection to a standard array.
 
-
-
-
-*Inherited from Array.findIndex*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2015.core.d.ts:46*
-
-
-
-Returns the index of the first element in the array where predicate is true, and -1 otherwise.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| predicate | function | find calls predicate once for each element of the array, in ascendingorder, until it finds one where predicate returns true. If such an element is found,findIndex immediately returns that element index. Otherwise, findIndex returns -1. |
-
-
-
-
-
-**Returns:** `number`
-
-
-
-
-*Inherited from Array.findIndex*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2015.core.d.ts:47*
-
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| predicate | function | - |
-| thisArg | `undefined` | - |
-
-
-
-
-
-**Returns:** `number`
-
-
-
-
-*Inherited from Array.findIndex*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2015.core.d.ts:48*
-
-
-
-**Type parameters:**
-
-#### Z 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| predicate | function | - |
-| thisArg | `Z` | - |
-
-
-
-
-
-**Returns:** `number`
-
-
-
-
+**Returns:** [IResource](iresource.md)[]
 
 ___
+<a id="where"></a>
 
-<a id="foreach"></a>
+###  where
 
-###  forEach
+▸ **where**(matchEvaluator: *`function`*): [FilterableCollection](../classes/filterablecollection.md)<[IResource](iresource.md)>
 
-► **forEach**(callbackfn: *function*): `void`
+*Inherited from [FilterableCollection](../classes/filterablecollection.md).[where](../classes/filterablecollection.md#where)*
 
-► **forEach**(callbackfn: *function*, thisArg: *`undefined`*): `void`
+*Defined in [DataModel/Collections/FilterableCollection.ts:83](https://github.com/alien-mcl/Heracles.ts/blob/master/src/DataModel/Collections/FilterableCollection.ts#L83)*
 
-► **forEach**Z(callbackfn: *function*, thisArg: *`Z`*): `void`
-
-
-
-
-*Inherited from Array.forEach*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1215*
-
-
-
-Performs the specified action for each element in an array.
-
+Filters the collection with a generic match evaluator.
 
 **Parameters:**
 
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | A function that accepts up to three arguments. forEach calls the callbackfn function one time for each element in the array. |
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| matchEvaluator | `function` |  Match evaluation delegate. |
 
-
-
-
-
-**Returns:** `void`
-
-
-
-
-*Inherited from Array.forEach*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1216*
-
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | - |
-| thisArg | `undefined` | - |
-
-
-
-
-
-**Returns:** `void`
-
-
-
-
-*Inherited from Array.forEach*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1217*
-
-
-
-**Type parameters:**
-
-#### Z 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | - |
-| thisArg | `Z` | - |
-
-
-
-
-
-**Returns:** `void`
-
-
-
-
+**Returns:** [FilterableCollection](../classes/filterablecollection.md)<[IResource](iresource.md)>
 
 ___
-
-<a id="includes"></a>
-
-###  includes
-
-► **includes**(searchElement: *[IHypermedia](ihypermedia.md)*, fromIndex?: *`number`*): `boolean`
-
-
-
-
-*Inherited from Array.includes*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2016.array.include.d.ts:27*
-
-
-
-Determines whether an array includes a certain element, returning true or false as appropriate.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| searchElement | [IHypermedia](ihypermedia.md) | The element to search for. |
-| fromIndex | `number` | The position in this array at which to begin searching for searchElement. |
-
-
-
-
-
-**Returns:** `boolean`
-
-
-
-
-
-___
-
-<a id="indexof"></a>
-
-###  indexOf
-
-► **indexOf**(searchElement: *[IHypermedia](ihypermedia.md)*, fromIndex?: *`number`*): `number`
-
-
-
-
-*Inherited from Array.indexOf*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1187*
-
-
-
-Returns the index of the first occurrence of a value in an array.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| searchElement | [IHypermedia](ihypermedia.md) | The value to locate in the array. |
-| fromIndex | `number` | The array index at which to begin the search. If fromIndex is omitted, the search starts at index 0. |
-
-
-
-
-
-**Returns:** `number`
-
-
-
-
-
-___
-
-<a id="join"></a>
-
-###  join
-
-► **join**(separator?: *`string`*): `string`
-
-
-
-
-*Inherited from Array.join*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1144*
-
-
-
-Adds all the elements of an array separated by the specified separator string.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| separator | `string` | A string used to separate one element of an array from the next in the resulting String. If omitted, the array elements are separated with a comma. |
-
-
-
-
-
-**Returns:** `string`
-
-
-
-
-
-___
-
-<a id="keys"></a>
-
-###  keys
-
-► **keys**(): `IterableIterator`<`number`>
-
-
-
-
-*Inherited from Array.keys*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2015.iterable.d.ts:62*
-
-
-
-Returns an list of keys in the array
-
-
-
-
-**Returns:** `IterableIterator`<`number`>
-
-
-
-
-
-___
-
-<a id="lastindexof"></a>
-
-###  lastIndexOf
-
-► **lastIndexOf**(searchElement: *[IHypermedia](ihypermedia.md)*, fromIndex?: *`number`*): `number`
-
-
-
-
-*Inherited from Array.lastIndexOf*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1193*
-
-
-
-Returns the index of the last occurrence of a specified value in an array.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| searchElement | [IHypermedia](ihypermedia.md) | The value to locate in the array. |
-| fromIndex | `number` | The array index at which to begin the search. If fromIndex is omitted, the search starts at the last index in the array. |
-
-
-
-
-
-**Returns:** `number`
-
-
-
-
-
-___
-
-<a id="map"></a>
-
-###  map
-
-► **map**U(this: *[[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)]*, callbackfn: *function*): [`U`,`U`,`U`,`U`,`U`]
-
-► **map**U(this: *[[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)]*, callbackfn: *function*, thisArg: *`undefined`*): [`U`,`U`,`U`,`U`,`U`]
-
-► **map**Z,U(this: *[[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)]*, callbackfn: *function*, thisArg: *`Z`*): [`U`,`U`,`U`,`U`,`U`]
-
-► **map**U(this: *[[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)]*, callbackfn: *function*): [`U`,`U`,`U`,`U`]
-
-► **map**U(this: *[[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)]*, callbackfn: *function*, thisArg: *`undefined`*): [`U`,`U`,`U`,`U`]
-
-► **map**Z,U(this: *[[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)]*, callbackfn: *function*, thisArg: *`Z`*): [`U`,`U`,`U`,`U`]
-
-► **map**U(this: *[[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)]*, callbackfn: *function*): [`U`,`U`,`U`]
-
-► **map**U(this: *[[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)]*, callbackfn: *function*, thisArg: *`undefined`*): [`U`,`U`,`U`]
-
-► **map**Z,U(this: *[[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)]*, callbackfn: *function*, thisArg: *`Z`*): [`U`,`U`,`U`]
-
-► **map**U(this: *[[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)]*, callbackfn: *function*): [`U`,`U`]
-
-► **map**U(this: *[[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)]*, callbackfn: *function*, thisArg: *`undefined`*): [`U`,`U`]
-
-► **map**Z,U(this: *[[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)]*, callbackfn: *function*, thisArg: *`Z`*): [`U`,`U`]
-
-► **map**U(callbackfn: *function*): `U`[]
-
-► **map**U(callbackfn: *function*, thisArg: *`undefined`*): `U`[]
-
-► **map**Z,U(callbackfn: *function*, thisArg: *`Z`*): `U`[]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1223*
-
-
-
-Calls a defined callback function on each element of an array, and returns an array that contains the results.
-
-
-**Type parameters:**
-
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| this | [[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)] | - |
-| callbackfn | function | A function that accepts up to three arguments. The map method calls the callbackfn function one time for each element in the array. |
-
-
-
-
-
-**Returns:** [`U`,`U`,`U`,`U`,`U`]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1224*
-
-
-
-**Type parameters:**
-
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| this | [[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)] | - |
-| callbackfn | function | - |
-| thisArg | `undefined` | - |
-
-
-
-
-
-**Returns:** [`U`,`U`,`U`,`U`,`U`]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1225*
-
-
-
-**Type parameters:**
-
-#### Z 
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| this | [[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)] | - |
-| callbackfn | function | - |
-| thisArg | `Z` | - |
-
-
-
-
-
-**Returns:** [`U`,`U`,`U`,`U`,`U`]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1231*
-
-
-
-Calls a defined callback function on each element of an array, and returns an array that contains the results.
-
-
-**Type parameters:**
-
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| this | [[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)] | - |
-| callbackfn | function | A function that accepts up to three arguments. The map method calls the callbackfn function one time for each element in the array. |
-
-
-
-
-
-**Returns:** [`U`,`U`,`U`,`U`]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1232*
-
-
-
-**Type parameters:**
-
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| this | [[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)] | - |
-| callbackfn | function | - |
-| thisArg | `undefined` | - |
-
-
-
-
-
-**Returns:** [`U`,`U`,`U`,`U`]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1233*
-
-
-
-**Type parameters:**
-
-#### Z 
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| this | [[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)] | - |
-| callbackfn | function | - |
-| thisArg | `Z` | - |
-
-
-
-
-
-**Returns:** [`U`,`U`,`U`,`U`]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1239*
-
-
-
-Calls a defined callback function on each element of an array, and returns an array that contains the results.
-
-
-**Type parameters:**
-
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| this | [[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)] | - |
-| callbackfn | function | A function that accepts up to three arguments. The map method calls the callbackfn function one time for each element in the array. |
-
-
-
-
-
-**Returns:** [`U`,`U`,`U`]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1240*
-
-
-
-**Type parameters:**
-
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| this | [[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)] | - |
-| callbackfn | function | - |
-| thisArg | `undefined` | - |
-
-
-
-
-
-**Returns:** [`U`,`U`,`U`]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1241*
-
-
-
-**Type parameters:**
-
-#### Z 
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| this | [[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)] | - |
-| callbackfn | function | - |
-| thisArg | `Z` | - |
-
-
-
-
-
-**Returns:** [`U`,`U`,`U`]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1247*
-
-
-
-Calls a defined callback function on each element of an array, and returns an array that contains the results.
-
-
-**Type parameters:**
-
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| this | [[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)] | - |
-| callbackfn | function | A function that accepts up to three arguments. The map method calls the callbackfn function one time for each element in the array. |
-
-
-
-
-
-**Returns:** [`U`,`U`]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1248*
-
-
-
-**Type parameters:**
-
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| this | [[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)] | - |
-| callbackfn | function | - |
-| thisArg | `undefined` | - |
-
-
-
-
-
-**Returns:** [`U`,`U`]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1249*
-
-
-
-**Type parameters:**
-
-#### Z 
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| this | [[IHypermedia](ihypermedia.md),[IHypermedia](ihypermedia.md)] | - |
-| callbackfn | function | - |
-| thisArg | `Z` | - |
-
-
-
-
-
-**Returns:** [`U`,`U`]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1255*
-
-
-
-Calls a defined callback function on each element of an array, and returns an array that contains the results.
-
-
-**Type parameters:**
-
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | A function that accepts up to three arguments. The map method calls the callbackfn function one time for each element in the array. |
-
-
-
-
-
-**Returns:** `U`[]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1256*
-
-
-
-**Type parameters:**
-
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | - |
-| thisArg | `undefined` | - |
-
-
-
-
-
-**Returns:** `U`[]
-
-
-
-
-*Inherited from Array.map*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1257*
-
-
-
-**Type parameters:**
-
-#### Z 
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | - |
-| thisArg | `Z` | - |
-
-
-
-
-
-**Returns:** `U`[]
-
-
-
-
-
-___
-
-<a id="pop"></a>
-
-###  pop
-
-► **pop**(): [IHypermedia](ihypermedia.md)⎮`undefined`
-
-
-
-
-*Inherited from Array.pop*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1129*
-
-
-
-Removes the last element from an array and returns it.
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)⎮`undefined`
-
-
-
-
-
-___
-
-<a id="push"></a>
-
-###  push
-
-► **push**(...items: *[IHypermedia](ihypermedia.md)[]*): `number`
-
-
-
-
-*Inherited from Array.push*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1125*
-
-
-
-Appends new elements to an array, and returns the new length of the array.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| items | [IHypermedia](ihypermedia.md)[] | New elements of the Array. |
-
-
-
-
-
-**Returns:** `number`
-
-
-
-
-
-___
-
-<a id="reduce"></a>
-
-###  reduce
-
-► **reduce**(callbackfn: *function*, initialValue?: *[IHypermedia](ihypermedia.md)*): [IHypermedia](ihypermedia.md)
-
-► **reduce**U(callbackfn: *function*, initialValue: *`U`*): `U`
-
-
-
-
-*Inherited from Array.reduce*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1271*
-
-
-
-Calls the specified callback function for all the elements in an array. The return value of the callback function is the accumulated result, and is provided as an argument in the next call to the callback function.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | A function that accepts up to four arguments. The reduce method calls the callbackfn function one time for each element in the array. |
-| initialValue | [IHypermedia](ihypermedia.md) | If initialValue is specified, it is used as the initial value to start the accumulation. The first call to the callbackfn function provides this value as an argument instead of an array value. |
-
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)
-
-
-
-
-*Inherited from Array.reduce*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1277*
-
-
-
-Calls the specified callback function for all the elements in an array. The return value of the callback function is the accumulated result, and is provided as an argument in the next call to the callback function.
-
-
-**Type parameters:**
-
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | A function that accepts up to four arguments. The reduce method calls the callbackfn function one time for each element in the array. |
-| initialValue | `U` | If initialValue is specified, it is used as the initial value to start the accumulation. The first call to the callbackfn function provides this value as an argument instead of an array value. |
-
-
-
-
-
-**Returns:** `U`
-
-
-
-
-
-___
-
-<a id="reduceright"></a>
-
-###  reduceRight
-
-► **reduceRight**(callbackfn: *function*, initialValue?: *[IHypermedia](ihypermedia.md)*): [IHypermedia](ihypermedia.md)
-
-► **reduceRight**U(callbackfn: *function*, initialValue: *`U`*): `U`
-
-
-
-
-*Inherited from Array.reduceRight*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1283*
-
-
-
-Calls the specified callback function for all the elements in an array, in descending order. The return value of the callback function is the accumulated result, and is provided as an argument in the next call to the callback function.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | A function that accepts up to four arguments. The reduceRight method calls the callbackfn function one time for each element in the array. |
-| initialValue | [IHypermedia](ihypermedia.md) | If initialValue is specified, it is used as the initial value to start the accumulation. The first call to the callbackfn function provides this value as an argument instead of an array value. |
-
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)
-
-
-
-
-*Inherited from Array.reduceRight*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1289*
-
-
-
-Calls the specified callback function for all the elements in an array, in descending order. The return value of the callback function is the accumulated result, and is provided as an argument in the next call to the callback function.
-
-
-**Type parameters:**
-
-#### U 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | A function that accepts up to four arguments. The reduceRight method calls the callbackfn function one time for each element in the array. |
-| initialValue | `U` | If initialValue is specified, it is used as the initial value to start the accumulation. The first call to the callbackfn function provides this value as an argument instead of an array value. |
-
-
-
-
-
-**Returns:** `U`
-
-
-
-
-
-___
-
-<a id="reverse"></a>
-
-###  reverse
-
-► **reverse**(): [IHypermedia](ihypermedia.md)[]
-
-
-
-
-*Inherited from Array.reverse*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1148*
-
-
-
-Reverses the elements in an Array.
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)[]
-
-
-
-
-
-___
-
-<a id="shift"></a>
-
-###  shift
-
-► **shift**(): [IHypermedia](ihypermedia.md)⎮`undefined`
-
-
-
-
-*Inherited from Array.shift*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1152*
-
-
-
-Removes the first element from an array and returns it.
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)⎮`undefined`
-
-
-
-
-
-___
-
-<a id="slice"></a>
-
-###  slice
-
-► **slice**(start?: *`number`*, end?: *`number`*): [IHypermedia](ihypermedia.md)[]
-
-
-
-
-*Inherited from Array.slice*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1158*
-
-
-
-Returns a section of an array.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| start | `number` | The beginning of the specified portion of the array. |
-| end | `number` | The end of the specified portion of the array. |
-
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)[]
-
-
-
-
-
-___
-
-<a id="some"></a>
-
-###  some
-
-► **some**(callbackfn: *function*): `boolean`
-
-► **some**(callbackfn: *function*, thisArg: *`undefined`*): `boolean`
-
-► **some**Z(callbackfn: *function*, thisArg: *`Z`*): `boolean`
-
-
-
-
-*Inherited from Array.some*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1207*
-
-
-
-Determines whether the specified callback function returns true for any element of an array.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | A function that accepts up to three arguments. The some method calls the callbackfn function for each element in array1 until the callbackfn returns true, or until the end of the array. |
-
-
-
-
-
-**Returns:** `boolean`
-
-
-
-
-*Inherited from Array.some*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1208*
-
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | - |
-| thisArg | `undefined` | - |
-
-
-
-
-
-**Returns:** `boolean`
-
-
-
-
-*Inherited from Array.some*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1209*
-
-
-
-**Type parameters:**
-
-#### Z 
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| callbackfn | function | - |
-| thisArg | `Z` | - |
-
-
-
-
-
-**Returns:** `boolean`
-
-
-
-
-
-___
-
-<a id="sort"></a>
-
-###  sort
-
-► **sort**(compareFn?: *function*): `this`
-
-
-
-
-*Inherited from Array.sort*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1163*
-
-
-
-Sorts an array.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| compareFn | function | The name of the function used to determine the order of the elements. If omitted, the elements are sorted in ascending, ASCII character order. |
-
-
-
-
-
-**Returns:** `this`
-
-
-
-
-
-___
-
-<a id="splice"></a>
-
-###  splice
-
-► **splice**(start: *`number`*, deleteCount?: *`number`*): [IHypermedia](ihypermedia.md)[]
-
-► **splice**(start: *`number`*, deleteCount: *`number`*, ...items: *[IHypermedia](ihypermedia.md)[]*): [IHypermedia](ihypermedia.md)[]
-
-
-
-
-*Inherited from Array.splice*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1169*
-
-
-
-Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| start | `number` | The zero-based location in the array from which to start removing elements. |
-| deleteCount | `number` | The number of elements to remove. |
-
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)[]
-
-
-
-
-*Inherited from Array.splice*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1176*
-
-
-
-Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| start | `number` | The zero-based location in the array from which to start removing elements. |
-| deleteCount | `number` | The number of elements to remove. |
-| items | [IHypermedia](ihypermedia.md)[] | Elements to insert into the array in place of the deleted elements. |
-
-
-
-
-
-**Returns:** [IHypermedia](ihypermedia.md)[]
-
-
-
-
-
-___
-
-<a id="tolocalestring"></a>
-
-###  toLocaleString
-
-► **toLocaleString**(): `string`
-
-
-
-
-*Inherited from Array.toLocaleString*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1120*
-
-
-
-
-
-**Returns:** `string`
-
-
-
-
-
-___
-
-<a id="tostring"></a>
-
-###  toString
-
-► **toString**(): `string`
-
-
-
-
-*Inherited from Array.toString*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1119*
-
-
-
-Returns a string representation of an array.
-
-
-
-
-**Returns:** `string`
-
-
-
-
-
-___
-
-<a id="unshift"></a>
-
-###  unshift
-
-► **unshift**(...items: *[IHypermedia](ihypermedia.md)[]*): `number`
-
-
-
-
-*Inherited from Array.unshift*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es5.d.ts:1181*
-
-
-
-Inserts new elements at the start of an array.
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| items | [IHypermedia](ihypermedia.md)[] | Elements to insert at the start of the Array. |
-
-
-
-
-
-**Returns:** `number`
-
-
-
-
-
-___
-
-<a id="values"></a>
-
-###  values
-
-► **values**(): `IterableIterator`<[IHypermedia](ihypermedia.md)>
-
-
-
-
-*Inherited from Array.values*
-
-*Defined in node_modules/typedoc/node_modules/typescript/lib/lib.es2015.iterable.d.ts:67*
-
-
-
-Returns an list of values in the array
-
-
-
-
-**Returns:** `IterableIterator`<[IHypermedia](ihypermedia.md)>
-
-
-
-
-
-___
-
 

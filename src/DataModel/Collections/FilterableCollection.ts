@@ -1,4 +1,7 @@
+import { IDictionary } from "../../IDictionary";
 import FilterableCollectionIterator from "./FilterableCollectionIterator";
+
+const empty: any[] = [];
 
 /**
  * Provides a base functionality of a collection that filters itself with given predicates.
@@ -7,15 +10,24 @@ import FilterableCollectionIterator from "./FilterableCollectionIterator";
  */
 export default abstract class FilterableCollection<T> {
   private readonly items: Iterable<T>;
-  private filters: { [predicate: string]: any } = {};
+  private filters: IDictionary<any> = {};
 
   /**
    * Initializes a new instance of the {@link FilterableCollection<T>} class
    * with initial collections of items to filter.
-   * @param items {Iterable<T>} Initial collection of items to filter.
+   * @param {Iterable<T>} [items] Initial collection of items to filter.
    */
-  protected constructor(items: Iterable<T>) {
-    this.items = items || new Array<T>();
+  protected constructor(items?: Iterable<T>) {
+    let actualItems = items;
+    if (
+      !actualItems ||
+      typeof items[Symbol.iterator] !== "function" ||
+      (actualItems instanceof Array && (actualItems as any[]).length === 0)
+    ) {
+      actualItems = empty;
+    }
+
+    this.items = actualItems;
   }
 
   /**
@@ -65,34 +77,53 @@ export default abstract class FilterableCollection<T> {
 
   /**
    * Filters the collection with a generic match evaluator.
-   * @param matchEvaluator {Function} Match evaluation delegate.
+   * @param {Function} matchEvaluator Match evaluation delegate.
    * @returns {IFilterableCollection<T>}
    */
   public where(matchEvaluator: (item: T) => boolean): FilterableCollection<T> {
-    const predicate = Object.keys(this.filters)
-      .filter(key => key.charAt(0) === "_")
-      .map(key => parseInt(key.substr(1), 10))
-      .sort()
-      .reduce((previousValue, currentValue) => currentValue, 0);
-    return this.narrowFiltersWith<T>("_" + predicate, matchEvaluator);
+    let result: FilterableCollection<T> = this;
+    if (!!matchEvaluator) {
+      const predicate = Object.keys(this.filters)
+        .filter(key => key.charAt(0) === "_")
+        .map(key => parseInt(key.substr(1), 10))
+        .sort()
+        .reduce((previousValue, currentValue) => currentValue, 0);
+      result = this.narrowFiltersWith<T>("_" + predicate, matchEvaluator);
+    }
+
+    return result;
   }
 
+  /**
+   * Flattens this collection to a standard array.
+   * @returns {T[]}
+   */
+  public toArray(): T[] {
+    const result = [];
+    for (const item of this) {
+      result.push(item);
+    }
+
+    return result;
+  }
+
+  /** @inheritDoc */
   public [Symbol.iterator](): Iterator<T> {
     return new FilterableCollectionIterator<T>(this.items, this.filters);
   }
 
   /**
-   * @abstract
    * Creates a new instance of the collection.
-   * @param items {Iterable<T>} Initial collection of items to filter.
+   * @param {Iterable<T>} items Initial collection of items to filter.
+   * @abstract
    * @returns {FilterableCollection<T>}
    */
   protected abstract createInstance(items: Iterable<T>): FilterableCollection<T>;
 
   /**
    * Creates a new instance of the {@link FilterableCollection} with filter made narrower with given predicate.
-   * @param predicate {string} Predicate of the filter.
-   * @param matchEvaluator {Function} Match evaluator of the predicate to filter.
+   * @param {string} predicate Predicate of the filter.
+   * @param {Function} matchEvaluator Match evaluator of the predicate to filter.
    * @returns {FilterableCollection<T>}
    */
   protected narrowFiltersWith<TValue>(
@@ -102,8 +133,8 @@ export default abstract class FilterableCollection<T> {
 
   /**
    * Creates a new instance of the {@link FilterableCollection} with filter made narrower with given predicate.
-   * @param predicate {string} Predicate of the filter.
-   * @param value {string | RegExp} Either value or regular expression to match the value of the predicate to filter.
+   * @param {string} predicate Predicate of the filter.
+   * @param {string | RegExp} value Either value or regular expression to match the value of the predicate to filter.
    * @returns {FilterableCollection<T>}
    */
   protected narrowFiltersWith(predicate: string, value: string | RegExp): FilterableCollection<T>;

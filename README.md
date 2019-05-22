@@ -29,6 +29,8 @@ for (const link of resource.hypermedia.links) {
 
 For more example, please refer to the [cookbook](https://github.com/HydraCG/cookbook).
 
+Programmer's reference is available at [docs](https://github.com/HydraCG/Heracles.ts/tree/master/docs).
+
 ### Hydra client factory options
 
 There are some additional options you can use while creating a client instance.
