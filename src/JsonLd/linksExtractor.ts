@@ -69,8 +69,9 @@ function internalLinksExtractor(resources: any[], processingState: ProcessingSta
     const linkType = tryGetPredicateLinkType(predicate, processingState);
     const possibleLinkedResources = originalResource[predicate].filter(_ => !!_["@id"]);
     for (const targetResource of possibleLinkedResources) {
+      const rawTargetResource = processingState.findRawResource(targetResource["@id"]) || targetResource;
       const resourceLinkType =
-        linkType || tryGetResourceLinkType(targetResource["@id"], targetResource["@type"], processingState);
+        linkType || tryGetResourceLinkType(rawTargetResource["@id"], rawTargetResource["@type"], processingState);
       if (!!resourceLinkType) {
         const target = processingState.getVisitedResource(targetResource["@id"]) || {
           iri: targetResource["@id"],
@@ -85,6 +86,7 @@ function internalLinksExtractor(resources: any[], processingState: ProcessingSta
           links: new LinksCollection([]),
           operations: new OperationsCollection([]),
           relation: predicate,
+          supportedOperations: new OperationsCollection([]),
           target,
           type: new TypesCollection([resourceLinkType])
         };

@@ -1,37 +1,50 @@
 {
     "@context": "/api/context.jsonld",
-    "@id": "/api/people",
-    "@type": ["hydra:Collection", "hydra:Resource"],
-    "member": [
+    "@graph": [
         {
-            "@id": "/api/people/1",
-            "@type": "schema:Person"
-        }
-    ],
-    "view": {
-        "@id": "/api/people/page1",
-        "first": "/api/people/page1",
-        "next": "/api/people/page2",
-        "last": "/api/people/page2"
-    },
-    "memberTemplate": {
-        "@type": "hydra:IriTemplate",
-        "template": "/api/people/{name}",
-        "variableRepresentation": "hydra:BasicRepresentation",
-        "mappings": [
-            {
-                "@type": "hydra:IriTemplateMapping",
-                "variable": "name",
-                "property": "schema:name",
-                "required": true
-            }
-        ],
-        "operation": [
-            {
-                "@type": ["hydra:Operation", "schema:UpdateAction", "schema:AddAction"],
+            "@id": "examplevocab:addPerson",
+            "@type": "hydra:TemplatedLink",
+            "supportedOperation": {
+                "@type": [
+                    "hydra:Operation",
+                    "schema:UpdateAction",
+                    "schema:AddAction"
+                ],
                 "method": "PUT",
                 "expects": "schema:Person"
             }
-        ]
-    }
+        },
+        {
+            "@id": "/api/people",
+            "@type": [
+                "hydra:Collection",
+                "hydra:Resource"
+            ],
+            "member": [
+                {
+                    "@id": "/api/people/1",
+                    "@type": "schema:Person"
+                }
+            ],
+            "view": {
+                "@id": "/api/people/page1",
+                "first": "/api/people/page1",
+                "next": "/api/people/page2",
+                "last": "/api/people/page2"
+            },
+            "examplevocab:addPerson": {
+                "@type": "hydra:IriTemplate",
+                "template": "/api/people/{name}",
+                "variableRepresentation": "hydra:BasicRepresentation",
+                "mappings": [
+                    {
+                        "@type": "hydra:IriTemplateMapping",
+                        "variable": "name",
+                        "property": "schema:name",
+                        "required": true
+                    }
+                ]
+            }
+        }
+    ]
 }

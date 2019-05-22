@@ -4,6 +4,8 @@ import { IHydraClient } from "../IHydraClient";
 import { LinksPolicy } from "../LinksPolicy";
 import { factories } from "./factories";
 
+type Notification = (processingState: ProcessingState, resource: IResource) => void;
+
 /**
  * Maintains a JSON-LD processing context.
  * @class
@@ -77,16 +79,12 @@ export default class ProcessingState {
   public currentResource: IResource = null;
 
   private readonly resourceMap: { [name: string]: IResource };
-
   private readonly forbiddenHypermedia: { [name: string]: boolean };
-
   private readonly allHypermedia: IResource[];
-
   private readonly client: IHydraClient;
-
   private readonly foundResources: { [iri: string]: any };
-
   private readonly payload: object[];
+  private readonly notifications: { [iri: string]: Notification[] };
 
   /**
    * Initializes a new instance of the {@link ProcessingState} class.
@@ -123,6 +121,7 @@ export default class ProcessingState {
       this.client = parentState.client;
       this.linksPolicy = parentState.linksPolicy;
       this.foundResources = parentState.foundResources;
+      this.notifications = parentState.notifications;
     } else {
       this.resourceMap = {};
       this.allHypermedia = [];
@@ -133,6 +132,7 @@ export default class ProcessingState {
       this.client = clientOrParentIri as IHydraClient;
       this.linksPolicy = parentContextOrLinksPolicy as LinksPolicy;
       this.foundResources = {};
+      this.notifications = {};
     }
 
     const baseUrl = new URL(this.baseUrl);
@@ -181,12 +181,7 @@ export default class ProcessingState {
    * @returns {any}
    */
   public getVisitedResource(iri: string): any {
-    let result = null;
-    if (!!iri) {
-      result = this.resourceMap[iri] || null;
-    }
-
-    return result;
+    return !!iri && !!this.resourceMap[iri] ? this.resourceMap[iri] : null;
   }
 
   /**
@@ -236,6 +231,34 @@ export default class ProcessingState {
     }
 
     return (this.currentResource = result);
+  }
+
+  /**
+   * Registers a handler to be invoked once the resource of a given Iri is materialized.
+   * @param {string} iri Iri of the resource that must be materialized for notification.
+   * @param {Notification} notification Delegate used for invocation.
+   */
+  public notifyMaterialized(iri: string, notification: Notification): void {
+    let notifications = this.notifications[iri];
+    if (!notifications) {
+      this.notifications[iri] = notifications = [];
+    }
+
+    notifications.push(notification);
+  }
+
+  /**
+   * Raises notifications about resource materialized.
+   * @param {IResource} resource Resource that was just materialized.
+   */
+  public onMaterialized(resource: IResource): void {
+    if (!!this.notifications[resource.iri]) {
+      for (const notification of this.notifications[resource.iri]) {
+        notification(this, resource);
+      }
+
+      delete this.notifications[resource.iri];
+    }
   }
 
   private createResource(iri: string, type: string[]): IResource {

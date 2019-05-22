@@ -7,6 +7,7 @@ import { returnOk } from "../../testing/ResponseHelper";
 import * as jsonLdContext from "./context.json";
 import * as inputJsonLd from "./input.json";
 import * as nestedResourcesInputJsonLd from "./nestedResourcesInput.json";
+import * as operationInputJsonLd from "./operationInput.json";
 
 describe("Given instance of the JsonLdHypermediaProcessor class", () => {
   beforeEach(() => {
@@ -109,6 +110,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                     links: [],
                     operations: [],
                     relation: "http://temp.uri/vocab/closed-events",
+                    supportedOperations: [],
                     target: { iri: "http://temp.uri/api/events/closed", type: [] },
                     type: [hydra.Link]
                   },
@@ -147,6 +149,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                     ],
                     operations: [],
                     relation: hydra.search,
+                    supportedOperations: [],
                     target: null,
                     template: "http://temp.uri/api/events{?searchPhrase}",
                     type: [hydra.TemplatedLink]
@@ -179,6 +182,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                     ],
                     operations: [],
                     relation: hydra.view,
+                    supportedOperations: [],
                     target: { iri: "_:b2", type: [] },
                     type: [hydra.Link]
                   },
@@ -189,6 +193,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                     links: [],
                     operations: [],
                     relation: hydra.member,
+                    supportedOperations: [],
                     target: { iri: "http://temp.uri/api/events/1", type: [] },
                     type: [hydra.Link]
                   },
@@ -199,6 +204,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                     links: [],
                     operations: [],
                     relation: hydra.first,
+                    supportedOperations: [],
                     target: { iri: "http://temp.uri/api/events?page=1", type: [] },
                     type: [hydra.Link]
                   },
@@ -209,6 +215,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                     links: [],
                     operations: [],
                     relation: hydra.last,
+                    supportedOperations: [],
                     target: { iri: "http://temp.uri/api/events?page=9", type: [] },
                     type: [hydra.Link]
                   }
@@ -284,6 +291,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 links: [],
                 operations: [],
                 relation: hydra.collection,
+                supportedOperations: [],
                 target: { iri: "http://temp.uri/api/people", type: [] },
                 type: [hydra.Link]
               },
@@ -294,6 +302,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 links: [],
                 operations: [],
                 relation: hydra.collection,
+                supportedOperations: [],
                 target: { iri: "http://temp.uri/api/events", type: [] },
                 type: [hydra.Link]
               }
@@ -330,6 +339,17 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       it("should have a nested resource's link", () => {
         expect(this.markus.links.withRelationOf("http://schema.org/knows").first().target).toBe(this.karol);
       });
+    });
+
+    describe("JSON-LD response with templated operation", () => {
+      beforeEach(
+        run(async () => {
+          this.response = returnOk("http://temp.uri/api/people", operationInputJsonLd);
+          const result = await this.hypermediaProcessor.process(this.response, this.client);
+          this.operation = result.hypermedia.operations.first();
+          this.karol = this.markus.links.withRelationOf("http://schema.org/knows").first().target;
+        })
+      );
     });
   });
 });

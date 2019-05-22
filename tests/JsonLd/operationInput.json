@@ -1,0 +1,52 @@
+{
+    "@context": {
+        "hydra": "http://www.w3.org/ns/hydra/core#",
+        "schema": "http://schema.org/",
+        "foaf": "http://xmlns.com/foaf/0.1/",
+        "vocab": "http://temp.uri/vocab",
+        "homepage": {
+            "@id": "foaf:homepage",
+            "@type": "@id"
+        },
+        "knows": {
+            "@id": "schema:knows",
+            "@type": "@id"
+        }
+    },
+    "@graph": [
+        {
+            "@id": "http://temp.uri/api/people",
+            "@type": "hydra:Collection",
+            "vocab:addPerson": {
+                "@type": "hydra:IriTemplate",
+                "hydra:template": "http://temp.uri/api/people/{name}",
+                "variableRepresentation": "hydra:BasicRepresentation",
+                "mappings": [
+                    {
+                        "@type": "hydra:IriTemplateMapping",
+                        "variable": "name",
+                        "property": "schema:name",
+                        "required": true
+                    }
+                ]
+            }
+        },
+        {
+            "@id": "vocab:addPerson",
+            "@type": "hydra:TemplatedLink",
+            "hydra:supportedOperation": {
+                "@type": ["hydra:Operation", "schema:AddAction"],
+                "hydra:method": "POST",
+                "hydra:expects": "schema:Person"
+            }
+        },
+        {
+            "@id": "foaf:homepage",
+            "@type": "hydra:Link"
+        },
+        {
+            "@id": "schema:knows",
+            "@type": "hydra:Link"
+        }
+    ]
+}

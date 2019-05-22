@@ -1,49 +1,68 @@
 {
     "@context": "/api/context.jsonld",
-    "@id": "/api",
-    "@type": "hydra:EntryPoint",
-    "examplevocab:events": {
-        "@id": "/api/events",
-        "title": "List of events",
-        "@type": ["hydra:Collection", "hydra:Resource"],
-        "operation": [
-            {
-                "@type": ["hydra:Operation", "schema:CreateAction", "schema:AddAction"],
-                "title": "Create new event",
-                "method": "POST",
-                "expects": "schema:Event"
+    "@graph": [
+        {
+            "@id": "examplevocab:addPerson",
+            "@type": "hydra:TemplatedLink",
+            "supportedOperation": {
+                "@type": [
+                    "hydra:Operation",
+                    "schema:UpdateAction",
+                    "schema:AddAction"
+                ],
+                "method": "PUT",
+                "expects": "schema:Person"
             }
-        ]
-    },
-    "examplevocab:people": {
-        "@id": "/api/people",
-        "title": "List of people",
-        "@type": ["hydra:Collection", "hydra:Resource"],
-        "view": {
-            "@id": "/api/people/page1",
-            "first": "/api/people/page1",
-            "next": "/api/people/page2",
-            "last": "/api/people/page2"
         },
-        "memberTemplate": {
-            "@type": "hydra:IriTemplate",
-            "template": "/api/people/{name}",
-            "variableRepresentation": "hydra:BasicRepresentation",
-            "mapping": [
-                {
-                    "@type": "hydra:IriTemplateMapping",
-                    "variable": "name",
-                    "property": "schema:name",
-                    "required": true
+        {
+            "@id": "/api",
+            "examplevocab:events": {
+                "@id": "/api/events",
+                "title": "List of events",
+                "@type": [
+                    "hydra:Collection",
+                    "hydra:Resource"
+                ],
+                "operation": [
+                    {
+                        "@type": [
+                            "hydra:Operation",
+                            "schema:CreateAction",
+                            "schema:AddAction"
+                        ],
+                        "title": "Create new event",
+                        "method": "POST",
+                        "expects": "schema:Event"
+                    }
+                ]
+            },
+            "examplevocab:people": {
+                "@id": "/api/people",
+                "title": "List of people",
+                "@type": [
+                    "hydra:Collection",
+                    "hydra:Resource"
+                ],
+                "view": {
+                    "@id": "/api/people/page1",
+                    "first": "/api/people/page1",
+                    "next": "/api/people/page2",
+                    "last": "/api/people/page2"
+                },
+                "examplevocab:addPerson": {
+                    "@type": "hydra:IriTemplate",
+                    "template": "/api/people/{name}",
+                    "variableRepresentation": "hydra:BasicRepresentation",
+                    "mapping": [
+                        {
+                            "@type": "hydra:IriTemplateMapping",
+                            "variable": "name",
+                            "property": "schema:name",
+                            "required": true
+                        }
+                    ]
                 }
-            ],
-            "operation": [
-                {
-                    "@type": ["hydra:Operation", "schema:UpdateAction", "schema:AddAction"],
-                    "method": "PUT",
-                    "expects": "schema:Person"
-                }
-            ]
+            }
         }
-    }
+    ]
 }

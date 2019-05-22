@@ -1,3 +1,4 @@
+import { rdf } from "../../namespaces";
 import FilterableCollection from "./FilterableCollection";
 
 /**
@@ -11,6 +12,14 @@ export default class TypesCollection extends FilterableCollection<string> {
    */
   public constructor(types: Iterable<string>) {
     super(types);
+  }
+
+  /**
+   * Gets a value indicating that resource owning this type's collection has hydra:Collection type.
+   * @returns {boolean}
+   */
+  public get isCollection(): boolean {
+    return this.contains(rdf.type);
   }
 
   /**

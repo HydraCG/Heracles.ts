@@ -1,3 +1,4 @@
+import OperationsCollection from "./Collections/OperationsCollection";
 import { IHydraResource } from "./IHydraResource";
 import { IResource } from "./IResource";
 
@@ -26,4 +27,11 @@ export interface ILink extends IHydraResource {
    * @returns {IResource}
    */
   readonly target: IResource;
+
+  /**
+   * Gets a link's supported operations.
+   * @readonly
+   * @returns {ResourceFilterableCollection<IOperation>}
+   */
+  readonly supportedOperations: OperationsCollection;
 }

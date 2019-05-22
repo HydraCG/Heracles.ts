@@ -28,11 +28,6 @@ export function collection(mappings: {
     propertyName: "members",
     type: [hydra.Collection as string]
   };
-  mappings[hydra.memberTemplate] = {
-    default: memberTemplates => memberTemplates[0] || null,
-    propertyName: "memberTemplate",
-    type: [hydra.Collection as string]
-  };
   mappings[hydra.collection] = {
     default: collections => new ResourceFilterableCollection(collections),
     propertyName: "collections",

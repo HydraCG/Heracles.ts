@@ -1,8 +1,8 @@
-import OperationsCollection from "../DataModel/Collections/OperationsCollection";
 import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import { IClass } from "../DataModel/IClass";
 import { hydra } from "../namespaces";
 import { IPropertyMapping } from "./IPropertyMapping";
+import { templatedOperationsExtractor } from "./templatedOperationsExtractor";
 
 export function apiDocumentation(mappings: {
   [property: string]: IPropertyMapping;
@@ -42,10 +42,10 @@ export function apiDocumentation(mappings: {
   };
 
   mappings[hydra.supportedOperation] = {
-    default: operations => new OperationsCollection(operations),
+    default: templatedOperationsExtractor,
     propertyName: "supportedOperations",
     required: true,
-    type: [hydra.Class as string]
+    type: [hydra.Class as string, hydra.Link as string, hydra.TemplatedLink as string]
   };
   mappings[hydra.supportedProperty] = {
     default: properties => new ResourceFilterableCollection(properties),

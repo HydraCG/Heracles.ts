@@ -5,7 +5,8 @@ module.exports = {
   entry: "index.ts",
   mode: "production",
   output: {
-    filename: "[name].js"
+    filename: "[name].js",
+    sourceMapFilename: "[name].js.map"
   },
   module: {
     rules: [
@@ -24,10 +25,6 @@ module.exports = {
         query: {
           presets: [ "env", "stage-0" ]
         },
-      },
-      {
-        test: /\.js$/,
-        loader: "source-map-loader"
       }
     ]
   },
@@ -35,11 +32,11 @@ module.exports = {
     extensions: [".ts", ".js"],
     mainFields: ["jsnext:main", "browser", "main"]
   },
-  devtool: "inline-source-map",
   plugins: [
     new webpack.SourceMapDevToolPlugin({
       filename: null,
-      test: /\.(ts|js)($|\?)/i
+      test: /\.(ts|js)($|\?)/i,
+      exclude: [/node_modules/]
     })
   ],
   bail: false,
