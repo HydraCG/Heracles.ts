@@ -1,3 +1,4 @@
+import { IDictionary } from "../IDictionary";
 import { hydra } from "../namespaces";
 import { apiDocumentation } from "./apiDocumentation";
 import { collection } from "./collection";
@@ -10,9 +11,9 @@ import { templatedOperationsExtractor } from "./templatedOperationsExtractor";
 /**
  * Provides simple property mappings to be used when creating resources.
  * @const
- * @type {{ [property: string]: IPropertyMapping }}
+ * @type {IDictionary<IPropertyMapping>}
  */
-export const mappings: { [property: string]: IPropertyMapping } = {};
+export const mappings: IDictionary<IPropertyMapping> = {};
 
 rdfSchema(mappings);
 apiDocumentation(mappings);

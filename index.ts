@@ -1,6 +1,7 @@
 /* tslint:disable:max-line-length */
 import HydraClientFactory from "./src/HydraClientFactory";
 export default HydraClientFactory;
+export { IDictionary } from "./src/IDictionary";
 export { IHydraClient } from "./src/IHydraClient";
 export { IHypermediaProcessor } from "./src/IHypermediaProcessor";
 export { IHypermediaProcessingOptions } from "./src/IHypermediaProcessingOptions";

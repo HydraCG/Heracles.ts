@@ -1,4 +1,3 @@
-import { hydra } from "../namespaces";
 import LinksCollection from "./Collections/LinksCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
@@ -21,7 +20,7 @@ function discoverCollectionsFrom(hypermedia: Iterable<IResource>): ICollection[]
   const collectionIris: string[] = [];
   const collections: ICollection[] = [];
   for (const control of hypermedia) {
-    if (control.type.contains(hydra.Collection)) {
+    if (control.type.isCollection) {
       addTo(collections, collectionIris, control as ICollection);
     } else if (!!(control as IHydraResource).collections) {
       for (const linkedCollection of (control as IHydraResource).collections) {
@@ -39,20 +38,28 @@ function discoverCollectionsFrom(hypermedia: Iterable<IResource>): ICollection[]
  */
 export default class HypermediaContainer extends ResourceFilterableCollection<IResource>
   implements IHypermediaContainer {
+  /** @inheritDoc */
   public readonly headers: IHeaders;
 
+  /** @inheritDoc */
   public readonly iri: string;
 
+  /** @inheritDoc */
   public readonly type: TypesCollection;
 
+  /** @inheritDoc */
   public readonly view?: IHydraResource;
 
+  /** @inheritDoc */
   public readonly members?: ResourceFilterableCollection<IResource>;
 
+  /** @inheritDoc */
   public readonly collections: ResourceFilterableCollection<ICollection>;
 
+  /** @inheritDoc */
   public readonly operations: OperationsCollection;
 
+  /** @inheritDoc */
   public readonly links: LinksCollection;
 
   /**
@@ -76,5 +83,6 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
     }
   }
 
+  /** @inheritDoc */
   public getIterator?(): IPartialCollectionIterator;
 }

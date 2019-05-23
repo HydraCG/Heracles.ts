@@ -1,4 +1,4 @@
-import { rdf } from "../../namespaces";
+import { hydra } from "../../namespaces";
 import FilterableCollection from "./FilterableCollection";
 
 /**
@@ -7,11 +7,27 @@ import FilterableCollection from "./FilterableCollection";
  */
 export default class TypesCollection extends FilterableCollection<string> {
   /**
-   * Initializes a new instance of the {@link TypesCollection} class with initial collections of types to filter.
-   * @param types {Iterable<string>} Initial collection of types to filter.
+   * Defines an empty types collection.
+   * @constant {TypesCollection}
    */
-  public constructor(types: Iterable<string>) {
-    super(types);
+  public static readonly empty = new TypesCollection();
+
+  /**
+   * Initializes a new instance of the {@link TypesCollection} class with initial collections of types to filter.
+   * @param {Iterable<string>} [types] Initial collection of types to filter.
+   */
+  public constructor(types?: Iterable<string>) {
+    let actualTypes = types;
+    if (!!actualTypes) {
+      let typeArray: string[] = types as string[];
+      if (!(actualTypes instanceof Array)) {
+        typeArray = Array.from(actualTypes);
+      }
+
+      actualTypes = typeArray.filter((item, index) => typeArray.indexOf(item) === index);
+    }
+
+    super(actualTypes);
   }
 
   /**
@@ -19,16 +35,20 @@ export default class TypesCollection extends FilterableCollection<string> {
    * @returns {boolean}
    */
   public get isCollection(): boolean {
-    return this.contains(rdf.type);
+    return this.contains(hydra.Collection);
   }
 
   /**
    * Checks whether this collection has a given type.
-   * @param type {string} Type to look for.
+   * @param {string} type Type to look for.
    * @returns {boolean}
    */
   public contains(type: string): boolean {
     return this.where(item => item === type).any();
+  }
+
+  public except(type: string): TypesCollection {
+    return this.narrowFiltersWith("_", _ => _ !== type) as TypesCollection;
   }
 
   protected createInstance(items: Iterable<string>): TypesCollection {

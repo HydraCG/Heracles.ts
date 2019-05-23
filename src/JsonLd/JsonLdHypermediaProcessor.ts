@@ -14,7 +14,7 @@ import { Level } from "../Level";
 import { LinksPolicy } from "../LinksPolicy";
 import { hydra } from "../namespaces";
 import { IGraphTransformer } from "./GraphTransformations/IGraphTransformer";
-import IndirectTypingProvider from "./IndirectTypingProvider";
+import { IIndirectTypingProvider } from "./IIndirectTypingProvider";
 import { mappings } from "./mappings";
 import ProcessingState from "./ProcessingState";
 
@@ -56,7 +56,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     ]
   ];
 
-  private readonly indirectTypingProvider: IndirectTypingProvider;
+  private readonly indirectTypingProvider: IIndirectTypingProvider;
   private readonly httpCall: HttpCallFacility;
   private readonly graphTransformer: IGraphTransformer;
 
@@ -68,7 +68,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
    * @param {IGraphTransformer} graphTransformer Graph transformation facility.
    */
   public constructor(
-    indirectTypingProvider: IndirectTypingProvider,
+    indirectTypingProvider: IIndirectTypingProvider,
     httpCall: HttpCallFacility,
     graphTransformer: IGraphTransformer
   ) {
@@ -77,10 +77,12 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     this.graphTransformer = graphTransformer;
   }
 
+  /** @inheritDoc */
   public get supportedMediaTypes(): Iterable<string> {
     return JsonLdHypermediaProcessor.mediaTypes;
   }
 
+  /** @inheritDoc */
   public supports(response: Response): Level {
     let result = Level.None;
     if (!!response) {
@@ -99,6 +101,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     return result;
   }
 
+  /** @inheritDoc */
   public async process(
     response: Response,
     client: IHydraClient,
@@ -121,9 +124,9 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       hypermedia.push(
         (rootResource = {
           iri: options.originalUrl,
-          links: new LinksCollection([]),
-          operations: new OperationsCollection([]),
-          type: new TypesCollection([])
+          links: LinksCollection.empty,
+          operations: OperationsCollection.empty,
+          type: TypesCollection.empty
         } as IHydraResource)
       );
     }

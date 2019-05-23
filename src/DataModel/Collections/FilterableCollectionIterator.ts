@@ -1,21 +1,24 @@
+import { IDictionary } from "../../IDictionary";
+
 /**
  * Provides an Iterator<T> implementation for the {@link FilterableCollection}.
  * @class
  */
 export default class FilterableCollectionIterator<T> implements Iterator<T> {
   private readonly items: Iterator<T>;
-  private readonly filters: { [predicate: string]: any };
+  private readonly filters: IDictionary<any>;
 
   /**
    * Initializes a new instance of the {@link FilterableCollectionIterator<T>} class.
-   * @param items {Iterable<T>} Collection of items to iterate through.
-   * @param filters {{ [predicate: string]: any }} Dictionary of predicate-value pairs used for filtering.
+   * @param {Iterable<T>} items Collection of items to iterate through.
+   * @param filters {IDictionary<any>} Dictionary of predicate-value pairs used for filtering.
    */
-  public constructor(items: Iterable<T>, filters: { [predicate: string]: any }) {
+  public constructor(items: Iterable<T>, filters: IDictionary<any>) {
     this.items = items[Symbol.iterator]();
     this.filters = filters;
   }
 
+  /** @inheritDoc */
   public next(): IteratorResult<T> {
     const nextMatching = this.getNextMatchingItemFrom(this.items);
     if (nextMatching === null) {

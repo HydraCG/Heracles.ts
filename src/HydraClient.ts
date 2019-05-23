@@ -67,11 +67,7 @@ export default class HydraClient implements IHydraClient {
     this.httpCall = httpCall;
   }
 
-  /**
-   * Gets a hypermedia provider suitable for a given response.
-   *
-   * @param response Raw response to find hypermedia processor for.
-   */
+  /** @inheritDoc */
   public getHypermediaProcessor(response: Response): IHypermediaProcessor {
     return (
       this.hypermediaProcessors
@@ -85,13 +81,7 @@ export default class HydraClient implements IHydraClient {
     );
   }
 
-  /**
-   * Obtains an API documentation.
-   *
-   * @param urlOrResource URL or object with an iri property from which to obtain an API
-   *                      documentation.
-   * @returns {ApiDocumentation}
-   */
+  /** @inheritDoc */
   public async getApiDocumentation(urlOrResource: string | IResource): Promise<IApiDocumentation> {
     const url = HydraClient.getUrl(urlOrResource);
     const apiDocumentation = await this.getApiDocumentationUrl(url);
@@ -105,24 +95,12 @@ export default class HydraClient implements IHydraClient {
     return result;
   }
 
-  /**
-   * Obtains a representation of a resource.
-   *
-   * @param urlOrResource {string | IResource | ILink } Either URL, {@link IResource} pr {@link ILink}
-   *                                            carrying an IRI of the resource to be obtained.
-   */
+  /** @inheritDoc */
   public async getResource(urlOrResource: string | IResource | ILink): Promise<IWebResource> {
     return await this.getResourceFrom(HydraClient.getUrl(urlOrResource), {});
   }
 
-  /**
-   * Invokes a given operation.
-   *
-   * @param operation Operation descriptor to be invoked.
-   * @param body Optional resource to be used as a body of the operation.
-   * @param parameters Optional auxiliary parameters.
-   * @returns Response of the operation.
-   */
+  /** @inheritDoc */
   public async invoke(operation: IOperation, body?: IWebResource, parameters?: object): Promise<Response> {
     if (!operation) {
       throw new Error(HydraClient.noOperationProvided);

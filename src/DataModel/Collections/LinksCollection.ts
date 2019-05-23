@@ -8,21 +8,32 @@ import ResourceFilterableCollection from "./ResourceFilterableCollection";
  */
 export default class LinksCollection extends ResourceFilterableCollection<ILink> {
   /**
-   * Initializes a new instance of the {@link LinksCollection}
-   * class with initial collections of operations to filter.
-   * @param operations {Iterable<ILink>} Initial collection of operations to filter.
+   * Defines an empty links collection.
+   * @constant {LinksCollection}
    */
-  public constructor(operations: Iterable<ILink>) {
-    super(operations);
+  public static readonly empty = new LinksCollection();
+
+  /**
+   * Initializes a new instance of the {@link LinksCollection}
+   * class with initial collections of links to filter.
+   * @param {Iterable<ILink>} [links] Initial collection of links to filter.
+   */
+  public constructor(links?: Iterable<ILink>) {
+    super(links);
   }
 
   /**
    * Obtains a collection of links of a given relation type.
-   * @param iri {string} Expected relation type.
+   * @param {string} iri Expected relation type.
    * @returns {LinksCollection}
    */
   public withRelationOf(iri: string): LinksCollection {
-    return this.narrowFiltersWith("relation", iri) as LinksCollection;
+    let result: LinksCollection = this;
+    if (typeof iri === "string" && iri.length > 0) {
+      result = this.narrowFiltersWith("relation", iri) as LinksCollection;
+    }
+
+    return result;
   }
 
   /**

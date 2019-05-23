@@ -23,6 +23,7 @@ export interface IProperty extends IResource {
   /**
    * Gets the types of values this property can have.
    * @readonly
+   * @returns {ResourceFilterableCollection<IResource>}
    */
   readonly valuesOfType: ResourceFilterableCollection<IResource>;
 }

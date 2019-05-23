@@ -8,6 +8,7 @@ import { ILink } from "../DataModel/ILink";
 import TemplatedLink from "../DataModel/TemplatedLink";
 import { LinksPolicy } from "../LinksPolicy";
 import { hydra } from "../namespaces";
+import { JsonLdHelper as JsonLd } from "./JsonLdHelper";
 import ProcessingState from "./ProcessingState";
 
 const hydraLinks = {};
@@ -65,7 +66,7 @@ function tryGetResourceLinkType(iri: string, type: string[], processingState: Pr
 function internalLinksExtractor(resources: any[], processingState: ProcessingState): ILink[] {
   const links = [];
   const originalResource = processingState.processedObject;
-  for (const predicate of Object.keys(originalResource).filter(_ => _.length > 0 && _.charAt(0) !== "@")) {
+  for (const predicate of JsonLd.validKeys(originalResource)) {
     const linkType = tryGetPredicateLinkType(predicate, processingState);
     const possibleLinkedResources = originalResource[predicate].filter(_ => !!_["@id"]);
     for (const targetResource of possibleLinkedResources) {
@@ -75,18 +76,18 @@ function internalLinksExtractor(resources: any[], processingState: ProcessingSta
       if (!!resourceLinkType) {
         const target = processingState.getVisitedResource(targetResource["@id"]) || {
           iri: targetResource["@id"],
-          type: new TypesCollection([])
+          type: TypesCollection.empty
         };
 
         processingState.markAsOwned(predicate);
         let link = {
           baseUrl: processingState.baseUrl,
-          collections: new ResourceFilterableCollection<ICollection>([]),
+          collections: new ResourceFilterableCollection<ICollection>(),
           iri: targetResource["@id"],
-          links: new LinksCollection([]),
-          operations: new OperationsCollection([]),
+          links: LinksCollection.empty,
+          operations: OperationsCollection.empty,
           relation: predicate,
-          supportedOperations: new OperationsCollection([]),
+          supportedOperations: OperationsCollection.empty,
           target,
           type: new TypesCollection([resourceLinkType])
         };

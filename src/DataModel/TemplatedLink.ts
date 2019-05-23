@@ -7,6 +7,9 @@ import { IPointingResource } from "./IPointingResource";
 import { ITemplatedLink } from "./ITemplatedLink";
 import TemplatedResource from "./TemplatedResource";
 
+const templatedLink = [hydra.TemplatedLink];
+const link = [hydra.Link];
+
 /**
  * Provides a default implementation of the {@link ITemplatedLink} interface.
  * @class
@@ -14,20 +17,25 @@ import TemplatedResource from "./TemplatedResource";
 export default class TemplatedLink extends TemplatedResource<ILink> implements ITemplatedLink {
   private static id = 0;
 
+  /** @inheritDoc */
   public readonly relation: string;
 
+  /** @inheritDoc */
   public readonly supportedOperations: OperationsCollection;
 
   /**
    * Initializes a new instance of the {@link TemplatedLink} class.
-   * @param linkResource {ILink} Original link to create templated one from.
-   * @param template {IIriTemplate} IRI template to take template from.
+   * @param {ILink} linkResource Original link to create templated one from.
+   * @param {IIriTemplate} template IRI template to take template from.
    */
   public constructor(linkResource: ILink, template: IIriTemplate) {
     super(
       linkResource,
       template,
-      [...linkResource.type].filter(type => type !== hydra.Link).concat([hydra.TemplatedLink])
+      linkResource.type
+        .except(hydra.Link)
+        .toArray()
+        .concat(templatedLink)
     );
     this.relation = linkResource.relation;
     this.supportedOperations = linkResource.supportedOperations;
@@ -37,7 +45,12 @@ export default class TemplatedLink extends TemplatedResource<ILink> implements I
     const result = resource as any;
     result.relation = this.relation;
     result.supportedOperations = this.supportedOperations;
-    result.type = new TypesCollection([...this.type].filter(type => type !== hydra.TemplatedLink).concat([hydra.Link]));
+    result.type = new TypesCollection(
+      this.type
+        .except(hydra.TemplatedLink)
+        .toArray()
+        .concat(link)
+    );
     return result as ILink;
   }
 

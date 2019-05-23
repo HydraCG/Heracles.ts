@@ -132,8 +132,7 @@ export default class HydraClientFactory {
 
   /**
    * Adds HTTP requests facility component.
-   * @param {HttpCallFacility} httpCall HTTP call facility to be used for
-   *                                                                             remote server calls.
+   * @param {HttpCallFacility} httpCall HTTP call facility to be used for remote server calls.
    * @returns {HydraClientFactory}
    */
   /* tslint:disable-next-line:unified-signatures */

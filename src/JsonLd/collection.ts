@@ -1,22 +1,23 @@
 import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import { IResource } from "../DataModel/IResource";
+import { IDictionary } from "../IDictionary";
 import { hydra } from "../namespaces";
 import { IPropertyMapping } from "./IPropertyMapping";
 import ProcessingState from "./ProcessingState";
 
+const link = new TypesCollection([hydra.Link]);
+
 function convertToResource(item: any, processingState: ProcessingState): IResource {
   let result = (item as IResource) || null;
   if (typeof item === "string") {
-    result = processingState.getVisitedResource(item) || { iri: item, type: new TypesCollection([hydra.Link]) };
+    result = processingState.getVisitedResource(item) || { iri: item, type: link };
   }
 
   return result;
 }
 
-export function collection(mappings: {
-  [property: string]: IPropertyMapping;
-}): { [property: string]: IPropertyMapping } {
+export function collection(mappings: IDictionary<IPropertyMapping>): IDictionary<IPropertyMapping> {
   mappings[hydra.totalItems] = {
     default: 0,
     propertyName: "totalItems",

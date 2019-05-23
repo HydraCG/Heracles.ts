@@ -15,14 +15,19 @@ import TemplatedResource from "./TemplatedResource";
 export default class TemplatedOperation extends TemplatedResource<IOperation> implements ITemplatedOperation {
   private static id = 0;
 
+  /** @inheritDoc */
   public readonly method: string;
 
+  /** @inheritDoc */
   public readonly expects: ResourceFilterableCollection<IClass>;
 
+  /** @inheritDoc */
   public readonly returns: ResourceFilterableCollection<IClass>;
 
+  /** @inheritDoc */
   public readonly expectedHeaders: Iterable<string>;
 
+  /** @inheritDoc */
   public readonly returnedHeaders: Iterable<string>;
 
   /**
@@ -31,7 +36,7 @@ export default class TemplatedOperation extends TemplatedResource<IOperation> im
    * @param template {IIriTemplate} IRI template to take template from.
    */
   public constructor(operationResource: IOperation, template: IIriTemplate) {
-    super(operationResource, template, [...operationResource.type].concat([hydra.Operation, hydra.IriTemplate]));
+    super(operationResource, template, operationResource.type.toArray().concat([hydra.Operation, hydra.IriTemplate]));
     this.method = operationResource.method;
     this.expects = operationResource.expects;
     this.returns = operationResource.returns;
@@ -46,7 +51,7 @@ export default class TemplatedOperation extends TemplatedResource<IOperation> im
     result.returns = this.returns;
     result.expectedHeaders = this.expectedHeaders;
     result.returnedHeaders = this.returnedHeaders;
-    result.type = new TypesCollection([...this.type].filter(type => type !== hydra.IriTemplate));
+    result.type = new TypesCollection(this.type.except(hydra.IriTemplate).toArray());
     return result as IOperation;
   }
 

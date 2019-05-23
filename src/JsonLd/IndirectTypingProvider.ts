@@ -1,10 +1,12 @@
+import { IIndirectTypingProvider } from "./IIndirectTypingProvider";
 import { IOntologyProvider } from "./IOntologyProvider";
+import { JsonLdHelper as JsonLd } from "./JsonLdHelper";
 import ProcessingState from "./ProcessingState";
 
 /**
  * Provides a logic checking type of RDF resources.
  */
-export default class IndirectTypingProvider {
+export default class IndirectTypingProvider implements IIndirectTypingProvider {
   private readonly ontologyProvider: IOntologyProvider;
 
   /**
@@ -37,7 +39,7 @@ export default class IndirectTypingProvider {
   }
 
   private async isInDomainOfPredicate(expectedType: string, processingState: ProcessingState): Promise<boolean> {
-    for (const property of Object.keys(processingState.processedObject).filter(key => key.charAt(0) !== "@")) {
+    for (const property of JsonLd.validKeys(processingState.processedObject)) {
       const domain = await this.ontologyProvider.getDomainFor(property);
       if (domain === expectedType) {
         return true;
@@ -53,7 +55,7 @@ export default class IndirectTypingProvider {
       return false;
     }
 
-    for (const property of Object.keys(ownerResource).filter(key => key.charAt(0) !== "@")) {
+    for (const property of JsonLd.validKeys(ownerResource)) {
       const range = await this.ontologyProvider.getRangeFor(property);
       if (
         range === expectedType &&

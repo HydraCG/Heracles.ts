@@ -1,8 +1,14 @@
-[hydraclient.js](../README.md) > [JsonLdHypermediaProcessor](../classes/jsonldhypermediaprocessor.md)
-
-
+[@hydra-cg/heracles.ts](../README.md) > [JsonLdHypermediaProcessor](../classes/jsonldhypermediaprocessor.md)
 
 # Class: JsonLdHypermediaProcessor
+
+Provides a JSON-LD based implementation of the [IHypermediaProcessor](../interfaces/ihypermediaprocessor.md) interface.
+
+*__class__*: 
+
+## Hierarchy
+
+**JsonLdHypermediaProcessor**
 
 ## Implements
 
@@ -10,320 +16,342 @@
 
 ## Index
 
+### Constructors
+
+* [constructor](jsonldhypermediaprocessor.md#constructor)
+
+### Properties
+
+* [graphTransformer](jsonldhypermediaprocessor.md#graphtransformer)
+* [httpCall](jsonldhypermediaprocessor.md#httpcall)
+* [indirectTypingProvider](jsonldhypermediaprocessor.md#indirecttypingprovider)
+* [exactMatchCases](jsonldhypermediaprocessor.md#exactmatchcases)
+* [json](jsonldhypermediaprocessor.md#json)
+* [jsonLd](jsonldhypermediaprocessor.md#jsonld)
+* [mediaTypes](jsonldhypermediaprocessor.md#mediatypes)
+
 ### Accessors
 
 * [supportedMediaTypes](jsonldhypermediaprocessor.md#supportedmediatypes)
 
-
 ### Methods
 
+* [ensureJsonLd](jsonldhypermediaprocessor.md#ensurejsonld)
+* [gatherPropertyValues](jsonldhypermediaprocessor.md#gatherpropertyvalues)
+* [isValidPredicate](jsonldhypermediaprocessor.md#isvalidpredicate)
 * [process](jsonldhypermediaprocessor.md#process)
-* [fixType](jsonldhypermediaprocessor.md#fixtype)
-* [fixTypeOf](jsonldhypermediaprocessor.md#fixtypeof)
-* [generateBlankNodeId](jsonldhypermediaprocessor.md#generateblanknodeid)
-* [initialize](jsonldhypermediaprocessor.md#initialize)
 * [processArray](jsonldhypermediaprocessor.md#processarray)
 * [processHypermedia](jsonldhypermediaprocessor.md#processhypermedia)
 * [processResource](jsonldhypermediaprocessor.md#processresource)
-* [removeReferencesFrom](jsonldhypermediaprocessor.md#removereferencesfrom)
-
-
+* [setupProperty](jsonldhypermediaprocessor.md#setupproperty)
+* [supports](jsonldhypermediaprocessor.md#supports)
+* [tryRemoveReferenceFrom](jsonldhypermediaprocessor.md#tryremovereferencefrom)
 
 ---
 
+## Constructors
+
+<a id="constructor"></a>
+
+###  constructor
+
+⊕ **new JsonLdHypermediaProcessor**(indirectTypingProvider: *[IIndirectTypingProvider](../interfaces/iindirecttypingprovider.md)*, httpCall: *[HttpCallFacility](../#httpcallfacility)*, graphTransformer: *[IGraphTransformer](../interfaces/igraphtransformer.md)*): [JsonLdHypermediaProcessor](jsonldhypermediaprocessor.md)
+
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:61](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L61)*
+
+Initializes a new instance of the [JsonLdHypermediaProcessor](jsonldhypermediaprocessor.md) class.
+
+**Parameters:**
+
+| Name | Type | Description |
+| ------ | ------ | ------ |
+| indirectTypingProvider | [IIndirectTypingProvider](../interfaces/iindirecttypingprovider.md) |  Facility providing information whether given resources are of given type. |
+| httpCall | [HttpCallFacility](../#httpcallfacility) |  HTTP facility used to call remote server. |
+| graphTransformer | [IGraphTransformer](../interfaces/igraphtransformer.md) |  Graph transformation facility. |
+
+**Returns:** [JsonLdHypermediaProcessor](jsonldhypermediaprocessor.md)
+
+___
+
+## Properties
+
+<a id="graphtransformer"></a>
+
+### `<Private>` graphTransformer
+
+**● graphTransformer**: *[IGraphTransformer](../interfaces/igraphtransformer.md)*
+
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:61](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L61)*
+
+___
+<a id="httpcall"></a>
+
+### `<Private>` httpCall
+
+**● httpCall**: *[HttpCallFacility](../#httpcallfacility)*
+
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:60](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L60)*
+
+___
+<a id="indirecttypingprovider"></a>
+
+### `<Private>` indirectTypingProvider
+
+**● indirectTypingProvider**: *[IIndirectTypingProvider](../interfaces/iindirecttypingprovider.md)*
+
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:59](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L59)*
+
+___
+<a id="exactmatchcases"></a>
+
+### `<Static>``<Private>` exactMatchCases
+
+**● exactMatchCases**: *[HeaderMatcher](../#headermatcher)[][]* =  [
+    [(headers: Headers) => headers.get("Content-Type").indexOf(JsonLdHypermediaProcessor.jsonLd) !== -1],
+    [
+      (headers: Headers) => headers.get("Content-Type").indexOf(JsonLdHypermediaProcessor.json) !== -1,
+      (headers: Headers) => {
+        const links = parseLinkHeader(headers.get("Link"));
+        return !!links[jsonLdContext] && links[jsonLdContext].type === JsonLdHypermediaProcessor.jsonLd;
+      }
+    ]
+  ]
+
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:48](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L48)*
+
+___
+<a id="json"></a>
+
+### `<Static>``<Private>` json
+
+**● json**: *`string`* = "application/json"
+
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:44](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L44)*
+
+___
+<a id="jsonld"></a>
+
+### `<Static>``<Private>` jsonLd
+
+**● jsonLd**: *`string`* = "application/ld+json"
+
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:45](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L45)*
+
+___
+<a id="mediatypes"></a>
+
+### `<Static>``<Private>` mediaTypes
+
+**● mediaTypes**: *`string`[]* =  [JsonLdHypermediaProcessor.jsonLd, JsonLdHypermediaProcessor.json]
+
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:46](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L46)*
+
+___
+
 ## Accessors
+
 <a id="supportedmediatypes"></a>
 
 ###  supportedMediaTypes
 
+**get supportedMediaTypes**(): `Iterable`<`string`>
 
-getsupportedMediaTypes(): `string`[]
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:81](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L81)*
 
+Gets supported media types.
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:16](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L16)*
+*__inheritdoc__*: 
 
-
-
-
-
-**Returns:** `string`[]
-
-
+**Returns:** `Iterable`<`string`>
 
 ___
 
-
 ## Methods
+
+<a id="ensurejsonld"></a>
+
+### `<Private>` ensureJsonLd
+
+▸ **ensureJsonLd**(response: *`Response`*): `Promise`<`any`>
+
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:152](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L152)*
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| response | `Response` |
+
+**Returns:** `Promise`<`any`>
+
+___
+<a id="gatherpropertyvalues"></a>
+
+### `<Private>` gatherPropertyValues
+
+▸ **gatherPropertyValues**(processingState: *[ProcessingState](processingstate.md)*, predicate: *`string`*): `Promise`<`any`[]>
+
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:213](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L213)*
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| processingState | [ProcessingState](processingstate.md) |
+| predicate | `string` |
+
+**Returns:** `Promise`<`any`[]>
+
+___
+<a id="isvalidpredicate"></a>
+
+### `<Private>` isValidPredicate
+
+▸ **isValidPredicate**(processingState: *[ProcessingState](processingstate.md)*, predicate: *`string`*): `Promise`<`boolean`>
+
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:183](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L183)*
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| processingState | [ProcessingState](processingstate.md) |
+| predicate | `string` |
+
+**Returns:** `Promise`<`boolean`>
+
+___
 <a id="process"></a>
 
 ###  process
 
-► **process**(response: *`Response`*, removeFromPayload?: *`boolean`*): `Promise`<[IWebResource](../interfaces/iwebresource.md)>
-
-
-
+▸ **process**(response: *`Response`*, client: *[IHydraClient](../interfaces/ihydraclient.md)*, options?: *[IHypermediaProcessingOptions](../interfaces/ihypermediaprocessingoptions.md)*): `Promise`<[IWebResource](../interfaces/iwebresource.md)>
 
 *Implementation of [IHypermediaProcessor](../interfaces/ihypermediaprocessor.md).[process](../interfaces/ihypermediaprocessor.md#process)*
 
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:20](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L20)*
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:105](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L105)*
 
-
+Parses a given raw response.
 
 **Parameters:**
 
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| response | `Response` | - |
-| removeFromPayload | `boolean` | Default value = false.- |
-
-
-
-
+| Name | Type |
+| ------ | ------ |
+| response | `Response` |
+| client | [IHydraClient](../interfaces/ihydraclient.md) |
+| `Optional` options | [IHypermediaProcessingOptions](../interfaces/ihypermediaprocessingoptions.md) |
 
 **Returns:** `Promise`<[IWebResource](../interfaces/iwebresource.md)>
 
-
-
-
-
 ___
-
-<a id="fixtype"></a>
-
-### «Static»«Private» fixType
-
-► **fixType**(result: *`any`[]object*): `any`[]object
-
-
-
-
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:168](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L168)*
-
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| result | `any`[]object | - |
-
-
-
-
-
-**Returns:** `any`[]object
-
-
-
-
-
-___
-
-<a id="fixtypeof"></a>
-
-### «Static»«Private» fixTypeOf
-
-► **fixTypeOf**(resource: *`any`*): `void`
-
-
-
-
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:176](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L176)*
-
-
-
-**Parameters:**
-
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| resource | `any` | - |
-
-
-
-
-
-**Returns:** `void`
-
-
-
-
-
-___
-
-<a id="generateblanknodeid"></a>
-
-### «Static»«Private» generateBlankNodeId
-
-► **generateBlankNodeId**(): `string`
-
-
-
-
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:64](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L64)*
-
-
-
-
-
-**Returns:** `string`
-
-
-
-
-
-___
-
-<a id="initialize"></a>
-
-### «Static» initialize
-
-► **initialize**(): `void`
-
-
-
-
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:12](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L12)*
-
-
-
-
-
-**Returns:** `void`
-
-
-
-
-
-___
-
 <a id="processarray"></a>
 
-### «Static»«Private» processArray
+### `<Private>` processArray
 
-► **processArray**(payload: *`any`*, result: *`any`[]object*, removeFromPayload?: *`boolean`*): `any`[]object
+▸ **processArray**(processingState: *[ProcessingState](processingstate.md)*): `Promise`<[ProcessingState](processingstate.md)>
 
-
-
-
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:96](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L96)*
-
-
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:173](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L173)*
 
 **Parameters:**
 
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| payload | `any` | - |
-| result | `any`[]object | - |
-| removeFromPayload | `boolean` | Default value = false.- |
+| Name | Type |
+| ------ | ------ |
+| processingState | [ProcessingState](processingstate.md) |
 
-
-
-
-
-**Returns:** `any`[]object
-
-
-
-
+**Returns:** `Promise`<[ProcessingState](processingstate.md)>
 
 ___
-
 <a id="processhypermedia"></a>
 
-### «Static»«Private» processHypermedia
+### `<Private>` processHypermedia
 
-► **processHypermedia**(payload: *`any`*, result: *`any`[]object*, removeFromPayload?: *`boolean`*): `any`
+▸ **processHypermedia**(processingState: *[ProcessingState](processingstate.md)*): `Promise`<[ProcessingState](processingstate.md)>
 
-
-
-
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:68](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L68)*
-
-
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:164](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L164)*
 
 **Parameters:**
 
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| payload | `any` | - |
-| result | `any`[]object | - |
-| removeFromPayload | `boolean` | Default value = false.- |
+| Name | Type |
+| ------ | ------ |
+| processingState | [ProcessingState](processingstate.md) |
 
-
-
-
-
-**Returns:** `any`
-
-
-
-
+**Returns:** `Promise`<[ProcessingState](processingstate.md)>
 
 ___
-
 <a id="processresource"></a>
 
-### «Static»«Private» processResource
+### `<Private>` processResource
 
-► **processResource**(resource: *`any`*, result: *`any`[]object*, removeFromPayload: *`boolean`*): `any`
+▸ **processResource**(processingState: *[ProcessingState](processingstate.md)*, isOwnedHypermedia?: *`boolean`*): `Promise`<`object`>
 
-
-
-
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:131](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L131)*
-
-
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:198](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L198)*
 
 **Parameters:**
 
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| resource | `any` | - |
-| result | `any`[]object | - |
-| removeFromPayload | `boolean` | - |
+| Name | Type | Default value |
+| ------ | ------ | ------ |
+| processingState | [ProcessingState](processingstate.md) | - |
+| `Default value` isOwnedHypermedia | `boolean` | false |
 
-
-
-
-
-**Returns:** `any`
-
-
-
-
+**Returns:** `Promise`<`object`>
 
 ___
+<a id="setupproperty"></a>
 
-<a id="removereferencesfrom"></a>
+### `<Private>` setupProperty
 
-### «Static»«Private» removeReferencesFrom
+▸ **setupProperty**(resource: *`object`*, processingState: *[ProcessingState](processingstate.md)*, predicate: *`string`*): `Promise`<`void`>
 
-► **removeReferencesFrom**(result: *`any`[]*): `any`
-
-
-
-
-*Defined in [src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts:50](https://github.com/HydraCG/Heracles.ts/blob/master/src/DataModel/JsonLd/JsonLdHypermediaProcessor.ts#L50)*
-
-
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:241](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L241)*
 
 **Parameters:**
 
-| Param  | Type                | Description  |
-| ------ | ------------------- | ------------ |
-| result | `any`[] | - |
+| Name | Type |
+| ------ | ------ |
+| resource | `object` |
+| processingState | [ProcessingState](processingstate.md) |
+| predicate | `string` |
 
-
-
-
-
-**Returns:** `any`
-
-
-
-
+**Returns:** `Promise`<`void`>
 
 ___
+<a id="supports"></a>
 
+###  supports
+
+▸ **supports**(response: *`Response`*): [Level](../enums/level.md)
+
+*Implementation of [IHypermediaProcessor](../interfaces/ihypermediaprocessor.md).[supports](../interfaces/ihypermediaprocessor.md#supports)*
+
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:86](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L86)*
+
+Determines level of support of a this [IHypermediaProcessor](../interfaces/ihypermediaprocessor.md) for given response.
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| response | `Response` |
+
+**Returns:** [Level](../enums/level.md)
+
+___
+<a id="tryremovereferencefrom"></a>
+
+### `<Static>``<Private>` tryRemoveReferenceFrom
+
+▸ **tryRemoveReferenceFrom**(graph: *`object`[]*, index: *`number`*): `boolean`
+
+*Defined in [JsonLd/JsonLdHypermediaProcessor.ts:142](https://github.com/alien-mcl/Heracles.ts/blob/master/src/JsonLd/JsonLdHypermediaProcessor.ts#L142)*
+
+**Parameters:**
+
+| Name | Type |
+| ------ | ------ |
+| graph | `object`[] |
+| index | `number` |
+
+**Returns:** `boolean`
+
+___
 

@@ -9,28 +9,38 @@ export default class ResourceFilterableCollection<T extends IResource> extends F
   /**
    * Initializes a new instance of the {@link ResourceFilterableCollection<T>}
    * class with initial collections of resources to filter.
-   * @param resources {Iterable<IResource>} Initial collection of resources to filter.
+   * @param {Iterable<IResource>} [resources] Initial collection of resources to filter.
    */
-  public constructor(resources: Iterable<T>) {
+  public constructor(resources?: Iterable<T>) {
     super(resources);
   }
 
   /**
    * Obtains a collection of resources of a given type;
-   * @param iri {string} Type of the resources.
+   * @param {string} iri Type of the resources.
    * @returns {ResourceFilterableCollection<T>}
    */
   public ofType(iri: string): ResourceFilterableCollection<T> {
-    return this.narrowFiltersWith("type", iri) as ResourceFilterableCollection<T>;
+    let result: ResourceFilterableCollection<T> = this;
+    if (typeof iri === "string" && iri.length > 0) {
+      result = this.narrowFiltersWith("type", iri) as ResourceFilterableCollection<T>;
+    }
+
+    return result;
   }
 
   /**
    * Obtains a collection of resources of a given Iri;
-   * @param iri {string} Iri of the resources.
+   * @param {string} iri Iri of the resources.
    * @returns {ResourceFilterableCollection<T>}
    */
   public ofIri(iri: string): ResourceFilterableCollection<T> {
-    return this.narrowFiltersWith("iri", iri) as ResourceFilterableCollection<T>;
+    let result: ResourceFilterableCollection<T> = this;
+    if (typeof iri === "string" && iri.length > 0) {
+      result = this.narrowFiltersWith("iri", iri) as ResourceFilterableCollection<T>;
+    }
+
+    return result;
   }
 
   /**

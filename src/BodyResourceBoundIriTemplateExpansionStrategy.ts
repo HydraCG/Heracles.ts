@@ -9,6 +9,7 @@ import { IIriTemplateExpansionStrategy } from "./IIriTemplateExpansionStrategy";
  * is used to fill the possible {@link IIriTemplate} with values.
  */
 export default class BodyResourceBoundIriTemplateExpansionStrategy implements IIriTemplateExpansionStrategy {
+  /** @inheritDoc */
   public createRequest(operation: IOperation, body?: IResource, auxResource?: any): IOperation {
     const templatedOperation = operation as ITemplatedOperation;
     if (typeof templatedOperation.expandTarget === "function") {

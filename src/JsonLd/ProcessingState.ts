@@ -1,5 +1,6 @@
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import { IResource } from "../DataModel/IResource";
+import { IDictionary } from "../IDictionary";
 import { IHydraClient } from "../IHydraClient";
 import { LinksPolicy } from "../LinksPolicy";
 import { factories } from "./factories";
@@ -68,6 +69,8 @@ export default class ProcessingState {
 
   /**
    * Gets the current links policy.
+   * @readonly
+   * @returns {LinksPolicy}
    */
   public readonly linksPolicy: LinksPolicy;
 
@@ -78,29 +81,29 @@ export default class ProcessingState {
    */
   public currentResource: IResource = null;
 
-  private readonly resourceMap: { [name: string]: IResource };
-  private readonly forbiddenHypermedia: { [name: string]: boolean };
+  private readonly resourceMap: IDictionary<IResource>;
+  private readonly forbiddenHypermedia: IDictionary<boolean>;
   private readonly allHypermedia: IResource[];
   private readonly client: IHydraClient;
-  private readonly foundResources: { [iri: string]: any };
+  private readonly foundResources: IDictionary<any>;
   private readonly payload: object[];
-  private readonly notifications: { [iri: string]: Notification[] };
+  private readonly notifications: IDictionary<Notification[]>;
 
   /**
    * Initializes a new instance of the {@link ProcessingState} class.
-   * @param graphToProcess {Array<object>} Actual graph to process.
-   * @param baseUrl {string} Base URL.
-   * @param client {IHydraClient} Hydra client instance.
-   * @param linksPolicy {LinksPolicy} Policy defining what is considered a link.
+   * @param {Array<object>} graphToProcess Actual graph to process.
+   * @param {string} baseUrl Base URL.
+   * @param {IHydraClient} client Hydra client instance.
+   * @param {LinksPolicy} linksPolicy Policy defining what is considered a link.
    */
   public constructor(graphToProcess: object[], baseUrl: string, client: IHydraClient, linksPolicy: LinksPolicy);
 
   /**
    * Initializes a new instance of the {@link ProcessingState} class.
-   * @param objectToProcess {object} Actual object to process.
-   * @param ownerIri {string} Object to process owning resource's IRI.
-   * @param parentIri {string} Object to process parent resource's IRI.
-   * @param parentState {ProcessingState} Parent processing state to obtain more details from.
+   * @param {object} objectToProcess Actual object to process.
+   * @param {string} ownerIri Object to process owning resource's IRI.
+   * @param {string} parentIri Object to process parent resource's IRI.
+   * @param {ProcessingState} parentState Parent processing state to obtain more details from.
    */
   public constructor(objectToProcess: object, ownerIri: string, parentIri: string, parentState: ProcessingState);
 
@@ -186,7 +189,7 @@ export default class ProcessingState {
 
   /**
    * Creates a child processing context.
-   * @param objectToProcess {object} Nested object to be processed.
+   * @param {object} objectToProcess Nested object to be processed.
    * @returns {ProcessingState}
    */
   public copyFor(objectToProcess: object): ProcessingState {
@@ -213,7 +216,7 @@ export default class ProcessingState {
 
   /**
    * Creates a resource representation of the object being processed.
-   * @param addToHypermedia {boolean = true} Value indicating whether to add this resource to the
+   * @param {boolean = true} addToHypermedia Value indicating whether to add this resource to the
    *                                         {@link ProcessingState.hypermedia} collection.
    * @returns {IResource}
    */
@@ -261,10 +264,10 @@ export default class ProcessingState {
     }
   }
 
-  private createResource(iri: string, type: string[]): IResource {
+  private createResource(iri: string, types: string[]): IResource {
     let result = {
       iri,
-      type: new TypesCollection(type || [])
+      type: !!types ? new TypesCollection(types) : TypesCollection.empty
     };
 
     for (const expectedType of Object.keys(factories)) {
