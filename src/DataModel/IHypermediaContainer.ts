@@ -1,7 +1,4 @@
-import LinksCollection from "./Collections/LinksCollection";
-import OperationsCollection from "./Collections/OperationsCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
-import { ICollection } from "./ICollection";
 import { IHeaders } from "./IHeaders";
 import { IHydraResource } from "./IHydraResource";
 import { IPartialCollectionIterator } from "./IPartialCollectionIterator";
@@ -9,37 +6,29 @@ import { IResource } from "./IResource";
 
 /**
  * Provides an abstraction layer over hypermedia container.
+ * @interface
  */
-export interface IHypermediaContainer extends ResourceFilterableCollection<IResource>, IResource {
-  /**
-   * Gets a collection of links.
-   */
-  readonly links: LinksCollection;
-
-  /**
-   * Gets possible operations.
-   */
-  readonly operations: OperationsCollection;
-
-  /**
-   * Gets discovered collections.
-   */
-  readonly collections: ResourceFilterableCollection<ICollection>;
-
+export interface IHypermediaContainer extends ResourceFilterableCollection<IResource>, IHydraResource {
   /**
    * Gets a collection members.
    * This may be null if the resource owning this container is not a hydra:Collection.
+   * @readonly
+   * @returns {ResourceFilterableCollection<IResource>}
    */
   readonly members?: ResourceFilterableCollection<IResource>;
 
   /**
    * Gets a partial collection view.
    * This may be null if the resource owning this container is not a hydra:Collection with hydra:view.
+   * @readonly
+   * @returns {IHydraResource}
    */
   readonly view?: IHydraResource;
 
   /**
    * Gets response headers.
+   * @readonly
+   * @returns {IHeaders}
    */
   readonly headers: IHeaders;
 

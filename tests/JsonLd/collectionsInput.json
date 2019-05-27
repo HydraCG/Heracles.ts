@@ -1,0 +1,33 @@
+{
+    "@context": {
+        "@vocab": "http://www.w3.org/ns/hydra/core#",
+        "hydra": "http://www.w3.org/ns/hydra/core#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "schema": "http://schema.org/"
+    },
+    "@graph": [
+        {
+            "@id": "http://temp.uri/api",
+            "hydra:collection": [
+                {
+                    "@id": "http://temp.uri/api/people",
+                    "hydra:manages": [
+                        {
+                            "hydra:property": { "@id": "rdf:type" },
+                            "hydra:object": { "@id": "schema:Person" }
+                        }
+                    ]
+                },
+                {
+                    "@id": "http://temp.uri/api/people/karol/knows",
+                    "hydra:manages": [
+                        {
+                            "hydra:subject": { "@id": "http://temp.uri/api/people/karol" },
+                            "hydra:property": { "@id": "schema:knows" }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

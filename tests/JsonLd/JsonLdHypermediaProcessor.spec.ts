@@ -1,13 +1,31 @@
 import * as sinon from "sinon";
+import { ITemplatedOperation } from "../../src/DataModel/ITemplatedOperation";
 import JsonLdHypermediaProcessor from "../../src/JsonLd/JsonLdHypermediaProcessor";
 import { hydra } from "../../src/namespaces";
 import { run } from "../../testing/AsyncHelper";
 import HydraResourceMatcher from "../../testing/HydraResourceMatcher";
 import { returnOk } from "../../testing/ResponseHelper";
+import * as collectionsInputJsonLd from "./collectionsInput.json";
 import * as jsonLdContext from "./context.json";
 import * as inputJsonLd from "./input.json";
 import * as nestedResourcesInputJsonLd from "./nestedResourcesInput.json";
 import * as operationInputJsonLd from "./operationInput.json";
+
+const foaf = {
+  homePage: "http://xmlns.com/foaf/0.1/homepage"
+};
+
+const schema = {
+  Person: "http://schema.org/Person",
+  knows: "http://schema.org/knows"
+};
+
+const api = {
+  people: {
+    karol: "http://temp.uri/api/people/karol",
+    markus: "http://temp.uri/api/people/markus"
+  }
+};
 
 describe("Given instance of the JsonLdHypermediaProcessor class", () => {
   beforeEach(() => {
@@ -95,7 +113,10 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 collections: [],
                 iri: "http://temp.uri/api/people",
                 links: [],
+                manages: [],
+                members: [],
                 operations: [],
+                totalItems: 0,
                 type: []
               },
               {
@@ -220,6 +241,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                     type: [hydra.Link]
                   }
                 ],
+                manages: [],
                 members: [
                   {
                     collections: [],
@@ -317,27 +339,27 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
     describe("JSON-LD response with nested resources", () => {
       beforeEach(
         run(async () => {
-          this.response = returnOk("http://temp.uri/api/people/markus", nestedResourcesInputJsonLd);
+          this.response = returnOk(api.people.markus, nestedResourcesInputJsonLd);
           const result = await this.hypermediaProcessor.process(this.response, this.client);
           this.markus = result.hypermedia.where(control => control.iri.match(/markus/)).first();
-          this.karol = this.markus.links.withRelationOf("http://schema.org/knows").first().target;
+          this.karol = this.markus.links.withRelationOf(schema.knows).first().target;
         })
       );
 
       it("should gain access to outer resource's links", () => {
-        expect(this.markus.links.withRelationOf("http://xmlns.com/foaf/0.1/homepage").first().target.iri).toBe(
-          "http://temp.uri/api/people/markus/home-page"
+        expect(this.markus.links.withRelationOf(foaf.homePage).first().target.iri)
+          .toBe(`${api.people.markus}/home-page`
         );
       });
 
       it("should gain access to inner resource's links", () => {
-        expect(this.karol.links.withRelationOf("http://xmlns.com/foaf/0.1/homepage").first().target.iri).toBe(
-          "http://temp.uri/api/people/karol/home-page"
+        expect(this.karol.links.withRelationOf(foaf.homePage).first().target.iri)
+          .toBe(`${api.people.karol}/home-page`
         );
       });
 
       it("should have a nested resource's link", () => {
-        expect(this.markus.links.withRelationOf("http://schema.org/knows").first().target).toBe(this.karol);
+        expect(this.markus.links.withRelationOf(schema.knows).first().target).toBe(this.karol);
       });
     });
 
@@ -346,10 +368,39 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         run(async () => {
           this.response = returnOk("http://temp.uri/api/people", operationInputJsonLd);
           const result = await this.hypermediaProcessor.process(this.response, this.client);
-          this.operation = result.hypermedia.operations.first();
-          this.karol = this.markus.links.withRelationOf("http://schema.org/knows").first().target;
+          this.addPerson = result.hypermedia.operations.withTemplate().first();
         })
       );
+
+      it("should point to the collection", () => {
+        expect((this.addPerson as ITemplatedOperation).expandTarget({ name: "test" }).target.iri)
+          .toBe("http://temp.uri/api/people/test");
+      });
+    });
+
+    describe("JSON-LD response with collections", () => {
+      beforeEach(
+        run(async () => {
+          this.indirectTypingProvider.isOfType =
+            (expectedType, processingState) =>
+              (processingState.processedObject["@type"] instanceof Array &&
+              processingState.processedObject["@type"].indexOf(expectedType) !== -1) ||
+              processingState.processedObject["@id"].indexOf("http://temp.uri/api/people") === 0;
+
+          this.response = returnOk("http://temp.uri/api", collectionsInputJsonLd);
+          const result = await this.hypermediaProcessor.process(this.response, this.client);
+          this.people = result.hypermedia.collections.withMembersOfType(schema.Person).first();
+          this.known = result.hypermedia.collections.withMembersInRelationWith(api.people.karol, schema.knows).first();
+        })
+      );
+
+      it("should trim collections expecting schema:Person to people", () => {
+        expect(this.people.iri).toBe("http://temp.uri/api/people");
+      });
+
+      it("should trim collections expecting schema:Person to known", () => {
+        expect(this.known.iri).toBe("http://temp.uri/api/people/karol/knows");
+      });
     });
   });
 });

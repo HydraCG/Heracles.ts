@@ -1,12 +1,11 @@
 import * as URITemplate from "uri-templates";
 import { IDictionary } from "../IDictionary";
 import { hydra } from "../namespaces";
+import CollectionsCollection from "./Collections/CollectionsCollection";
 import LinksCollection from "./Collections/LinksCollection";
 import MappingsCollection from "./Collections/MappingsCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
-import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import TypesCollection from "./Collections/TypesCollection";
-import { ICollection } from "./ICollection";
 import { IIriTemplate } from "./IIriTemplate";
 import { IPointingResource } from "./IPointingResource";
 import { IResource } from "./IResource";
@@ -37,7 +36,7 @@ export default abstract class TemplatedResource<T extends IPointingResource> imp
   public readonly links: LinksCollection;
 
   /** @inheritDoc */
-  public readonly collections: ResourceFilterableCollection<ICollection>;
+  public readonly collections: CollectionsCollection;
 
   private readonly template: string;
   private readonly mappings: MappingsCollection;
@@ -52,7 +51,7 @@ export default abstract class TemplatedResource<T extends IPointingResource> imp
     this.baseUrl = resource.baseUrl;
     this.iri = resource.iri;
     this.links = LinksCollection.empty;
-    this.collections = new ResourceFilterableCollection<ICollection>();
+    this.collections = new CollectionsCollection();
     this.type = new TypesCollection(type);
     this.target = null;
     this.template = template.template;

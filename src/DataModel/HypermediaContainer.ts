@@ -1,3 +1,4 @@
+import CollectionsCollection from "./Collections/CollectionsCollection";
 import LinksCollection from "./Collections/LinksCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
@@ -54,7 +55,7 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
   public readonly members?: ResourceFilterableCollection<IResource>;
 
   /** @inheritDoc */
-  public readonly collections: ResourceFilterableCollection<ICollection>;
+  public readonly collections: CollectionsCollection;
 
   /** @inheritDoc */
   public readonly operations: OperationsCollection;
@@ -73,7 +74,7 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
     this.iri = rootResource.iri;
     this.type = rootResource.type;
     this.operations = (rootResource as IHydraResource).operations;
-    this.collections = new ResourceFilterableCollection<ICollection>(discoverCollectionsFrom(hypermedia));
+    this.collections = new CollectionsCollection(discoverCollectionsFrom(hypermedia));
     this.links = (rootResource as IHydraResource).links;
     const collection = rootResource as ICollection;
     if (collection != null) {

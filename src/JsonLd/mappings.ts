@@ -25,11 +25,17 @@ mappings[hydra.required] = {
   required: true,
   type: [hydra.SupportedProperty as string, hydra.IriTemplateMapping as string]
 };
+mappings[hydra.subject] = {
+  default: subjects => subjects[0] || null,
+  propertyName: "subject"
+};
 mappings[hydra.property] = {
   default: properties => properties[0] || null,
-  propertyName: "property",
-  required: true,
-  type: [hydra.SupportedProperty as string, hydra.IriTemplateMapping as string]
+  propertyName: "property"
+};
+mappings[hydra.object] = {
+  default: objects => objects[0] || null,
+  propertyName: "object"
 };
 mappings[hydra.operation] = {
   default: templatedOperationsExtractor,

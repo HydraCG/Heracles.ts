@@ -3,6 +3,7 @@ import { IHydraResource } from "./IHydraResource";
 import { IPartialCollectionIterator } from "./IPartialCollectionIterator";
 import { IPartialCollectionView } from "./IPartialCollectionView";
 import { IResource } from "./IResource";
+import { IStatement } from "./IStatement";
 
 /**
  * Describes an abstract Hydra collection.
@@ -15,6 +16,13 @@ export interface ICollection extends IHydraResource {
    * @returns {ResourceFilterableCollection<IResource>}
    */
   readonly members: ResourceFilterableCollection<IResource>;
+
+  /**
+   * Gets the statements defining the hydra:manages blocks.
+   * @readonly
+   * @returns {StatementsCollection}
+   */
+  readonly manages: ResourceFilterableCollection<IStatement>;
 
   /**
    * Gets the total items in the collection.

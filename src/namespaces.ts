@@ -20,7 +20,9 @@ export let hydra = {
   ApiDocumentation: hydraNamespace + "ApiDocumentation",
 
   mapping: hydraNamespace + "mapping",
+  object: hydraNamespace + "object",
   property: hydraNamespace + "property",
+  subject: hydraNamespace + "subject",
   template: hydraNamespace + "template",
   variable: hydraNamespace + "variable",
   variableRepresentation: hydraNamespace + "variableRepresentation",
@@ -33,6 +35,7 @@ export let hydra = {
   VariableRepresentation: hydraNamespace + "VariableRepresentation",
 
   collection: hydraNamespace + "collection",
+  manages: hydraNamespace + "manages",
   member: hydraNamespace + "member",
   pageIndex: hydraNamespace + "pageIndex",
   pageReference: hydraNamespace + "pageReference",

@@ -47,10 +47,16 @@ export default class TypesCollection extends FilterableCollection<string> {
     return this.where(item => item === type).any();
   }
 
+  /**
+   *
+   * @param {string} type
+   * @returns {TypesCollection}
+   */
   public except(type: string): TypesCollection {
-    return this.narrowFiltersWith("_", _ => _ !== type) as TypesCollection;
+    return this.where(item => item !== type) as TypesCollection;
   }
 
+  /** @inheritdoc */
   protected createInstance(items: Iterable<string>): TypesCollection {
     return new TypesCollection(items);
   }

@@ -1,7 +1,6 @@
+import CollectionsCollection from "./Collections/CollectionsCollection";
 import LinksCollection from "./Collections/LinksCollection";
 import OperationsCollection from "./Collections/OperationsCollection";
-import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
-import { ICollection } from "./ICollection";
 import { IResource } from "./IResource";
 
 /**
@@ -12,9 +11,9 @@ export interface IHydraResource extends IResource {
   /**
    * Gets collections exposed by that resource.
    * @readonly
-   * @returns {ResourceFilterableCollection<ICollection>}
+   * @returns {CollectionsCollection}
    */
-  readonly collections: ResourceFilterableCollection<ICollection>;
+  readonly collections: CollectionsCollection;
 
   /**
    * Gets operations that can be performed on that resource.

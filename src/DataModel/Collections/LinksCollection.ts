@@ -44,6 +44,7 @@ export default class LinksCollection extends ResourceFilterableCollection<ILink>
     return this.ofType(hydra.TemplatedLink) as LinksCollection;
   }
 
+  /** @inheritdoc */
   protected createInstance(items: Iterable<ILink>): LinksCollection {
     return new LinksCollection(items);
   }

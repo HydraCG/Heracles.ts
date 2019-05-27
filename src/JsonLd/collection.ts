@@ -1,6 +1,8 @@
+import CollectionsCollection from "../DataModel/Collections/CollectionsCollection";
 import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import { IResource } from "../DataModel/IResource";
+import { IStatement } from "../DataModel/IStatement";
 import { IDictionary } from "../IDictionary";
 import { hydra } from "../namespaces";
 import { IPropertyMapping } from "./IPropertyMapping";
@@ -24,13 +26,20 @@ export function collection(mappings: IDictionary<IPropertyMapping>): IDictionary
     required: true,
     type: [hydra.Collection as string]
   };
+  mappings[hydra.manages] = {
+    default: (manages: IStatement[]) => new ResourceFilterableCollection(
+      manages.filter(_ => !!_.property && (!!_.subject || !!_.object))),
+    propertyName: "manages",
+    required: true,
+    type: [hydra.Collection as string]
+  };
   mappings[hydra.member] = {
     default: members => new ResourceFilterableCollection(members),
     propertyName: "members",
     type: [hydra.Collection as string]
   };
   mappings[hydra.collection] = {
-    default: collections => new ResourceFilterableCollection(collections),
+    default: collections => new CollectionsCollection(collections),
     propertyName: "collections",
     required: true
   };
