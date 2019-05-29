@@ -7,7 +7,8 @@ function operation(
   returned: string,
   expectedHeader: string,
   returnedHeader: string,
-  method: string) {
+  method: string
+) {
   return {
     expectedHeaders: [expectedHeader],
     expects: [{ iri: expected }],

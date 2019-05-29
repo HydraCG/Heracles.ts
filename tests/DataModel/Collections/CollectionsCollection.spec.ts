@@ -1,7 +1,7 @@
 import CollectionsCollection from "../../../src/DataModel/Collections/CollectionsCollection";
 import ResourceFilterableCollection from "../../../src/DataModel/Collections/ResourceFilterableCollection";
-import {IStatement} from "../../../src/DataModel/IStatement";
-import {hydra, rdf} from "../../../src/namespaces";
+import { IStatement } from "../../../src/DataModel/IStatement";
+import { hydra, rdf } from "../../../src/namespaces";
 
 const schema = { knows: "http://schema.org/knows" };
 const gh = { alienMcl: "http://github.com/alien-mcl/" };

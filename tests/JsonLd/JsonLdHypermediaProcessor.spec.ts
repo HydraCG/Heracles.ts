@@ -347,15 +347,13 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       );
 
       it("should gain access to outer resource's links", () => {
-        expect(this.markus.links.withRelationOf(foaf.homePage).first().target.iri)
-          .toBe(`${api.people.markus}/home-page`
+        expect(this.markus.links.withRelationOf(foaf.homePage).first().target.iri).toBe(
+          `${api.people.markus}/home-page`
         );
       });
 
       it("should gain access to inner resource's links", () => {
-        expect(this.karol.links.withRelationOf(foaf.homePage).first().target.iri)
-          .toBe(`${api.people.karol}/home-page`
-        );
+        expect(this.karol.links.withRelationOf(foaf.homePage).first().target.iri).toBe(`${api.people.karol}/home-page`);
       });
 
       it("should have a nested resource's link", () => {
@@ -373,19 +371,19 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       );
 
       it("should point to the collection", () => {
-        expect((this.addPerson as ITemplatedOperation).expandTarget({ name: "test" }).target.iri)
-          .toBe("http://temp.uri/api/people/test");
+        expect((this.addPerson as ITemplatedOperation).expandTarget({ name: "test" }).target.iri).toBe(
+          "http://temp.uri/api/people/test"
+        );
       });
     });
 
     describe("JSON-LD response with collections", () => {
       beforeEach(
         run(async () => {
-          this.indirectTypingProvider.isOfType =
-            (expectedType, processingState) =>
-              (processingState.processedObject["@type"] instanceof Array &&
+          this.indirectTypingProvider.isOfType = (expectedType, processingState) =>
+            (processingState.processedObject["@type"] instanceof Array &&
               processingState.processedObject["@type"].indexOf(expectedType) !== -1) ||
-              processingState.processedObject["@id"].indexOf("http://temp.uri/api/people") === 0;
+            processingState.processedObject["@id"].indexOf("http://temp.uri/api/people") === 0;
 
           this.response = returnOk("http://temp.uri/api", collectionsInputJsonLd);
           const result = await this.hypermediaProcessor.process(this.response, this.client);

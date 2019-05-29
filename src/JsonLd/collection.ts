@@ -27,8 +27,8 @@ export function collection(mappings: IDictionary<IPropertyMapping>): IDictionary
     type: [hydra.Collection as string]
   };
   mappings[hydra.manages] = {
-    default: (manages: IStatement[]) => new ResourceFilterableCollection(
-      manages.filter(_ => !!_.property && (!!_.subject || !!_.object))),
+    default: (manages: IStatement[]) =>
+      new ResourceFilterableCollection(manages.filter(_ => !!_.property && (!!_.subject || !!_.object))),
     propertyName: "manages",
     required: true,
     type: [hydra.Collection as string]
