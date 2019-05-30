@@ -1,8 +1,7 @@
+import CollectionsCollection from "../DataModel/Collections/CollectionsCollection";
 import LinksCollection from "../DataModel/Collections/LinksCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
-import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
-import { ICollection } from "../DataModel/ICollection";
 import { IIriTemplate } from "../DataModel/IIriTemplate";
 import { ILink } from "../DataModel/ILink";
 import TemplatedLink from "../DataModel/TemplatedLink";
@@ -82,7 +81,7 @@ function internalLinksExtractor(resources: any[], processingState: ProcessingSta
         processingState.markAsOwned(predicate);
         let link = {
           baseUrl: processingState.baseUrl,
-          collections: new ResourceFilterableCollection<ICollection>(),
+          collections: new CollectionsCollection(),
           iri: targetResource["@id"],
           links: LinksCollection.empty,
           operations: OperationsCollection.empty,

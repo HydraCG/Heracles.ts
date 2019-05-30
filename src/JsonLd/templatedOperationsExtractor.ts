@@ -50,21 +50,21 @@ export const templatedOperationsExtractor = (operations: IOperation[], processin
       let processedTemplate: IIriTemplate = null;
       if (!!template && template["@type"] && template["@type"].indexOf(hydra.IriTemplate) !== -1) {
         processedTemplate = processingState.getVisitedResource(template["@id"]);
-        if (!!processedTemplate) {
+        if (!processedTemplate) {
           processingState.notifyMaterialized(template["@id"], (state, resource) =>
             onTemplateMaterialized(state, resource as IIriTemplate, link, operations)
           );
         }
-      }
 
-      const processedLink = processingState.getVisitedResource(link);
-      if (!!processedLink) {
-        processingState.notifyMaterialized(link, (state, resource) =>
-          onLinkMaterialized(state, resource as ILink, template["@id"], operations)
-        );
-      }
+        const processedLink = processingState.getVisitedResource(link);
+        if (!processedLink) {
+          processingState.notifyMaterialized(link, (state, resource) =>
+            onLinkMaterialized(state, resource as ILink, template["@id"], operations)
+          );
+        }
 
-      tryCreateOperationFrom(processingState, processedLink, processedTemplate, operations);
+        tryCreateOperationFrom(processingState, processedLink, processedTemplate, operations);
+      }
     }
   }
 

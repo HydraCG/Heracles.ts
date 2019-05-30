@@ -19,11 +19,7 @@ export default abstract class FilterableCollection<T> {
    */
   protected constructor(items?: Iterable<T>) {
     let actualItems = items;
-    if (
-      !actualItems ||
-      typeof items[Symbol.iterator] !== "function" ||
-      (actualItems instanceof Array && (actualItems as any[]).length === 0)
-    ) {
+    if (!actualItems || typeof items[Symbol.iterator] !== "function") {
       actualItems = empty;
     }
 

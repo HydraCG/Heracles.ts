@@ -3,7 +3,7 @@
         "hydra": "http://www.w3.org/ns/hydra/core#",
         "schema": "http://schema.org/",
         "foaf": "http://xmlns.com/foaf/0.1/",
-        "vocab": "http://temp.uri/vocab",
+        "vocab": "http://temp.uri/vocab#",
         "homepage": {
             "@id": "foaf:homepage",
             "@type": "@id"

@@ -51,6 +51,7 @@ export default class ResourceFilterableCollection<T extends IResource> extends F
     return this.narrowFiltersWith("iri", new RegExp("[a-zA-Z][a-zA-Z0-9_]*:")) as ResourceFilterableCollection<T>;
   }
 
+  /** @inheritdoc */
   protected createInstance(items: Iterable<T>): ResourceFilterableCollection<T> {
     return new ResourceFilterableCollection<T>(items);
   }

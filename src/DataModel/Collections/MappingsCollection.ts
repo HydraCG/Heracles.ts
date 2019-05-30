@@ -46,6 +46,7 @@ export default class MappingsCollection extends ResourceFilterableCollection<IIr
     return result;
   }
 
+  /** @inheritdoc */
   protected createInstance(items: Iterable<IIriTemplateMapping>): MappingsCollection {
     return new MappingsCollection(items);
   }
