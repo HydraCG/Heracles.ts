@@ -128,11 +128,7 @@ export default class HydraClient implements IHydraClient {
     }
 
     options = { ...{ linksPolicy: this.linksPolicy, originalUrl: url }, ...options };
-    const result = await hypermediaProcessor.process(response, this, options);
-    Object.defineProperty(result, "iri", {
-      value: response.url
-    });
-    return result;
+    return await hypermediaProcessor.process(response, this, options);
   }
 
   private async getApiDocumentationUrl(url: string): Promise<{ url: string; response: any }> {

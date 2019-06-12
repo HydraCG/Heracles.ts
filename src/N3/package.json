@@ -1,0 +1,21 @@
+{
+  "name": "@hydra-cg/heracles.n3",
+  "version": "0.2.0",
+  "contributors": [
+    {
+      "name": "Karol Szczepanski"
+    }
+  ],
+  "files": [
+    "src/**/*.js",
+    "index.js",
+    "types"
+  ],
+  "main": "index.js",
+  "types": "types/index.d.ts",
+  "dependencies": {
+    "@rdfjs/parser-n3": "^1.1.2",
+    "@rdfjs/serializer-jsonld": "^1.2.0",
+    "@hydra-cg/heracles.ts": "0.2.0"
+  }
+}

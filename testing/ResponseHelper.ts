@@ -11,7 +11,7 @@ function returnResponse(url: string, body, headers: any = {}, status: number = 2
     headers["Content-Type"] = "application/ld+json";
   }
 
-  const result = new Response(JSON.stringify(body), {
+  const result = new Response(typeof body === "object" ? JSON.stringify(body) : body, {
     headers,
     status
   });

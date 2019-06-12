@@ -1,6 +1,7 @@
 import BodyResourceBoundIriTemplateExpansionStrategy from "./BodyResourceBoundIriTemplateExpansionStrategy";
 import HydraClient from "./HydraClient";
 import { IHydraClient } from "./IHydraClient";
+import { IHydraClientFactory } from "./IHydraClientFactory";
 import { IHypermediaProcessor } from "./IHypermediaProcessor";
 import { IIriTemplateExpansionStrategy } from "./IIriTemplateExpansionStrategy";
 import CompoundGraphTransformer from "./JsonLd/GraphTransformations/CompoundGraphTransformer";
@@ -14,14 +15,14 @@ import { LinksPolicy } from "./LinksPolicy";
 const hydraOntology = require("./JsonLd/hydra.json");
 
 export type HttpCallFacility = (url: string, options?: RequestInit) => Promise<Response>;
-export type HypermediaProcessorFactory = () => IHypermediaProcessor;
+export type HypermediaProcessorFactory = (context: IHydraClientFactory) => IHypermediaProcessor;
 
 /**
  * Provides a factory of the {@link IHydraClient}s.
  */
-export default class HydraClientFactory {
-  private readonly hypermediaProcessorFactories: HypermediaProcessorFactory[] = [];
-  private iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy = null;
+export default class HydraClientFactory implements IHydraClientFactory {
+  private readonly hypermediaProcessorFactories: HypermediaProcessorFactory[];
+  private iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy;
   private linksPolicy: LinksPolicy = LinksPolicy.Strict;
   private httpCall: HttpCallFacility = null;
 
@@ -45,16 +46,53 @@ export default class HydraClientFactory {
     );
   }
 
+  private constructor(
+    hypermediaProcessorFactories?: HypermediaProcessorFactory[],
+    iriTemplateExpansionStrategy?: IIriTemplateExpansionStrategy,
+    linksPolicy?: LinksPolicy,
+    httpCall?: HttpCallFacility
+  ) {
+    this.hypermediaProcessorFactories = hypermediaProcessorFactories || [];
+    this.iriTemplateExpansionStrategy = iriTemplateExpansionStrategy || null;
+    this.linksPolicy = linksPolicy || LinksPolicy.Strict;
+    this.httpCall = httpCall || null;
+  }
+
+  /** @inheritDoc */
+  public get currentHttpCall(): HttpCallFacility {
+    return this.httpCall;
+  }
+
+  /** @inheritDoc */
+  public get currentLinksPolicy(): LinksPolicy {
+    return this.linksPolicy;
+  }
+
+  /** @inheritDoc */
+  public createProcessorToHandle(mediaType: string): IHypermediaProcessor {
+    if (!!mediaType) {
+      for (const hypermediaProcessor of this.resolveProcessors()) {
+        for (const supportedMediaType of hypermediaProcessor.supportedMediaTypes) {
+          if (supportedMediaType === mediaType) {
+            return hypermediaProcessor;
+          }
+        }
+      }
+    }
+
+    throw new Error(HydraClient.noHypermediaProcessors);
+  }
+
   /**
    * Configures a future {@link IHydraClient} with {@link JsonLdHypermediaProcessor},
    * {@link BodyResourceBoundIriTemplateExpansionStrategy} and fetch components.
    * @returns {HydraClientFactory}
    */
   public withDefaults(): HydraClientFactory {
-    return this.withJsonLd()
-      .with(new BodyResourceBoundIriTemplateExpansionStrategy())
+    return this.with(new BodyResourceBoundIriTemplateExpansionStrategy())
       .withStrictLinks()
-      .with(fetch.bind(window));
+      .with(fetch.bind(window))
+      .withJsonLd();
   }
 
   /**
@@ -98,7 +136,7 @@ export default class HydraClientFactory {
    * @returns {HydraClientFactory}
    */
   public withJsonLd(): HydraClientFactory {
-    this.withFactory(() => HydraClientFactory.createJsonLdHypermediaProcessor(this.httpCall));
+    this.withFactory(context => HydraClientFactory.createJsonLdHypermediaProcessor(context.currentHttpCall));
     return this;
   }
 
@@ -157,10 +195,30 @@ export default class HydraClientFactory {
    */
   public andCreate(): IHydraClient {
     return new HydraClient(
-      this.hypermediaProcessorFactories.map(_ => _()),
+      this.resolveProcessors(),
       this.iriTemplateExpansionStrategy,
       this.linksPolicy,
       this.httpCall
     );
+  }
+
+  private resolveProcessors(): Iterable<IHypermediaProcessor> {
+    const result = [];
+    for (const factoryMethod of this.hypermediaProcessorFactories) {
+      const factory = factoryMethod as any;
+      if (typeof factory.instance === "undefined") {
+        const childContext = new HydraClientFactory(
+          this.hypermediaProcessorFactories.filter(_ => _ !== factoryMethod),
+          this.iriTemplateExpansionStrategy,
+          this.linksPolicy,
+          this.httpCall
+        );
+        Object.defineProperty(factory, "instance", { value: factoryMethod(childContext), enumerable: false });
+      }
+
+      result.push(factory.instance);
+    }
+
+    return result;
   }
 }

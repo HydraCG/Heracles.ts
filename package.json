@@ -34,6 +34,8 @@
     "prepare": "tsc --project tsconfig.build.json"
   },
   "dependencies": {
+    "@rdfjs/parser-n3": "^1.1.2",
+    "@rdfjs/serializer-jsonld": "^1.2.0",
     "isomorphic-fetch": "2.2.1",
     "jsonld": "^1.6.0",
     "parse-link-header": "1.0.1",
@@ -72,6 +74,7 @@
     "karma-summary-reporter": "1.6.0",
     "karma-webpack": "3.0.5",
     "prettier": "1.17.1",
+    "raw-loader": "^2.0.0",
     "sinon": "7.3.2",
     "source-map-loader": "0.2.4",
     "ts-loader": "5.4.4",

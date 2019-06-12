@@ -25,6 +25,11 @@ module.exports = {
         query: {
           presets: [ "env", "stage-0" ]
         },
+      },
+      {
+        test: /\.ttl/,
+        use: "raw-loader",
+        include: [path.resolve("tests")]
       }
     ]
   },

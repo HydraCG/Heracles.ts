@@ -1,0 +1,37 @@
+PREFIX hydra: <http://www.w3.org/ns/hydra/core#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX schema: <http://schema.org/>
+
+<http://example.com/vocab#addPerson> rdf:type hydra:TemplatedLink;
+  hydra:supportedOperation [
+    rdf:type hydra:Operation, schema:UpdateAction, schema:AddAction;
+    hydra:method "PUT";
+    hydra:expects schema:Person ].
+</api> <http://example.com/vocab#events> </api/events>;
+  <http://example.com/vocab#people> </api/people>.
+</api/events> rdf:type hydra:Collection, hydra:Resource;
+    hydra:title "List of events";
+    hydra:operation [
+      rdf:type hydra:Operation, schema:CreateAction, schema:AddAction;
+      hydra:title "Create new event"^^xsd:string;
+      hydra:method "POST"^^xsd:string;
+      hydra:expects schema:Event ].
+</api/people> rdf:type hydra:Collection, hydra:Resource;
+    hydra:title "List of people"^^xsd:string;
+    hydra:view </api/people/page1>;
+    <http://example.com/vocab#addPerson> [
+      rdf:type hydra:IriTemplate;
+      hydra:template "/api/people/{name}"^^hydra:Rfc6570Template;
+      hydra:variableRepresentation hydra:BasicRepresentation;
+      hydra:mapping [
+        rdf:type hydra:IriTemplateMapping;
+        hydra:variable "name"^^xsd:string;
+        hydra:property schema:name;
+        hydra:required "true"^^xsd:boolean ]
+      ].
+</api/people/page1> hydra:first </api/people/page1>;
+  hydra:next </api/people/page2>;
+  hydra:last </api/people/page2>.
