@@ -31,11 +31,10 @@
     "docs-html": "typedoc --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs-html src",
     "docs-md": "typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src",
     "docs": "npm run docs-html && npm run docs-md",
-    "prepare": "tsc --project tsconfig.build.json"
+    "prepare": "tsc --project tsconfig.build.json",
+    "n3": "node switch-to-n3"
   },
   "dependencies": {
-    "@rdfjs/parser-n3": "^1.1.2",
-    "@rdfjs/serializer-jsonld": "^1.2.0",
     "isomorphic-fetch": "2.2.1",
     "jsonld": "^1.6.0",
     "parse-link-header": "1.0.1",

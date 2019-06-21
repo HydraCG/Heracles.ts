@@ -12,6 +12,9 @@
     "types"
   ],
   "main": "index.js",
+  "scripts": {
+    "n3": "node switch-to-n3"
+  },
   "types": "types/index.d.ts",
   "dependencies": {
     "@rdfjs/parser-n3": "^1.1.2",
