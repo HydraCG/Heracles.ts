@@ -62,7 +62,7 @@
     "js-md5": "0.7.3",
     "karma": "4.1.0",
     "karma-chrome-launcher": "3.0.0",
-    "karma-coverage-istanbul-reporter": "2.0.5",
+    "karma-coverage-istanbul-reporter": "2.0.6",
     "karma-coveralls": "2.1.0",
     "karma-jasmine": "2.0.1",
     "karma-jasmine-sinon": "1.0.4",
