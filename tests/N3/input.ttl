@@ -1,0 +1,7 @@
+PREFIX s: <http://schema.org/>
+
+[] a s:Person ;
+   s:jobTitle "Professor" ;
+   s:name "Jane Doe" ;
+   s:telephone "(425) 123-4567" ;
+   s:url <http://www.janedoe.com> .

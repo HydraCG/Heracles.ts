@@ -132,10 +132,9 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     }
 
     const hypermediaContainer = new HypermediaContainer(response.headers, rootResource, hypermedia);
-    Object.defineProperty(result, "hypermedia", {
-      enumerable: false,
-      value: hypermediaContainer
-    });
+    Object.defineProperty(result, "hypermedia", { enumerable: false, value: hypermediaContainer });
+    Object.defineProperty(result, "iri", { enumerable: false, value: rootResource.iri });
+    Object.defineProperty(result, "type", { enumerable: false, value: rootResource.type });
     return result;
   }
 

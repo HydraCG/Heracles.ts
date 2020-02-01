@@ -31,7 +31,8 @@
     "docs-html": "typedoc --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs-html src",
     "docs-md": "typedoc --theme markdown --mode file --excludeExternals --tsconfig tsconfig.docs.json --gitRevision master --out docs src",
     "docs": "npm run docs-html && npm run docs-md",
-    "prepare": "tsc --project tsconfig.build.json"
+    "prepare": "tsc --project tsconfig.build.json",
+    "n3": "node switch-to-n3"
   },
   "dependencies": {
     "isomorphic-fetch": "2.2.1",
@@ -69,9 +70,11 @@
     "karma-sinon": "1.0.5",
     "karma-source-map-support": "1.4.0",
     "karma-sourcemap-loader": "0.3.7",
+    "sinon": "7.3.2",
     "karma-summary-reporter": "1.7.1",
     "karma-webpack": "4.0.2",
     "prettier": "1.19.1",
+    "raw-loader": "^2.0.0",
     "sinon": "8.0.4",
     "source-map-loader": "0.2.4",
     "ts-loader": "5.4.4",
