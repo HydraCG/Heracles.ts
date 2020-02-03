@@ -24,10 +24,6 @@ describe("Given an instance of the HydraClient class", () => {
     );
   });
 
-  it("should create an instance", () => {
-    expect(this.client).toEqual(jasmine.any(HydraClient));
-  });
-
   it("should register a hypermedia processor", () => {
     expect(this.client.getHypermediaProcessor(returnOk())).toBe(this.hypermediaProcessor);
   });
@@ -261,7 +257,7 @@ describe("Given an instance of the HydraClient class", () => {
       beforeEach(
         run(async () => {
           this.resource = { hypermedia: {} };
-          this.resourceResponse = returnOk(this.resource);
+          this.resourceResponse = returnOk(this.resourceUrl, this.resource);
           this.httpCall.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
           this.hypermediaProcessor.process.withArgs(this.resourceResponse).returns(Promise.resolve(this.resource));
           this.result = await this.client.getResource(this.resourceUrl);

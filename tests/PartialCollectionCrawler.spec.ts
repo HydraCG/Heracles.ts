@@ -8,21 +8,21 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
   beforeEach(() => {
     this.part = 2;
     this.iterator = {
-      firstPartIri: "page:1",
-      getFirstPart: sinon.stub().callsFake(() => [{ iri: `item:${(this.part = 1)}` }]),
-      getLastPart: sinon.stub().callsFake(() => [{ iri: `item:${(this.part = 4)}` }]),
+      getFirstPart: sinon.stub().callsFake(() => Promise.resolve([{ iri: "item:1" }])),
+      getLastPart: sinon.stub().callsFake(() => Promise.resolve([{ iri: "item:4" }])),
       getNextPart: sinon.stub(),
-      getPreviousPart: sinon.stub(),
-      lastPartIri: "page:4"
+      getPreviousPart: sinon.stub()
     };
     const makePartIri = (direction: number) => {
       return (direction > 0 && this.part >= 4) || (direction < 0 && this.part <= 1)
         ? null
         : `page:${this.part + direction}`;
     };
-    Object.defineProperty(this.iterator, "current", { get: () => `page:${this.part}` });
+    Object.defineProperty(this.iterator, "firstPartIri", { get: () => `page:${this.part = 1}` });
+    Object.defineProperty(this.iterator, "currentPartIri", { get: () => makePartIri(0) });
     Object.defineProperty(this.iterator, "nextPartIri", { get: () => makePartIri(1) });
     Object.defineProperty(this.iterator, "previousPartIri", { get: () => makePartIri(-1) });
+    Object.defineProperty(this.iterator, "lastPartIri", { get: () => `page:${this.part = 4}` });
     this.initialCollection = {
       getIterator: sinon.stub().returns(this.iterator),
       iri: "collection",
@@ -37,9 +37,9 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
       beforeEach(() => {
         this.iterator.getNextPart
           .onFirstCall()
-          .callsFake(() => [{ iri: `item:${(this.part = 3)}` }])
+          .callsFake(() => Promise.resolve([{ iri: `item:${(this.part = 3)}` }]))
           .onSecondCall()
-          .callsFake(() => [{ iri: `item:${(this.part = 4)}` }]);
+          .callsFake(() => Promise.resolve([{ iri: `item:${(this.part = 4)}` }]));
       });
 
       describe("through all members with loop", () => {
@@ -111,9 +111,9 @@ describe("Given instance of the PartialCollectionCrawler class", () => {
       beforeEach(() => {
         this.iterator.getPreviousPart
           .onFirstCall()
-          .callsFake(() => [{ iri: `item:${(this.part = 1)}` }])
+          .callsFake(() => Promise.resolve([{ iri: `item:${(this.part = 1)}` }]))
           .onSecondCall()
-          .callsFake(() => [{ iri: `item:${(this.part = 3)}` }]);
+          .callsFake(() => Promise.resolve([{ iri: `item:${(this.part = 3)}` }]));
       });
 
       describe("through all members with loop", () => {

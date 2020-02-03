@@ -2,6 +2,7 @@ import ResourceFilterableCollection from "./Collections/ResourceFilterableCollec
 import { IHeaders } from "./IHeaders";
 import { IHydraResource } from "./IHydraResource";
 import { IPartialCollectionIterator } from "./IPartialCollectionIterator";
+import { IPartialCollectionView } from "./IPartialCollectionView";
 import { IResource } from "./IResource";
 
 /**
@@ -21,9 +22,9 @@ export interface IHypermediaContainer extends ResourceFilterableCollection<IReso
    * Gets a partial collection view.
    * This may be null if the resource owning this container is not a hydra:Collection with hydra:view.
    * @readonly
-   * @returns {IHydraResource}
+   * @returns {IPartialCollectionView}
    */
-  readonly view?: IHydraResource;
+  readonly view?: IPartialCollectionView;
 
   /**
    * Gets response headers.

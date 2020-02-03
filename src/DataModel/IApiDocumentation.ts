@@ -1,19 +1,19 @@
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import { IClass } from "./IClass";
-import { IResource } from "./IResource";
+import { IHydraResource } from "./IHydraResource";
 import { IWebResource } from "./IWebResource";
 
 /**
  * Represents an abstract API documentation.
  * @interface
  */
-export interface IApiDocumentation extends IResource {
+export interface IApiDocumentation extends IHydraResource {
   /**
    * Gets a title of this API documentation.
    * @readonly
    * @returns {string}
    */
-  readonly title?: string;
+  readonly displayName?: string;
 
   /**
    * Gets a description of this API documentation.

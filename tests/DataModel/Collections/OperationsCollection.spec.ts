@@ -34,73 +34,31 @@ describe("Given instance of the OperationsCollection", () => {
     expect([...this.operations]).toEqual(this.allOperations);
   });
 
-  describe("when narrowing filters with type", () => {
-    beforeEach(() => {
-      this.typeNorrowedOperations = this.operations.ofType("OperationType1");
-    });
-
-    it("should provide only type matching operations", () => {
-      expect([...this.typeNorrowedOperations]).toEqual([this.operation1, this.operation2]);
-    });
-
-    describe("and narrowing filters with expected type", () => {
-      beforeEach(() => {
-        this.typeAndExpectationNarrowedOperations = this.typeNorrowedOperations.expecting("ExpectedType2");
-      });
-
-      it("should provide only type and expected type matching operations", () => {
-        expect([...this.typeAndExpectationNarrowedOperations]).toEqual([this.operation2]);
-      });
-    });
-
-    describe("and narrowing filters with returned type", () => {
-      beforeEach(() => {
-        this.typeAndReturnedNarrowedOperations = this.typeNorrowedOperations.returning("ReturnedType2");
-      });
-
-      it("should provide only type and expected type matching operations", () => {
-        expect([...this.typeAndReturnedNarrowedOperations]).toEqual([this.operation2]);
-      });
-    });
+  it("should provide only type matching operations", () => {
+    expect([...this.operations.ofType("OperationType1")]).toEqual([this.operation1, this.operation2]);
   });
 
-  describe("when narrowing filters with expected headers", () => {
-    beforeEach(() => {
-      this.expectedHeaderNorrowedOperations = this.operations.expectingHeader("InHeader1");
-    });
-
-    it("should provide only type matching operations", () => {
-      expect([...this.expectedHeaderNorrowedOperations]).toEqual([this.operation1]);
-    });
+  it("should provide only type and expected type matching operations", () => {
+    expect([...this.operations.ofType("OperationType1").expecting("ExpectedType2")]).toEqual([this.operation2]);
   });
 
-  describe("when narrowing filters with returned headers", () => {
-    beforeEach(() => {
-      this.returnedHeaderNorrowedOperations = this.operations.returningHeader("OutHeader1");
-    });
-
-    it("should provide only type matching operations", () => {
-      expect([...this.returnedHeaderNorrowedOperations]).toEqual([this.operation1]);
-    });
+  it("should provide only type and returned type matching operations", () => {
+    expect([...this.operations.ofType("OperationType1").returning("ReturnedType2")]).toEqual([this.operation2]);
   });
 
-  describe("when narrowing filters with method", () => {
-    beforeEach(() => {
-      this.methodNorrowedOperations = this.operations.ofMethod("SOME");
-    });
-
-    it("should provide only type matching operations", () => {
-      expect([...this.methodNorrowedOperations]).toEqual([this.operation1]);
-    });
+  it("should provide only expected headers matching operations", () => {
+    expect([...this.operations.expectingHeader("InHeader1")]).toEqual([this.operation1]);
   });
 
-  describe("when narrowing filters with template", () => {
-    beforeEach(() => {
-      this.templateNorrowedOperations = this.operations.withTemplate();
-    });
+  it("should provide only returned headers matching operations", () => {
+    expect([...this.operations.returningHeader("OutHeader1")]).toEqual([this.operation1]);
+  });
 
-    it("should provide only type matching operations", () => {
-      expect([...this.templateNorrowedOperations]).toEqual([this.operation4]);
-    });
+  it("should provide only method matching operations", () => {
+    expect([...this.operations.ofMethod("SOME")]).toEqual([this.operation1]);
+  });
+
+  it("should provide only templated operations", () => {
+    expect([...this.operations.withTemplate()]).toEqual([this.operation4]);
   });
 });

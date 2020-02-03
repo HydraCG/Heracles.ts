@@ -11,6 +11,18 @@
         "knows": {
             "@id": "schema:knows",
             "@type": "@id"
+        },
+        "hydra:variableRepresentation": {
+            "@id": "hydra:variableRepresentation",
+            "@type": "@id"
+        },
+        "hydra:property": {
+            "@id": "hydra:property",
+            "@type": "@id"
+        },
+        "hydra:expects": {
+            "@id": "hydra:expects",
+            "@type": "@id"
         }
     },
     "@graph": [
@@ -20,13 +32,13 @@
             "vocab:addPerson": {
                 "@type": "hydra:IriTemplate",
                 "hydra:template": "http://temp.uri/api/people/{name}",
-                "variableRepresentation": "hydra:BasicRepresentation",
-                "mappings": [
+                "hydra:variableRepresentation": "hydra:BasicRepresentation",
+                "hydra:mappings": [
                     {
                         "@type": "hydra:IriTemplateMapping",
-                        "variable": "name",
-                        "property": "schema:name",
-                        "required": true
+                        "hydra:variable": "name",
+                        "hydra:property": "schema:name",
+                        "hydra:required": true
                     }
                 ]
             }
@@ -35,7 +47,7 @@
             "@id": "vocab:addPerson",
             "@type": "hydra:TemplatedLink",
             "hydra:supportedOperation": {
-                "@type": ["hydra:Operation", "schema:AddAction"],
+                "@type": [ "hydra:Operation", "schema:AddAction" ],
                 "hydra:method": "POST",
                 "hydra:expects": "schema:Person"
             }

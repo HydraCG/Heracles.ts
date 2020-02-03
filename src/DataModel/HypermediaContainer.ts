@@ -8,6 +8,7 @@ import { IHeaders } from "./IHeaders";
 import { IHydraResource } from "./IHydraResource";
 import { IHypermediaContainer } from "./IHypermediaContainer";
 import { IPartialCollectionIterator } from "./IPartialCollectionIterator";
+import { IPartialCollectionView } from "./IPartialCollectionView";
 import { IResource } from "./IResource";
 
 function addTo(collection: ICollection[], hashList: string[], item: ICollection): void {
@@ -49,7 +50,7 @@ export default class HypermediaContainer extends ResourceFilterableCollection<IR
   public readonly type: TypesCollection;
 
   /** @inheritDoc */
-  public readonly view?: IHydraResource;
+  public readonly view?: IPartialCollectionView;
 
   /** @inheritDoc */
   public readonly members?: ResourceFilterableCollection<IResource>;

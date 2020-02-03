@@ -19,33 +19,15 @@ describe("Given instance of the ResourceFilterableCollection", () => {
     expect([...this.resources]).toEqual(this.allResources);
   });
 
-  describe("when narrowing filters to those of a specific types", () => {
-    beforeEach(() => {
-      this.typedResources = this.resources.ofType("http://temp.uri/vocab#Class");
-    });
-
-    it("should provide only resources of that type specified", () => {
-      expect([...this.typedResources]).toEqual([this.resource1]);
-    });
-
-    describe("and when narrowing filters with non-blank resources", () => {
-      beforeEach(() => {
-        this.nonBlankResources = this.typedResources.nonBlank();
-      });
-
-      it("should provide an empty collection", () => {
-        expect(this.nonBlankResources.any()).toBeFalsy();
-      });
-    });
+  it("should provide only resources of type specified", () => {
+    expect([...this.resources.ofType("http://temp.uri/vocab#Class")]).toEqual([this.resource1]);
   });
 
-  describe("when narrowing filters with non-blank resources", () => {
-    beforeEach(() => {
-      this.nonBlankResources = this.resources.nonBlank();
-    });
+  it("should provide only non-blank resources of type specified", () => {
+    expect(this.resources.ofType("http://temp.uri/vocab#Class").nonBlank().any()).toBeFalsy();
+  });
 
-    it("should provide only non-blank resources", () => {
-      expect([...this.nonBlankResources]).toEqual([this.resource2]);
-    });
+  it("should provide only non-blank resources", () => {
+    expect([...this.resources.nonBlank()]).toEqual([this.resource2]);
   });
 });

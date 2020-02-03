@@ -12,14 +12,15 @@ describe("Having a Hydra client", () => {
       .andCreate();
   });
 
-  describe("while browsing the test website", () => {
+  describe("while browsing a website", () => {
     beforeEach(
       run(async () => {
         this.apiDocumentation = await this.client.getApiDocumentation(this.url);
       })
     );
 
-    describe("and obtaining it's API documentation as in use case 2.api-documentation", () => {
+    /*Use case 2. API documentation.*/
+    describe("and obtaining it's API documentation", () => {
       it("should obtain an API documentation", () => {
         expect(this.apiDocumentation.getEntryPoint).toEqual(jasmine.any(Function));
       });
@@ -28,7 +29,8 @@ describe("Having a Hydra client", () => {
         expect(this.apiDocumentation.entryPoint).toMatch(".*/api$");
       });
 
-      it("should provide class of schema:Event as in use case 2.1.api-documentation-data-structures", () => {
+      /*Use case 2.1. API documentation data structures.*/
+      it("should provide class of schema:Event", () => {
         expect(this.apiDocumentation.supportedClasses.ofIri("http://schema.org/Event")).toBeLike([
           {
             collections: [],
@@ -155,7 +157,8 @@ describe("Having a Hydra client", () => {
           }
         });
 
-        it("should provide all details for the user guide as in use case 2.2.api-documentation-user-document", () => {
+        /*Use case 2.2. API documentation user document.*/
+        it("should provide all details for the user guide", () => {
           expect(this.userGuide.classes["http://schema.org/Event"]).toBe(
             "##Class Event (http://schema.org/Event)\n\n" +
               "An event happening at a certain time and location, such as a concert, lecture, or festival.\n\n" +

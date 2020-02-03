@@ -1,47 +1,55 @@
-import LinksCollection from "../DataModel/Collections/LinksCollection";
+import ResourceFilterableCollection from "../DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import { ICollection } from "../DataModel/ICollection";
-import { ILink } from "../DataModel/ILink";
+import { IPartialCollectionView } from "../DataModel/IPartialCollectionView";
 import { IResource } from "../DataModel/IResource";
 import { IHydraClient } from "../IHydraClient";
 import { hydra } from "../namespaces";
 import ProcessingState from "./ProcessingState";
 
+interface IBrowsableCollection {
+  members?: ResourceFilterableCollection<IResource>;
+  view?: IPartialCollectionView;
+}
+
 interface IState {
   current?: string;
-  first?: ILink;
-  next?: ILink;
-  prev?: ILink;
-  last?: ILink;
+  first?: IResource;
+  next?: IResource;
+  prev?: IResource;
+  last?: IResource;
 }
 
-function createStateFrom(iri: string, links: LinksCollection): IState {
-  return update({}, iri, links);
+function createStateFrom(iri: string, view: IPartialCollectionView): IState {
+  return update({}, iri, view);
 }
 
-function update(state: IState, iri: string, links: LinksCollection): IState {
+function update(state: IState, iri: string, view: IPartialCollectionView): IState {
   state.current = iri;
-  state.first = links.withRelationOf(hydra.first).first();
-  state.next = links.withRelationOf(hydra.next).first();
-  state.prev = links.withRelationOf(hydra.previous).first();
-  state.last = links.withRelationOf(hydra.last).first();
+  state.first = view.first;
+  state.next = view.next;
+  state.prev = view.previous;
+  state.last = view.last;
   return state;
 }
 
 async function getPart(
   state: IState,
-  link: ILink,
-  client: IHydraClient,
-  collectionIri: string
+  link: IResource,
+  client: IHydraClient
 ): Promise<Iterable<IResource>> {
-  const collectionPart = await client.getResource(link.target);
-  const page = collectionPart.hypermedia.collections.ofIri(collectionIri).first();
-  update(state, page.view.iri, page.view.links);
+  const collectionPart = await client.getResource(link);
+  let page: IBrowsableCollection = collectionPart.hypermedia;
+  if (!page.view) {
+    page = collectionPart.hypermedia.where(_ => !!(_ as ICollection).view).first() as ICollection;
+  }
+
+  update(state, page.view.iri, page.view);
   return page.members;
 }
 
-function getTargetOf(link: ILink) {
-  return link != null ? link.target.iri : null;
+function getTargetOf(link: IResource) {
+  return !!link ? link.iri : null;
 }
 
 export function partialCollectionIteratorFactory(
@@ -55,12 +63,12 @@ export function partialCollectionIteratorFactory(
     ? processingState.processedObject[hydra.view][0]["@id"]
     : null;
   const getIterator = () => {
-    const state = createStateFrom(collection.iri, collection.view.links);
+    const state = createStateFrom(collection.iri, collection.view);
     const result = {
-      getFirstPart: () => getPart(state, state.first, client, collection.iri),
-      getLastPart: () => getPart(state, state.last, client, collection.iri),
-      getNextPart: () => getPart(state, state.next, client, collection.iri),
-      getPreviousPart: () => getPart(state, state.prev, client, collection.iri),
+      getFirstPart: () => getPart(state, state.first, client),
+      getLastPart: () => getPart(state, state.last, client),
+      getNextPart: () => getPart(state, state.next, client),
+      getPreviousPart: () => getPart(state, state.prev, client),
       type: new TypesCollection([hydra.PartialCollectionView])
     };
     Object.defineProperty(result, "currentPartIri", { get: () => state.current });

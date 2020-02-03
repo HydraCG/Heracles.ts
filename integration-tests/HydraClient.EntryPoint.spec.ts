@@ -1,4 +1,5 @@
 import * as md5 from "js-md5";
+import { IResource } from "../src/DataModel/IResource";
 import HydraClientFactory from "../src/HydraClientFactory";
 import { hydra } from "../src/namespaces";
 import PartialCollectionCrawler from "../src/PartialCollectionCrawler";
@@ -12,14 +13,15 @@ describe("Having a Hydra client", () => {
       .andCreate();
   });
 
-  describe("while browsing the test website", () => {
+  describe("while browsing a website", () => {
     beforeEach(
       run(async () => {
         this.apiDocumentation = await this.client.getApiDocumentation(this.url);
       })
     );
 
-    describe("and obtaining it's entry point as in use case 1.entry-point", () => {
+    /*Use case 1. Entry-point.*/
+    describe("and obtaining it's entry point", () => {
       beforeEach(
         run(async () => {
           this.entryPoint = await this.apiDocumentation.getEntryPoint();
@@ -43,7 +45,8 @@ describe("Having a Hydra client", () => {
         expect(collection).not.toBeNull();
       });
 
-      describe("and then obtaining events as in use case 3.obtaining-events", () => {
+      /*Use case 3. Obtaining events.*/
+      describe("and then obtaining events", () => {
         beforeEach(
           run(async () => {
             this.events = await this.client.getResource(this.url + "api/events");
@@ -54,7 +57,8 @@ describe("Having a Hydra client", () => {
           expect(this.events.hypermedia.members.ofType("http://schema.org/Event").length).toBe(3);
         });
 
-        describe("and then adding a new event to that collection as in use case 5.creating-event", () => {
+        /*Use case 5. Creating an event*/
+        describe("and then adding a new event to that collection", () => {
           beforeEach(
             run(async () => {
               try {
@@ -96,7 +100,8 @@ describe("Having a Hydra client", () => {
           );
         });
 
-        describe("and then searching for events as in use case 7.searching-events", () => {
+        /*Use case 7. Searching events*/
+        describe("and then searching for events", () => {
           beforeEach(
             run(async () => {
               const link = this.events.hypermedia.links
@@ -117,7 +122,7 @@ describe("Having a Hydra client", () => {
           });
         });
 
-        describe("and then using a custom arbitrarily pointed templated operation", () => {
+        describe("and then using some templated operation", () => {
           beforeEach(
             run(async () => {
               const link = this.events.hypermedia.links
@@ -155,17 +160,12 @@ describe("Having a Hydra client", () => {
           expect(this.people.hypermedia.members.ofType("http://schema.org/Person").length).toBe(1);
         });
 
-        describe("and then obtaining all people collection members", () => {
-          beforeEach(
-            run(async () => {
-              this.allPeople = await PartialCollectionCrawler.from(this.people.hypermedia).getMembers();
-            })
-          );
-
-          it("should follow all links and gather all members", () => {
-            expect(this.allPeople.length).toBe(2);
-          });
-        });
+        it("should follow all links and gather all members",
+          run(async () => {
+            expect(((await PartialCollectionCrawler.from(this.people.hypermedia).getMembers()) as IResource[]).length)
+              .toBe(2);
+          })
+        );
 
         describe("and then adding a new person to that collection", () => {
           beforeEach(

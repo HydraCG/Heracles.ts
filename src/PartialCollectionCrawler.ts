@@ -80,12 +80,8 @@ export default class PartialCollectionCrawler {
     options = options || {};
     const result = [];
     const memberLimit = options.memberLimit || Number.MAX_SAFE_INTEGER;
-    if (this.addWithLimitReached(result, this.collection.members, memberLimit)) {
-      return result;
-    }
-
     const iterator = this.collection.getIterator();
-    if (iterator === null || result.length >= options.memberLimit) {
+    if (this.addWithLimitReached(result, this.collection.members, memberLimit) || iterator === null) {
       return result;
     }
 

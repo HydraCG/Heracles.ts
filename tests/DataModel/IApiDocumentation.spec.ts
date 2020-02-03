@@ -17,24 +17,17 @@ describe("Given an instance of the IApiDocumentation interface", () => {
   });
 
   describe("when obtaining an entry point", () => {
-    beforeEach(() => {
+    beforeEach(run(async () => {
       this.client.getResource.returns((this.entryPoint = returnOk()));
+      this.result = await this.apiDocumentation.getEntryPoint();
+    }));
+
+    it("should call the client", () => {
+      expect(this.client.getResource).toHaveBeenCalledWith(this.apiDocumentation.entryPoint);
     });
 
-    it(
-      "should call the client",
-      run(async () => {
-        await this.apiDocumentation.getEntryPoint();
-
-        expect(this.client.getResource).toHaveBeenCalledWith(this.apiDocumentation.entryPoint);
-      })
-    );
-
-    it(
-      "should provide a correct result",
-      run(async () => {
-        expect(await this.apiDocumentation.getEntryPoint()).toBe(this.entryPoint);
-      })
-    );
+    it("should provide a correct result", () => {
+      expect(this.result).toBe(this.entryPoint);
+    });
   });
 });

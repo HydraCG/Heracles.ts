@@ -58,7 +58,7 @@ describe("Given instance of the IndirectTypingProvider class", () => {
       expect(this.result).toBeTruthy();
     });
 
-    it("should check domain", () => {
+    it("should check range", () => {
       expect(this.ontologyProvider.getRangeFor).toHaveBeenCalledWith("some:predicate");
     });
   });

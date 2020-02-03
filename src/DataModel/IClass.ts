@@ -1,13 +1,13 @@
 import OperationsCollection from "./Collections/OperationsCollection";
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
-import { IResource } from "./IResource";
+import { IHydraResource } from "./IHydraResource";
 import { ISupportedProperty } from "./ISupportedProperty";
 
 /**
  * Represents a Hydra class.
  * @interface
  */
-export interface IClass extends IResource {
+export interface IClass extends IHydraResource {
   /**
    * Gets the class' display name.
    * @readonly

@@ -73,7 +73,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       });
     });
 
-    describe("JSON-LD response", () => {
+    describe("JSON-LD response with resource", () => {
       beforeEach(
         run(async () => {
           this.response = returnOk("http://temp.uri/api", inputJsonLd);
@@ -127,7 +127,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   {
                     baseUrl: "http://temp.uri/api",
                     collections: [],
-                    iri: "http://temp.uri/api/events/closed",
+                    iri: "http://temp.uri/vocab/closed-events",
                     links: [],
                     operations: [],
                     relation: "http://temp.uri/vocab/closed-events",
@@ -138,7 +138,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   {
                     baseUrl: "http://temp.uri/api",
                     collections: [],
-                    iri: "_:b0",
+                    iri: hydra.search,
                     links: [],
                     mappings: [
                       {
@@ -174,71 +174,6 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                     target: null,
                     template: "http://temp.uri/api/events{?searchPhrase}",
                     type: [hydra.TemplatedLink]
-                  },
-                  {
-                    baseUrl: "http://temp.uri/api",
-                    collections: [],
-                    iri: "http://temp.uri/api/events?page=1",
-                    links: [
-                      {
-                        baseUrl: "http://temp.uri/api",
-                        collections: [],
-                        iri: "http://temp.uri/api/events?page=1",
-                        links: [],
-                        operations: [],
-                        relation: hydra.first,
-                        target: { iri: "http://temp.uri/api/events?page=1", type: [] },
-                        type: [hydra.Link]
-                      },
-                      {
-                        baseUrl: "http://temp.uri/api",
-                        collections: [],
-                        iri: "http://temp.uri/api/events?page=9",
-                        links: [],
-                        operations: [],
-                        relation: hydra.last,
-                        target: { iri: "http://temp.uri/api/events?page=9", type: [] },
-                        type: [hydra.Link]
-                      }
-                    ],
-                    operations: [],
-                    relation: hydra.view,
-                    supportedOperations: [],
-                    target: { iri: "_:b2", type: [] },
-                    type: [hydra.Link]
-                  },
-                  {
-                    baseUrl: "http://temp.uri/api",
-                    collections: [],
-                    iri: "http://temp.uri/api/events/1",
-                    links: [],
-                    operations: [],
-                    relation: hydra.member,
-                    supportedOperations: [],
-                    target: { iri: "http://temp.uri/api/events/1", type: [] },
-                    type: [hydra.Link]
-                  },
-                  {
-                    baseUrl: "http://temp.uri/api",
-                    collections: [],
-                    iri: hydra.first,
-                    links: [],
-                    operations: [],
-                    relation: hydra.first,
-                    supportedOperations: [],
-                    target: { iri: "http://temp.uri/api/events?page=1", type: [] },
-                    type: [hydra.Link]
-                  },
-                  {
-                    baseUrl: "http://temp.uri/api",
-                    collections: [],
-                    iri: hydra.last,
-                    links: [],
-                    operations: [],
-                    relation: hydra.last,
-                    supportedOperations: [],
-                    target: { iri: "http://temp.uri/api/events?page=9", type: [] },
-                    type: [hydra.Link]
                   }
                 ],
                 manages: [],
@@ -257,48 +192,15 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 view: {
                   collections: [],
                   first: {
-                    baseUrl: "http://temp.uri/api",
-                    collections: [],
                     iri: "http://temp.uri/api/events?page=1",
-                    links: [],
-                    operations: [],
-                    relation: hydra.first,
-                    target: { iri: "http://temp.uri/api/events?page=1", type: [] },
                     type: [hydra.Link]
                   },
                   iri: "http://temp.uri/api/events?page=1",
                   last: {
-                    baseUrl: "http://temp.uri/api",
-                    collections: [],
                     iri: "http://temp.uri/api/events?page=9",
-                    links: [],
-                    operations: [],
-                    relation: hydra.last,
-                    target: { iri: "http://temp.uri/api/events?page=9", type: [] },
                     type: [hydra.Link]
                   },
-                  links: [
-                    {
-                      baseUrl: "http://temp.uri/api",
-                      collections: [],
-                      iri: "http://temp.uri/api/events?page=1",
-                      links: [],
-                      operations: [],
-                      relation: hydra.first,
-                      target: { iri: "http://temp.uri/api/events?page=1", type: [] },
-                      type: [hydra.Link]
-                    },
-                    {
-                      baseUrl: "http://temp.uri/api",
-                      collections: [],
-                      iri: "http://temp.uri/api/events?page=9",
-                      links: [],
-                      operations: [],
-                      relation: hydra.last,
-                      target: { iri: "http://temp.uri/api/events?page=9", type: [] },
-                      type: [hydra.Link]
-                    }
-                  ],
+                  links: [],
                   operations: [],
                   type: [hydra.PartialCollectionView]
                 }

@@ -7,11 +7,10 @@ describe("Given instance of the TemplatedLink", () => {
   beforeEach(() => {
     jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
     this.template = {
-      template: "some-uri{?with-variable}"
+      template: "some-uri{?with_variable}"
     };
     this.originalLink = {
       baseUrl: "http://temp.uri/",
-      method: "GET",
       target: { iri: "test-url" },
       type: new TypesCollection([hydra.Link])
     };
@@ -24,11 +23,11 @@ describe("Given instance of the TemplatedLink", () => {
 
   describe("when expanding URI with variable values", () => {
     beforeEach(() => {
-      this.result = this.link.expandTarget({ "with-variable": "test-value" });
+      this.result = this.link.expandTarget({ with_variable: "test-value" });
     });
 
     it("should provide an expanded URL", () => {
-      expect(this.result.target).toBeLike({ iri: "http://temp.uri/some-uri?with-variable=test-value", type: [] });
+      expect(this.result.target).toBeLike({ iri: "http://temp.uri/some-uri?with_variable=test-value", type: [] });
     });
 
     it("should copy original operation's types", () => {

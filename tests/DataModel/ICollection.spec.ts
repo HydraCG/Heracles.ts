@@ -2,23 +2,12 @@ import * as sinon from "sinon";
 import LinksCollection from "../../src/DataModel/Collections/LinksCollection";
 import ResourceFilterableCollection from "../../src/DataModel/Collections/ResourceFilterableCollection";
 import TypesCollection from "../../src/DataModel/Collections/TypesCollection";
-import { ICollection } from "../../src/DataModel/ICollection";
-import { ILink } from "../../src/DataModel/ILink";
 import { IResource } from "../../src/DataModel/IResource";
 import { factories } from "../../src/JsonLd/factories";
 import { hydra } from "../../src/namespaces";
 import { run } from "../../testing/AsyncHelper";
 
 function collectionOf(iri: string, next: IResource, previous: IResource, ...iris: string[]) {
-  const links: ILink[] = [];
-  if (next) {
-    links.push({ relation: hydra.next, target: next } as any);
-  }
-
-  if (previous) {
-    links.push({ relation: hydra.previous, target: previous } as any);
-  }
-
   const members: IResource[] = [];
   for (const item of iris) {
     members.push({ iri: item } as any);
@@ -26,15 +15,19 @@ function collectionOf(iri: string, next: IResource, previous: IResource, ...iris
 
   const collection = {
     members: new ResourceFilterableCollection(members),
-    view: {
-      iri,
-      links: new LinksCollection(links)
-    }
+    view: { iri }
   };
+
+  if (!!next) {
+    (collection.view as any).next = next;
+  }
+
+  if (!!previous) {
+    (collection.view as any).previous = previous;
+  }
+
   const result = {
-    hypermedia: {
-      collections: new ResourceFilterableCollection([collection as ICollection])
-    }
+    hypermedia: collection
   };
 
   return result;
@@ -47,8 +40,6 @@ describe("Given an instance of the ICollection interface", () => {
 
   describe("which has no view associated", () => {
     beforeEach(() => {
-      this.members = [];
-      this.client.getResource.returns(this.members);
       const setup: any = {
         links: LinksCollection.empty,
         members: this.members,
@@ -70,7 +61,7 @@ describe("Given an instance of the ICollection interface", () => {
       this.firstBatch = collectionOf("view:1", this.secondPage, null, "some:item");
       this.secondBatch = collectionOf("view:2", this.lastPage, this.firstPage, "some:another-item");
       this.lastBatch = collectionOf("view:3", null, this.secondPage, "yet:another-item");
-      this.initialLink = { relation: null, target: this.secondPage };
+      this.initialLink = this.secondPage;
       this.initialMembers = [];
       const collectionResource = {};
       collectionResource[hydra.view] = [{ "@id": "view:1" }];
@@ -79,7 +70,8 @@ describe("Given an instance of the ICollection interface", () => {
         type: new TypesCollection([hydra.Collection]),
         view: {
           iri: collectionResource[hydra.view][0]["@id"],
-          links: new LinksCollection([this.initialLink as any])
+          next: this.initialLink,
+          previous: this.initialLink
         }
       };
       this.result = [];
@@ -91,8 +83,7 @@ describe("Given an instance of the ICollection interface", () => {
     describe("by following next links", () => {
       beforeEach(
         run(async () => {
-          this.initialLink.relation = hydra.next;
-          Array.from(this.firstBatch.hypermedia.collections.first().members).forEach(item =>
+          Array.from(this.firstBatch.hypermedia.members).forEach(item =>
             this.initialMembers.push(item)
           );
           this.client.getResource
@@ -124,8 +115,8 @@ describe("Given an instance of the ICollection interface", () => {
 
       it("should provide a correct result", () => {
         expect(this.result).toEqual([
-          this.secondBatch.hypermedia.collections.first().members.first(),
-          this.lastBatch.hypermedia.collections.first().members.first()
+          this.secondBatch.hypermedia.members.first(),
+          this.lastBatch.hypermedia.members.first()
         ]);
       });
     });
@@ -133,8 +124,7 @@ describe("Given an instance of the ICollection interface", () => {
     describe("by following previous links", () => {
       beforeEach(
         run(async () => {
-          this.initialLink.relation = hydra.previous;
-          Array.from(this.lastBatch.hypermedia.collections.first().members).forEach(item =>
+          Array.from(this.lastBatch.hypermedia.members).forEach(item =>
             this.initialMembers.push(item)
           );
           this.client.getResource
@@ -166,8 +156,8 @@ describe("Given an instance of the ICollection interface", () => {
 
       it("should provide a correct result", () => {
         expect(this.result).toEqual([
-          this.secondBatch.hypermedia.collections.first().members.first(),
-          this.firstBatch.hypermedia.collections.first().members.first()
+          this.secondBatch.hypermedia.members.first(),
+          this.firstBatch.hypermedia.members.first()
         ]);
       });
     });
