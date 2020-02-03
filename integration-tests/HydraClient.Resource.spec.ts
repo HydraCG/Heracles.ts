@@ -11,7 +11,7 @@ describe("Having a Hydra client", () => {
       .andCreate();
   });
 
-  describe("while browsing a website", () => {
+  describe("while browsing the test website", () => {
     describe("and obtaining some resource", () => {
       beforeEach(
         run(async () => {
