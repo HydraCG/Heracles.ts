@@ -20,18 +20,16 @@ describe("Having a Hydra client", () => {
       );
 
       it("should obtain four hypermedia controls", () => {
-        expect(this.resource.hypermedia.length).toBe(4);
+        expect(this.resource.length).toBe(4);
       });
 
       it("should obtain a schema:AddAction operations", () => {
-        const operations = this.resource.hypermedia.where(_ =>
-          _.operations.ofType("http://schema.org/AddAction").any()
-        );
+        const operations = this.resource.where(_ => _.operations.ofType("http://schema.org/AddAction").any());
         expect(operations.length).toBe(2);
       });
 
       it("should obtain a collection of events", () => {
-        const collection = this.resource.hypermedia.collections.where(item => item.iri.match("/api/events$")).first();
+        const collection = this.resource.collections.where(item => item.iri.match("/api/events$")).first();
         expect(collection).toBeDefined();
         expect(collection).not.toBeNull();
       });

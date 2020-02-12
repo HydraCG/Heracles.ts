@@ -29,18 +29,16 @@ describe("Having a Hydra client", () => {
       );
 
       it("should obtain three hypermedia controls", () => {
-        expect(this.entryPoint.hypermedia.length).toBe(3);
+        expect(this.entryPoint.length).toBe(3);
       });
 
       it("should obtain a schema:AddAction operations", () => {
-        const operations = this.entryPoint.hypermedia.where(_ =>
-          _.operations.ofType("http://schema.org/AddAction").any()
-        );
+        const operations = this.entryPoint.where(_ => _.operations.ofType("http://schema.org/AddAction").any());
         expect(operations.length).toBe(2);
       });
 
       it("should obtain a collection of events", () => {
-        const collection = this.entryPoint.hypermedia.collections.where(item => item.iri.match("/api/events$")).first();
+        const collection = this.entryPoint.collections.where(item => item.iri.match("/api/events$")).first();
         expect(collection).toBeDefined();
         expect(collection).not.toBeNull();
       });
@@ -54,7 +52,7 @@ describe("Having a Hydra client", () => {
         );
 
         it("should obtain a collection of events", () => {
-          expect(this.events.hypermedia.members.ofType("http://schema.org/Event").length).toBe(3);
+          expect(this.events.members.ofType("http://schema.org/Event").length).toBe(3);
         });
 
         /*Use case 5. Creating an event*/
@@ -65,7 +63,7 @@ describe("Having a Hydra client", () => {
                 this.body = {
                   "@type": "http://schema.org/Event"
                 };
-                const operation = this.events.hypermedia.operations
+                const operation = this.events.operations
                   .ofType("http://schema.org/CreateAction")
                   .expecting("http://schema.org/Event")
                   .first();
@@ -104,7 +102,7 @@ describe("Having a Hydra client", () => {
         describe("and then searching for events", () => {
           beforeEach(
             run(async () => {
-              const link = this.events.hypermedia.links
+              const link = this.events.links
                 .withRelationOf(hydra.search)
                 .withTemplate()
                 .first()
@@ -114,9 +112,7 @@ describe("Having a Hydra client", () => {
           );
 
           it("should obtain matching events", () => {
-            const matchingEvents = this.searchResult.hypermedia.collections
-              .where(item => item.iri.match("/api/events?"))
-              .first();
+            const matchingEvents = this.searchResult.collections.where(item => item.iri.match("/api/events?")).first();
             expect(matchingEvents).toBeDefined();
             expect(matchingEvents).not.toBeNull();
           });
@@ -125,7 +121,7 @@ describe("Having a Hydra client", () => {
         describe("and then using some templated operation", () => {
           beforeEach(
             run(async () => {
-              const link = this.events.hypermedia.links
+              const link = this.events.links
                 .withRelationOf("http://example.com/vocab#filter")
                 .withTemplate()
                 .first()
@@ -140,7 +136,7 @@ describe("Having a Hydra client", () => {
           );
 
           it("should obtain matching events", () => {
-            const matchingEvents = this.filteringResult.hypermedia
+            const matchingEvents = this.filteringResult
               .where(item => item.iri.match("/api/events?") && item.type.contains(hydra.Collection))
               .first();
             expect(matchingEvents).toBeDefined();
@@ -157,13 +153,13 @@ describe("Having a Hydra client", () => {
         );
 
         it("should obtain a collection of people", () => {
-          expect(this.people.hypermedia.members.ofType("http://schema.org/Person").length).toBe(1);
+          expect(this.people.members.ofType("http://schema.org/Person").length).toBe(1);
         });
 
-        it("should follow all links and gather all members",
+        it(
+          "should follow all links and gather all members",
           run(async () => {
-            expect(((await PartialCollectionCrawler.from(this.people.hypermedia).getMembers()) as IResource[]).length)
-              .toBe(2);
+            expect(((await PartialCollectionCrawler.from(this.people).getMembers()) as IResource[]).length).toBe(2);
           })
         );
 
@@ -175,7 +171,7 @@ describe("Having a Hydra client", () => {
                   "@type": "http://schema.org/Person",
                   "http://schema.org/name": "test-name"
                 };
-                const operation = this.people.hypermedia.operations
+                const operation = this.people.operations
                   .ofType("http://schema.org/UpdateAction")
                   .expecting("http://schema.org/Person")
                   .first();

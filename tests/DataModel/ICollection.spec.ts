@@ -26,11 +26,7 @@ function collectionOf(iri: string, next: IResource, previous: IResource, ...iris
     (collection.view as any).previous = previous;
   }
 
-  const result = {
-    hypermedia: collection
-  };
-
-  return result;
+  return collection;
 }
 
 describe("Given an instance of the ICollection interface", () => {
@@ -83,9 +79,7 @@ describe("Given an instance of the ICollection interface", () => {
     describe("by following next links", () => {
       beforeEach(
         run(async () => {
-          Array.from(this.firstBatch.hypermedia.members).forEach(item =>
-            this.initialMembers.push(item)
-          );
+          Array.from(this.firstBatch.members).forEach(item => this.initialMembers.push(item));
           this.client.getResource
             .onFirstCall()
             .returns(this.secondBatch)
@@ -114,19 +108,14 @@ describe("Given an instance of the ICollection interface", () => {
       });
 
       it("should provide a correct result", () => {
-        expect(this.result).toEqual([
-          this.secondBatch.hypermedia.members.first(),
-          this.lastBatch.hypermedia.members.first()
-        ]);
+        expect(this.result).toEqual([this.secondBatch.members.first(), this.lastBatch.members.first()]);
       });
     });
 
     describe("by following previous links", () => {
       beforeEach(
         run(async () => {
-          Array.from(this.lastBatch.hypermedia.members).forEach(item =>
-            this.initialMembers.push(item)
-          );
+          Array.from(this.lastBatch.members).forEach(item => this.initialMembers.push(item));
           this.client.getResource
             .onFirstCall()
             .returns(this.secondBatch)
@@ -155,10 +144,7 @@ describe("Given an instance of the ICollection interface", () => {
       });
 
       it("should provide a correct result", () => {
-        expect(this.result).toEqual([
-          this.secondBatch.hypermedia.members.first(),
-          this.firstBatch.hypermedia.members.first()
-        ]);
+        expect(this.result).toEqual([this.secondBatch.members.first(), this.firstBatch.members.first()]);
       });
     });
   });

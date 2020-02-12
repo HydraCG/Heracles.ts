@@ -28,7 +28,6 @@ export { ISupportedProperty } from "./src/DataModel/ISupportedProperty";
 export { ITemplatedLink } from "./src/DataModel/ITemplatedLink";
 export { ITemplatedOperation } from "./src/DataModel/ITemplatedOperation";
 export { ITemplatedResource } from "./src/DataModel/ITemplatedResource";
-export { IWebResource } from "./src/DataModel/IWebResource";
 export { default as FilterableCollection } from "./src/DataModel/Collections/FilterableCollection";
 export { default as LinksCollection } from "./src/DataModel/Collections/LinksCollection";
 export { default as MappingsCollection } from "./src/DataModel/Collections/MappingsCollection";

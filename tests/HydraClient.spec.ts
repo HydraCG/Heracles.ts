@@ -1,4 +1,5 @@
 import * as sinon from "sinon";
+import TypesCollection from "../src/DataModel/Collections/TypesCollection";
 import HydraClient from "../src/HydraClient";
 import { Level } from "../src/Level";
 import { LinksPolicy } from "../src/LinksPolicy";
@@ -34,7 +35,7 @@ describe("Given an instance of the HydraClient class", () => {
         "should throw",
         run(async () => {
           try {
-            await this.client.getApiDocumentation({ iri: null });
+            await this.client.getApiDocumentation({ iri: null, type: TypesCollection.empty });
           } catch (e) {
             expect(e.message).toBe(HydraClient.noUrlProvided);
           }
@@ -116,7 +117,7 @@ describe("Given an instance of the HydraClient class", () => {
           "should throw",
           run(async () => {
             try {
-              await this.client.getApiDocumentation({ iri: this.baseUrl });
+              await this.client.getApiDocumentation({ iri: this.baseUrl, type: TypesCollection.empty });
             } catch (e) {
               expect(e.message).toMatch(HydraClient.invalidResponse);
             }
@@ -135,7 +136,7 @@ describe("Given an instance of the HydraClient class", () => {
           "should throw",
           run(async () => {
             try {
-              await this.client.getApiDocumentation({ iri: this.baseUrl });
+              await this.client.getApiDocumentation({ iri: this.baseUrl, type: TypesCollection.empty });
             } catch (e) {
               expect(e.message).toBe(HydraClient.responseFormatNotSupported);
             }
@@ -147,14 +148,14 @@ describe("Given an instance of the HydraClient class", () => {
         beforeEach(() => {
           this.apiDocumentationResponse = returnOk();
           this.httpCall.withArgs(`${this.baseUrl}api/documentation`).returns(this.apiDocumentationResponse);
-          this.hypermediaProcessor.process.returns({ hypermedia: { ofType: () => ({ first: () => null }) } });
+          this.hypermediaProcessor.process.returns({ ofType: () => ({ first: () => null }) });
         });
 
         it(
           "should throw",
           run(async () => {
             try {
-              await this.client.getApiDocumentation({ iri: this.baseUrl });
+              await this.client.getApiDocumentation({ iri: this.baseUrl, type: TypesCollection.empty });
             } catch (e) {
               expect(e.message).toBe(HydraClient.noEntryPointDefined);
             }
@@ -171,7 +172,7 @@ describe("Given an instance of the HydraClient class", () => {
             (this.data as any).ofType = sinon.stub().returns({ first: sinon.stub().returns(this.apiDocumentation) });
             this.apiDocumentationResponse = returnOk(this.apiDocumentationUrl, this.data);
             this.httpCall.withArgs(this.apiDocumentationUrl).returns(this.apiDocumentationResponse);
-            this.hypermediaProcessor.process.returns(Promise.resolve({ hypermedia: this.data }));
+            this.hypermediaProcessor.process.returns(Promise.resolve(this.data));
             await this.client.getApiDocumentation(this.baseUrl);
           })
         );
@@ -210,7 +211,7 @@ describe("Given an instance of the HydraClient class", () => {
         "should throw",
         run(async () => {
           try {
-            await this.client.getResource({ iri: null });
+            await this.client.getResource({ iri: null, type: TypesCollection.empty });
           } catch (e) {
             expect(e.message).toBe(HydraClient.noUrlProvided);
           }
@@ -256,7 +257,7 @@ describe("Given an instance of the HydraClient class", () => {
     describe("and that resource was provided correctly", () => {
       beforeEach(
         run(async () => {
-          this.resource = { hypermedia: {} };
+          this.resource = {};
           this.resourceResponse = returnOk(this.resourceUrl, this.resource);
           this.httpCall.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
           this.hypermediaProcessor.process.withArgs(this.resourceResponse).returns(Promise.resolve(this.resource));

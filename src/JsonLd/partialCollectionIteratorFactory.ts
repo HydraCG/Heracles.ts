@@ -33,15 +33,11 @@ function update(state: IState, iri: string, view: IPartialCollectionView): IStat
   return state;
 }
 
-async function getPart(
-  state: IState,
-  link: IResource,
-  client: IHydraClient
-): Promise<Iterable<IResource>> {
+async function getPart(state: IState, link: IResource, client: IHydraClient): Promise<Iterable<IResource>> {
   const collectionPart = await client.getResource(link);
-  let page: IBrowsableCollection = collectionPart.hypermedia;
+  let page: IBrowsableCollection = collectionPart;
   if (!page.view) {
-    page = collectionPart.hypermedia.where(_ => !!(_ as ICollection).view).first() as ICollection;
+    page = collectionPart.where(_ => !!(_ as ICollection).view).first() as ICollection;
   }
 
   update(state, page.view.iri, page.view);

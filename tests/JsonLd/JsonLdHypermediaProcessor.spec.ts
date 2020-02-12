@@ -78,6 +78,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         run(async () => {
           this.response = returnOk("http://temp.uri/api", inputJsonLd);
           this.result = await this.hypermediaProcessor.process(this.response, this.client);
+          this.resource = await this.result.json();
         })
       );
 
@@ -86,27 +87,27 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       });
 
       it("should process data", () => {
-        expect(this.result).toEqual(inputJsonLd);
+        expect(this.resource).toEqual(inputJsonLd);
       });
 
       it("should discover all collections", () => {
-        expect(this.result.hypermedia.collections.length).toBe(2);
+        expect(this.result.collections.length).toBe(2);
       });
 
       it("should discover people collection", () => {
-        expect(this.result.hypermedia.collections.first().iri).toMatch("/api/people$");
+        expect(this.result.collections.first().iri).toMatch("/api/people$");
       });
 
       it("should discover events collection", () => {
-        expect(this.result.hypermedia.collections.last().iri).toMatch("/api/events$");
+        expect(this.result.collections.last().iri).toMatch("/api/events$");
       });
 
       it("should provide response headers", () => {
-        expect(this.result.hypermedia.headers.get("Content-Type")).toBe("application/ld+json");
+        expect(this.result.headers.get("Content-Type")).toBe("application/ld+json");
       });
 
       it("should separate hypermedia", () => {
-        expect(this.result.hypermedia).toBeLike([
+        expect(this.result).toBeLike([
           {
             collections: [
               {
@@ -243,7 +244,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         run(async () => {
           this.response = returnOk(api.people.markus, nestedResourcesInputJsonLd);
           const result = await this.hypermediaProcessor.process(this.response, this.client);
-          this.markus = result.hypermedia.where(control => control.iri.match(/markus/)).first();
+          this.markus = result.where(control => control.iri.match(/markus/)).first();
           this.karol = this.markus.links.withRelationOf(schema.knows).first().target;
         })
       );
@@ -268,7 +269,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         run(async () => {
           this.response = returnOk("http://temp.uri/api/people", operationInputJsonLd);
           const result = await this.hypermediaProcessor.process(this.response, this.client);
-          this.addPerson = result.hypermedia.operations.withTemplate().first();
+          this.addPerson = result.operations.withTemplate().first();
         })
       );
 
@@ -289,8 +290,8 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
 
           this.response = returnOk("http://temp.uri/api", collectionsInputJsonLd);
           const result = await this.hypermediaProcessor.process(this.response, this.client);
-          this.people = result.hypermedia.collections.withMembersOfType(schema.Person).first();
-          this.known = result.hypermedia.collections.withMembersInRelationWith(api.people.karol, schema.knows).first();
+          this.people = result.collections.withMembersOfType(schema.Person).first();
+          this.known = result.collections.withMembersInRelationWith(api.people.karol, schema.knows).first();
         })
       );
 

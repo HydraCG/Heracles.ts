@@ -1,7 +1,7 @@
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
 import { IClass } from "./IClass";
 import { IHydraResource } from "./IHydraResource";
-import { IWebResource } from "./IWebResource";
+import { IHypermediaContainer } from "./IHypermediaContainer";
 
 /**
  * Represents an abstract API documentation.
@@ -39,7 +39,7 @@ export interface IApiDocumentation extends IHydraResource {
   /**
    * Retrieves an API's entry point resource.
    * @readonly
-   * @returns {Promise<IWebResource>}
+   * @returns {Promise<IHypermediaContainer>}
    */
-  getEntryPoint(): Promise<IWebResource>;
+  getEntryPoint(): Promise<IHypermediaContainer>;
 }

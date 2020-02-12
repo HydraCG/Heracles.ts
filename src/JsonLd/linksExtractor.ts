@@ -92,8 +92,9 @@ function tryGetResourceLinkType(iri: string, type: string[], processingState: Pr
 function internalLinksExtractor(resources: any[], processingState: ProcessingState): ILink[] {
   const links = [];
   const originalResource = processingState.processedObject;
-  const possiblePredicates = JsonLd.validKeys(originalResource)
-    .filter(_ => originalResource[_] instanceof Object && !isStandaloneControl(_));
+  const possiblePredicates = JsonLd.validKeys(originalResource).filter(
+    _ => originalResource[_] instanceof Object && !isStandaloneControl(_)
+  );
   for (const predicate of possiblePredicates) {
     const linkType = tryGetPredicateLinkType(predicate, processingState);
     const possibleLinkedResources = originalResource[predicate].filter(_ => !!_["@id"]);

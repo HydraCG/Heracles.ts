@@ -2,7 +2,8 @@ import * as N3Parser from "@rdfjs/parser-n3";
 import * as SerializerJsonLd from "@rdfjs/serializer-jsonld";
 import { Readable } from "stream";
 import { IHypermediaProcessingOptions } from "../../src/IHypermediaProcessingOptions";
-import { IWebResource } from "../DataModel/IWebResource";
+import HypermediaContainer from "../DataModel/HypermediaContainer";
+import { IHypermediaContainer } from "../DataModel/IHypermediaContainer";
 import { IHydraClient } from "../IHydraClient";
 import { IHypermediaProcessor } from "../IHypermediaProcessor";
 import { Level } from "../Level";
@@ -48,9 +49,9 @@ export default class N3HypermediaProcessor implements IHypermediaProcessor {
     response: Response,
     client: IHydraClient,
     options?: IHypermediaProcessingOptions
-  ): Promise<IWebResource> {
+  ): Promise<IHypermediaContainer> {
     const result = [];
-    const json = await new Promise<IWebResource>((success, error) => {
+    const json = await new Promise<IHypermediaContainer>((success, error) => {
       const transformationOptions = { baseIRI: options.originalUrl };
       const reader = response.body.getReader();
       const stream = new Readable({
@@ -72,10 +73,9 @@ export default class N3HypermediaProcessor implements IHypermediaProcessor {
     });
     const jsonLdResponse = { json: () => json, headers: response.headers, url: response.url } as any;
     const jsonLdResult = await this.jsonLdProcessor.process(jsonLdResponse, client, options);
-    Object.defineProperty(result, "hypermedia", { value: jsonLdResult.hypermedia, enumerable: false });
-    Object.defineProperty(result, "iri", { value: jsonLdResult.iri, enumerable: false });
-    Object.defineProperty(result, "type", { value: jsonLdResult.type, enumerable: false });
-    return (result as any) as IWebResource;
+    const hypermediaContainer = new HypermediaContainer(response, jsonLdResult, jsonLdResult);
+    (hypermediaContainer as any).dataset = () => result;
+    return hypermediaContainer;
   }
 
   private static getSupportedMediaTypeFrom(response: Response) {

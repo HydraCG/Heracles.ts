@@ -24,7 +24,12 @@ describe("Given instance of the ResourceFilterableCollection", () => {
   });
 
   it("should provide only non-blank resources of type specified", () => {
-    expect(this.resources.ofType("http://temp.uri/vocab#Class").nonBlank().any()).toBeFalsy();
+    expect(
+      this.resources
+        .ofType("http://temp.uri/vocab#Class")
+        .nonBlank()
+        .any()
+    ).toBeFalsy();
   });
 
   it("should provide only non-blank resources", () => {
