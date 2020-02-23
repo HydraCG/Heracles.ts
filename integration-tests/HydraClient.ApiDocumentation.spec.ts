@@ -43,6 +43,8 @@ describe("Having a Hydra client", () => {
             supportedProperties: [
               {
                 collections: [],
+                description: "",
+                displayName: "",
                 iri: "_:b0",
                 links: [],
                 operations: [],
@@ -58,11 +60,15 @@ describe("Having a Hydra client", () => {
                 },
                 readable: false,
                 required: false,
+                textDescription: "",
+                title: "",
                 type: [hydra.SupportedProperty],
                 writable: false
               },
               {
                 collections: [],
+                description: "",
+                displayName: "",
                 iri: "_:b1",
                 links: [],
                 operations: [],
@@ -78,11 +84,15 @@ describe("Having a Hydra client", () => {
                 },
                 readable: false,
                 required: false,
+                textDescription: "",
+                title: "",
                 type: [hydra.SupportedProperty],
                 writable: false
               },
               {
                 collections: [],
+                description: "",
+                displayName: "",
                 iri: "_:b2",
                 links: [],
                 operations: [],
@@ -101,11 +111,15 @@ describe("Having a Hydra client", () => {
                 },
                 readable: false,
                 required: false,
+                textDescription: "",
+                title: "",
                 type: [hydra.SupportedProperty],
                 writable: false
               },
               {
                 collections: [],
+                description: "",
+                displayName: "",
                 iri: "_:b3",
                 links: [],
                 operations: [],
@@ -124,6 +138,8 @@ describe("Having a Hydra client", () => {
                 },
                 readable: false,
                 required: false,
+                textDescription: "",
+                title: "",
                 type: [hydra.SupportedProperty],
                 writable: false
               }

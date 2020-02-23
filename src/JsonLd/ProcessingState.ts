@@ -271,7 +271,7 @@ export default class ProcessingState {
     };
 
     for (const expectedType of Object.keys(factories)) {
-      if (result.type.contains(expectedType)) {
+      if (expectedType === "any" || result.type.contains(expectedType)) {
         result = factories[expectedType](result, this.client, this);
       }
     }

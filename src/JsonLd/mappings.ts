@@ -46,13 +46,23 @@ mappings[hydra.title] = {
   default: "",
   propertyName: "displayName",
   required: true,
-  type: [hydra.Class as string, hydra.ApiDocumentation as string]
+  type: [
+    hydra.Class as string,
+    hydra.ApiDocumentation as string,
+    hydra.Link as string,
+    hydra.Operation as string,
+    hydra.SupportedProperty as string]
 };
 mappings[hydra.description] = {
   default: "",
   propertyName: "description",
   required: true,
-  type: [hydra.Class as string, hydra.ApiDocumentation as string]
+  type: [
+    hydra.Class as string,
+    hydra.ApiDocumentation as string,
+    hydra.Link as string,
+    hydra.Operation as string,
+    hydra.SupportedProperty as string]
 };
 mappings.links = {
   default: linksExtractor,

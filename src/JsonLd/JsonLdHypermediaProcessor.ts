@@ -110,7 +110,7 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     options = { ...{ linksPolicy: LinksPolicy.Strict, originalUrl: response.url }, ...(options || {}) };
     const result = await this.ensureJsonLd(response);
     let flattenPayload = await jsonld.promises.flatten(result, null, { base: response.url, embed: "@link" });
-    flattenPayload = await this.graphTransformer.transform(flattenPayload, this, options);
+    flattenPayload = this.graphTransformer.transform(flattenPayload, this, options);
     const context = await this.processHypermedia(
       new ProcessingState(flattenPayload, response.url, client, options.linksPolicy)
     );
