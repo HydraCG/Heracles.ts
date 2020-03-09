@@ -61,7 +61,7 @@
     "jasmine": "3.5.0",
     "jasmine-sinon": "0.4.0",
     "js-md5": "0.7.3",
-    "karma": "4.1.0",
+    "karma": "4.4.1",
     "karma-chrome-launcher": "3.1.0",
     "karma-coverage-istanbul-reporter": "2.1.1",
     "karma-coveralls": "2.1.0",
