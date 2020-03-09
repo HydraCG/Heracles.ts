@@ -142,7 +142,7 @@ export default class HydraClientFactory implements IHydraClientFactory {
 
   /**
    * Adds an another {@link IHypermediaProcessor} component via it's factory method.
-   * @param {HypermediaProcessorFactory} hypermediaProcessorFactory Hypermedia processor facvtory to be passed
+   * @param {HypermediaProcessorFactory} hypermediaProcessorFactory Hypermedia processor factory to be passed
    *                                                                to future {@link HydraClient} instances.
    * @returns {HydraClientFactory}
    */
@@ -162,14 +162,14 @@ export default class HydraClientFactory implements IHydraClientFactory {
   /**
    * Sets a {@link IIriTemplateExpansionStrategy} component.
    * @param {IIriTemplateExpansionStrategy} iriTemplateExpansionStrategy IRI template expansion strategy to be used
-   *                                                                      when an IRI template is encountered.
+   *                                                                     when an IRI template is encountered.
    * @returns {HydraClientFactory}
    */
   /* tslint:disable-next-line:unified-signatures */
   public with(iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy): HydraClientFactory;
 
   /**
-   * Adds HTTP requests facility component.
+   * Adds an HTTP requests facility component.
    * @param {HttpCallFacility} httpCall HTTP call facility to be used for remote server calls.
    * @returns {HydraClientFactory}
    */

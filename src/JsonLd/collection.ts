@@ -51,22 +51,22 @@ export function collection(mappings: IDictionary<IPropertyMapping>): IDictionary
   mappings[hydra.first] = {
     default: (first, processingState) => convertToResource(first[0], processingState),
     propertyName: "first",
-    type: [hydra.PartialCollectionView as string]
+    type: [hydra.Resource as string]
   };
   mappings[hydra.last] = {
     default: (last, processingState) => convertToResource(last[0], processingState),
     propertyName: "last",
-    type: [hydra.PartialCollectionView as string]
+    type: [hydra.Resource as string]
   };
   mappings[hydra.next] = {
     default: (next, processingState) => convertToResource(next[0], processingState),
     propertyName: "next",
-    type: [hydra.PartialCollectionView as string]
+    type: [hydra.Resource as string]
   };
   mappings[hydra.previous] = {
     default: (previous, processingState) => convertToResource(previous[0], processingState),
     propertyName: "previous",
-    type: [hydra.PartialCollectionView as string]
+    type: [hydra.Resource as string]
   };
   return mappings;
 }

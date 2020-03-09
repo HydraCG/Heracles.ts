@@ -1,4 +1,4 @@
-import { IWebResource } from "./DataModel/IWebResource";
+import { IHypermediaContainer } from "./DataModel/IHypermediaContainer";
 import { IHydraClient } from "./IHydraClient";
 import { IHypermediaProcessingOptions } from "./IHypermediaProcessingOptions";
 import { Level } from "./Level";
@@ -28,7 +28,11 @@ export interface IHypermediaProcessor {
    * @param {Response} response Raw fetch response holding data to be parsed.
    * @param {IHydraClient} client Hydra client.
    * @param {IHypermediaProcessingOptions} options Optional additional processing options.
-   * @returns {Promise<IWebResource>}
+   * @returns {Promise<IHypermediaContainer>}
    */
-  process(response: Response, client: IHydraClient, options?: IHypermediaProcessingOptions): Promise<IWebResource>;
+  process(
+    response: Response,
+    client: IHydraClient,
+    options?: IHypermediaProcessingOptions
+  ): Promise<IHypermediaContainer>;
 }

@@ -10,7 +10,9 @@ describe("Given instance of N3HypermediaProcessor class", () => {
   beforeEach(() => {
     jasmine.addMatchers({ toBeLike: () => new HydraResourceMatcher() });
     this.options = { originalUrl: "http://temp.uri/api" };
-    this.resource = { hypermedia: {}, iri: this.options.originalUrl, type: TypesCollection.empty };
+    this.resource = [];
+    this.resource.iri = this.options.originalUrl;
+    this.resource.type = TypesCollection.empty;
     this.jsonLdProcessor = { process: sinon.stub().returns(this.resource) };
     this.processor = new N3HypermediaProcessor(this.jsonLdProcessor);
     this.response = returnOk(this.options.originalUrl, inputTurtle, { "Content-Type": "text/turtle" });
@@ -42,12 +44,12 @@ describe("Given instance of N3HypermediaProcessor class", () => {
     );
 
     it("should provide statements set", () => {
-      expect(this.result.length).toBe(5);
+      expect((this.result as any).dataset().length).toBe(5);
     });
 
     it("should provide hypermedia container", () => {
-      expect(this.result.hypermedia).not.toBeUndefined();
-      expect(this.result.hypermedia).not.toBeNull();
+      expect((this.result as any).dataset()).not.toBeUndefined();
+      expect((this.result as any).dataset()).not.toBeNull();
     });
 
     it("should pass the client", () => {

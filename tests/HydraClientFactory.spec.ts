@@ -22,7 +22,7 @@ describe("Given instance of HydraClientFactory class", () => {
     expect((this.factory.withSameRootLinks().andCreate() as any).linksPolicy).toBe(LinksPolicy.SameRoot);
   });
 
-  it("should create a client with customer hypermedia processor", () => {
+  it("should create a client with custom hypermedia processor", () => {
     expect(
       this.factory
         .with(this.processor)

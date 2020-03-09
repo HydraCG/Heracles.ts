@@ -1,30 +1,13 @@
 import ResourceFilterableCollection from "./Collections/ResourceFilterableCollection";
+import { ICollection } from "./ICollection";
 import { IHeaders } from "./IHeaders";
-import { IHydraResource } from "./IHydraResource";
-import { IPartialCollectionIterator } from "./IPartialCollectionIterator";
 import { IResource } from "./IResource";
 
 /**
  * Provides an abstraction layer over hypermedia container.
  * @interface
  */
-export interface IHypermediaContainer extends ResourceFilterableCollection<IResource>, IHydraResource {
-  /**
-   * Gets a collection members.
-   * This may be null if the resource owning this container is not a hydra:Collection.
-   * @readonly
-   * @returns {ResourceFilterableCollection<IResource>}
-   */
-  readonly members?: ResourceFilterableCollection<IResource>;
-
-  /**
-   * Gets a partial collection view.
-   * This may be null if the resource owning this container is not a hydra:Collection with hydra:view.
-   * @readonly
-   * @returns {IHydraResource}
-   */
-  readonly view?: IHydraResource;
-
+export interface IHypermediaContainer extends ResourceFilterableCollection<IResource>, ICollection {
   /**
    * Gets response headers.
    * @readonly
@@ -33,9 +16,46 @@ export interface IHypermediaContainer extends ResourceFilterableCollection<IReso
   readonly headers: IHeaders;
 
   /**
-   * Gets a part iterator associated with the collection.
-   * This may be null if the resource owning this container is not a hydra:Collection with hydra:view.
-   * @returns {IPartialCollectionIterator}
+   * Gets a response status.
    */
-  getIterator?(): IPartialCollectionIterator;
+  readonly status: number;
+
+  /**
+   * Gets a response's URL.
+   */
+  readonly url: string;
+
+  /**
+   * Gets a raw response body.
+   */
+  readonly body: ReadableStream<Uint8Array> | null;
+
+  /**
+   * Gets a value indicating whether the body was consumed.
+   */
+  readonly bodyUsed: boolean;
+
+  /**
+   * Gets a raw response body as an array of bytes.
+   * @returns {Promise<ArrayBuffer>}
+   */
+  arrayBuffer(): Promise<ArrayBuffer>;
+
+  /**
+   * Gets a raw response body as a blob.
+   * @returns {Promise<Blob>}
+   */
+  blob(): Promise<Blob>;
+
+  /**
+   * Gets a raw response body as a JSON.
+   * @returns {Promise<any>}
+   */
+  json(): Promise<any>;
+
+  /**
+   * Gets a raw response body as a text.
+   * @returns {Promise<any>}
+   */
+  text(): Promise<string>;
 }

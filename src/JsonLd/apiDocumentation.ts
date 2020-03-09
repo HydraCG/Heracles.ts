@@ -11,7 +11,7 @@ export function apiDocumentation(mappings: IDictionary<IPropertyMapping>): IDict
     type: [hydra.ApiDocumentation as string]
   };
   mappings[hydra.title] = {
-    propertyName: "title",
+    propertyName: "displayName",
     type: [hydra.ApiDocumentation as string]
   };
   mappings[hydra.supportedClass] = {

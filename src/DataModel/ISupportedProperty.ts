@@ -1,11 +1,11 @@
+import { IHydraResource } from "./IHydraResource";
 import { IProperty } from "./IProperty";
-import { IResource } from "./IResource";
 
 /**
  * Describes an abstract Hydra property.
  * @interface
  */
-export interface ISupportedProperty extends IResource {
+export interface ISupportedProperty extends IHydraResource {
   /**
    * Gets the actual property.
    * @readonly

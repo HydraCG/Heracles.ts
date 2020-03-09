@@ -7,11 +7,11 @@ import { IGraphTransformer } from "./IGraphTransformer";
  */
 export default class FlatteningGraphTransformer implements IGraphTransformer {
   /** @inheritDoc */
-  public async transform(
+  public transform(
     graph: object[],
     processor: IHypermediaProcessor,
     options?: IHypermediaProcessingOptions
-  ): Promise<object[]> {
+  ): object[] {
     let result = graph;
     if (graph.find(_ => _["@graph"])) {
       result = [].concat.apply(

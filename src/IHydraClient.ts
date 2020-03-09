@@ -1,8 +1,8 @@
 import { IApiDocumentation } from "./DataModel/IApiDocumentation";
+import { IHypermediaContainer } from "./DataModel/IHypermediaContainer";
 import { ILink } from "./DataModel/ILink";
 import { IOperation } from "./DataModel/IOperation";
 import { IResource } from "./DataModel/IResource";
-import { IWebResource } from "./DataModel/IWebResource";
 import { IHypermediaProcessor } from "./IHypermediaProcessor";
 
 /**
@@ -29,14 +29,14 @@ export interface IHydraClient {
    * @param urlOrResource {string | IResource | ILink } Either URL, {@link IResource} pr {@link ILink}
    *                                                    carrying an IRI of the resource to be obtained.
    */
-  getResource(urlOrResource: string | IResource | ILink): Promise<IWebResource>;
+  getResource(urlOrResource: string | IResource | ILink): Promise<IHypermediaContainer>;
 
   /**
    * Invokes a given operation.
    * @param {IOperation} operation Operation descriptor to be invoked.
-   * @param {IWebResource} body Optional resource to be used as a body of the operation.
+   * @param {IResource} body Optional resource to be used as a body of the operation.
    * @param {object} parameters Optional auxiliary parameters.
    * @returns {Promise<Response>}
    */
-  invoke(operation: IOperation, body?: IWebResource, parameters?: object): Promise<Response>;
+  invoke(operation: IOperation, body?: IResource, parameters?: object): Promise<Response>;
 }

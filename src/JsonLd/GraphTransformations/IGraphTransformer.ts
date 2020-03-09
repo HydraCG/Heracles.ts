@@ -11,11 +11,11 @@ export interface IGraphTransformer {
    * @param {object[]} graph Graph to be transformed.
    * @param {IHypermediaProcessor} processor Hypermedia processor requesting a graph transformation.
    * @param {IHypermediaProcessingOptions} options Additional processing options.
-   * @returns {Promise<void>}
+   * @returns {object[]}
    */
   transform(
     graph: object[],
     processor: IHypermediaProcessor,
     options?: IHypermediaProcessingOptions
-  ): Promise<object[]>;
+  ): object[];
 }

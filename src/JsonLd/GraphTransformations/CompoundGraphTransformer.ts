@@ -17,14 +17,14 @@ export default class CompoundGraphTransformer implements IGraphTransformer {
   }
 
   /** @inheritDoc */
-  public async transform(
+  public transform(
     graph: object[],
     processor: IHypermediaProcessor,
     options?: IHypermediaProcessingOptions
-  ): Promise<object[]> {
+  ): object[] {
     let result = graph;
     for (const graphTransformer of this.graphTransformers) {
-      result = await graphTransformer.transform(result, processor, options);
+      result = graphTransformer.transform(result, processor, options);
     }
 
     return result;

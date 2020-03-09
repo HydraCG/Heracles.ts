@@ -17,10 +17,37 @@ hydraLinks[hydra.previous] = hydra.Link;
 hydraLinks[hydra.next] = hydra.Link;
 hydraLinks[hydra.view] = hydra.Link;
 hydraLinks[hydra.collection] = hydra.Link;
+hydraLinks[hydra.freetextQuery] = hydra.TemplatedLink;
 hydraLinks[hydra.search] = hydra.TemplatedLink;
+
+const standaloneControls = {};
+standaloneControls[hydra.view] = true;
+standaloneControls[hydra.collection] = true;
+standaloneControls[hydra.supportedClass] = true;
+standaloneControls[hydra.supportedOperation] = true;
+standaloneControls[hydra.supportedProperty] = true;
+standaloneControls[hydra.entrypoint] = true;
+standaloneControls[hydra.manages] = true;
+standaloneControls[hydra.member] = true;
+standaloneControls[hydra.first] = true;
+standaloneControls[hydra.last] = true;
+standaloneControls[hydra.next] = true;
+standaloneControls[hydra.previous] = true;
+standaloneControls[hydra.mapping] = true;
+standaloneControls[hydra.variableRepresentation] = true;
+standaloneControls[hydra.expects] = true;
+standaloneControls[hydra.returns] = true;
+standaloneControls[hydra.subject] = true;
+standaloneControls[hydra.property] = true;
+standaloneControls[hydra.object] = true;
+standaloneControls[hydra.operation] = true;
 
 function isLink(type) {
   return type === hydra.Link || type === hydra.TemplatedLink;
+}
+
+function isStandaloneControl(predicate: string): boolean {
+  return !!standaloneControls[predicate];
 }
 
 function tryGetPredicateLinkType(predicate: string, processingState: ProcessingState): string {
@@ -38,7 +65,7 @@ function tryGetPredicateLinkType(predicate: string, processingState: ProcessingS
 function tryGetResourceLinkType(iri: string, type: string[], processingState: ProcessingState): string {
   let result = null;
   if (!!type) {
-    result = type.find(isLink) || null;
+    result = !!type.find(_ => _ === hydra.IriTemplate) ? hydra.TemplatedLink : null;
   }
 
   if (!result && iri.charAt(0) !== "_") {
@@ -65,7 +92,10 @@ function tryGetResourceLinkType(iri: string, type: string[], processingState: Pr
 function internalLinksExtractor(resources: any[], processingState: ProcessingState): ILink[] {
   const links = [];
   const originalResource = processingState.processedObject;
-  for (const predicate of JsonLd.validKeys(originalResource)) {
+  const possiblePredicates = JsonLd.validKeys(originalResource).filter(
+    _ => originalResource[_] instanceof Object && !isStandaloneControl(_)
+  );
+  for (const predicate of possiblePredicates) {
     const linkType = tryGetPredicateLinkType(predicate, processingState);
     const possibleLinkedResources = originalResource[predicate].filter(_ => !!_["@id"]);
     for (const targetResource of possibleLinkedResources) {
@@ -82,7 +112,7 @@ function internalLinksExtractor(resources: any[], processingState: ProcessingSta
         let link = {
           baseUrl: processingState.baseUrl,
           collections: new CollectionsCollection(),
-          iri: targetResource["@id"],
+          iri: predicate,
           links: LinksCollection.empty,
           operations: OperationsCollection.empty,
           relation: predicate,

@@ -73,11 +73,12 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       });
     });
 
-    describe("JSON-LD response", () => {
+    describe("JSON-LD response with resource", () => {
       beforeEach(
         run(async () => {
           this.response = returnOk("http://temp.uri/api", inputJsonLd);
           this.result = await this.hypermediaProcessor.process(this.response, this.client);
+          this.resource = await this.result.json();
         })
       );
 
@@ -86,27 +87,27 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
       });
 
       it("should process data", () => {
-        expect(this.result).toEqual(inputJsonLd);
+        expect(this.resource).toEqual(inputJsonLd);
       });
 
       it("should discover all collections", () => {
-        expect(this.result.hypermedia.collections.length).toBe(2);
+        expect(this.result.collections.length).toBe(2);
       });
 
       it("should discover people collection", () => {
-        expect(this.result.hypermedia.collections.first().iri).toMatch("/api/people$");
+        expect(this.result.collections.first().iri).toMatch("/api/people$");
       });
 
       it("should discover events collection", () => {
-        expect(this.result.hypermedia.collections.last().iri).toMatch("/api/events$");
+        expect(this.result.collections.last().iri).toMatch("/api/events$");
       });
 
       it("should provide response headers", () => {
-        expect(this.result.hypermedia.headers.get("Content-Type")).toBe("application/ld+json");
+        expect(this.result.headers.get("Content-Type")).toBe("application/ld+json");
       });
 
       it("should separate hypermedia", () => {
-        expect(this.result.hypermedia).toBeLike([
+        expect(this.result).toBeLike([
           {
             collections: [
               {
@@ -127,7 +128,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   {
                     baseUrl: "http://temp.uri/api",
                     collections: [],
-                    iri: "http://temp.uri/api/events/closed",
+                    iri: "http://temp.uri/vocab/closed-events",
                     links: [],
                     operations: [],
                     relation: "http://temp.uri/vocab/closed-events",
@@ -138,7 +139,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   {
                     baseUrl: "http://temp.uri/api",
                     collections: [],
-                    iri: "_:b0",
+                    iri: hydra.search,
                     links: [],
                     mappings: [
                       {
@@ -174,71 +175,6 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                     target: null,
                     template: "http://temp.uri/api/events{?searchPhrase}",
                     type: [hydra.TemplatedLink]
-                  },
-                  {
-                    baseUrl: "http://temp.uri/api",
-                    collections: [],
-                    iri: "http://temp.uri/api/events?page=1",
-                    links: [
-                      {
-                        baseUrl: "http://temp.uri/api",
-                        collections: [],
-                        iri: "http://temp.uri/api/events?page=1",
-                        links: [],
-                        operations: [],
-                        relation: hydra.first,
-                        target: { iri: "http://temp.uri/api/events?page=1", type: [] },
-                        type: [hydra.Link]
-                      },
-                      {
-                        baseUrl: "http://temp.uri/api",
-                        collections: [],
-                        iri: "http://temp.uri/api/events?page=9",
-                        links: [],
-                        operations: [],
-                        relation: hydra.last,
-                        target: { iri: "http://temp.uri/api/events?page=9", type: [] },
-                        type: [hydra.Link]
-                      }
-                    ],
-                    operations: [],
-                    relation: hydra.view,
-                    supportedOperations: [],
-                    target: { iri: "_:b2", type: [] },
-                    type: [hydra.Link]
-                  },
-                  {
-                    baseUrl: "http://temp.uri/api",
-                    collections: [],
-                    iri: "http://temp.uri/api/events/1",
-                    links: [],
-                    operations: [],
-                    relation: hydra.member,
-                    supportedOperations: [],
-                    target: { iri: "http://temp.uri/api/events/1", type: [] },
-                    type: [hydra.Link]
-                  },
-                  {
-                    baseUrl: "http://temp.uri/api",
-                    collections: [],
-                    iri: hydra.first,
-                    links: [],
-                    operations: [],
-                    relation: hydra.first,
-                    supportedOperations: [],
-                    target: { iri: "http://temp.uri/api/events?page=1", type: [] },
-                    type: [hydra.Link]
-                  },
-                  {
-                    baseUrl: "http://temp.uri/api",
-                    collections: [],
-                    iri: hydra.last,
-                    links: [],
-                    operations: [],
-                    relation: hydra.last,
-                    supportedOperations: [],
-                    target: { iri: "http://temp.uri/api/events?page=9", type: [] },
-                    type: [hydra.Link]
                   }
                 ],
                 manages: [],
@@ -257,48 +193,15 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                 view: {
                   collections: [],
                   first: {
-                    baseUrl: "http://temp.uri/api",
-                    collections: [],
                     iri: "http://temp.uri/api/events?page=1",
-                    links: [],
-                    operations: [],
-                    relation: hydra.first,
-                    target: { iri: "http://temp.uri/api/events?page=1", type: [] },
                     type: [hydra.Link]
                   },
                   iri: "http://temp.uri/api/events?page=1",
                   last: {
-                    baseUrl: "http://temp.uri/api",
-                    collections: [],
                     iri: "http://temp.uri/api/events?page=9",
-                    links: [],
-                    operations: [],
-                    relation: hydra.last,
-                    target: { iri: "http://temp.uri/api/events?page=9", type: [] },
                     type: [hydra.Link]
                   },
-                  links: [
-                    {
-                      baseUrl: "http://temp.uri/api",
-                      collections: [],
-                      iri: "http://temp.uri/api/events?page=1",
-                      links: [],
-                      operations: [],
-                      relation: hydra.first,
-                      target: { iri: "http://temp.uri/api/events?page=1", type: [] },
-                      type: [hydra.Link]
-                    },
-                    {
-                      baseUrl: "http://temp.uri/api",
-                      collections: [],
-                      iri: "http://temp.uri/api/events?page=9",
-                      links: [],
-                      operations: [],
-                      relation: hydra.last,
-                      target: { iri: "http://temp.uri/api/events?page=9", type: [] },
-                      type: [hydra.Link]
-                    }
-                  ],
+                  links: [],
                   operations: [],
                   type: [hydra.PartialCollectionView]
                 }
@@ -341,7 +244,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         run(async () => {
           this.response = returnOk(api.people.markus, nestedResourcesInputJsonLd);
           const result = await this.hypermediaProcessor.process(this.response, this.client);
-          this.markus = result.hypermedia.where(control => control.iri.match(/markus/)).first();
+          this.markus = result.where(control => control.iri.match(/markus/)).first();
           this.karol = this.markus.links.withRelationOf(schema.knows).first().target;
         })
       );
@@ -366,7 +269,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
         run(async () => {
           this.response = returnOk("http://temp.uri/api/people", operationInputJsonLd);
           const result = await this.hypermediaProcessor.process(this.response, this.client);
-          this.addPerson = result.hypermedia.operations.withTemplate().first();
+          this.addPerson = result.operations.withTemplate().first();
         })
       );
 
@@ -387,8 +290,8 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
 
           this.response = returnOk("http://temp.uri/api", collectionsInputJsonLd);
           const result = await this.hypermediaProcessor.process(this.response, this.client);
-          this.people = result.hypermedia.collections.withMembersOfType(schema.Person).first();
-          this.known = result.hypermedia.collections.withMembersInRelationWith(api.people.karol, schema.knows).first();
+          this.people = result.collections.withMembersOfType(schema.Person).first();
+          this.known = result.collections.withMembersInRelationWith(api.people.karol, schema.knows).first();
         })
       );
 

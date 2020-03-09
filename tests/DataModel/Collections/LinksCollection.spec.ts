@@ -3,7 +3,7 @@ import { hydra } from "../../../src/namespaces";
 
 describe("Given instance of the LinksCollection", () => {
   beforeEach(() => {
-    const target = "some:resource";
+    const target = { iri: "some:resource" };
     this.link1 = { relation: "some:resource-url", target, type: [hydra.Link] };
     this.link2 = { relation: "some:other-url", target, type: [hydra.TemplatedLink] };
     this.link3 = { relation: "yet:another-url", target, type: [hydra.Link] };
@@ -16,23 +16,11 @@ describe("Given instance of the LinksCollection", () => {
     expect([...this.links]).toEqual(this.allLinks);
   });
 
-  describe("when narrowing filters with relation type", () => {
-    beforeEach(() => {
-      this.relationTypeNorrowedOperations = this.links.withRelationOf("yet:another-url");
-    });
-
-    it("should provide only type matching links", () => {
-      expect([...this.relationTypeNorrowedOperations]).toEqual([this.link3]);
-    });
+  it("should provide only links matching required relation", () => {
+    expect([...this.links.withRelationOf("yet:another-url")]).toEqual([this.link3]);
   });
 
-  describe("when narrowing filters with template", () => {
-    beforeEach(() => {
-      this.templateNorrowedOperations = this.links.withTemplate();
-    });
-
-    it("should provide only type matching links", () => {
-      expect([...this.templateNorrowedOperations]).toEqual([this.link2]);
-    });
+  it("should provide only links with template", () => {
+    expect([...this.links.withTemplate()]).toEqual([this.link2]);
   });
 });

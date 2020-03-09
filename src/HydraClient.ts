@@ -3,10 +3,10 @@ import * as jsonld from "jsonld";
 import * as parseLinkHeader from "parse-link-header";
 import FilterableCollection from "./DataModel/Collections/FilterableCollection";
 import { IApiDocumentation } from "./DataModel/IApiDocumentation";
+import { IHypermediaContainer } from "./DataModel/IHypermediaContainer";
 import { ILink } from "./DataModel/ILink";
 import { IOperation } from "./DataModel/IOperation";
 import { IResource } from "./DataModel/IResource";
-import { IWebResource } from "./DataModel/IWebResource";
 import { HttpCallFacility } from "./HydraClientFactory";
 import { IHydraClient } from "./IHydraClient";
 import { IHypermediaProcessor } from "./IHypermediaProcessor";
@@ -87,7 +87,7 @@ export default class HydraClient implements IHydraClient {
     const apiDocumentation = await this.getApiDocumentationUrl(url);
     const options = { auxiliaryResponse: apiDocumentation.response, auxiliaryOriginalUrl: url };
     const resource = await this.getResourceFrom(apiDocumentation.url, options);
-    const result = resource.hypermedia.ofType(hydra.ApiDocumentation).first() as IApiDocumentation;
+    const result = resource.ofType(hydra.ApiDocumentation).first() as IApiDocumentation;
     if (!result) {
       throw new Error(HydraClient.noEntryPointDefined);
     }
@@ -96,12 +96,12 @@ export default class HydraClient implements IHydraClient {
   }
 
   /** @inheritDoc */
-  public async getResource(urlOrResource: string | IResource | ILink): Promise<IWebResource> {
+  public async getResource(urlOrResource: string | IResource | ILink): Promise<IHypermediaContainer> {
     return await this.getResourceFrom(HydraClient.getUrl(urlOrResource), {});
   }
 
   /** @inheritDoc */
-  public async invoke(operation: IOperation, body?: IWebResource, parameters?: object): Promise<Response> {
+  public async invoke(operation: IOperation, body?: IResource, parameters?: object): Promise<Response> {
     if (!operation) {
       throw new Error(HydraClient.noOperationProvided);
     }
@@ -116,7 +116,7 @@ export default class HydraClient implements IHydraClient {
     });
   }
 
-  private async getResourceFrom(url: string, options: any): Promise<IWebResource> {
+  private async getResourceFrom(url: string, options: any): Promise<IHypermediaContainer> {
     const response = await this.makeRequestTo(url);
     if (response.status !== 200) {
       throw new Error(HydraClient.invalidResponse + response.status);

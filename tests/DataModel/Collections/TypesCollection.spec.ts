@@ -16,19 +16,15 @@ describe("Given instance of the TypesCollection", () => {
     expect([...this.type]).toEqual(this.allTypes);
   });
 
-  describe("when checking whether a collection has a given type", () => {
-    it("should confirm an existing type", () => {
-      expect(this.type.contains(this.type1)).toBeTruthy();
-    });
-
-    it("should not confirm an existing type", () => {
-      expect(this.type.contains("whatever type")).toBeFalsy();
-    });
+  it("should confirm a contained type", () => {
+    expect(this.type.contains(this.type1)).toBeTruthy();
   });
 
-  describe("when excluding a type", () => {
-    it("should actually exclude that type", () => {
-      expect(this.type.except(this.type1).toArray()).toEqual([this.type2]);
-    });
+  it("should not confirm not contained type", () => {
+    expect(this.type.contains("whatever type")).toBeFalsy();
+  });
+
+  it("should exclude required type", () => {
+    expect(this.type.except(this.type1).toArray()).toEqual([this.type2]);
   });
 });

@@ -5,7 +5,7 @@ import OperationsCollection from "../DataModel/Collections/OperationsCollection"
 import TypesCollection from "../DataModel/Collections/TypesCollection";
 import HypermediaContainer from "../DataModel/HypermediaContainer";
 import { IHydraResource } from "../DataModel/IHydraResource";
-import { IWebResource } from "../DataModel/IWebResource";
+import { IHypermediaContainer } from "../DataModel/IHypermediaContainer";
 import { HttpCallFacility } from "../HydraClientFactory";
 import { IHydraClient } from "../IHydraClient";
 import { IHypermediaProcessingOptions } from "../IHypermediaProcessingOptions";
@@ -106,11 +106,11 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     response: Response,
     client: IHydraClient,
     options?: IHypermediaProcessingOptions
-  ): Promise<IWebResource> {
+  ): Promise<IHypermediaContainer> {
     options = { ...{ linksPolicy: LinksPolicy.Strict, originalUrl: response.url }, ...(options || {}) };
     const result = await this.ensureJsonLd(response);
     let flattenPayload = await jsonld.promises.flatten(result, null, { base: response.url, embed: "@link" });
-    flattenPayload = await this.graphTransformer.transform(flattenPayload, this, options);
+    flattenPayload = this.graphTransformer.transform(flattenPayload, this, options);
     const context = await this.processHypermedia(
       new ProcessingState(flattenPayload, response.url, client, options.linksPolicy)
     );
@@ -131,11 +131,9 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
       );
     }
 
-    const hypermediaContainer = new HypermediaContainer(response.headers, rootResource, hypermedia);
-    Object.defineProperty(result, "hypermedia", { enumerable: false, value: hypermediaContainer });
-    Object.defineProperty(result, "iri", { enumerable: false, value: rootResource.iri });
-    Object.defineProperty(result, "type", { enumerable: false, value: rootResource.type });
-    return result;
+    const hypermediaContainer = new HypermediaContainer(response, rootResource, hypermedia);
+    (hypermediaContainer as any).json = () => result;
+    return hypermediaContainer;
   }
 
   private static tryRemoveReferenceFrom(graph: object[], index: number): boolean {
