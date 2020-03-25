@@ -9,11 +9,11 @@ import { ISupportedProperty } from "./ISupportedProperty";
  */
 export interface IClass extends IHydraResource {
   /**
-   * Gets the class' display name.
+   * Gets the class' title.
    * @readonly
    * @returns {string}
    */
-  readonly displayName: string;
+  readonly title: string;
 
   /**
    * Gets the class' description.

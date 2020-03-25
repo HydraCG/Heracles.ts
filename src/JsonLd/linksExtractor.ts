@@ -50,12 +50,18 @@ function isStandaloneControl(predicate: string): boolean {
   return !!standaloneControls[predicate];
 }
 
-function tryGetPredicateLinkType(predicate: string, processingState: ProcessingState): string {
+function tryGetPredicateLinkType(predicate: string, processingState: ProcessingState, meta: any): string {
+  meta.title = "";
+  meta.description = "";
   let result = hydraLinks[predicate] || null;
   if (!result) {
     const predicateDefinition = processingState.findRawResource(predicate);
     if (!!predicateDefinition && predicateDefinition["@type"]) {
       result = predicateDefinition["@type"].find(isLink) || null;
+      meta.title = !!predicateDefinition[hydra.title] ? predicateDefinition[hydra.title][0]["@value"] : meta.title;
+      meta.description = !!predicateDefinition[hydra.description]
+        ? predicateDefinition[hydra.description][0]["@value"]
+        : meta.description;
     }
   }
 
@@ -96,7 +102,8 @@ function internalLinksExtractor(resources: any[], processingState: ProcessingSta
     _ => originalResource[_] instanceof Object && !isStandaloneControl(_)
   );
   for (const predicate of possiblePredicates) {
-    const linkType = tryGetPredicateLinkType(predicate, processingState);
+    const meta: any = {};
+    const linkType = tryGetPredicateLinkType(predicate, processingState, meta);
     const possibleLinkedResources = originalResource[predicate].filter(_ => !!_["@id"]);
     for (const targetResource of possibleLinkedResources) {
       const rawTargetResource = processingState.findRawResource(targetResource["@id"]) || targetResource;
@@ -112,12 +119,14 @@ function internalLinksExtractor(resources: any[], processingState: ProcessingSta
         let link = {
           baseUrl: processingState.baseUrl,
           collections: new CollectionsCollection(),
+          description: meta.description,
           iri: predicate,
           links: LinksCollection.empty,
           operations: OperationsCollection.empty,
           relation: predicate,
           supportedOperations: OperationsCollection.empty,
           target,
+          title: meta.title,
           type: new TypesCollection([resourceLinkType])
         };
         if (resourceLinkType === hydra.TemplatedLink) {

@@ -1,0 +1,9 @@
+{
+    "@context": "/api/context.jsonld",
+    "@graph": [
+        {
+            "@id": "/api/events/1",
+            "@type": "schema:Event"
+        }
+    ]
+}

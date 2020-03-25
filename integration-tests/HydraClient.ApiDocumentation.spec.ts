@@ -39,32 +39,25 @@ describe("Having a Hydra client", () => {
             iri: "http://schema.org/Event",
             links: [],
             operations: [],
-            supportedOperations: [],
-            supportedProperties: [
+            supportedOperations: [
               {
+                baseUrl: "http://localhost:3000/api/documentation",
                 collections: [],
                 description: "",
-                displayName: "",
+                expectedHeaders: [],
+                expects: [],
                 iri: "_:b0",
                 links: [],
+                method: "DELETE",
                 operations: [],
-                property: {
-                  collections: [],
-                  description: "The name of the event.",
-                  displayName: "Name",
-                  iri: "http://schema.org/name",
-                  links: [],
-                  operations: [],
-                  type: [rdf.Property],
-                  valuesOfType: [{ iri: "http://www.w3.org/2001/XMLSchema#string", type: [] }]
-                },
-                readable: false,
-                required: false,
-                textDescription: "",
+                returnedHeaders: [],
+                returns: [],
+                target: { iri: "http://schema.org/Event", type: [hydra.Class] },
                 title: "",
-                type: [hydra.SupportedProperty],
-                writable: false
-              },
+                type: [hydra.Operation, "http://schema.org/DeleteAction"]
+              }
+            ],
+            supportedProperties: [
               {
                 collections: [],
                 description: "",
@@ -74,11 +67,13 @@ describe("Having a Hydra client", () => {
                 operations: [],
                 property: {
                   collections: [],
-                  description: "Description of the event.",
-                  displayName: "Description",
-                  iri: "http://schema.org/description",
+                  comment: "The name of the event.",
+                  displayName: "Name",
+                  iri: "http://schema.org/name",
+                  label: "Name",
                   links: [],
                   operations: [],
+                  textDescription: "The name of the event.",
                   type: [rdf.Property],
                   valuesOfType: [{ iri: "http://www.w3.org/2001/XMLSchema#string", type: [] }]
                 },
@@ -98,16 +93,15 @@ describe("Having a Hydra client", () => {
                 operations: [],
                 property: {
                   collections: [],
-                  description: "The start date and time of the item (in ISO 8601 date format).",
-                  displayName: "Start date",
-                  iri: "http://schema.org/startDate",
+                  comment: "Description of the event.",
+                  displayName: "Description",
+                  iri: "http://schema.org/description",
+                  label: "Description",
                   links: [],
                   operations: [],
+                  textDescription: "Description of the event.",
                   type: [rdf.Property],
-                  valuesOfType: [
-                    { iri: "http://www.w3.org/2001/XMLSchema#dateTime", type: [] },
-                    { iri: "http://www.w3.org/2001/XMLSchema#date", type: [] }
-                  ]
+                  valuesOfType: [{ iri: "http://www.w3.org/2001/XMLSchema#string", type: [] }]
                 },
                 readable: false,
                 required: false,
@@ -125,11 +119,42 @@ describe("Having a Hydra client", () => {
                 operations: [],
                 property: {
                   collections: [],
-                  description: "The end date and time of the item (in ISO 8601 date format).",
-                  displayName: "End date",
-                  iri: "http://schema.org/endDate",
+                  comment: "The start date and time of the item (in ISO 8601 date format).",
+                  displayName: "Start date",
+                  iri: "http://schema.org/startDate",
+                  label: "Start date",
                   links: [],
                   operations: [],
+                  textDescription: "The start date and time of the item (in ISO 8601 date format).",
+                  type: [rdf.Property],
+                  valuesOfType: [
+                    { iri: "http://www.w3.org/2001/XMLSchema#dateTime", type: [] },
+                    { iri: "http://www.w3.org/2001/XMLSchema#date", type: [] }
+                  ]
+                },
+                readable: false,
+                required: false,
+                textDescription: "",
+                title: "",
+                type: [hydra.SupportedProperty],
+                writable: false
+              },
+              {
+                collections: [],
+                description: "",
+                displayName: "",
+                iri: "_:b4",
+                links: [],
+                operations: [],
+                property: {
+                  collections: [],
+                  comment: "The end date and time of the item (in ISO 8601 date format).",
+                  displayName: "End date",
+                  iri: "http://schema.org/endDate",
+                  label: "End date",
+                  links: [],
+                  operations: [],
+                  textDescription: "The end date and time of the item (in ISO 8601 date format).",
                   type: [rdf.Property],
                   valuesOfType: [
                     { iri: "http://www.w3.org/2001/XMLSchema#dateTime", type: [] },
@@ -144,6 +169,9 @@ describe("Having a Hydra client", () => {
                 writable: false
               }
             ],
+            textDescription:
+              "An event happening at a certain time and location, such as a concert, lecture, or festival.",
+            title: "Event",
             type: [hydra.Class]
           }
         ]);
@@ -155,12 +183,12 @@ describe("Having a Hydra client", () => {
           for (const supportedClass of this.apiDocumentation.supportedClasses) {
             let classDocumentation =
               `##Class ${supportedClass.displayName} (${supportedClass.iri})\n\n` +
-              `${supportedClass.description}\n\n` +
+              `${supportedClass.textDescription}\n\n` +
               "###Properties:\n\n";
             for (const supportedProperty of supportedClass.supportedProperties) {
               classDocumentation +=
                 `####${supportedProperty.property.displayName} (${supportedProperty.property.iri})\n\n` +
-                `${supportedProperty.property.description}\n\n` +
+                `${supportedProperty.property.textDescription}\n\n` +
                 "Values of type:\n";
               for (const valueOfType of supportedProperty.property.valuesOfType) {
                 classDocumentation += `- ${valueOfType.iri}\n`;

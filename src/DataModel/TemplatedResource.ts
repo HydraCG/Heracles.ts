@@ -38,6 +38,12 @@ export default abstract class TemplatedResource<T extends IPointingResource> imp
   /** @inheritDoc */
   public readonly collections: CollectionsCollection;
 
+  /** @inheritDoc */
+  public readonly title: string;
+
+  /** @inheritDoc */
+  public readonly description: string;
+
   private readonly template: string;
   private readonly mappings: MappingsCollection;
 
@@ -57,6 +63,8 @@ export default abstract class TemplatedResource<T extends IPointingResource> imp
     this.template = template.template;
     this.mappings = template.mappings;
     this.operations = OperationsCollection.empty;
+    this.title = (resource as any).title || "";
+    this.description = (resource as any).description || "";
   }
 
   /** @inheritDoc */

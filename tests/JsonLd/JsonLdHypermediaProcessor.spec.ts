@@ -128,17 +128,20 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                   {
                     baseUrl: "http://temp.uri/api",
                     collections: [],
+                    description: "",
                     iri: "http://temp.uri/vocab/closed-events",
                     links: [],
                     operations: [],
                     relation: "http://temp.uri/vocab/closed-events",
                     supportedOperations: [],
                     target: { iri: "http://temp.uri/api/events/closed", type: [] },
+                    title: "",
                     type: [hydra.Link]
                   },
                   {
                     baseUrl: "http://temp.uri/api",
                     collections: [],
+                    description: "",
                     iri: hydra.search,
                     links: [],
                     mappings: [
@@ -174,6 +177,7 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
                     supportedOperations: [],
                     target: null,
                     template: "http://temp.uri/api/events{?searchPhrase}",
+                    title: "",
                     type: [hydra.TemplatedLink]
                   }
                 ],
@@ -212,23 +216,27 @@ describe("Given instance of the JsonLdHypermediaProcessor class", () => {
               {
                 baseUrl: "http://temp.uri/api",
                 collections: [],
+                description: "",
                 iri: "http://temp.uri/api/people",
                 links: [],
                 operations: [],
                 relation: hydra.collection,
                 supportedOperations: [],
                 target: { iri: "http://temp.uri/api/people", type: [] },
+                title: "",
                 type: [hydra.Link]
               },
               {
                 baseUrl: "http://temp.uri/api",
                 collections: [],
+                description: "",
                 iri: "http://temp.uri/api/events",
                 links: [],
                 operations: [],
                 relation: hydra.collection,
                 supportedOperations: [],
                 target: { iri: "http://temp.uri/api/events", type: [] },
+                title: "",
                 type: [hydra.Link]
               }
             ],

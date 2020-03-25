@@ -1,6 +1,7 @@
 import "isomorphic-fetch";
 import * as jsonld from "jsonld";
 import * as parseLinkHeader from "parse-link-header";
+import { ApiDocumentationPolicy } from "./ApiDocumentationPolicy";
 import FilterableCollection from "./DataModel/Collections/FilterableCollection";
 import { IApiDocumentation } from "./DataModel/IApiDocumentation";
 import { IHypermediaContainer } from "./DataModel/IHypermediaContainer";
@@ -11,6 +12,7 @@ import { HttpCallFacility } from "./HydraClientFactory";
 import { IHydraClient } from "./IHydraClient";
 import { IHypermediaProcessor } from "./IHypermediaProcessor";
 import { IIriTemplateExpansionStrategy } from "./IIriTemplateExpansionStrategy";
+import { IResourceCache } from "./IResourceCache";
 import { LinksPolicy } from "./LinksPolicy";
 import { hydra } from "./namespaces";
 
@@ -29,11 +31,14 @@ export default class HydraClient implements IHydraClient {
   public static responseFormatNotSupported = "Response format is not supported.";
   public static noIriTemplateExpansionStrategy = "No IRI template expansion strategy was provided.";
   public static noHttpFacility = "No HTTP facility provided.";
+  public static noResourceCache = "No resource cache provided.";
 
   private readonly hypermediaProcessors: IHypermediaProcessor[];
   private readonly iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy;
   private readonly linksPolicy: LinksPolicy;
+  private readonly apiDocumentationPolicy: ApiDocumentationPolicy;
   private readonly httpCall: (url: string, options?: RequestInit) => Promise<Response>;
+  private readonly resourceCache: IResourceCache;
 
   /**
    * Initializes a new instance of the {@link HydraClient} class.
@@ -41,13 +46,17 @@ export default class HydraClient implements IHydraClient {
    *                                                              controls extraction.
    * @param {IIriTemplateExpansionStrategy} iriTemplateExpansionStrategy IRI template variable expansion strategy.
    * @param {LinksPolicy} linksPolicy Policy defining what is a considered a link.
+   * @param {ApiDocumentationPolicy} apiDocumentationPolicy Policy defining on how to treat API documentation.
    * @param {HttpCallFacility} httpCall HTTP facility used to call remote server.
+   * @param {IResourceCache} resourceCache Cache used for storing API documentation fetched.
    */
   public constructor(
     hypermediaProcessors: Iterable<IHypermediaProcessor>,
     iriTemplateExpansionStrategy: IIriTemplateExpansionStrategy,
     linksPolicy: LinksPolicy = LinksPolicy.Strict,
-    httpCall: HttpCallFacility
+    apiDocumentationPolicy: ApiDocumentationPolicy = ApiDocumentationPolicy.None,
+    httpCall: HttpCallFacility,
+    resourceCache: IResourceCache
   ) {
     if (!FilterableCollection.prototype.any.call(hypermediaProcessors)) {
       throw new Error(HydraClient.noHypermediaProcessors);
@@ -61,10 +70,16 @@ export default class HydraClient implements IHydraClient {
       throw new Error(HydraClient.noHttpFacility);
     }
 
+    if (!resourceCache) {
+      throw new Error(HydraClient.noResourceCache);
+    }
+
     this.hypermediaProcessors = Array.from(hypermediaProcessors);
     this.iriTemplateExpansionStrategy = iriTemplateExpansionStrategy;
     this.linksPolicy = linksPolicy;
+    this.apiDocumentationPolicy = apiDocumentationPolicy;
     this.httpCall = httpCall;
+    this.resourceCache = resourceCache;
   }
 
   /** @inheritDoc */
@@ -84,15 +99,12 @@ export default class HydraClient implements IHydraClient {
   /** @inheritDoc */
   public async getApiDocumentation(urlOrResource: string | IResource): Promise<IApiDocumentation> {
     const url = HydraClient.getUrl(urlOrResource);
-    const apiDocumentation = await this.getApiDocumentationUrl(url);
-    const options = { auxiliaryResponse: apiDocumentation.response, auxiliaryOriginalUrl: url };
-    const resource = await this.getResourceFrom(apiDocumentation.url, options);
-    const result = resource.ofType(hydra.ApiDocumentation).first() as IApiDocumentation;
-    if (!result) {
-      throw new Error(HydraClient.noEntryPointDefined);
+    const response = await this.makeRequestTo(url);
+    if (response.status !== 200) {
+      throw new Error(HydraClient.invalidResponse + response.status);
     }
 
-    return result;
+    return this.getApiDocumentationResource(response, url, true);
   }
 
   /** @inheritDoc */
@@ -122,31 +134,61 @@ export default class HydraClient implements IHydraClient {
       throw new Error(HydraClient.invalidResponse + response.status);
     }
 
+    if (this.apiDocumentationPolicy !== ApiDocumentationPolicy.None) {
+      await this.getApiDocumentationResource(response, url, false);
+    }
+
     const hypermediaProcessor = this.getHypermediaProcessor(response);
     if (!hypermediaProcessor) {
       throw new Error(HydraClient.responseFormatNotSupported);
     }
 
-    options = { ...{ linksPolicy: this.linksPolicy, originalUrl: url }, ...options };
+    options = {
+      ...{
+        apiDocumentationPolicy: ApiDocumentationPolicy.None,
+        apiDocumentations: this.resourceCache.all(_ => !!(_ as IApiDocumentation).getEntryPoint),
+        linksPolicy: this.linksPolicy,
+        originalUrl: url
+      },
+      ...options
+    };
     return await hypermediaProcessor.process(response, this, options);
   }
 
-  private async getApiDocumentationUrl(url: string): Promise<{ url: string; response: any }> {
-    const response = await this.makeRequestTo(url);
-    if (response.status !== 200) {
-      throw new Error(HydraClient.invalidResponse + response.status);
+  private async getApiDocumentationResource(
+    response: Response,
+    baseUrl: string,
+    throwIfUnavailable: boolean
+  ): Promise<IApiDocumentation> {
+    const apiDocumentationUrl = this.getApiDocumentationUrl(response, baseUrl);
+    if (apiDocumentationUrl == null) {
+      return this.assert<IApiDocumentation>(null, throwIfUnavailable ? HydraClient.apiDocumentationNotProvided : null);
     }
 
-    const links = parseLinkHeader(response.headers.get("Link"));
-    const result = !!links ? links[hydra.apiDocumentation] : null;
+    let result = this.resourceCache.getItem(apiDocumentationUrl) as IApiDocumentation;
     if (!result) {
-      throw new Error(HydraClient.apiDocumentationNotProvided);
+      const options = { auxiliaryResponse: response, auxiliaryOriginalUrl: baseUrl };
+      const resource = await this.getResourceFrom(apiDocumentationUrl, options);
+      result = resource.ofType(hydra.ApiDocumentation).first() as IApiDocumentation;
+      if (!result) {
+        return this.assert<IApiDocumentation>(null, throwIfUnavailable ? HydraClient.noEntryPointDefined : null);
+      }
+
+      this.resourceCache.setItem(apiDocumentationUrl, result);
     }
 
-    return {
-      response,
-      url: jsonld.url.prependBase(url.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0], result.url)
-    };
+    return result;
+  }
+
+  private getApiDocumentationUrl(response: Response, baseUrl: string): string {
+    const links = parseLinkHeader(response.headers.get("Link"));
+    const link = !!links ? links[hydra.apiDocumentation] : null;
+    let result: string = null;
+    if (!!link) {
+      result = jsonld.url.prependBase(baseUrl.match(/^[a-z][a-z0-9+\-.]*:\/\/[^/]+/)[0], link.url);
+    }
+
+    return result;
   }
 
   private static getUrl(urlOrResource: string | IResource | ILink): string {
@@ -164,5 +206,13 @@ export default class HydraClient implements IHydraClient {
 
   private async makeRequestTo(url: string, options?: RequestInit): Promise<Response> {
     return await this.httpCall(url, options);
+  }
+
+  private assert<TResource>(resource: TResource, errorMessage: string): TResource {
+    if (resource === null && !!errorMessage) {
+      throw new Error(errorMessage);
+    }
+
+    return resource;
   }
 }

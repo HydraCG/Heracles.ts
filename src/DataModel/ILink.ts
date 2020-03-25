@@ -9,6 +9,20 @@ import { IResource } from "./IResource";
 
 export interface ILink extends IHydraResource {
   /**
+   * Gets the link's title.
+   * @readonly
+   * @returns {string}
+   */
+  readonly title: string;
+
+  /**
+   * Gets the link's description.
+   * @readonly
+   * @returns {string}
+   */
+  readonly description: string;
+
+  /**
    * Gets a relation of the link.
    * @readonly
    * @returns {string}

@@ -44,14 +44,15 @@ mappings[hydra.operation] = {
 };
 mappings[hydra.title] = {
   default: "",
-  propertyName: "displayName",
+  propertyName: "title",
   required: true,
   type: [
     hydra.Class as string,
     hydra.ApiDocumentation as string,
     hydra.Link as string,
     hydra.Operation as string,
-    hydra.SupportedProperty as string]
+    hydra.SupportedProperty as string
+  ]
 };
 mappings[hydra.description] = {
   default: "",
@@ -62,7 +63,8 @@ mappings[hydra.description] = {
     hydra.ApiDocumentation as string,
     hydra.Link as string,
     hydra.Operation as string,
-    hydra.SupportedProperty as string]
+    hydra.SupportedProperty as string
+  ]
 };
 mappings.links = {
   default: linksExtractor,

@@ -1,4 +1,5 @@
 import * as sinon from "sinon";
+import { ApiDocumentationPolicy } from "../src/ApiDocumentationPolicy";
 import TypesCollection from "../src/DataModel/Collections/TypesCollection";
 import HydraClient from "../src/HydraClient";
 import { Level } from "../src/Level";
@@ -17,11 +18,14 @@ describe("Given an instance of the HydraClient class", () => {
     };
     this.iriTemplateExpansionStrategy = {};
     this.httpCall = sinon.stub();
+    this.cache = {};
     this.client = new HydraClient(
       [this.hypermediaProcessor],
       this.iriTemplateExpansionStrategy,
       LinksPolicy.Strict,
-      this.httpCall
+      ApiDocumentationPolicy.None,
+      this.httpCall,
+      this.cache
     );
   });
 
@@ -30,6 +34,10 @@ describe("Given an instance of the HydraClient class", () => {
   });
 
   describe("when obtaining an API documentation", () => {
+    beforeEach(() => {
+      this.cache.getItem = sinon.stub().returns(null);
+    });
+
     describe("and no valid Url is given", () => {
       it(
         "should throw",
@@ -149,6 +157,7 @@ describe("Given an instance of the HydraClient class", () => {
           this.apiDocumentationResponse = returnOk();
           this.httpCall.withArgs(`${this.baseUrl}api/documentation`).returns(this.apiDocumentationResponse);
           this.hypermediaProcessor.process.returns({ ofType: () => ({ first: () => null }) });
+          this.cache.all = sinon.stub().returns([]);
         });
 
         it(
@@ -167,12 +176,14 @@ describe("Given an instance of the HydraClient class", () => {
         beforeEach(
           run(async () => {
             this.apiDocumentationUrl = `${this.baseUrl}api/documentation`;
-            this.apiDocumentation = { entryPoint: `${this.baseUrl}api` };
+            this.apiDocumentation = { entryPoint: `${this.baseUrl}api`, type: [hydra.ApiDocumentation] };
             this.data = [this.apiDocumentation];
             (this.data as any).ofType = sinon.stub().returns({ first: sinon.stub().returns(this.apiDocumentation) });
             this.apiDocumentationResponse = returnOk(this.apiDocumentationUrl, this.data);
             this.httpCall.withArgs(this.apiDocumentationUrl).returns(this.apiDocumentationResponse);
             this.hypermediaProcessor.process.returns(Promise.resolve(this.data));
+            this.cache.all = sinon.stub().returns([]);
+            this.cache.setItem = sinon.stub();
             await this.client.getApiDocumentation(this.baseUrl);
           })
         );
@@ -190,12 +201,26 @@ describe("Given an instance of the HydraClient class", () => {
             this.apiDocumentationResponse,
             this.client,
             {
+              apiDocumentationPolicy: ApiDocumentationPolicy.None,
+              apiDocumentations: [],
               auxiliaryOriginalUrl: this.baseUrl,
               auxiliaryResponse: this.urlResponse,
               linksPolicy: LinksPolicy.Strict,
               originalUrl: this.apiDocumentationUrl
             }
           );
+        });
+
+        it("should try obtaining an API documentation from cache", () => {
+          expect(this.cache.getItem).toHaveBeenCalledWith(this.apiDocumentationUrl);
+        });
+
+        it("should store obtained API documentation in cache", () => {
+          expect(this.cache.setItem).toHaveBeenCalledWith(this.apiDocumentationUrl, this.apiDocumentation);
+        });
+
+        it("should obtain all cached API documentations so far", () => {
+          expect(this.cache.all).toHaveBeenCalledOnce();
         });
       });
     });
@@ -261,6 +286,7 @@ describe("Given an instance of the HydraClient class", () => {
           this.resourceResponse = returnOk(this.resourceUrl, this.resource);
           this.httpCall.withArgs(this.resourceUrl).returns(Promise.resolve(this.resourceResponse));
           this.hypermediaProcessor.process.withArgs(this.resourceResponse).returns(Promise.resolve(this.resource));
+          this.cache.all = sinon.stub().returns([]);
           this.result = await this.client.getResource(this.resourceUrl);
         })
       );
@@ -271,6 +297,10 @@ describe("Given an instance of the HydraClient class", () => {
 
       it("should return a correct result", () => {
         expect(this.result).toBe(this.resource);
+      });
+
+      it("should obtain all cached API documentations", () => {
+        expect(this.cache.all).toHaveBeenCalledOnce();
       });
     });
   });
