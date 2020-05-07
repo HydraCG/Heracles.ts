@@ -1,3 +1,4 @@
+import "isomorphic-fetch";
 import BodyResourceBoundIriTemplateExpansionStrategy from "./BodyResourceBoundIriTemplateExpansionStrategy";
 import HydraClient from "./HydraClient";
 import { IHydraClient } from "./IHydraClient";
@@ -91,7 +92,7 @@ export default class HydraClientFactory implements IHydraClientFactory {
   public withDefaults(): HydraClientFactory {
     return this.with(new BodyResourceBoundIriTemplateExpansionStrategy())
       .withStrictLinks()
-      .with(fetch.bind(window))
+      .with(fetch.bind(window || global))
       .withJsonLd();
   }
 

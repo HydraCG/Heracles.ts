@@ -35,6 +35,8 @@
     "n3": "node switch-to-n3"
   },
   "dependencies": {
+    "@rdfjs/parser-n3": "^1.1.4",
+    "@rdfjs/serializer-jsonld": "^1.2.2",
     "isomorphic-fetch": "2.2.1",
     "jsonld": "^2.0.0",
     "parse-link-header": "1.0.1",
@@ -70,7 +72,6 @@
     "karma-sinon": "1.0.5",
     "karma-source-map-support": "1.4.0",
     "karma-sourcemap-loader": "0.3.7",
-    "sinon": "7.3.2",
     "karma-summary-reporter": "1.7.1",
     "karma-webpack": "4.0.2",
     "prettier": "1.19.1",

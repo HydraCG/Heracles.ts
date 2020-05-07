@@ -1,4 +1,3 @@
-import "isomorphic-fetch";
 import * as jsonld from "jsonld";
 import * as parseLinkHeader from "parse-link-header";
 import FilterableCollection from "./DataModel/Collections/FilterableCollection";
