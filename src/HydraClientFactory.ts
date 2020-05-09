@@ -92,7 +92,7 @@ export default class HydraClientFactory implements IHydraClientFactory {
   public withDefaults(): HydraClientFactory {
     return this.with(new BodyResourceBoundIriTemplateExpansionStrategy())
       .withStrictLinks()
-      .with(fetch.bind(window || global))
+      .with(fetch.bind(typeof window !== "undefined" ? window : global))
       .withJsonLd();
   }
 

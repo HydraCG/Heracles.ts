@@ -127,9 +127,9 @@ export default class HydraResourceMatcher {
     for (const property of Object.keys(actual)) {
       if (
         property === "@id" &&
-        (typeof actual[property] === "string" &&
+        typeof actual[property] === "string" &&
           actual[property].indexOf("_:") === 0 &&
-          (typeof expected[property] === "string" && expected[property].indexOf("_:") === 0))
+          typeof expected[property] === "string" && expected[property].indexOf("_:") === 0
       ) {
         continue;
       }

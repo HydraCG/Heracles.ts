@@ -51,7 +51,8 @@ mappings[hydra.title] = {
     hydra.ApiDocumentation as string,
     hydra.Link as string,
     hydra.Operation as string,
-    hydra.SupportedProperty as string]
+    hydra.SupportedProperty as string
+  ]
 };
 mappings[hydra.description] = {
   default: "",
@@ -62,7 +63,8 @@ mappings[hydra.description] = {
     hydra.ApiDocumentation as string,
     hydra.Link as string,
     hydra.Operation as string,
-    hydra.SupportedProperty as string]
+    hydra.SupportedProperty as string
+  ]
 };
 mappings.links = {
   default: linksExtractor,
