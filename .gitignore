@@ -10,3 +10,4 @@ types
 !karma.conf.js
 !webpack.config.js
 coverage
+package-lock.json

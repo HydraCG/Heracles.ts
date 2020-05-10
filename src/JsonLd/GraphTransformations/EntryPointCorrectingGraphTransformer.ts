@@ -9,11 +9,7 @@ import { IGraphTransformer } from "./IGraphTransformer";
  */
 export default class EntryPointCorrectingGraphTransformer implements IGraphTransformer {
   /** @inheritDoc */
-  public transform(
-    graph: object[],
-    processor: IHypermediaProcessor,
-    options?: IHypermediaProcessingOptions
-  ): object[] {
+  public transform(graph: object[], processor: IHypermediaProcessor, options?: IHypermediaProcessingOptions): object[] {
     const apiDocumentation = !!graph
       ? graph.find(_ => !!_["@type"] && _["@type"].indexOf(hydra.ApiDocumentation) !== -1)
       : null;

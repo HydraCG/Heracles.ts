@@ -17,11 +17,7 @@ export default class CompoundGraphTransformer implements IGraphTransformer {
   }
 
   /** @inheritDoc */
-  public transform(
-    graph: object[],
-    processor: IHypermediaProcessor,
-    options?: IHypermediaProcessingOptions
-  ): object[] {
+  public transform(graph: object[], processor: IHypermediaProcessor, options?: IHypermediaProcessingOptions): object[] {
     let result = graph;
     for (const graphTransformer of this.graphTransformers) {
       result = graphTransformer.transform(result, processor, options);

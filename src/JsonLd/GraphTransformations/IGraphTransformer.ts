@@ -13,9 +13,5 @@ export interface IGraphTransformer {
    * @param {IHypermediaProcessingOptions} options Additional processing options.
    * @returns {object[]}
    */
-  transform(
-    graph: object[],
-    processor: IHypermediaProcessor,
-    options?: IHypermediaProcessingOptions
-  ): object[];
+  transform(graph: object[], processor: IHypermediaProcessor, options?: IHypermediaProcessingOptions): object[];
 }
