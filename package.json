@@ -37,7 +37,7 @@
   "dependencies": {
     "@rdfjs/parser-n3": "^1.1.4",
     "@rdfjs/serializer-jsonld": "^1.2.2",
-    "isomorphic-fetch": "2.2.1",
+    "isomorphic-fetch": "3.0.0",
     "jsonld": "^2.0.0",
     "parse-link-header": "1.0.1",
     "uri-templates": "0.2.0",
