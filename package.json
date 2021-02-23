@@ -41,7 +41,7 @@
     "jsonld": "^2.0.0",
     "parse-link-header": "1.0.1",
     "uri-templates": "0.2.0",
-    "urijs": "1.19.2"
+    "urijs": "1.19.6"
   },
   "devDependencies": {
     "@types/body-parser": "1.17.1",
