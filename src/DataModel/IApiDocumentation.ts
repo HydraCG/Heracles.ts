@@ -13,7 +13,7 @@ export interface IApiDocumentation extends IHydraResource {
    * @readonly
    * @returns {string}
    */
-  readonly displayName?: string;
+  readonly title: string;
 
   /**
    * Gets a description of this API documentation.

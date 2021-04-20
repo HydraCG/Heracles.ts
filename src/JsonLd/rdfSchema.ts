@@ -17,13 +17,13 @@ export function rdfSchema(mappings: IDictionary<IPropertyMapping>): IDictionary<
   };
   mappings[rdfs.label] = {
     default: "",
-    propertyName: "displayName",
+    propertyName: "label",
     required: true,
     type: [rdf.Property as string]
   };
   mappings[rdfs.comment] = {
     default: "",
-    propertyName: "description",
+    propertyName: "comment",
     required: true,
     type: [rdf.Property as string]
   };

@@ -12,12 +12,14 @@ function linkOf(predicate: string, resource: string = null): object {
   return {
     baseUrl,
     collections: [],
+    description: "",
     iri,
     links: [],
     operations: [],
     relation: iri,
     supportedOperations: [],
     target: resource != null ? { iri: resource, type: [] } : null,
+    title: "",
     type: [resource !== null ? hydra.Link : hydra.TemplatedLink]
   };
 }

@@ -1,5 +1,6 @@
 import * as jsonld from "jsonld";
 import * as parseLinkHeader from "parse-link-header";
+import { ApiDocumentationPolicy } from "../ApiDocumentationPolicy";
 import LinksCollection from "../DataModel/Collections/LinksCollection";
 import OperationsCollection from "../DataModel/Collections/OperationsCollection";
 import TypesCollection from "../DataModel/Collections/TypesCollection";
@@ -107,7 +108,15 @@ export default class JsonLdHypermediaProcessor implements IHypermediaProcessor {
     client: IHydraClient,
     options?: IHypermediaProcessingOptions
   ): Promise<IHypermediaContainer> {
-    options = { ...{ linksPolicy: LinksPolicy.Strict, originalUrl: response.url }, ...(options || {}) };
+    options = {
+      ...{
+        apiDocumentationPolicy: ApiDocumentationPolicy.None,
+        apiDocumentations: [],
+        linksPolicy: LinksPolicy.Strict,
+        originalUrl: response.url
+      },
+      ...(options || {})
+    };
     const result = await this.ensureJsonLd(response);
     let flattenPayload = await jsonld.promises.flatten(result, null, { base: response.url, embed: "@link" });
     flattenPayload = this.graphTransformer.transform(flattenPayload, this, options);

@@ -9,6 +9,20 @@ import { IPointingResource } from "./IPointingResource";
  */
 export interface IOperation extends IHydraResource, IPointingResource {
   /**
+   * Gets the operations's title.
+   * @readonly
+   * @returns {string}
+   */
+  readonly title: string;
+
+  /**
+   * Gets the operations's description.
+   * @readonly
+   * @returns {string}
+   */
+  readonly description: string;
+
+  /**
    * Gets a method to be used for the call.
    * @readonly
    * @returns {string}

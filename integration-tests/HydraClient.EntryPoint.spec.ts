@@ -10,6 +10,7 @@ describe("Having a Hydra client", () => {
     this.url = "http://localhost:3000/";
     this.client = HydraClientFactory.configure()
       .withDefaults()
+      .withApiDocumentationsFetchedAndExtended()
       .andCreate();
   });
 
@@ -141,6 +142,24 @@ describe("Having a Hydra client", () => {
               .first();
             expect(matchingEvents).toBeDefined();
             expect(matchingEvents).not.toBeNull();
+          });
+        });
+
+        describe("and then requesting some specific member", () => {
+          beforeEach(
+            run(async () => {
+              this.member = await this.client.getResource(this.events.members.first());
+            })
+          );
+
+          it("should have DELETE operation available", () => {
+            expect(this.member.operations.ofType("http://schema.org/DeleteAction").first()).not.toBeNull();
+          });
+
+          it("should have DELETE operation applicable", () => {
+            expect(this.member.operations.ofType("http://schema.org/DeleteAction").first().target.iri).toBe(
+              this.events.members.first().iri
+            );
           });
         });
       });

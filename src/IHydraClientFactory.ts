@@ -1,3 +1,4 @@
+import { ApiDocumentationPolicy } from "./ApiDocumentationPolicy";
 import { HttpCallFacility } from "./HydraClientFactory";
 import { IHypermediaProcessor } from "./IHypermediaProcessor";
 import { LinksPolicy } from "./LinksPolicy";
@@ -15,6 +16,11 @@ export interface IHydraClientFactory {
    * Gets a currently configured {@link LinksPolicy}.
    */
   readonly currentLinksPolicy: LinksPolicy;
+
+  /**
+   * Gets a currently configured {@link ApiDocumentationPolicy}.
+   */
+  readonly currentApiDocumentationPolicy: ApiDocumentationPolicy;
 
   /**
    * Creates an instance of the {@link IHypermediaProcessor} that will be capable for working with given media type.

@@ -7,11 +7,11 @@ import { IResource } from "./IResource";
  */
 export interface IProperty extends IResource {
   /**
-   * Gets the class' display name.
+   * Gets the class' title.
    * @readonly
    * @returns {string}
    */
-  readonly displayName: string;
+  readonly title: string;
 
   /**
    * Gets the property's description.

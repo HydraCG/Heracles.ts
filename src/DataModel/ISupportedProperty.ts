@@ -7,6 +7,20 @@ import { IProperty } from "./IProperty";
  */
 export interface ISupportedProperty extends IHydraResource {
   /**
+   * Gets the supported property's title.
+   * @readonly
+   * @returns {string}
+   */
+  readonly title: string;
+
+  /**
+   * Gets the supported property's description.
+   * @readonly
+   * @returns {string}
+   */
+  readonly description: string;
+
+  /**
    * Gets the actual property.
    * @readonly
    * @returns {IProperty}

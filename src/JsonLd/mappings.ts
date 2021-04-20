@@ -44,7 +44,7 @@ mappings[hydra.operation] = {
 };
 mappings[hydra.title] = {
   default: "",
-  propertyName: "displayName",
+  propertyName: "title",
   required: true,
   type: [
     hydra.Class as string,

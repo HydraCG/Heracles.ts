@@ -1,3 +1,5 @@
+import { ApiDocumentationPolicy } from "./ApiDocumentationPolicy";
+import { IApiDocumentation } from "./DataModel/IApiDocumentation";
 import { LinksPolicy } from "./LinksPolicy";
 
 /**
@@ -10,6 +12,18 @@ export interface IHypermediaProcessingOptions {
    * @returns {LinksPolicy}
    */
   readonly linksPolicy: LinksPolicy;
+
+  /**
+   * Gets a policy defining how API documentations should be handled when obtaining resources.
+   * @readonly
+   * @returns {ApiDocumentationPolicy}
+   */
+  readonly apiDocumentationPolicy: ApiDocumentationPolicy;
+
+  /**
+   * Gets an API documentations obtained.
+   */
+  readonly apiDocumentations: Iterable<IApiDocumentation>;
 
   /**
    * Gets an originally requested Url. This may be different than the one provided in the Response.url after redirects.
