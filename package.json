@@ -51,7 +51,7 @@
     "@types/node": "11.13.8",
     "@types/parse-link-header": "1.0.0",
     "@types/sinon": "7.5.2",
-    "@types/uri-templates": "0.1.30",
+    "@types/uri-templates": "0.1.31",
     "babel-core": "6.26.3",
     "babel-loader": "8.0.6",
     "babel-preset-env": "1.7.0",
