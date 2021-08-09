@@ -79,7 +79,7 @@
     "sinon": "11.1.2",
     "source-map-loader": "3.0.0",
     "ts-loader": "9.2.5",
-    "ts-node": "10.1.0",
+    "ts-node": "10.2.0",
     "tslint": "5.20.1",
     "tslint-eslint-rules": "5.4.0",
     "tslint-language-service": "0.9.9",
