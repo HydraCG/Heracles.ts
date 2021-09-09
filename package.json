@@ -74,7 +74,7 @@
     "karma-sourcemap-loader": "0.3.8",
     "karma-summary-reporter": "2.0.2",
     "karma-webpack": "5.0.0",
-    "prettier": "2.3.2",
+    "prettier": "2.4.0",
     "raw-loader": "4.0.2",
     "sinon": "11.1.2",
     "source-map-loader": "3.0.0",
