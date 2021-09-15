@@ -72,7 +72,7 @@
     "karma-sinon": "1.0.5",
     "karma-source-map-support": "1.4.0",
     "karma-sourcemap-loader": "0.3.8",
-    "karma-summary-reporter": "2.0.3",
+    "karma-summary-reporter": "3.0.0",
     "karma-webpack": "5.0.0",
     "prettier": "2.4.0",
     "raw-loader": "4.0.2",
