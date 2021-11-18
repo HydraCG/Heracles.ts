@@ -49,7 +49,7 @@
     "@types/jasmine": "3.10.2",
     "@types/js-md5": "0.4.3",
     "@types/node": "16.11.7",
-    "@types/parse-link-header": "1.0.0",
+    "@types/parse-link-header": "1.0.1",
     "@types/sinon": "10.0.6",
     "@types/uri-templates": "0.1.31",
     "babel-core": "6.26.3",
