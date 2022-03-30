@@ -67,7 +67,7 @@
     "karma-chrome-launcher": "3.1.1",
     "karma-coverage-istanbul-reporter": "3.0.3",
     "karma-coveralls": "2.1.0",
-    "karma-jasmine": "4.0.1",
+    "karma-jasmine": "4.0.2",
     "karma-jasmine-sinon": "1.0.4",
     "karma-sinon": "1.0.5",
     "karma-source-map-support": "1.4.0",
