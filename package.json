@@ -35,7 +35,7 @@
     "n3": "node switch-to-n3"
   },
   "dependencies": {
-    "@rdfjs/parser-n3": "^1.1.4",
+    "@rdfjs/parser-n3": "^2.0.0",
     "@rdfjs/serializer-jsonld": "^1.2.2",
     "isomorphic-fetch": "3.0.0",
     "jsonld": "^8.0.0",

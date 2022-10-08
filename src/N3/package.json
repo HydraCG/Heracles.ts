@@ -17,7 +17,7 @@
   },
   "types": "types/index.d.ts",
   "dependencies": {
-    "@rdfjs/parser-n3": "^1.1.2",
+    "@rdfjs/parser-n3": "^2.0.0",
     "@rdfjs/serializer-jsonld": "^1.2.0",
     "@hydra-cg/heracles.ts": "0.5.1"
   }
