@@ -53,7 +53,7 @@
     "@types/sinon": "10.0.13",
     "@types/uri-templates": "0.1.31",
     "babel-core": "6.26.3",
-    "babel-loader": "9.0.0",
+    "babel-loader": "9.0.1",
     "babel-preset-env": "1.7.0",
     "babel-preset-es2017": "6.24.1",
     "babel-preset-stage-0": "6.24.1",
