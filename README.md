@@ -22,7 +22,7 @@ let hydraClient = HydraClientFactory.configure().withDefaults().andCreate();
 Once the instance is obtained, you're free to use the client, i.e.:
 ```typescript
 const resource = await hydraClient.getResource("http://some.domain/api");
-for (const link of resource.hypermedia.links) {
+for (const link of resource.links) {
   // do something with the link.
 }
 ```
