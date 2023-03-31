@@ -85,7 +85,7 @@
     "tslint-language-service": "0.9.9",
     "typedoc": "0.23.28",
     "typedoc-plugin-markdown": "3.14.0",
-    "typescript": "5.0.2",
+    "typescript": "5.0.3",
     "webpack": "5.77.0",
     "webpack-karma-jasmine": "4.0.0"
   }
