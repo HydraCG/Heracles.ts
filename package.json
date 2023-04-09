@@ -83,7 +83,7 @@
     "tslint": "5.20.1",
     "tslint-eslint-rules": "5.4.0",
     "tslint-language-service": "0.9.9",
-    "typedoc": "0.23.28",
+    "typedoc": "0.24.1",
     "typedoc-plugin-markdown": "3.14.0",
     "typescript": "5.0.4",
     "webpack": "5.78.0",
