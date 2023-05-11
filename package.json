@@ -86,7 +86,7 @@
     "typedoc": "0.24.7",
     "typedoc-plugin-markdown": "3.15.3",
     "typescript": "5.0.4",
-    "webpack": "5.82.0",
+    "webpack": "5.82.1",
     "webpack-karma-jasmine": "4.0.0"
   }
 }
