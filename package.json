@@ -76,7 +76,7 @@
     "karma-webpack": "5.0.0",
     "prettier": "3.0.3",
     "raw-loader": "4.0.2",
-    "sinon": "16.0.0",
+    "sinon": "16.1.0",
     "source-map-loader": "4.0.1",
     "ts-loader": "9.4.4",
     "ts-node": "10.9.1",
