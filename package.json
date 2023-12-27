@@ -77,7 +77,7 @@
     "prettier": "3.1.1",
     "raw-loader": "4.0.2",
     "sinon": "17.0.1",
-    "source-map-loader": "4.0.1",
+    "source-map-loader": "4.0.2",
     "ts-loader": "9.5.1",
     "ts-node": "10.9.2",
     "tslint": "5.20.1",
