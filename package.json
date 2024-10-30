@@ -48,7 +48,7 @@
     "@types/express": "5.0.0",
     "@types/jasmine": "5.1.4",
     "@types/js-md5": "0.7.2",
-    "@types/node": "20.17.3",
+    "@types/node": "22.8.4",
     "@types/parse-link-header": "2.0.3",
     "@types/sinon": "17.0.3",
     "@types/uri-templates": "0.1.34",
