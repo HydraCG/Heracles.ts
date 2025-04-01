@@ -58,7 +58,7 @@
     "babel-preset-es2017": "6.24.1",
     "babel-preset-stage-0": "6.24.1",
     "body-parser": "2.2.0",
-    "express": "4.21.2",
+    "express": "5.1.0",
     "istanbul-instrumenter-loader": "3.0.1",
     "jasmine": "5.6.0",
     "jasmine-sinon": "0.4.0",
