@@ -84,7 +84,7 @@
     "tslint-eslint-rules": "5.4.0",
     "tslint-language-service": "0.9.9",
     "typedoc": "0.28.2",
-    "typedoc-plugin-markdown": "4.6.1",
+    "typedoc-plugin-markdown": "4.6.2",
     "typescript": "5.8.3",
     "webpack": "5.99.5",
     "webpack-karma-jasmine": "4.0.0"
