@@ -47,7 +47,7 @@
     "@types/body-parser": "1.19.5",
     "@types/express": "5.0.2",
     "@types/jasmine": "5.1.8",
-    "@types/js-md5": "0.7.2",
+    "@types/js-md5": "0.8.0",
     "@types/node": "22.15.29",
     "@types/parse-link-header": "2.0.3",
     "@types/sinon": "17.0.4",
