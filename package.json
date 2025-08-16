@@ -46,7 +46,7 @@
   "devDependencies": {
     "@types/body-parser": "1.19.6",
     "@types/express": "5.0.3",
-    "@types/jasmine": "5.1.8",
+    "@types/jasmine": "5.1.9",
     "@types/js-md5": "0.8.0",
     "@types/node": "22.17.1",
     "@types/parse-link-header": "2.0.3",
