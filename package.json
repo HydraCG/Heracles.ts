@@ -50,7 +50,7 @@
     "@types/js-md5": "0.8.0",
     "@types/node": "24.10.1",
     "@types/parse-link-header": "2.0.3",
-    "@types/sinon": "17.0.4",
+    "@types/sinon": "20.0.0",
     "@types/uri-templates": "0.1.34",
     "babel-core": "6.26.3",
     "babel-loader": "10.0.0",
