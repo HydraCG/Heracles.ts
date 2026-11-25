@@ -44,7 +44,7 @@
     "urijs": "1.19.11"
   },
   "devDependencies": {
-    "@types/body-parser": "1.19.6",
+    "@types/body-parser": "2.2.0",
     "@types/express": "5.0.6",
     "@types/jasmine": "7.0.0",
     "@types/js-md5": "0.8.0",
